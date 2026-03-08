@@ -36,8 +36,8 @@ st.title("⚖️  Aportación Personal Máxima PPE: 2026")
 with st.sidebar:
     st.header("Datos Personales")
     sb = st.number_input("Sueldo Bruto Anual (€)", value=60000, step=1000)
-    empresa_ahorro = st.number_input("Aportación Empresa Ahorro + Riesgo (€)", value=1800, step=100)
-    empresa_riesgo = st.number_input("Aportación Empresa Ahorro + Riesgo (€)", value=0, step=50)
+    empresa_ahorro = st.number_input("Aportación Empresa Ahorro (€)", value=1800, step=100)
+    empresa_riesgo = st.number_input("Prima riesgo dentro PPE (€)", value=0, step=50)
     empresa_total = empresa_ahorro+empresa_riesgo
     st.divider()
     st.info("Este simulador aplica los límites de la Ley 12/2022 para Planes de Empleo (PPE). Así como los tramos del IRPF aplicables en Catalunya en 2026 ")
@@ -291,6 +291,7 @@ try:
 except Exception as e:
 
     st.error(f"Error técnico al generar PDF: {e}")
+
 
 
 
