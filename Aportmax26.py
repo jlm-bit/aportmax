@@ -95,6 +95,7 @@ cuota_inicial = calcular_irpf_cat(base_pre)
 cuota_final = calcular_irpf_cat(base_pre - max_personal_posible)
 ahorro_euros = cuota_inicial - cuota_final
 propsal =  (max_personal_posible*100)/sb
+mes14= max_personal_posible/14
 
 eficiencia_fiscal_pct = (ahorro_euros / max_personal_posible * 100) if max_personal_posible > 0 else 0
 coste_neto_trabajador = (max_personal_posible - ahorro_euros) if max_personal_posible > 0 else 0
@@ -102,7 +103,7 @@ coste_neto_trabajador = (max_personal_posible - ahorro_euros) if max_personal_po
 # --- 6. VISUALIZACIÓN ---
 st.divider()
 m1, m2 = st.columns(2)
-m1.metric("Aportación Personal Máx.", f"{max_personal_posible:,.2f} €",f"{propsal:.1f}% Salario Bruto")
+m1.metric("Aportación Personal Máx.", f"{max_personal_posible:,.2f} €",f"{propsal:.1f}% Salario Bruto","Aportación Mes .", f"{mes14:,.2f} €")
 m2.metric("Ahorro en el IRPF ", f"{ahorro_euros:,.2f} €", f"{eficiencia_fiscal_pct:.1f}% Reducción Fiscal")
 
 # --- 7. GRÁFICO DE IMPACTO (DISEÑO PREMIUM HORIZONTAL) ---
@@ -287,6 +288,7 @@ try:
 except Exception as e:
 
     st.error(f"Error técnico al generar PDF: {e}")
+
 
 
 
