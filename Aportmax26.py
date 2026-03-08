@@ -142,11 +142,11 @@ st.markdown(
             <p style="margin:0; color: #64748b; font-size: 0.8em; text-transform: uppercase;">Aportación Total</p>
             <p style="margin:0; font-size: 1.5em; font-weight: bold; color: #1e293b;">{inversion_total:,.2f} €</p>
         </div>
-        <div style="height: 40px; border-left: 1px solid #e6e9ef;"></div>
-        <div style="text-align: center;">
-            <p style="margin:0; color: #64748b; font-size: 0.8em; text-transform: uppercase;">multiplicador</p>
-            <p style="margin:0; font-size: 1.5em; font-weight: bold; color: #10B981;">x{multiplicador:.2f}</p>
-        </div>
+   #     <div style="height: 40px; border-left: 1px solid #e6e9ef;"></div>
+   #     <div style="text-align: center;">
+   #         <p style="margin:0; color: #64748b; font-size: 0.8em; text-transform: uppercase;">multiplicador</p>
+   #         <p style="margin:0; font-size: 1.5em; font-weight: bold; color: #10B981;">x{multiplicador:.2f}</p>
+   #     </div>
         <div style="height: 40px; border-left: 1px solid #e6e9ef;"></div>
         <div style="text-align: center;">
             <p style="margin:0; color: #64748b; font-size: 0.8em; text-transform: uppercase;">Eficiencia</p>
@@ -289,6 +289,7 @@ try:
 except Exception as e:
 
     st.error(f"Error técnico al generar PDF: {e}")
+
 
 
 
