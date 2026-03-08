@@ -14,7 +14,7 @@ def calcular_irpf_cat(base):
         (0, 12450, 0.190), (12450, 17707, 0.240), (17707, 20200, 0.260),
         (20200, 33007, 0.29), (33007, 35200, 0.335), (35200, 53407, 0.37),
         (53407, 60000, 0.40), (60000, 90000, 0.440), (90000, 120000, 0.460),
-        (120000, 150000, 0.470), (150000, 175000, 0.480), (1750000, float('inf'), 0.500)
+        (120000, 150000, 0.470), (150000, 175000, 0.480), (175000, float('inf'), 0.500)
     ]
     def cuota_base(b):
         if b <= 0: return 0
@@ -100,11 +100,9 @@ coste_neto_trabajador = (max_personal_posible - ahorro_euros) if max_personal_po
 
 # --- 6. VISUALIZACIÓN ---
 st.divider()
-m1, m2, m4, m3 = st.columns(4)
+m1, m2 = st.columns(2)
 m1.metric("Aportación Personal Máx.", f"{max_personal_posible:,.2f} €")
-m3.metric("Aportación Total (Empresa+Empleado)", f"{inversion_total:,.2f} €")
-m4.metric("Coste Empleado(despues IRPF)", f"{coste_neto_trabajador:,.2f} €", delta_color="inverse")
-m2.metric("Ahorro en el IRPF ", f"{ahorro_euros:,.2f} €", f"{eficiencia_fiscal_pct:.1f}% Eficiencia")
+m2.metric("Ahorro en el IRPF ", f"{ahorro_euros:,.2f} €", f"{eficiencia_fiscal_pct:.1f}% Reducción Fiscal")
 
 # --- 7. GRÁFICO DE IMPACTO (DISEÑO PREMIUM HORIZONTAL) ---
 st.markdown("---")
@@ -286,4 +284,5 @@ try:
             key="btn_descarga_detallada"
         )
 except Exception as e:
+
     st.error(f"Error técnico al generar PDF: {e}")
