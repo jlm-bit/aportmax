@@ -30,7 +30,7 @@ def calcular_irpf_cat(base):
 
 # --- 2. CONFIGURACIÓN ---
 st.set_page_config(page_title="AportMax PPE 2026", layout="wide", page_icon="⚖️")
-st.title("⚖️  Aportación Máxima PPE: 2026")
+st.title("⚖️  Aportación Personal Máxima PPE: 2026")
 
 # --- 3. ENTRADA DE DATOS (SIDEBAR) ---
 with st.sidebar:
@@ -286,6 +286,7 @@ try:
 except Exception as e:
 
     st.error(f"Error técnico al generar PDF: {e}")
+
 
 
 
