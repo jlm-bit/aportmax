@@ -29,7 +29,7 @@ def calcular_irpf_cat(base):
     return cuota_base(base) - cuota_base(5550)
 
 # --- 2. CONFIGURACIÓN ---
-st.set_page_config(page_title="Asesor PPE 2026", layout="wide", page_icon="⚖️")
+st.set_page_config(page_title="Límites PPE 2026", layout="wide", page_icon="⚖️")
 st.title("⚖️ Aportación Máxima PPE: 2026")
 
 # --- 3. ENTRADA DE DATOS (SIDEBAR) ---
@@ -288,4 +288,5 @@ try:
 except Exception as e:
 
     st.error(f"Error técnico al generar PDF: {e}")
+
 
