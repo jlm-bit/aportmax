@@ -75,8 +75,8 @@ if inversion_total > limite_30_pct:
 # --- 5. CÁLCULOS DE IMPACTO (BASE LIQUIDABLE CON SS Y GASTOS) ---
 
 # Parámetros SS 2026
-BASE_MAX_SS = 60200.0  # Tope estimado 2026
-CUOTA_SS = min(sb, BASE_MAX_SS) * 0.048  # 4.7% + 0.1% MEI trabajador
+BASE_MAX_SS = 5101*12  # Tope estimado 2026
+CUOTA_SS = min(sb, BASE_MAX_SS) * 0.0635  # 4.7% + otros
 GASTOS_TRABAJO = 2000.0
 
 # Base imponible previa a la reducción por PPE
@@ -286,6 +286,7 @@ try:
 except Exception as e:
 
     st.error(f"Error técnico al generar PDF: {e}")
+
 
 
 
