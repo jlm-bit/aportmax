@@ -29,7 +29,7 @@ def calcular_irpf_cat(base):
     return cuota_base(base) - cuota_base(5550)
 
 # --- 2. CONFIGURACIÓN ---
-st.set_page_config(page_title="Asesor PPE 2026", layout="wide", page_icon="⚖️")
+st.set_page_config(page_title="AportMax PPE 2026", layout="wide", page_icon="⚖️")
 st.title("⚖️  Aportación Máxima PPE: 2026")
 
 # --- 3. ENTRADA DE DATOS (SIDEBAR) ---
@@ -111,7 +111,7 @@ st.subheader("📊 Composición de tu Aportación Anual")
 # Datos preparados para barra horizontal
 # Invertimos el orden para que lo más importante (tu esfuerzo) quede a la izquierda
 df_premium = pd.DataFrame({
-    "Categoría": ["Tu Hucha Total"],
+    "Categoría": ["Aportación Total"],
     "Aportación Neta de IRPF      ": [coste_neto_trabajador],
     "Ahorro Fiscal      ": [ahorro_euros],
     "Aportación Empresa": [empresa_total]
@@ -286,5 +286,6 @@ try:
 except Exception as e:
 
     st.error(f"Error técnico al generar PDF: {e}")
+
 
 
