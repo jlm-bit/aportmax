@@ -105,7 +105,7 @@ m1, m2  = st.columns(2)
 m1.metric("Aportación Personal Máx.", f"{max_personal_posible:,.2f} €")
 # m3.metric("Aportación Total (Empresa+Empleado)", f"{inversion_total:,.2f} €")
 # m4.metric("Coste Empleado(despues IRPF)", f"{coste_neto_trabajador:,.2f} €", delta_color="inverse")
-m2.metric("Ahorro en el IRPF ", f"{ahorro_euros:,.2f} €", f"{eficiencia_fiscal_pct:.1f}% Eficiencia")
+m2.metric("Ahorro en el IRPF ", f"{ahorro_euros:,.2f} €", f"{eficiencia_fiscal_pct:.1f}% Reducción Fiscal")
 
 # --- 7. GRÁFICO DE IMPACTO (DISEÑO PREMIUM HORIZONTAL) ---
 st.markdown("---")
@@ -114,7 +114,7 @@ st.subheader("📊 Composición de tu Aportación Anual")
 # Datos preparados para barra horizontal
 # Invertimos el orden para que lo más importante (tu esfuerzo) quede a la izquierda
 df_premium = pd.DataFrame({
-    "Categoría": ["Tu Hucha Total"],
+    "Categoría": ["Aportación Total"],
     "Aportación Neta de IRPF      ": [coste_neto_trabajador],
     "Ahorro Fiscal      ": [ahorro_euros],
     "Aportación Empresa": [empresa_total]
@@ -289,6 +289,7 @@ try:
 except Exception as e:
 
     st.error(f"Error técnico al generar PDF: {e}")
+
 
 
 
