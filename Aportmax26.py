@@ -144,7 +144,7 @@ st.markdown(
         </div>
          <div style="height: 40px; border-left: 1px solid #e6e9ef;"></div>
         <div style="text-align: center;">
-            <p style="margin:0; color: #64748b; font-size: 0.8em; text-transform: uppercase;">Aportación Neta IRPF</p>
+            <p style="margin:0; color: #64748b; font-size: 0.8em; text-transform: uppercase;">Aportación Personal Neta IRPF</p>
             <p style="margin:0; font-size: 1.5em; font-weight: bold; color: #1E3A8A;">{coste_neto_trabajador:,.2f} €</p>
         <div style="height: 40px; border-left: 1px solid #e6e9ef;"></div>
         </div>
@@ -285,6 +285,7 @@ try:
 except Exception as e:
 
     st.error(f"Error técnico al generar PDF: {e}")
+
 
 
 
