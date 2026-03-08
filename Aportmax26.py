@@ -94,7 +94,7 @@ if inversion_total > limite_30_pct:
 cuota_inicial = calcular_irpf_cat(base_pre)
 cuota_final = calcular_irpf_cat(base_pre - max_personal_posible)
 ahorro_euros = cuota_inicial - cuota_final
-propsal =  max_personal_posible/sb
+propsal =  (max_personal_posible*100)/sb
 
 eficiencia_fiscal_pct = (ahorro_euros / max_personal_posible * 100) if max_personal_posible > 0 else 0
 coste_neto_trabajador = (max_personal_posible - ahorro_euros) if max_personal_posible > 0 else 0
@@ -287,6 +287,7 @@ try:
 except Exception as e:
 
     st.error(f"Error técnico al generar PDF: {e}")
+
 
 
 
