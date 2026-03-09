@@ -184,15 +184,49 @@ st.markdown("""
 
 st.markdown("#### 📁 Importante. Ajusta los datos personales en sidebar izquierdo que vienen por defecto")
 
-# --- 7. DASHBOARD ---
-c1, c2, c3 = st.columns(3)
-card = "padding: 20px; border-radius: 15px; text-align: center; height: 160px; display: flex; flex-direction: column; justify-content: center; border: 1px solid #e2e8f0;"
-with c1:
-    st.markdown(f'<div style="background-color: #1E3A8A; color: white; {card}"><p style="font-size: 13px; font-weight: bold; margin:0;">LO MÁXIMO QUE PUEDES APORTAR</p><h2 style="font-size: 32px; margin: 10px 0;">{max_personal_posible:,.2f} €</h2><p style="font-size: 11px; opacity: 0.8; margin:0;">{mes14:,.2f} €/mes (14 pagas)</p></div>', unsafe_allow_html=True)
-with c2:
-    st.markdown(f'<div style="background-color: #F0FDF4; color: #166534; {card}"><p style="font-size: 13px; font-weight: bold; margin:0;">AHORRO FISCAL ESTIMADO (IRPF)</p><h2 style="font-size: 32px; margin: 10px 0;">{ahorro_euros:,.2f} €</h2><p style="font-size: 11px; font-weight: bold; margin:0;"> EFICIENCIA: {eficiencia_fiscal_pct:.1f}%</p></div>', unsafe_allow_html=True)
-with c3:
-    st.markdown(f'<div style="background-color: #1e293b; color: white; {card}"><p style="font-size: 13px; font-weight: bold; color: #10B981; margin:0;">INVERSIÓN TOTAL ACUMULADA</p><h2 style="font-size: 32px; margin: 10px 0;">{inversion_total:,.2f} €</h2><p style="font-size: 12px; opacity: 0.8; margin:0;">!SIGUE ASI!</p></div>', unsafe_allow_html=True)
+# Usamos un contenedor flex que permite "envolver" (wrap) los elementos
+st.markdown("""
+    <style>
+        .dashboard-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: space-between;
+        }
+        .card {
+            flex: 1 1 300px; /* Crece, se encoge y tiene un ancho base de 300px */
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            min-height: 160px; /* Altura mínima en lugar de fija */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 10px;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+st.markdown(f"""
+    <div class="dashboard-container">
+        <div class="card" style="background-color: #1E3A8A; color: white;">
+            <p style="font-size: 13px; font-weight: bold; margin:0;">LO MÁXIMO QUE PUEDES APORTAR</p>
+            <h2 style="font-size: 32px; margin: 10px 0;">{max_personal_posible:,.2f} €</h2>
+            <p style="font-size: 11px; opacity: 0.8; margin:0;">{mes14:,.2f} €/mes (14 pagas)</p>
+        </div>
+        <div class="card" style="background-color: #F0FDF4; color: #166534;">
+            <p style="font-size: 13px; font-weight: bold; margin:0;">AHORRO FISCAL ESTIMADO (IRPF)</p>
+            <h2 style="font-size: 32px; margin: 10px 0;">{ahorro_euros:,.2f} €</h2>
+            <p style="font-size: 11px; font-weight: bold; margin:0;"> EFICIENCIA: {eficiencia_fiscal_pct:.1f}%</p>
+        </div>
+        <div class="card" style="background-color: #1e293b; color: white;">
+            <p style="font-size: 13px; font-weight: bold; color: #10B981; margin:0;">INVERSIÓN TOTAL ACUMULADA</p>
+            <h2 style="font-size: 32px; margin: 10px 0;">{inversion_total:,.2f} €</h2>
+            <p style="font-size: 12px; opacity: 0.8; margin:0;">!SIGUE ASI!</p>
+        </div>
+    </div>
+""", unsafe_allow_html=True)
 
 # --- 8. MÓDULO DE PLANIFICACIÓN ---
 st.divider()
@@ -231,3 +265,4 @@ with c_tec:
 with c_vis:
     pdf_v = generar_pdf_visual_v2(max_personal_posible, ahorro_euros, inversion_total, extra_necesario, cuota_ajustada, meses_restantes)
     st.download_button("🚀 Descargar Plan de Acción", data=bytes(pdf_v), file_name="Plan_Accion_PPE.pdf", use_container_width=True)
+
