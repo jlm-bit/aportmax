@@ -85,7 +85,7 @@ coste_neto_trabajador = (max_personal_posible - ahorro_euros) if max_personal_po
 mes14 = max_personal_posible / 14
 marginal_pdf = (calcular_irpf_cat(base_pre + 100) - calcular_irpf_cat(base_pre)) / 100 * 100
 
-# --- 5. FUNCIONES PDF CON WARNING LEGAL Y AUTORÍA ---
+# --- 5. FUNCIONES PDF ---
 
 @st.cache_data
 def generar_pdf_tecnico(empresa_total, max_personal_posible, inversion_total, ahorro_euros, coste_neto_trabajador, sb, CUOTA_SS, GASTOS_TRABAJO, base_pre, eficiencia_fiscal_pct, marginal):
@@ -125,9 +125,28 @@ def generar_pdf_tecnico(empresa_total, max_personal_posible, inversion_total, ah
             pdf.cell(130, 9, d, border='B'); pdf.cell(0, 9, v, border='B', align='R', ln=True)
         pdf.ln(5)
 
+    # --- NUEVA SECCIÓN: TRAMOS IRPF CATALUÑA 2026 ---
+    pdf.set_font("helvetica", 'B', 12); pdf.set_fill_color(220, 230, 220); pdf.cell(0, 10, " 4. TABLA DE TRAMOS IRPF CATALUNYA 2026 (Estimada)", fill=True, ln=True)
+    pdf.set_font("helvetica", 'B', 9)
+    pdf.cell(65, 8, "Desde Base (€)", border=1, align='C')
+    pdf.cell(65, 8, "Hasta Base (€)", border=1, align='C')
+    pdf.cell(60, 8, "Tipo Aplicable (%)", border=1, align='C', ln=True)
+    pdf.set_font("helvetica", size=8)
+    
+    tramos_vis = [
+        ("0", "12.450", "19,0%"), ("12.450", "17.707", "24,0%"), ("17.707", "20.200", "26,0%"),
+        ("20.200", "33.007", "29,0%"), ("33.007", "35.200", "33,5%"), ("35.200", "53.407", "37,0%"),
+        ("53.407", "60.000", "40,0%"), ("60.000", "90.000", "44,0%"), ("90.000", "120.000", "46,0%"),
+        ("120.000", "150.000", "47,0%"), ("150.000", "175.000", "48,0%"), ("175.000", "En adelante", "50,0%")
+    ]
+    for d, h, t in tramos_vis:
+        pdf.cell(65, 6, d, border=1, align='C')
+        pdf.cell(65, 6, h, border=1, align='C')
+        pdf.cell(60, 6, t, border=1, align='C', ln=True)
+
     # --- Warning Legal y Autoría ---
     pdf.ln(10)
-    pdf.set_font("helvetica", 'B', 9); pdf.cell(0, 5, "4. AVISO LEGAL Y CLAUSULA DE RESPONSABILIDAD", ln=True)
+    pdf.set_font("helvetica", 'B', 9); pdf.cell(0, 5, "5. AVISO LEGAL Y CLAUSULA DE RESPONSABILIDAD", ln=True)
     pdf.set_font("helvetica", size=7); pdf.set_text_color(100, 100, 100)
     aviso = ("Este informe es una simulacion basada en la normativa fiscal prevista para 2026 en Cataluña. "
              "Los resultados tienen caracter informativo y no constituyen asesoramiento financiero, legal o fiscal vinculante. "
@@ -184,7 +203,6 @@ st.markdown("""
 
 st.markdown("#### 📁 Importante. Ajusta los datos personales en sidebar izquierdo que vienen por defecto")
 
-# Usamos un contenedor flex que permite "envolver" (wrap) los elementos
 st.markdown("""
     <style>
         .dashboard-container {
@@ -194,11 +212,11 @@ st.markdown("""
             justify-content: space-between;
         }
         .card {
-            flex: 1 1 300px; /* Crece, se encoge y tiene un ancho base de 300px */
+            flex: 1 1 300px;
             padding: 20px;
             border-radius: 15px;
             text-align: center;
-            min-height: 160px; /* Altura mínima en lugar de fija */
+            min-height: 160px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -265,5 +283,4 @@ with c_tec:
 with c_vis:
     pdf_v = generar_pdf_visual_v2(max_personal_posible, ahorro_euros, inversion_total, extra_necesario, cuota_ajustada, meses_restantes)
     st.download_button("🚀 Descargar Plan de Acción", data=bytes(pdf_v), file_name="Plan_Accion_PPE.pdf", use_container_width=True)
-
 
