@@ -30,77 +30,91 @@ def calcular_max_personal_adicional(e, salario):
 # --- 2. CONFIGURACIÓN Y ESTILO (CON FIX PARA MODO DARK) ---
 st.set_page_config(page_title="AportaMax 2026", layout="wide", page_icon="📈")
 
-# --- 2. CONFIGURACIÓN Y ESTILO ---
 st.markdown("""
     <style>
-        /* ... tus estilos anteriores ... */
-
-        /* MEJORA PARA TABLETS: Ajuste de cards */
-        [data-testid="stHorizontalBlock"] {
-            gap: 10px;
+        .block-container {padding-top: 1rem !important;}
+        
+        /* FIX MODO DARK: Asegura que los títulos del sidebar usen el color de texto del tema */
+        [data-testid="stSidebar"] h3 {
+            color: var(--text-color) !important;
         }
         
-        @media (max-width: 992px) {
-            .main-header h1 { font-size: 24px !important; }
-            /* Forzamos a que las métricas tengan aire y el texto no se corte */
-            div[style*="height: 160px"] {
-                height: auto !important;
-                padding: 15px !important;
-                margin-bottom: 10px;
-            }
+        /* Opcional: si quieres que el fondo del sidebar no sea tan blanco en modo dark */
+        [data-testid="stSidebar"] {
+            background-color: transparent !important;
+        }
+
+        .main-header {
+            background: linear-gradient(90deg, #1E3A8A 0%, #3B82F6 100%);
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            margin-bottom: 25px;
         }
     </style>
 """, unsafe_allow_html=True)
-# --- 3. SIDEBAR (CON RESTRICCIÓN MIN_VALUE=0 Y TOOLTIPS) ---
+# --- 3. SIDEBAR (RESTRICCIONES: NO NEGATIVOS Y MÁXIMO 10.000€) ---
 with st.sidebar:
     st.markdown("### Tus datos personales. AÑO 2026")
     
     sb = st.number_input(
         "Sueldo Bruto Anual (€)", 
-        value=60000.0, 
-        step=1000.0, 
-        min_value=0.0,
+        value=60000.0, step=1000.0, 
+        min_value=0.0, # Evita negativos
         help="Suma de todas tus retribuciones íntegras anuales (fijo + variable) antes de impuestos y SS."
     )
     
     empresa_ahorro = st.number_input(
         "Aport. prevista Empresa Jubilación (€)", 
-        value=1800.0, 
-        step=100.0, 
-        min_value=0.0,
-        help="Contribución prevista en 2026 de tu empresa a tu favor específicamente para la contingencia de jubilación en el PPE."
+        value=1800.0, step=100.0, 
+        min_value=0.0, # Evita negativos
+        max_value=10000.0, # Límite legal máximo
+        help="Contribución prevista de tu empresa. El límite total legal es de 10.000€ anuales."
     )
     
     empresa_riesgo = st.number_input(
         "Prima Riesgo PPE (€)", 
-        value=0.0, 
-        step=50.0, 
-        min_value=0.0,
-        help="Aportación de la empresa destinada a cubrir una prima de seguro de vida o invalidez dentro del plan. No es frecuente, así que no te extrañe, no tenerla"
+        value=0.0, step=50.0, 
+        min_value=0.0, # Evita negativos
+        max_value=10000.0, # Límite legal máximo
+        help="Aportación para seguros de riesgo. Sumada a la de jubilación no puede superar los 10.000€."
     )
     
+    # Cálculo de la aportación total de la empresa
     empresa_total = empresa_ahorro + empresa_riesgo
 
-    # Cálculos internos
+    st.markdown("---")
+    
+    # 1. Validación crítica de los 10.000€
+    if empresa_total > 10000:
+        st.error(f"❌ La aportación de empresa ({empresa_total:,.0f}€) no puede superar los 10.000€ legales.")
+        empresa_total = 10000.0
+    
+    # 2. Aviso preventivo de los 4.250€
+    elif empresa_total > 4250:
+        st.warning(f"⚠️ Aportación Empresa ({empresa_total:,.0f}€). Alcanzado el tope de 10.000 euros.")
+
+    # --- LÓGICA DE LÍMITES FISCALES ---
     BASE_MAX_SS = 5101 * 12
     CUOTA_SS = min(sb, BASE_MAX_SS) * 0.0635
     GASTOS_TRABAJO = 2000.0
     base_pre = max(0.0, sb - CUOTA_SS - GASTOS_TRABAJO)
     
-    # Lógica de límites legales 2026
+    # Coeficiente según el sueldo y aportación empresa
     max_personal_coef = calcular_max_personal_adicional(empresa_total, sb)
-    max_personal_posible = min(max_personal_coef + 1500, 10000 - empresa_total)
+    
+    # IMPORTANTE: El personal no puede hacer que el total pase de 10.000€
+    # Si la empresa ya aporta 10.000€, max_personal_posible será 0
+    max_personal_posible = max(0.0, min(max_personal_coef + 1500, 10000 - empresa_total))
+    
     limite_30_pct = base_pre * 0.30
     inversion_total_teorica = empresa_total + max_personal_posible
     
-    st.markdown("---")
     st.info("✅ Tramos IRPF Cataluña 2026")
     
-    
-   # Añadimos la lógica de aviso para la aportación de empresa
-    if empresa_total > 4250:
-        st.warning(f"⚠️ Aportación Topada ({empresa_total:,.0f}€) a 10.000 euros.")
-
+    #if sb > 60000:
+    #    st.warning("⚠️ Límite 1:1 por sueldo > 60k€")
     
     if inversion_total_teorica > limite_30_pct:
         st.error(f"⚠️ Tope 30% Base: {limite_30_pct:,.0f}€")
@@ -278,5 +292,3 @@ df_graf = pd.DataFrame({
     "Aportación Empresa": [empresa_total]
 })
 st.bar_chart(df_graf, x="Eje", y=["Esfuerzo Neto", "Ahorro Hacienda", "Aportación Empresa"], color=["#1E3A8A", "#10B981", "#CBD5E1"], horizontal=True, height=200)
-
-
