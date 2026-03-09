@@ -166,7 +166,7 @@ def generar_pdf_visual_v2(max_p, ahorro, inversion, extra, cuota_r, meses):
         pdf.set_x(35); pdf.set_font("helvetica", '', 11); pdf.set_text_color(60, 60, 60); pdf.multi_cell(0, 6, sub); pdf.ln(5)
         
     pdf.set_fill_color(16, 185, 129); pdf.rect(25, 230, 165, 30, 'F')
-    pdf.set_xy(25, 237); pdf.set_font("helvetica", 'B', 16); pdf.set_text_color(255, 255, 255); pdf.cell(165, 10, f"INVERSION 2026 EN TU FUTURO: {inversion:,.2f} EUR", align='C', ln=True)
+    pdf.set_xy(25, 237); pdf.set_font("helvetica", 'B', 13); pdf.set_text_color(255, 255, 255); pdf.cell(165, 10, f"OBJETIVO: INVERSIÓN 2026 EN TU FUTURO: {inversion:,.2f} EUR", align='C', ln=True)
 
     # --- Warning Legal y Autoría en pie de página ---
     pdf.set_xy(25, 270)
@@ -265,4 +265,5 @@ with c_tec:
 with c_vis:
     pdf_v = generar_pdf_visual_v2(max_personal_posible, ahorro_euros, inversion_total, extra_necesario, cuota_ajustada, meses_restantes)
     st.download_button("🚀 Descargar Plan de Acción", data=bytes(pdf_v), file_name="Plan_Accion_PPE.pdf", use_container_width=True)
+
 
