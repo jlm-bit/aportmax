@@ -30,27 +30,24 @@ def calcular_max_personal_adicional(e, salario):
 # --- 2. CONFIGURACIÓN Y ESTILO (CON FIX PARA MODO DARK) ---
 st.set_page_config(page_title="AportaMax 2026", layout="wide", page_icon="📈")
 
+# --- 2. CONFIGURACIÓN Y ESTILO ---
 st.markdown("""
     <style>
-        .block-container {padding-top: 1rem !important;}
-        
-        /* FIX MODO DARK: Asegura que los títulos del sidebar usen el color de texto del tema */
-        [data-testid="stSidebar"] h3 {
-            color: var(--text-color) !important;
-        }
-        
-        /* Opcional: si quieres que el fondo del sidebar no sea tan blanco en modo dark */
-        [data-testid="stSidebar"] {
-            background-color: transparent !important;
-        }
+        /* ... tus estilos anteriores ... */
 
-        .main-header {
-            background: linear-gradient(90deg, #1E3A8A 0%, #3B82F6 100%);
-            padding: 20px;
-            border-radius: 15px;
-            color: white;
-            text-align: center;
-            margin-bottom: 25px;
+        /* MEJORA PARA TABLETS: Ajuste de cards */
+        [data-testid="stHorizontalBlock"] {
+            gap: 10px;
+        }
+        
+        @media (max-width: 992px) {
+            .main-header h1 { font-size: 24px !important; }
+            /* Forzamos a que las métricas tengan aire y el texto no se corte */
+            div[style*="height: 160px"] {
+                height: auto !important;
+                padding: 15px !important;
+                margin-bottom: 10px;
+            }
         }
     </style>
 """, unsafe_allow_html=True)
@@ -278,3 +275,4 @@ df_graf = pd.DataFrame({
     "Aportación Empresa": [empresa_total]
 })
 st.bar_chart(df_graf, x="Eje", y=["Esfuerzo Neto", "Ahorro Hacienda", "Aportación Empresa"], color=["#1E3A8A", "#10B981", "#CBD5E1"], horizontal=True, height=200)
+
