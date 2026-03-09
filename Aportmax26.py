@@ -96,8 +96,11 @@ with st.sidebar:
     st.markdown("---")
     st.info("✅ Tramos IRPF Cataluña 2026")
     
-    if sb > 60000:
-        st.warning("⚠️ Límite 1:1 por sueldo > 60k€")
+    
+   # Añadimos la lógica de aviso para la aportación de empresa
+    if empresa_total > 4250:
+        st.warning(f"⚠️ Aportación Topada ({empresa_total:,.0f}€) a 10.000 euros.")
+
     
     if inversion_total_teorica > limite_30_pct:
         st.error(f"⚠️ Tope 30% Base: {limite_30_pct:,.0f}€")
@@ -275,4 +278,5 @@ df_graf = pd.DataFrame({
     "Aportación Empresa": [empresa_total]
 })
 st.bar_chart(df_graf, x="Eje", y=["Esfuerzo Neto", "Ahorro Hacienda", "Aportación Empresa"], color=["#1E3A8A", "#10B981", "#CBD5E1"], horizontal=True, height=200)
+
 
