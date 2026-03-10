@@ -43,6 +43,15 @@ st.markdown("""
             border: 1px solid #e2e8f0; margin-bottom: 10px; width: 100%;
         }
         .stButton button { width: 100%; border-radius: 12px; height: 3.5em; font-weight: bold; margin-top: 10px;}
+        .info-box-dark { 
+            background-color: #1e293b; 
+            color: #f8fafc; 
+            padding: 15px; 
+            border-radius: 10px; 
+            border-left: 5px solid #3b82f6; 
+            margin-bottom: 20px; 
+            font-size: 0.9em; 
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -128,8 +137,10 @@ st.markdown("""
 
 if st.session_state.paso == 1:
     st.markdown("#### 📁 Tus Datos Personales")
+    
     sb = st.number_input("Sueldo Bruto Anual (€)", value=60000.0, step=1000.0, min_value=0.0, help="Indica tu retribución bruta anual sin deducciones.")
     
+    st.markdown('<div class="info-box-dark"><b>Aportaciones de Empresa:</b> Son las contribuciones que tu empresa realiza a tu favor en el Plan de Pensiones de Empleo. Puedes consultar estos importes en tu <b>nómina mensual</b> (apartado de aportaciones sociales) o en el <b>extracto </b> de tu plan de pensiones proporcionado por la entidad gestora.</div>', unsafe_allow_html=True)
     e_ahorro = st.number_input("Aportación Jubilación Empresa (€)", value=0.0, step=100.0, min_value=0.0, max_value=10000.0, help="Aportación que realiza tu empresa específicamente para jubilación.")
     e_riesgo = st.number_input("Aportación Riesgo Empresa (€)", value=0.0, step=25.0, min_value=0.0, max_value=10000.0, help="Aportación que realiza tu empresa para cubrir contingencias de riesgo.")
     
@@ -140,10 +151,9 @@ if st.session_state.paso == 1:
     if suma_empresa > 4250.0:
         st.warning("ℹ️ Advertencia: al superar la aportación total de la empresa los 4250 euros, tu aportación personal se ve limitada por efecto del límite conjunto de 10000 euros.")
 
-    st.session_state.sb, st.session_state.e_ahorro, st.session_state.e_riesgo = sb, e_ahorro, e_riesgo
-    st.session_state.empresa_total = suma_empresa
-    
     if st.button("SIGUIENTE: CALCULAR RESULTADOS ➡️", disabled=(suma_empresa > 10000.0)): 
+        st.session_state.sb = sb
+        st.session_state.empresa_total = suma_empresa
         st.session_state.paso = 2
         st.rerun()
 
@@ -156,9 +166,11 @@ elif st.session_state.paso == 2:
     if (emp_t + max_p) > (base_pre * 0.30): max_p = max(0.0, (base_pre * 0.30) - emp_t)
     ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
     eficiencia = (ahorro / max_p * 100) if max_p > 0 else 0
+    
     st.session_state.max_p, st.session_state.ahorro, st.session_state.inversion = max_p, ahorro, (emp_t + max_p)
     st.session_state.cuota_ss, st.session_state.base_pre, st.session_state.eficiencia = CUOTA_SS, base_pre, eficiencia
 
+    st.markdown("#### 📁 Aportación Máxima (recomendada) y Fiscalidad")
     st.markdown(f"""
         <div class="card" style="background-color: #1E3A8A; color: white;">
             <p style="margin:0;">MÁXIMA APORTACIÓN PERSONAL POSIBLE</p>
@@ -181,24 +193,21 @@ elif st.session_state.paso == 2:
         if st.button("PLANIFICAR RUTA ➡️", type="primary"): st.session_state.paso = 3; st.rerun()
 
 elif st.session_state.paso == 3:
-    st.subheader("Lo que has hecha ya esta año")
+    st.markdown("#### 📁 Tu Planificacion ")
+    st.subheader("Lo que has hecho ya esta año")
     
     mes_actual = datetime.datetime.now().month
-    meses_r = max(1, 12 - mes_actual)
+    meses_restantes = max(1, 12 - mes_actual)
     
-    c_m = st.number_input("Aportación mensual actual (€)", value=0.0, step=100.0, min_value=0.0, help="Importe que aportas mensualmente a tu plan de pensiones.")
-    e_y = st.number_input("Aportaciones extras ya realizadas este año (€)", value=0.0, step=100.0, min_value=0.0, help="Aportaciones extraordinarias ya efectuadas en el ejercicio actual.")
+    c_m = st.number_input("Aportación mensual actual (€)", value=0.0, step=100.0, min_value=0.0)
+    e_y = st.number_input("Aportaciones extras ya realizadas este año (€)", value=0.0, step=100.0, min_value=0.0)
     
     total_anual_previsto = (c_m * 12) + e_y
-    extra_necesario = st.session_state.max_p - total_anual_previsto
-    
+    extra_necesario = max(0.0, st.session_state.max_p - total_anual_previsto)
+    nueva_cuota_total = c_m + (extra_necesario / meses_restantes) if extra_necesario > 0 else max(0.0, (st.session_state.max_p - e_y) / 12)
+
     if extra_necesario <= 0:
-        extra_necesario = 0.0
-        nueva_cuota_total = (st.session_state.max_p - e_y) / 12
-        if nueva_cuota_total < 0: nueva_cuota_total = 0.0
-        st.success("✅ ¡Felicidades! Con tus cuotas actuales ya alcanzas el objetivo fiscal para este año.")
-    else:
-        nueva_cuota_total = c_m + (extra_necesario / meses_r)
+        st.success("✅ ¡Felicidades! Con tus cuotas actuales ya alcanzan el objetivo fiscal para este año.")
 
     st.markdown("### Dos caminos para tu tranquilidad futura")
     colA, colB = st.columns(2)
@@ -207,12 +216,11 @@ elif st.session_state.paso == 3:
         st.metric("Realizar un pago de", f"{extra_necesario:,.2f} €")
     with colB:
         st.success("**OPCIÓN B: Ajuste Mensual**")
-        st.metric("Subir cuota a" if extra_necesario > 0 else "Ajustar cuota a", f"{nueva_cuota_total:,.2f} €/mes")
+        st.metric(f"Subir cuota a (durante {meses_restantes} meses)" if extra_necesario > 0 else "Ajustar cuota a", f"{nueva_cuota_total:,.2f} €/mes")
 
     st.divider()
     pdf_t = generar_pdf_tecnico(st.session_state.empresa_total, st.session_state.max_p, st.session_state.inversion, st.session_state.ahorro, (st.session_state.max_p - st.session_state.ahorro), st.session_state.sb, st.session_state.cuota_ss, 2000.0, st.session_state.base_pre, st.session_state.eficiencia, 40.0)
-    pdf_v = generar_pdf_visual_v2(st.session_state.max_p, st.session_state.ahorro, st.session_state.inversion, extra_necesario, nueva_cuota_total, meses_r)
+    pdf_v = generar_pdf_visual_v2(st.session_state.max_p, st.session_state.ahorro, st.session_state.inversion, extra_necesario, nueva_cuota_total, meses_restantes)
     st.download_button("📄 Descargar Informe Técnico", data=bytes(pdf_t), file_name="Tecnico_AportaMax.pdf", use_container_width=True)
     st.download_button("🚀 Descargar Plan de Acción (CTA)", data=bytes(pdf_v), file_name="Plan_Accion.pdf", use_container_width=True)
     if st.button("⬅️ VOLVER A RESULTADOS"): st.session_state.paso = 2; st.rerun()
-
