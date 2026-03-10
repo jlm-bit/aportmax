@@ -269,7 +269,7 @@ elif st.session_state.paso == 2:
 
 elif st.session_state.paso == 3:
     st.markdown("#### 📁 Tu Planificacion (Paso 3/3) ")
-      st.subheader("Indica aquí lo que has hecho ya este año")
+    st.subheader("Indica aquí lo que has hecho ya este año")
     
     mes_actual = datetime.datetime.now().month
     meses_restantes = max(1, 12 - mes_actual)
@@ -299,6 +299,7 @@ elif st.session_state.paso == 3:
     st.download_button("📄 Descargar Informe Técnico", data=bytes(pdf_t), file_name="Tecnico_AportaMax.pdf", use_container_width=True)
     st.download_button("🚀 Descargar Plan de Acción (CTA)", data=bytes(pdf_v), file_name="Plan_Accion.pdf", use_container_width=True)
     if st.button("⬅️ VOLVER A RESULTADOS"): st.session_state.paso = 2; st.rerun()
+
 
 
 
