@@ -142,7 +142,7 @@ if st.session_state.paso == 1:
     
     st.markdown('<div class="info-box-dark"><b>Aportaciones de Empresa:</b> Son las contribuciones que tu empresa realiza a tu favor en el Plan de Pensiones de Empleo. Puedes consultar estos importes en tu <b>nómina mensual</b> (apartado de aportaciones sociales) o en el <b>extracto </b> de tu plan de pensiones proporcionado por la entidad gestora.</div>', unsafe_allow_html=True)
     e_ahorro = st.number_input("Aportación Mensual Empresa para la jubilación (€)", value=0.0, step=25.0, min_value=0.0, max_value=833.33, help="Aportación que realiza tu empresa específicamente para jubilación.")
-    e_riesgo = st.number_input("Aportación Riesgo Empresa (€)", value=0.0, step=25.0, min_value=0.0, max_value=10000.0, help="Aportación que realiza tu empresa para cubrir contingencias de riesgo.")
+    e_riesgo = st.number_input("Prima Anual Riesgo Fallecimiento/Ianvlidez dentro del PPE (€)", value=0.0, step=25.0, min_value=0.0, max_value=833.33, help="Aportación que realiza tu empresa para cubrir contingencias de riesgo.")
     
     suma_empresa = e_ahorro*12 + e_riesgo
     if suma_empresa > 10000.0:
@@ -224,4 +224,5 @@ elif st.session_state.paso == 3:
     st.download_button("📄 Descargar Informe Técnico", data=bytes(pdf_t), file_name="Tecnico_AportaMax.pdf", use_container_width=True)
     st.download_button("🚀 Descargar Plan de Acción (CTA)", data=bytes(pdf_v), file_name="Plan_Accion.pdf", use_container_width=True)
     if st.button("⬅️ VOLVER A RESULTADOS"): st.session_state.paso = 2; st.rerun()
+
 
