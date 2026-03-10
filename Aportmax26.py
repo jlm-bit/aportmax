@@ -136,13 +136,13 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 if st.session_state.paso == 1:
-    st.markdown("#### 📁 Tus Datos Personales")
+    st.markdown("#### 📁 Tus Datos Personales (Paso 1/3)")
     
     sb = st.number_input("Sueldo Bruto Anual (€)", value=60000.0, step=1000.0, min_value=0.0, help="Indica tu retribución bruta anual sin deducciones.")
     
-    st.markdown('<div class="info-box-dark"><b>Aportaciones de Empresa:</b> Son las contribuciones que tu empresa realiza a tu favor en el Plan de Pensiones de Empleo. Puedes consultar estos importes en tu <b>nómina mensual</b> (apartado de aportaciones sociales) o en el <b>extracto </b> de tu plan de pensiones proporcionado por la entidad gestora.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="info-box-dark"><b>Aportaciones de Empresa:</b> Son las contribuciones que tu empresa realiza a tu favor en el Plan de Pensiones de Empleo. Puedes consultar estos importes en tu <b>nómina mensual</b> (apartado de aportaciones sociales) o en el <b>extracto </b> de tu plan de pensiones proporcionado por la entidad gestora. Respecto a la prima anual, la mayoria de los PPE no tienen, y tambien puede aparecer en la nómina del mes en que se ha abonado la prima y en el extracto emitido por por la gestora, en todo caso consulta a RRHH.</div>', unsafe_allow_html=True)
     e_ahorro = st.number_input("Aportación Mensual Empresa para la jubilación en el PPE (€)", value=0.0, step=25.0, min_value=0.0, max_value=833.33, help="Aportación que realiza tu empresa específicamente para jubilación.")
-    e_riesgo = st.number_input("Prima Anual Riesgo Fallecimiento/Invalidez dentro del PPE (€)", value=0.0, step=25.0, min_value=0.0, max_value=833.33, help="Aportación que realiza tu empresa para cubrir contingencias de riesgo.")
+    e_riesgo = st.number_input("Prima Anual de las coberturas de Fallecimiento/Invalidez dentro del PPE (€)", value=0.0, step=25.0, min_value=0.0, max_value=833.33, help="Aportación que realiza tu empresa para cubrir contingencias de riesgo. No es frecuente que los PPE lo contemplen, por tanto lo habitual es dejar este campo a cero.")
     
     suma_empresa = e_ahorro*12 + e_riesgo
     if suma_empresa > 10000.0:
@@ -170,7 +170,7 @@ elif st.session_state.paso == 2:
     st.session_state.max_p, st.session_state.ahorro, st.session_state.inversion = max_p, ahorro, (emp_t + max_p)
     st.session_state.cuota_ss, st.session_state.base_pre, st.session_state.eficiencia = CUOTA_SS, base_pre, eficiencia
 
-    st.markdown("#### 📁 Aportación Máxima (recomendada) y Fiscalidad")
+    st.markdown("#### 📁 Aportación Máxima (recomendada) y Fiscalidad (Paso 2/3)")
     st.markdown(f"""
         <div class="card" style="background-color: #1E3A8A; color: white;">
             <p style="margin:0;">MÁXIMA APORTACIÓN PERSONAL POSIBLE</p>
@@ -193,8 +193,8 @@ elif st.session_state.paso == 2:
         if st.button("PLANIFICAR RUTA ➡️", type="primary"): st.session_state.paso = 3; st.rerun()
 
 elif st.session_state.paso == 3:
-    st.markdown("#### 📁 Tu Planificacion ")
-    st.subheader("Lo que has hecho ya esta año")
+    st.markdown("#### 📁 Tu Planificacion (Paso 3/3) ")
+    st.subheader("Lo que has hecho ya este año")
     
     mes_actual = datetime.datetime.now().month
     meses_restantes = max(1, 12 - mes_actual)
@@ -224,6 +224,8 @@ elif st.session_state.paso == 3:
     st.download_button("📄 Descargar Informe Técnico", data=bytes(pdf_t), file_name="Tecnico_AportaMax.pdf", use_container_width=True)
     st.download_button("🚀 Descargar Plan de Acción (CTA)", data=bytes(pdf_v), file_name="Plan_Accion.pdf", use_container_width=True)
     if st.button("⬅️ VOLVER A RESULTADOS"): st.session_state.paso = 2; st.rerun()
+
+
 
 
 
