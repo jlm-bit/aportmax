@@ -198,7 +198,7 @@ def generar_pdf_visual_v2(max_p, ahorro, inversion, extra, cuota_r, meses):
     pdf.set_xy(30, 62); pdf.set_font("helvetica", 'B', 14); pdf.set_text_color(0, 0, 0); pdf.cell(0, 10, "OBJETIVO DE APORTACION PERSONAL:", ln=True)
     pdf.set_xy(30, 75); pdf.set_font("helvetica", 'B', 32); pdf.set_text_color(30, 58, 138); pdf.cell(0, 15, f"{max_p:,.2f} EUR", ln=True)
     pdf.set_xy(25, 115); pdf.set_font("helvetica", 'B', 18); pdf.set_text_color(0, 0, 0); pdf.cell(0, 10, "SUGERENCIAS DE ACTUACIÓN:", ln=True)
-    pasos = [(f"Opcion 1: Aportacion Extra de {extra:,.2f} EUR", "Realizar una aportacion única."), (f"Opcion 2: Incrementar la aportación periódica mensual hasta alcanzar los {cuota_r:,.2f} EUR", "Incrementa ya tu aportación mensual este mes y los que siguen."), (f"En cualquier caso, recuperarás {ahorro:,.2f} EUR en tu IRPF del ejercicio 2026.", "Dinero que dejas de pagar en impuestos y que puedes dedicar a tus necesidades actuales, ocio, o en lo que quieras.")]
+    pasos = [(f"Opcion 1: Aportacion Extra de {extra:,.2f} EUR", "Realizar una aportacion única y seguir con tus aportaciones mensual actuales."), (f"Opcion 2: Incrementar la aportación periódica mensual hasta alcanzar {cuota_r:,.2f} EUR", "Incrementa ya tu aportación mensual este mes y los que siguen."), (f"En cualquier caso, recuperarás {ahorro:,.2f} EUR en tu IRPF del ejercicio 2026.", "Dinero que dejas de pagar en impuestos y que puedes dedicar a tus necesidades actuales, ocio, o en lo que quieras.")]
     for titulo, sub in pasos:
         pdf.set_x(30); pdf.set_font("helvetica", 'B', 12); pdf.set_text_color(30, 58, 138); pdf.cell(0, 8, titulo, ln=True)
         pdf.set_x(35); pdf.set_font("helvetica", '', 11); pdf.set_text_color(60, 60, 60); pdf.multi_cell(0, 6, sub); pdf.ln(5)
@@ -299,6 +299,5 @@ elif st.session_state.paso == 3:
     st.download_button("📄 Descargar Informe Técnico", data=bytes(pdf_t), file_name="Tecnico_AportaMax.pdf", use_container_width=True)
     st.download_button("🚀 Descargar Plan de Acción (CTA)", data=bytes(pdf_v), file_name="Plan_Accion.pdf", use_container_width=True)
     if st.button("⬅️ VOLVER A RESULTADOS"): st.session_state.paso = 2; st.rerun()
-
 
 
