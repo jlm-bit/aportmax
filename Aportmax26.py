@@ -1,4 +1,4 @@
-import streamlit as st
+' Iimport streamlit as st
 from fpdf import FPDF
 import datetime
 import plotly.graph_objects as go  # <--- Añade esto aquí
@@ -250,21 +250,6 @@ elif st.session_state.paso == 2:
     ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
     coste_neto = max_p - ahorro
     eficiencia = (ahorro / max_p * 100) if max_p > 0 else 0
-    
-    elif st.session_state.paso == 2:
-    sb = st.session_state.sb
-    emp_t = st.session_state.empresa_total
-    
-    # --- Cálculos ---
-    CUOTA_SS = min(sb, 5101 * 12) * 0.0635
-    base_pre = max(0.0, sb - CUOTA_SS - 2000.0)
-    max_p = max(0.0, min(calcular_max_personal_adicional(emp_t, sb) + 1500, 10000 - emp_t))
-    if (emp_t + max_p) > (base_pre * 0.30): 
-        max_p = max(0.0, (base_pre * 0.30) - emp_t)
-    
-    ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
-    coste_neto = max_p - ahorro
-    eficiencia = (ahorro / max_p * 100) if max_p > 0 else 0
     inversion_total = emp_t + max_p
 
     # Guardar en sesión
@@ -358,6 +343,7 @@ elif st.session_state.paso == 3:
     st.download_button("📄 Descargar Informe Técnico", data=bytes(pdf_t), file_name="Tecnico_AportaMax.pdf", use_container_width=True)
     st.download_button("🚀 Descargar Plan de Acción (CTA)", data=bytes(pdf_v), file_name="Plan_Accion.pdf", use_container_width=True)
     if st.button("⬅️ VOLVER A RESULTADOS"): st.session_state.paso = 2; st.rerun()
+
 
 
 
