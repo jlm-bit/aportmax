@@ -1,6 +1,9 @@
 import streamlit as st
 from fpdf import FPDF
 import datetime
+import plotly.graph_objects as go  # <--- Añade esto aquí
+import pandas as pd                # <--- Y esto también
+
 
 # --- 1. MOTOR FISCAL CATALUÑA 2026 ---
 def calcular_irpf_cat(base):
@@ -248,67 +251,27 @@ elif st.session_state.paso == 2:
     coste_neto = max_p - ahorro
     eficiencia = (ahorro / max_p * 100) if max_p > 0 else 0
     
-    # Guardar en sesión
-    st.session_state.update({"max_p": max_p, "ahorro": ahorro, "coste_neto": coste_neto, 
-                             "cuota_ss": CUOTA_SS, "base_pre": base_pre, "eficiencia": eficiencia})
-
-    st.markdown("#### 📁 Análisis de Inversión y Fiscalidad (Paso 2/3)")
-    
-    col_cards, col_chart = st.columns([1, 1.2])
-
-    with col_cards:
-        st.markdown(f"""
-            <div class="card" style="background-color: #1E3A8A; color: white; padding: 10px;">
-                <p style="margin:0; font-size: 0.8em;">APORTACIÓN PERSONAL MÁXIMA</p>
-                <h2 style="margin: 5px 0;">{max_p:,.2f} €</h2>
-            </div>
-            <div class="card" style="background-color: #F0FDF4; border: 1px solid #166534; padding: 10px;">
-                <p style="margin:0; font-size: 0.8em; color: #166534;">AHORRO FISCAL (IRPF)</p>
-                <h2 style="margin: 5px 0; color: #166534;">{ahorro:,.2f} €</h2>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        st.info(f"💡 Por cada 100€ que aportas, el Estado te devuelve **{eficiencia:.1f}€** vía impuestos.")
-
-    with col_chart:
-        # Configuración del Gráfico de Tarta / Donut
-        labels = ['Aportación Empresa', 'Ahorro Fiscal (IRPF)', 'Coste Neto Empleado']
-        values = [emp_t, ahorro, coste_neto]
-        colors = ['#1e293b', '#10B981', '#3B82F6'] # Oscuro, Verde, Azul
-
-        fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.5,
-                                     marker_colors=colors,
-                                     textinfo='percent+label',
-                                     hovertemplate="<b>%{label}</b><br>Monto: %{value:,.2f}€<br>Porcentaje: %{percent}<extra></extra>")])
-        
-        fig.update_layout(showlegend=False, margin=dict(t=0, b=0, l=0, r=0), height=250)
-        st.plotly_chart(fig, use_container_width=True)
-
-    st.divider()
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("⬅️ ATRÁS"): st.session_state.paso = 1; st.rerun()
-    with col2:
-        if st.button("PLANIFICAR RUTA ➡️", type="primary"): st.session_state.paso = 3; st.rerun()
-elif st.session_state.paso == 2:
-    import plotly.graph_objects as go # Asegúrate de importar esto al inicio
-
+    elif st.session_state.paso == 2:
     sb = st.session_state.sb
     emp_t = st.session_state.empresa_total
     
-    # Lógica de cálculo (Mantenemos la tuya)
+    # --- Cálculos ---
     CUOTA_SS = min(sb, 5101 * 12) * 0.0635
     base_pre = max(0.0, sb - CUOTA_SS - 2000.0)
     max_p = max(0.0, min(calcular_max_personal_adicional(emp_t, sb) + 1500, 10000 - emp_t))
-    if (emp_t + max_p) > (base_pre * 0.30): max_p = max(0.0, (base_pre * 0.30) - emp_t)
+    if (emp_t + max_p) > (base_pre * 0.30): 
+        max_p = max(0.0, (base_pre * 0.30) - emp_t)
     
     ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
     coste_neto = max_p - ahorro
     eficiencia = (ahorro / max_p * 100) if max_p > 0 else 0
-    
+    inversion_total = emp_t + max_p
+
     # Guardar en sesión
-    st.session_state.update({"max_p": max_p, "ahorro": ahorro, "coste_neto": coste_neto, 
-                             "cuota_ss": CUOTA_SS, "base_pre": base_pre, "eficiencia": eficiencia})
+    st.session_state.update({
+        "max_p": max_p, "ahorro": ahorro, "inversion": inversion_total,
+        "cuota_ss": CUOTA_SS, "base_pre": base_pre, "eficiencia": eficiencia
+    })
 
     st.markdown("#### 📁 Análisis de Inversión y Fiscalidad (Paso 2/3)")
     
@@ -316,38 +279,52 @@ elif st.session_state.paso == 2:
 
     with col_cards:
         st.markdown(f"""
-            <div class="card" style="background-color: #1E3A8A; color: white; padding: 10px;">
-                <p style="margin:0; font-size: 0.8em;">APORTACIÓN PERSONAL MÁXIMA</p>
-                <h2 style="margin: 5px 0;">{max_p:,.2f} €</h2>
+            <div class="card" style="background-color: #1E3A8A; color: white; padding: 15px;">
+                <p style="margin:0; font-size: 0.9em; opacity: 0.9;">APORTACIÓN PERSONAL MÁXIMA</p>
+                <h2 style="margin: 5px 0; font-size: 2.2em;">{max_p:,.2f} €</h2>
             </div>
-            <div class="card" style="background-color: #F0FDF4; border: 1px solid #166534; padding: 10px;">
-                <p style="margin:0; font-size: 0.8em; color: #166534;">AHORRO FISCAL (IRPF)</p>
-                <h2 style="margin: 5px 0; color: #166534;">{ahorro:,.2f} €</h2>
+            <div class="card" style="background-color: #F0FDF4; border: 1px solid #166534; padding: 15px; margin-top: 15px;">
+                <p style="margin:0; font-size: 0.9em; color: #166534;">AHORRO FISCAL (IRPF)</p>
+                <h2 style="margin: 5px 0; color: #166534; font-size: 2.2em;">{ahorro:,.2f} €</h2>
+                <p style="margin:0; color: #166534; font-weight: bold;">Subvención: {eficiencia:.1f}%</p>
             </div>
         """, unsafe_allow_html=True)
-        
-        st.info(f"💡 Por cada 100€ que aportas, el Estado te devuelve **{eficiencia:.1f}€** vía impuestos.")
 
     with col_chart:
-        # Configuración del Gráfico de Tarta / Donut
-        labels = ['Aportación Empresa', 'Ahorro Fiscal (IRPF)', 'Coste Neto Empleado']
+        # --- Configuración del Gráfico de Tarta / Donut ---
+        labels = ['Aportación Empresa', 'Ahorro Fiscal (Estado)', 'Tu Coste Neto']
         values = [emp_t, ahorro, coste_neto]
-        colors = ['#1e293b', '#10B981', '#3B82F6'] # Oscuro, Verde, Azul
+        colors = ['#1e293b', '#10B981', '#3B82F6'] 
 
-        fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.5,
-                                     marker_colors=colors,
-                                     textinfo='percent+label',
-                                     hovertemplate="<b>%{label}</b><br>Monto: %{value:,.2f}€<br>Porcentaje: %{percent}<extra></extra>")])
+        fig = go.Figure(data=[go.Pie(
+            labels=labels, 
+            values=values, 
+            hole=.6,
+            marker_colors=colors,
+            textinfo='percent',
+            insidetextorientation='radial',
+            hovertemplate="<b>%{label}</b><br>Importe: %{value:,.2f}€<extra></extra>"
+        )])
         
-        fig.update_layout(showlegend=False, margin=dict(t=0, b=0, l=0, r=0), height=250)
+        fig.update_layout(
+            showlegend=True, 
+            legend=dict(orientation="h", yanchor="bottom", y=-0.2, xanchor="center", x=0.5),
+            margin=dict(t=0, b=40, l=0, r=0), 
+            height=300
+        )
         st.plotly_chart(fig, use_container_width=True)
 
     st.divider()
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("⬅️ ATRÁS"): st.session_state.paso = 1; st.rerun()
-    with col2:
-        if st.button("PLANIFICAR RUTA ➡️", type="primary"): st.session_state.paso = 3; st.rerun()
+    col_b1, col_b2 = st.columns(2)
+    with col_b1:
+        if st.button("⬅️ ATRÁS"): 
+            st.session_state.paso = 1
+            st.rerun()
+    with col_b2:
+        if st.button("PLANIFICAR RUTA ➡️", type="primary"): 
+            st.session_state.paso = 3
+            st.rerun()
+
 
 elif st.session_state.paso == 3:
     st.markdown("#### 📁 Tu Planificacion (Paso 3/3) ")
@@ -381,6 +358,7 @@ elif st.session_state.paso == 3:
     st.download_button("📄 Descargar Informe Técnico", data=bytes(pdf_t), file_name="Tecnico_AportaMax.pdf", use_container_width=True)
     st.download_button("🚀 Descargar Plan de Acción (CTA)", data=bytes(pdf_v), file_name="Plan_Accion.pdf", use_container_width=True)
     if st.button("⬅️ VOLVER A RESULTADOS"): st.session_state.paso = 2; st.rerun()
+
 
 
 
