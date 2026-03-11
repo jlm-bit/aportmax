@@ -1,4 +1,4 @@
-' Iimport streamlit as st
+import streamlit as st
 from fpdf import FPDF
 import datetime
 import plotly.graph_objects as go  # <--- Añade esto aquí
@@ -343,6 +343,7 @@ elif st.session_state.paso == 3:
     st.download_button("📄 Descargar Informe Técnico", data=bytes(pdf_t), file_name="Tecnico_AportaMax.pdf", use_container_width=True)
     st.download_button("🚀 Descargar Plan de Acción (CTA)", data=bytes(pdf_v), file_name="Plan_Accion.pdf", use_container_width=True)
     if st.button("⬅️ VOLVER A RESULTADOS"): st.session_state.paso = 2; st.rerun()
+
 
 
 
