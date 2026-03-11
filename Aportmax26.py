@@ -233,34 +233,116 @@ if st.session_state.paso == 1:
         st.rerun()
 
 elif st.session_state.paso == 2:
+    import plotly.graph_objects as go # Asegúrate de importar esto al inicio
+
     sb = st.session_state.sb
     emp_t = st.session_state.empresa_total
+    
+    # Lógica de cálculo (Mantenemos la tuya)
     CUOTA_SS = min(sb, 5101 * 12) * 0.0635
     base_pre = max(0.0, sb - CUOTA_SS - 2000.0)
     max_p = max(0.0, min(calcular_max_personal_adicional(emp_t, sb) + 1500, 10000 - emp_t))
     if (emp_t + max_p) > (base_pre * 0.30): max_p = max(0.0, (base_pre * 0.30) - emp_t)
+    
     ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
+    coste_neto = max_p - ahorro
     eficiencia = (ahorro / max_p * 100) if max_p > 0 else 0
     
-    st.session_state.max_p, st.session_state.ahorro, st.session_state.inversion = max_p, ahorro, (emp_t + max_p)
-    st.session_state.cuota_ss, st.session_state.base_pre, st.session_state.eficiencia = CUOTA_SS, base_pre, eficiencia
+    # Guardar en sesión
+    st.session_state.update({"max_p": max_p, "ahorro": ahorro, "coste_neto": coste_neto, 
+                             "cuota_ss": CUOTA_SS, "base_pre": base_pre, "eficiencia": eficiencia})
 
-    st.markdown("#### 📁 Aportación Máxima (recomendada) y Fiscalidad (Paso 2/3)")
-    st.markdown(f"""
-        <div class="card" style="background-color: #1E3A8A; color: white;">
-            <p style="margin:0;">MÁXIMA APORTACIÓN PERSONAL POSIBLE</p>
-            <h2 style="font-size: 32px; margin: 10px 0;">{max_p:,.2f} €</h2>
-        </div>
-        <div class="card" style="background-color: #F0FDF4; color: #166534;">
-            <p style="margin:0;">AHORRO FISCAL ESTIMADO (IRPF)</p>
-            <h2 style="font-size: 32px; margin: 10px 0;">{ahorro:,.2f} €</h2>
-            <p style="margin:0; font-size: 1.0em; font-weight: bold;">EFICIENCIA FISCAL (Tramos IRPF Catalunya): {eficiencia:.1f}%</p>
-        </div>
-        <div class="card" style="background-color: #1e293b; color: #10B981;">
-            <p style="margin:0;">INVERSIÓN TOTAL (EMPRESA + TÚ)</p>
-            <h2 style="font-size: 32px; margin: 10px 0;">{(emp_t + max_p):,.2f} €</h2>
-        </div>
-    """, unsafe_allow_html=True)
+    st.markdown("#### 📁 Análisis de Inversión y Fiscalidad (Paso 2/3)")
+    
+    col_cards, col_chart = st.columns([1, 1.2])
+
+    with col_cards:
+        st.markdown(f"""
+            <div class="card" style="background-color: #1E3A8A; color: white; padding: 10px;">
+                <p style="margin:0; font-size: 0.8em;">APORTACIÓN PERSONAL MÁXIMA</p>
+                <h2 style="margin: 5px 0;">{max_p:,.2f} €</h2>
+            </div>
+            <div class="card" style="background-color: #F0FDF4; border: 1px solid #166534; padding: 10px;">
+                <p style="margin:0; font-size: 0.8em; color: #166534;">AHORRO FISCAL (IRPF)</p>
+                <h2 style="margin: 5px 0; color: #166534;">{ahorro:,.2f} €</h2>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        st.info(f"💡 Por cada 100€ que aportas, el Estado te devuelve **{eficiencia:.1f}€** vía impuestos.")
+
+    with col_chart:
+        # Configuración del Gráfico de Tarta / Donut
+        labels = ['Aportación Empresa', 'Ahorro Fiscal (IRPF)', 'Coste Neto Empleado']
+        values = [emp_t, ahorro, coste_neto]
+        colors = ['#1e293b', '#10B981', '#3B82F6'] # Oscuro, Verde, Azul
+
+        fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.5,
+                                     marker_colors=colors,
+                                     textinfo='percent+label',
+                                     hovertemplate="<b>%{label}</b><br>Monto: %{value:,.2f}€<br>Porcentaje: %{percent}<extra></extra>")])
+        
+        fig.update_layout(showlegend=False, margin=dict(t=0, b=0, l=0, r=0), height=250)
+        st.plotly_chart(fig, use_container_width=True)
+
+    st.divider()
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("⬅️ ATRÁS"): st.session_state.paso = 1; st.rerun()
+    with col2:
+        if st.button("PLANIFICAR RUTA ➡️", type="primary"): st.session_state.paso = 3; st.rerun()
+elif st.session_state.paso == 2:
+    import plotly.graph_objects as go # Asegúrate de importar esto al inicio
+
+    sb = st.session_state.sb
+    emp_t = st.session_state.empresa_total
+    
+    # Lógica de cálculo (Mantenemos la tuya)
+    CUOTA_SS = min(sb, 5101 * 12) * 0.0635
+    base_pre = max(0.0, sb - CUOTA_SS - 2000.0)
+    max_p = max(0.0, min(calcular_max_personal_adicional(emp_t, sb) + 1500, 10000 - emp_t))
+    if (emp_t + max_p) > (base_pre * 0.30): max_p = max(0.0, (base_pre * 0.30) - emp_t)
+    
+    ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
+    coste_neto = max_p - ahorro
+    eficiencia = (ahorro / max_p * 100) if max_p > 0 else 0
+    
+    # Guardar en sesión
+    st.session_state.update({"max_p": max_p, "ahorro": ahorro, "coste_neto": coste_neto, 
+                             "cuota_ss": CUOTA_SS, "base_pre": base_pre, "eficiencia": eficiencia})
+
+    st.markdown("#### 📁 Análisis de Inversión y Fiscalidad (Paso 2/3)")
+    
+    col_cards, col_chart = st.columns([1, 1.2])
+
+    with col_cards:
+        st.markdown(f"""
+            <div class="card" style="background-color: #1E3A8A; color: white; padding: 10px;">
+                <p style="margin:0; font-size: 0.8em;">APORTACIÓN PERSONAL MÁXIMA</p>
+                <h2 style="margin: 5px 0;">{max_p:,.2f} €</h2>
+            </div>
+            <div class="card" style="background-color: #F0FDF4; border: 1px solid #166534; padding: 10px;">
+                <p style="margin:0; font-size: 0.8em; color: #166534;">AHORRO FISCAL (IRPF)</p>
+                <h2 style="margin: 5px 0; color: #166534;">{ahorro:,.2f} €</h2>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        st.info(f"💡 Por cada 100€ que aportas, el Estado te devuelve **{eficiencia:.1f}€** vía impuestos.")
+
+    with col_chart:
+        # Configuración del Gráfico de Tarta / Donut
+        labels = ['Aportación Empresa', 'Ahorro Fiscal (IRPF)', 'Coste Neto Empleado']
+        values = [emp_t, ahorro, coste_neto]
+        colors = ['#1e293b', '#10B981', '#3B82F6'] # Oscuro, Verde, Azul
+
+        fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.5,
+                                     marker_colors=colors,
+                                     textinfo='percent+label',
+                                     hovertemplate="<b>%{label}</b><br>Monto: %{value:,.2f}€<br>Porcentaje: %{percent}<extra></extra>")])
+        
+        fig.update_layout(showlegend=False, margin=dict(t=0, b=0, l=0, r=0), height=250)
+        st.plotly_chart(fig, use_container_width=True)
+
+    st.divider()
     col1, col2 = st.columns(2)
     with col1:
         if st.button("⬅️ ATRÁS"): st.session_state.paso = 1; st.rerun()
@@ -299,6 +381,7 @@ elif st.session_state.paso == 3:
     st.download_button("📄 Descargar Informe Técnico", data=bytes(pdf_t), file_name="Tecnico_AportaMax.pdf", use_container_width=True)
     st.download_button("🚀 Descargar Plan de Acción (CTA)", data=bytes(pdf_v), file_name="Plan_Accion.pdf", use_container_width=True)
     if st.button("⬅️ VOLVER A RESULTADOS"): st.session_state.paso = 2; st.rerun()
+
 
 
 
