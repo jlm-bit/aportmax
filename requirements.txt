@@ -1,3 +1,6 @@
 streamlit
-fpdf2
+fpdf
+plotly
 pandas
+streamlit
+fpdf2
