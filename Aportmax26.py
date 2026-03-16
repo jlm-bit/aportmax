@@ -198,11 +198,15 @@ ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 eficiencia = (ahorro / max_p * 100) if max_p > 0 else 0
 esfuerzo_neto = max_p - ahorro
 
-# REVISIÓN LÓGICA PLAN DE ACCIÓN (Ajuste mensual futuro)
+# REVISIÓN LÓGICA PLAN DE ACCIÓN
 ya_aportado = (c_m * meses_pasados) + e_y
 pendiente_para_limite = max(0.0, max_p - ya_aportado)
 nueva_cuota_total = pendiente_para_limite / meses_restantes if meses_restantes > 0 else 0
 diferencia_mensual = nueva_cuota_total - c_m
+
+# NUEVA LÓGICA: Extraordinaria considerando que el usuario MANTIENE su cuota mensual actual hasta fin de año
+total_mensual_previsto = c_m * meses_restantes
+aportacion_extraordinaria_neta = max(0.0, pendiente_para_limite - total_mensual_previsto)
 
 # --- 6. RENDERIZADO PRINCIPAL ---
 st.markdown('<div class="main-header"><h1 style="margin:0;">📈 APORTAMAX 2026</h1></div>', unsafe_allow_html=True)
@@ -233,13 +237,12 @@ with tab1:
 with tab2:
     st.markdown("## 🚀 Tu Plan de Acción para 2026")
     
-    if ya_aportado >= max_p:
-        st.warning(f"⚠️ **AVISO DE SOBREAPORTACIÓN:** Has alcanzado el límite con tu extra de {e_y:,.2f} € y las cuotas pasadas.")
+    if ya_aportado + (c_m * meses_restantes) >= max_p:
+        st.success("✅ **PLANIFICACIÓN COMPLETA:** Con tu cuota actual de " + str(c_m) + " €/mes alcanzarás el límite legal a final de año.")
         st.markdown(f"""
-            <div class="option-card" style="border-left-color: #ef4444;">
-                <h3 style="color: #991b1b; margin-top:0;">AJUSTE NECESARIO</h3>
-                <h2 style="color: #991b1b;">0.00 €/mes</h2>
-                <p style="color: #991b1b; font-weight: bold;">(Reducción de {c_m:,.2f} € para evitar exceder el límite legal)</p>
+            <div class="option-card" style="border-left-color: #10B981;">
+                <h3 style="color: #065f46; margin-top:0;">ESTADO: OBJETIVO CUBIERTO</h3>
+                <p style="color: #065f46;">No necesitas realizar ajustes ni aportaciones extraordinarias para agotar el beneficio fiscal.</p>
             </div>
         """, unsafe_allow_html=True)
     else:
@@ -251,8 +254,10 @@ with tab2:
                 <h2 style="color: {color_card};">{nueva_cuota_total:,.2f} €/mes</h2>
                 <p style="color: {color_card}; font-weight: bold; margin-bottom: 5px;">({prefijo}{diferencia_mensual:,.2f} € sobre tu cuota actual de {c_m:,.2f} €)</p>
                 <p style="font-size: 0.85em; color: #4b5563;">Este ajuste permite agotar el límite de <b>{max_p:,.2f} €</b> de forma prorrateada en los <b>{meses_restantes} meses</b> que quedan del año.</p>
+                <p style="font-size: 0.9em; color: #6b7280; margin-top: 10px; border-top: 1px solid #f3f4f6; padding-top: 10px;">Como alternativa, si deseas mantener tu cuota de {c_m:,.2f} €/mes, puedes realizar hoy una única aportación extraordinaria de <b>{aportacion_extraordinaria_neta:,.2f} €</b> para alcanzar el límite máximo.</p>
             </div>
         """, unsafe_allow_html=True)
 
-    pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), 0, nueva_cuota_total, meses_restantes)
+    # El PDF se genera con la alternativa calculada
+    pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes)
     st.download_button("🚀 Descargar Hoja de Ruta", data=bytes(pdf_v), file_name="Plan_Accion_2026.pdf", key="plan_pdf", use_container_width=True, type="primary")
