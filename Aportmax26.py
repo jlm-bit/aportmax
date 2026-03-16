@@ -167,8 +167,8 @@ def generar_pdf_visual_v2(max_p, ahorro, inversion, extra, cuota_r, meses):
 
 # --- 4. SIDEBAR ---
 with st.sidebar:
-    st.header("⚙️ CONFIGURACIÓN")
-    with st.expander("👤 DATOS SALARIALES Y EMPRESA", expanded=True):
+    st.header("⚙️ DATOS NECESARIOS PARA LA SIMULACIÓN")
+    with st.expander("👤 DATOS EMPRESA", expanded=True):
         sb = st.number_input("Sueldo Bruto Anual (€)", value=60000.0, min_value=0.0, step=1000.0)
         e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=0.0, min_value=0.0, max_value=833.33, step=25.0)
         e_riesgo = st.number_input("Prima Anual Riesgo PPE (€)", value=0.0, min_value=0.0, max_value=10000.0, step=25.0)
@@ -183,7 +183,7 @@ with st.sidebar:
     MAX_P_LIMIT = max(0.0, min(calcular_max_personal_adicional(emp_t, sb) + 1500, 10000.0 - emp_t))
     if (emp_t + MAX_P_LIMIT) > (BASE_PRE_LIMIT * 0.30): MAX_P_LIMIT = max(0.0, (BASE_PRE_LIMIT * 0.30) - emp_t)
 
-    with st.expander("📅 APORTACIONES REALIZADAS", expanded=True):
+    with st.expander("📅 APORTACIONES PERSONALES", expanded=True):
         c_m = st.number_input("Aport. periódica mensual (€)", value=0.0, min_value=0.0, step=50.0)
         e_y = st.number_input("Aport. Extras ya realizadas (€)", value=0.0, min_value=0.0, max_value=MAX_P_LIMIT, step=100.0)
 
@@ -209,9 +209,35 @@ total_mensual_previsto = c_m * meses_restantes
 aportacion_extraordinaria_neta = max(0.0, pendiente_para_limite - total_mensual_previsto)
 
 # --- 6. RENDERIZADO PRINCIPAL ---
+# --- 6. RENDERIZADO PRINCIPAL ---
 st.markdown('<div class="main-header"><h1 style="margin:0;">📈 APORTAMAX 2026</h1></div>', unsafe_allow_html=True)
 
-tab1, tab2 = st.tabs(["1. Cálculo del Límite", "2. Plan de Acción"])
+# CSS Adicional para la Tab 2
+st.markdown("""
+    <style>
+        .stat-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .step-number {
+            background-color: #3b82f6;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+tab1, tab2 = st.tabs(["📊 Cálculo del Límite", "🎯 Plan de Acción"])
 
 with tab1:
     col_left, col_right = st.columns([1, 1.2])
@@ -235,29 +261,50 @@ with tab1:
     st.download_button("📄 Descargar Informe Fiscal Detallado", data=bytes(pdf_t), file_name="Informe_Fiscal_2026.pdf", key="tech_pdf", use_container_width=True)
 
 with tab2:
-    st.markdown("## 🚀 Tu Plan de Acción para 2026")
+    st.markdown("### 🎯 Tu Hoja de Ruta Personalizada")
     
+    # Resumen de situación actual en columnas
+    c1, c2, c3 = st.columns(3)
+    c1.markdown(f'<div class="stat-box">Aportado hoy<br><b>{ya_aportado:,.2f} €</b></div>', unsafe_allow_html=True)
+    c2.markdown(f'<div class="stat-box">Objetivo<br><b>{max_p:,.2f} €</b></div>', unsafe_allow_html=True)
+    c3.markdown(f'<div class="stat-box">Pendiente<br><b>{max_p - ya_aportado:,.2f} €</b></div>', unsafe_allow_html=True)
+    
+    st.markdown("---")
+
     if ya_aportado + (c_m * meses_restantes) >= max_p:
-        st.success("✅ **PLANIFICACIÓN COMPLETA:** Con tu cuota actual de " + str(c_m) + " €/mes alcanzarás el límite legal a final de año.")
+        st.balloons()
         st.markdown(f"""
-            <div class="option-card" style="border-left-color: #10B981;">
-                <h3 style="color: #065f46; margin-top:0;">ESTADO: OBJETIVO CUBIERTO</h3>
-                <p style="color: #065f46;">No necesitas realizar ajustes ni aportaciones extraordinarias para agotar el beneficio fiscal.</p>
+            <div class="option-card" style="border-left-color: #10B981; background-color: #f0fdf4;">
+                <h3 style="color: #065f46; margin-top:0;">✅ ¡OBJETIVO EN CURSO!</h3>
+                <p style="color: #065f46; font-size: 1.1em;">Con tu cuota actual de <b>{c_m} €/mes</b> alcanzarás el límite legal sin hacer nada más.</p>
+                <p style="color: #374151; font-size: 0.9em;">No necesitas realizar ajustes ni aportaciones extraordinarias para agotar el beneficio fiscal.</p>
             </div>
         """, unsafe_allow_html=True)
     else:
-        color_card = "#166534" if diferencia_mensual >= 0 else "#991b1b"
+        color_card = "#1e40af" # Azul profesional
         prefijo = "+" if diferencia_mensual >= 0 else ""
+        
         st.markdown(f"""
             <div class="option-card" style="border-left-color: {color_card};">
-                <h3 style="color: {color_card}; margin-top:0;">OPCIÓN RECOMENDADA: Ajuste de Cuota Mensual</h3>
-                <h2 style="color: {color_card};">{nueva_cuota_total:,.2f} €/mes</h2>
-                <p style="color: {color_card}; font-weight: bold; margin-bottom: 5px;">({prefijo}{diferencia_mensual:,.2f} € sobre tu cuota actual de {c_m:,.2f} €)</p>
-                <p style="font-size: 0.85em; color: #4b5563;">Este ajuste permite agotar el límite de <b>{max_p:,.2f} €</b> de forma prorrateada en los <b>{meses_restantes} meses</b> que quedan del año.</p>
-                <p style="font-size: 0.9em; color: #6b7280; margin-top: 10px; border-top: 1px solid #f3f4f6; padding-top: 10px;">Como alternativa, si deseas mantener tu cuota de {c_m:,.2f} €/mes, puedes realizar hoy una única aportación extraordinaria de <b>{aportacion_extraordinaria_neta:,.2f} €</b> para alcanzar el límite máximo.</p>
+                <p style="text-transform: uppercase; font-weight: bold; color: {color_card}; margin-bottom: 10px; font-size: 0.8em;">ESTRATEGIA RECOMENDADA</p>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <h3 style="margin:0; color: #1f2937;">Ajuste de Cuota Mensual</h3>
+                        <h1 style="color: {color_card}; margin: 5px 0;">{nueva_cuota_total:,.2f} €<span style="font-size: 0.4em; color: #6b7280;"> / mes</span></h1>
+                    </div>
+                    <div style="text-align: right; background: #eff6ff; padding: 10px 20px; border-radius: 10px;">
+                        <span style="font-size: 0.8em; color: #1e40af;">INCREMENTO</span><br>
+                        <b style="font-size: 1.2em; color: #1e40af;">{prefijo}{diferencia_mensual:,.2f} €</b>
+                    </div>
+                </div>
+                <p style="font-size: 0.9em; color: #4b5563; margin-top: 15px; line-height: 1.5;">
+                    <span class="step-number">1</span> Prorratea el beneficio en los <b>{meses_restantes} meses</b> que quedan del año.<br><br>
+                    <span class="step-number">2</span> <b>Alternativa:</b> Si prefieres no tocar tu cuota mensual de {c_m:,.2f} €, realiza una única aportación de <b>{aportacion_extraordinaria_neta:,.2f} €</b> antes del 31 de diciembre.
+                </p>
             </div>
         """, unsafe_allow_html=True)
 
+    st.markdown("<br>", unsafe_allow_html=True)
     # El PDF se genera con la alternativa calculada
     pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes)
-    st.download_button("🚀 Descargar Hoja de Ruta", data=bytes(pdf_v), file_name="Plan_Accion_2026.pdf", key="plan_pdf", use_container_width=True, type="primary")
+    st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=bytes(pdf_v), file_name="Plan_Accion_2026.pdf", key="plan_pdf", use_container_width=True, type="primary")
