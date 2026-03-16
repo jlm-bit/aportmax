@@ -65,6 +65,18 @@ st.markdown("""
             background: white; border-radius: 15px; padding: 25px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;
         }
+        
+        /* FORZADO DE COLOR AZUL PARA BOTONES PRIMARY */
+        div.stButton > button[kind="primary"], div.stDownloadButton > button[kind="primary"] {
+            background-color: #3b82f6 !important;
+            color: white !important;
+            border: none !important;
+        }
+        a[data-testid="stBaseLinkButton-primary"] {
+            background-color: #3b82f6 !important;
+            color: white !important;
+            border: none !important;
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -97,7 +109,7 @@ def generar_pdf_tecnico(empresa_total, max_p, inversion_t, ahorro, esfuerzo, sb,
         pdf.cell(140, 6, label, border='B' if i < 5 else 0)
         pdf.cell(0, 6, val, border='B' if i < 5 else 0, align='R', ln=True)
     
-    # Tabla Fiscal (Usando "EUR" en lugar de símbolo)
+    # Tabla Fiscal
     pdf.ln(5)
     pdf.set_font("helvetica", 'B', 9); pdf.set_fill_color(245, 247, 250)
     pdf.cell(0, 8, " 2. TRAMOS IRPF APLICADOS (CATALUNYA 2026)", fill=True, ln=True); pdf.ln(2)
@@ -249,7 +261,7 @@ with tab2:
     else:
         st.markdown(f"""
             <div class="plan-box" style="border-left: 10px solid #1e40af;">
-                <div class="step-pill" style="background: #1e40af; color: white;">OPCIÓN 1 (RECOMENDADA): INCREMENTO DE LA APORTACIÓN MENSUAL</div>
+                <div class="step-pill" style="background: #1e40af; color: white;">OPCIÓN 1 (RECOMENDADA): INCREMENTO DE TU APORTACIÓN MENSUAL AL PLAN DE PENSIONES</div>
                 <div style="margin: 15px 0;">
                     <p style="margin:0; color: #64748b; font-size: 0.9rem; font-weight: bold;">SUBE TU CUOTA EN:</p>
                     <h1 style="color: #1e40af; margin:0; font-size: 1.9rem;">+{diferencia_mensual:,.2f} €<span style="font-size: 1.4rem; color: #64748b;"> / mes</span></h1>
@@ -305,4 +317,11 @@ with tab2:
 
     st.markdown("<br>", unsafe_allow_html=True)
     pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes, ya_aportado)
-    st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=bytes(pdf_v), file_name="Plan_Accion.pdf", key="plan_pdf_final", use_container_width=True, type="primary")
+    st.download_button(
+        "🚀 DESCARGAR HOJA DE RUTA (PDF)", 
+        data=bytes(pdf_v), 
+        file_name="Plan_Accion.pdf", 
+        key="plan_pdf_final", 
+        use_container_width=True, 
+        type="primary"
+    )
