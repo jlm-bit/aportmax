@@ -1,6 +1,7 @@
 import streamlit as st
 from fpdf import FPDF
 import datetime
+import plotly.graph_objects as go
 
 # --- 1. MOTOR FISCAL CATALUÑA 2026 ---
 def calcular_irpf_cat(base):
@@ -27,10 +28,7 @@ def calcular_max_personal_adicional(e, salario):
     else: return e
 
 # --- 2. CONFIGURACIÓN Y ESTILO ---
-st.set_page_config(page_title="AportaMax 2026", layout="centered", page_icon="📈")
-
-if 'paso' not in st.session_state:
-    st.session_state.paso = 1
+st.set_page_config(page_title="AportaMax 2026", layout="wide", page_icon="📈")
 
 st.markdown("""
     <style>
@@ -42,26 +40,22 @@ st.markdown("""
             padding: 20px; border-radius: 15px; text-align: center;
             border: 1px solid #e2e8f0; margin-bottom: 10px; width: 100%;
         }
-        .stButton button { width: 100%; border-radius: 12px; height: 3.5em; font-weight: bold; margin-top: 10px;}
-        .info-box-dark { 
-            background-color: #1e293b; 
-            color: #f8fafc; 
-            padding: 15px; 
-            border-radius: 10px; 
-            border-left: 5px solid #3b82f6; 
-            margin-bottom: 20px; 
-            font-size: 0.9em; 
+        .option-card {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 8px solid #3b82f6;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
     </style>
 """, unsafe_allow_html=True)
 
-# --- 3. FUNCIONES PDF ---
+# --- 3. FUNCIONES PDF (CONTENIDO INTACTO) ---
 @st.cache_data
-def generar_pdf_tecnico(empresa_total, max_p, inversion_t, ahorro, esfuerzo, sb, ss, gastos, base_pre, eficiencia, marginal):
+def generar_pdf_tecnico(empresa_total, max_p, inversion_t, ahorro, esfuerzo, sb, ss, gastos, base_pre, eficiencia):
     pdf = FPDF()
     pdf.add_page()
-    
-    # Encabezado Minimalista
     pdf.set_fill_color(30, 58, 138)
     pdf.rect(0, 0, 210, 30, 'F')
     pdf.set_text_color(255, 255, 255)
@@ -71,17 +65,13 @@ def generar_pdf_tecnico(empresa_total, max_p, inversion_t, ahorro, esfuerzo, sb,
     pdf.set_font("helvetica", '', 9)
     pdf.set_xy(10, 16)
     pdf.cell(0, 10, f"Ejercicio Fiscal 2026 | Catalunya", align='L')
-    
     pdf.set_text_color(40, 40, 40)
     pdf.ln(20)
-
-    # 1. RESUMEN EJECUTIVO
     pdf.set_font("helvetica", 'B', 10)
     pdf.set_fill_color(245, 247, 250)
     pdf.cell(0, 8, " 1. RESUMEN EJECUTIVO", fill=True, ln=True)
     pdf.ln(2)
     pdf.set_font("helvetica", size=8.5)
-    
     items_inv = [
         ("Aportación Empresarial Anual", f"{empresa_total:,.2f} EUR"),
         ("APORTACION PERSONAL RECOMENDADA", f"{max_p:,.2f} EUR"),
@@ -94,39 +84,25 @@ def generar_pdf_tecnico(empresa_total, max_p, inversion_t, ahorro, esfuerzo, sb,
         pdf.set_font("helvetica", 'B' if "PERSONAL" in label or "EFICIENCIA" in label else '', 8.5)
         pdf.cell(140, 6, label, border='B' if i < 5 else 0)
         pdf.cell(0, 6, val, border='B' if i < 5 else 0, align='R', ln=True)
-    
-    # --- GRÁFICO VISUAL (Simulado con rectángulos) ---
     pdf.ln(3)
     pdf.set_font("helvetica", 'B', 8)
     pdf.cell(0, 5, "DESGLOSE VISUAL DE LA APORTACIÓN PERSONAL:", ln=True)
-    
-    # Fondo de la barra (Total aportación personal)
     ancho_max = 100 
     pdf.set_fill_color(220, 220, 220)
     pdf.rect(10, pdf.get_y() + 2, ancho_max, 6, 'F')
-    
-    # Parte del ahorro (Eficiencia)
     ancho_ahorro = (ahorro / max_p) * ancho_max if max_p > 0 else 0
-    pdf.set_fill_color(34, 197, 94) # Verde
+    pdf.set_fill_color(34, 197, 94)
     pdf.rect(10, pdf.get_y() + 2, ancho_ahorro, 6, 'F')
-    
-    # Leyenda del gráfico
     pdf.set_xy(10, pdf.get_y() + 9)
     pdf.set_font("helvetica", '', 7)
     pdf.set_text_color(0, 100, 0)
     pdf.cell(40, 5, f"Ahorro Fiscal ({eficiencia:.1f}%)", align='L')
     pdf.set_text_color(100, 100, 100)
     pdf.cell(60, 5, f"Esfuerzo Neto ({100-eficiencia:.1f}%)", align='R', ln=True)
-    pdf.set_text_color(40, 40, 40)
-    pdf.ln(5)
-
-    # 2. ANÁLISIS DE LA BASE IMPONIBLE
-    pdf.set_font("helvetica", 'B', 9)
-    pdf.set_fill_color(245, 247, 250)
-    pdf.cell(0, 8, " 2. CÁLCULO TÉCNICO DE LA BASE LIQUIDABLE", fill=True, ln=True)
-    pdf.ln(2)
+    pdf.set_text_color(40, 40, 40); pdf.ln(5)
+    pdf.set_font("helvetica", 'B', 9); pdf.set_fill_color(245, 247, 250)
+    pdf.cell(0, 8, " 2. CÁLCULO TÉCNICO DE LA BASE LIQUIDABLE", fill=True, ln=True); pdf.ln(2)
     pdf.set_font("helvetica", size=7)
-    
     items_tec = [
         ("Rendimientos Íntegros del Trabajo (Sueldo Bruto)", f"{sb:,.2f} EUR"),
         ("Gastos deducibles (Seguridad Social estimada)", f"-{ss:,.2f} EUR"),
@@ -140,20 +116,12 @@ def generar_pdf_tecnico(empresa_total, max_p, inversion_t, ahorro, esfuerzo, sb,
         pdf.cell(140, 6, label, border='B' if i < 5 else 0)
         pdf.cell(0, 6, val, border='B' if i < 5 else 0, align='R', ln=True)
     pdf.ln(3)
-
-    # 3. ESCALA AUTONÓMICA (CATALUÑA)
-    pdf.set_font("helvetica", 'B', 9)
-    pdf.set_fill_color(245, 247, 250)
-    pdf.cell(0, 8, " 3. ESCALA DE GRAVAMEN APLICABLE (CATALUÑA 2026)", fill=True, ln=True)
-    pdf.ln(2)
-    
-    pdf.set_font("helvetica", 'B', 6.5)
-    pdf.set_fill_color(230, 230, 230)
+    pdf.set_font("helvetica", 'B', 9); pdf.set_fill_color(245, 247, 250)
+    pdf.cell(0, 8, " 3. ESCALA DE GRAVAMEN APLICABLE (CATALUÑA 2026)", fill=True, ln=True); pdf.ln(2)
+    pdf.set_font("helvetica", 'B', 6.5); pdf.set_fill_color(230, 230, 230)
     pdf.cell(60, 6, "Desde Base (EUR)", border=1, align='C', fill=True)
     pdf.cell(60, 6, "Hasta Base (EUR)", border=1, align='C', fill=True)
     pdf.cell(0, 6, "Tipo Marginal (%)", border=1, ln=True, align='C', fill=True)
-    
-    pdf.set_font("helvetica", size=6.5)
     tramos_cat = [
         ("0,00", "12.450,00", "19,00%"), ("12.450,00", "17.707,00", "24,00%"),
         ("17.707,00", "20.200,00", "26,00%"), ("20.200,00", "33.007,00", "29,00%"),
@@ -166,26 +134,15 @@ def generar_pdf_tecnico(empresa_total, max_p, inversion_t, ahorro, esfuerzo, sb,
         pdf.cell(60, 4.5, b1, border=1, align='R')
         pdf.cell(60, 4.5, b2, border=1, align='R')
         pdf.cell(0, 4.5, t, border=1, ln=True, align='C')
-
-    # 4. CONSIDERACIONES LEGALES
-    pdf.ln(3)
-    pdf.set_font("helvetica", 'B', 8)
-    pdf.cell(0, 5, "ANEXO TÉCNICO Y LIMITACIONES LEGALES", ln=True)
-    pdf.set_font("helvetica", size=7)
-    pdf.set_text_color(80, 80, 80)
+    pdf.ln(3); pdf.set_font("helvetica", 'B', 8); pdf.cell(0, 5, "ANEXO TÉCNICO Y LIMITACIONES LEGALES", ln=True)
+    pdf.set_font("helvetica", size=7); pdf.set_text_color(80, 80, 80)
     legal_text = (
-        "- Límite de Aportación: El límite financiero anual conjunto para planes de pensiones es de 1,500 EUR, "
-        "pudiendo incrementarse en 8,500 EUR adicionales por contribuciones de empresa y aportaciones del trabajador.\n"
-        "- Coeficiente Personal: La aportación del empleado está sujeta a los multiplicadores legales basados en la contribución "
-        "empresarial y el rango salarial (Ley 12/2022).\n"
+        "- Límite de Aportación: El límite financiero anual conjunto para planes de pensiones es de 1,500 EUR, pudiendo incrementarse en 8,500 EUR adicionales por contribuciones de empresa.\n"
+        "- Coeficiente Personal: La aportación del empleado está sujeta a los multiplicadores legales basados en la contribución empresarial (Ley 12/2022).\n"
         "- Rendimientos: Los cálculos se basan en la normativa fiscal prevista para 2026 en la Comunidad Autónoma de Cataluña."
     )
     pdf.multi_cell(0, 3.5, legal_text)
-    
-    pdf.set_y(-22)
-    pdf.set_font("helvetica", 'I', 6)
-    pdf.cell(0, 2, "Este documento es una simulación informativa. No sustituye la consulta con un profesional fiscal.", align='C')
-    
+    pdf.set_y(-22); pdf.set_font("helvetica", 'I', 6); pdf.cell(0, 2, "Este documento es una simulación informativa. No sustituye la consulta con un profesional fiscal.", align='C')
     return pdf.output()
 
 @st.cache_data
@@ -198,104 +155,104 @@ def generar_pdf_visual_v2(max_p, ahorro, inversion, extra, cuota_r, meses):
     pdf.set_xy(30, 62); pdf.set_font("helvetica", 'B', 14); pdf.set_text_color(0, 0, 0); pdf.cell(0, 10, "OBJETIVO DE APORTACION PERSONAL:", ln=True)
     pdf.set_xy(30, 75); pdf.set_font("helvetica", 'B', 32); pdf.set_text_color(30, 58, 138); pdf.cell(0, 15, f"{max_p:,.2f} EUR", ln=True)
     pdf.set_xy(25, 115); pdf.set_font("helvetica", 'B', 18); pdf.set_text_color(0, 0, 0); pdf.cell(0, 10, "SUGERENCIAS DE ACTUACIÓN:", ln=True)
-    pasos = [(f"Opcion 1: Aportacion Extra de {extra:,.2f} EUR", "Realizar una aportacion única y seguir con tus aportaciones mensual actuales."), (f"Opcion 2: Incrementar la aportación periódica mensual hasta alcanzar {cuota_r:,.2f} EUR", "Incrementa ya tu aportación mensual este mes y los que siguen."), (f"En cualquier caso, recuperarás {ahorro:,.2f} EUR en tu IRPF del ejercicio 2026.", "Dinero que dejas de pagar en impuestos y que puedes dedicar a tus necesidades actuales, ocio, o en lo que quieras.")]
+    pasos = [
+        (f"Opcion 1: Aportacion Extra de {extra:,.2f} EUR", "Realizar una aportacion única y seguir con tus aportaciones mensual actuales."), 
+        (f"Opcion 2: Incrementar la aportación periódica mensual hasta alcanzar {cuota_r:,.2f} EUR", "Incrementa ya tu aportación mensual este mes y los que siguen."), 
+        (f"En cualquier caso, recuperarás {ahorro:,.2f} EUR en tu IRPF del ejercicio 2026.", "Dinero que dejas de pagar en impuestos y que puedes dedicar a tus necesidades actuales, ocio, o en lo que quieras.")
+    ]
     for titulo, sub in pasos:
         pdf.set_x(30); pdf.set_font("helvetica", 'B', 12); pdf.set_text_color(30, 58, 138); pdf.cell(0, 8, titulo, ln=True)
         pdf.set_x(35); pdf.set_font("helvetica", '', 11); pdf.set_text_color(60, 60, 60); pdf.multi_cell(0, 6, sub); pdf.ln(5)
     return pdf.output()
 
-# --- 4. RENDERIZADO ---
-st.markdown("""
-    <div class="main-header">
-        <h1 style='margin:0; font-size: 35px;'>📈 APORTAMAX 2026</h1>
-        <p style='margin:0; opacity: 0.9;'> La APP para calcular tu aportacion personal máxima al Plan de Pensiones de Empleo y obtener el máximo ahorro fiscal </p>
-    </div>
-""", unsafe_allow_html=True)
+# --- 4. SIDEBAR ---
+with st.sidebar:
+    st.header("⚙️ CONFIGURACIÓN")
+    with st.expander("👤 DATOS SALARIALES Y EMPRESA", expanded=True):
+        sb = st.number_input("Sueldo Bruto Anual (€)", value=60000.0, min_value=0.0, step=1000.0)
+        e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=0.0, min_value=0.0, max_value=833.33, step=25.0)
+        e_riesgo = st.number_input("Prima Anual Riesgo PPE (€)", value=0.0, min_value=0.0, max_value=10000.0, step=25.0)
+        emp_t = e_ahorro * 12 + e_riesgo
+        if emp_t > 10000.0:
+            st.error("La aportación de empresa no puede superar los 10.000€")
+            emp_t = 10000.0
 
-if st.session_state.paso == 1:
-    st.markdown("#### 📁 Tus Datos Personales (Paso 1/3)")
-    sb = st.number_input("Sueldo Bruto Anual (€)", value=60000.0, step=1000.0, min_value=0.0, help="Indica tu retribución bruta anual sin deducciones.")
-    st.markdown('<div class="info-box-dark"><b>Aportaciones de Empresa:</b> Son las contribuciones que tu empresa realiza a tu favor en el Plan de Pensiones de Empleo. Puedes consultar estos importes en tu <b>nómina mensual</b> (apartado de aportaciones sociales) o en el <b>extracto </b> de tu plan de pensiones proporcionado por la entidad gestora. Respecto a la prima anual, la mayoria de los PPE no tienen, y tambien puede aparecer en la nómina del mes en que se ha abonado la prima y en el extracto emitido por por la gestora, en todo caso consulta a RRHH.</div>', unsafe_allow_html=True)
-    e_ahorro = st.number_input("Aportación Mensual Empresa para la jubilación en el PPE (€)", value=0.0, step=25.0, min_value=0.0, max_value=833.33, help="Aportación que realiza tu empresa específicamente para jubilación.")
-    e_riesgo = st.number_input("Prima Anual de las coberturas de Fallecimiento/Invalidez dentro del PPE (€)", value=0.0, step=25.0, min_value=0.0, max_value=833.33, help="Aportación que realiza tu empresa para cubrir contingencias de riesgo. No es frecuente que los PPE lo contemplen, por tanto lo habitual es dejar este campo a cero.")
+    # Límite dinámico basado en ley
+    CUOTA_SS_PRE = min(sb, 5101.0 * 12) * 0.0635 
+    BASE_PRE_LIMIT = max(0.0, sb - CUOTA_SS_PRE - 2000.0)
+    MAX_P_LIMIT = max(0.0, min(calcular_max_personal_adicional(emp_t, sb) + 1500, 10000.0 - emp_t))
+    if (emp_t + MAX_P_LIMIT) > (BASE_PRE_LIMIT * 0.30): MAX_P_LIMIT = max(0.0, (BASE_PRE_LIMIT * 0.30) - emp_t)
+
+    with st.expander("📅 APORTACIONES REALIZADAS", expanded=True):
+        c_m = st.number_input("Aport. periódica mensual (€)", value=0.0, min_value=0.0, step=50.0)
+        e_y = st.number_input("Aport. Extras ya realizadas (€)", value=0.0, min_value=0.0, max_value=MAX_P_LIMIT, step=100.0)
+
+# --- 5. LÓGICA DE CÁLCULO ---
+meses_restantes = 10 
+meses_pasados = 12 - meses_restantes
+CUOTA_SS = min(sb, 5101.0 * 12) * 0.0635 
+base_pre = max(0.0, sb - CUOTA_SS - 2000.0)
+max_p = MAX_P_LIMIT
+
+ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
+eficiencia = (ahorro / max_p * 100) if max_p > 0 else 0
+esfuerzo_neto = max_p - ahorro
+
+# REVISIÓN LÓGICA PLAN DE ACCIÓN (Ajuste mensual futuro)
+ya_aportado = (c_m * meses_pasados) + e_y
+pendiente_para_limite = max(0.0, max_p - ya_aportado)
+nueva_cuota_total = pendiente_para_limite / meses_restantes if meses_restantes > 0 else 0
+diferencia_mensual = nueva_cuota_total - c_m
+
+# --- 6. RENDERIZADO PRINCIPAL ---
+st.markdown('<div class="main-header"><h1 style="margin:0;">📈 APORTAMAX 2026</h1></div>', unsafe_allow_html=True)
+
+tab1, tab2 = st.tabs(["1. Cálculo del Límite", "2. Plan de Acción"])
+
+with tab1:
+    col_left, col_right = st.columns([1, 1.2])
+    with col_left:
+        st.markdown(f"""
+            <div class="card" style="background-color: #1E3A8A; color: white;">
+                <p style="margin:0; opacity: 0.8;">MÁXIMA APORTACIÓN PERSONAL</p>
+                <h2 style="font-size: 32px; margin: 5px 0;">{max_p:,.2f} €</h2>
+            </div>
+            <div class="card" style="background-color: #F0FDF4; color: #166534;">
+                <p style="margin:0; opacity: 0.8;">AHORRO FISCAL (IRPF)</p>
+                <h2 style="font-size: 32px; margin: 5px 0;">{ahorro:,.2f} €</h2>
+                <p style="margin:0; font-weight: bold;">Tax Return: {eficiencia:.1f}%</p>
+            </div>
+        """, unsafe_allow_html=True)
+    with col_right:
+        fig = go.Figure(data=[go.Pie(labels=['Esfuerzo Neto', 'Ahorro Fiscal', 'Empresa'], values=[esfuerzo_neto, ahorro, emp_t], hole=.6, marker_colors=['#3B82F6', '#10B981', '#1E293B'])])
+        fig.update_layout(margin=dict(t=30, b=0, l=0, r=0), height=300, showlegend=True, legend=dict(orientation="h", y=-0.1))
+        st.plotly_chart(fig, use_container_width=True)
+    pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
+    st.download_button("📄 Descargar Informe Fiscal Detallado", data=bytes(pdf_t), file_name="Informe_Fiscal_2026.pdf", key="tech_pdf", use_container_width=True)
+
+with tab2:
+    st.markdown("## 🚀 Tu Plan de Acción para 2026")
     
-    suma_empresa = e_ahorro*12 + e_riesgo
-    if suma_empresa > 10000.0:
-        st.error("⚠️ La aportación total de la empresa (Jubilación + Riesgo) no puede superar los 10000 euros.")
-    
-    if suma_empresa > 4250.0:
-        st.warning("ℹ️ Advertencia: al superar la aportación total de la empresa los 4250 euros, tu aportación personal se ve limitada por efecto del límite conjunto de 10000 euros.")
+    if ya_aportado >= max_p:
+        st.warning(f"⚠️ **AVISO DE SOBREAPORTACIÓN:** Has alcanzado el límite con tu extra de {e_y:,.2f} € y las cuotas pasadas.")
+        st.markdown(f"""
+            <div class="option-card" style="border-left-color: #ef4444;">
+                <h3 style="color: #991b1b; margin-top:0;">AJUSTE NECESARIO</h3>
+                <h2 style="color: #991b1b;">0.00 €/mes</h2>
+                <p style="color: #991b1b; font-weight: bold;">(Reducción de {c_m:,.2f} € para evitar exceder el límite legal)</p>
+            </div>
+        """, unsafe_allow_html=True)
+    else:
+        color_card = "#166534" if diferencia_mensual >= 0 else "#991b1b"
+        prefijo = "+" if diferencia_mensual >= 0 else ""
+        st.markdown(f"""
+            <div class="option-card" style="border-left-color: {color_card};">
+                <h3 style="color: {color_card}; margin-top:0;">OPCIÓN RECOMENDADA: Ajuste de Cuota Mensual</h3>
+                <h2 style="color: {color_card};">{nueva_cuota_total:,.2f} €/mes</h2>
+                <p style="color: {color_card}; font-weight: bold; margin-bottom: 5px;">({prefijo}{diferencia_mensual:,.2f} € sobre tu cuota actual de {c_m:,.2f} €)</p>
+                <p style="font-size: 0.85em; color: #4b5563;">Este ajuste permite agotar el límite de <b>{max_p:,.2f} €</b> de forma prorrateada en los <b>{meses_restantes} meses</b> que quedan del año.</p>
+            </div>
+        """, unsafe_allow_html=True)
 
-    if st.button("SIGUIENTE: CALCULAR RESULTADOS ➡️", disabled=(suma_empresa > 10000.0)): 
-        st.session_state.sb = sb
-        st.session_state.empresa_total = suma_empresa
-        st.session_state.paso = 2
-        st.rerun()
-
-elif st.session_state.paso == 2:
-    sb = st.session_state.sb
-    emp_t = st.session_state.empresa_total
-    CUOTA_SS = min(sb, 5101 * 12) * 0.0635
-    base_pre = max(0.0, sb - CUOTA_SS - 2000.0)
-    max_p = max(0.0, min(calcular_max_personal_adicional(emp_t, sb) + 1500, 10000 - emp_t))
-    if (emp_t + max_p) > (base_pre * 0.30): max_p = max(0.0, (base_pre * 0.30) - emp_t)
-    ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
-    eficiencia = (ahorro / max_p * 100) if max_p > 0 else 0
-    
-    st.session_state.max_p, st.session_state.ahorro, st.session_state.inversion = max_p, ahorro, (emp_t + max_p)
-    st.session_state.cuota_ss, st.session_state.base_pre, st.session_state.eficiencia = CUOTA_SS, base_pre, eficiencia
-
-    st.markdown("#### 📁 Aportación Máxima (recomendada) y Fiscalidad (Paso 2/3)")
-    st.markdown(f"""
-        <div class="card" style="background-color: #1E3A8A; color: white;">
-            <p style="margin:0;">MÁXIMA APORTACIÓN PERSONAL POSIBLE</p>
-            <h2 style="font-size: 32px; margin: 10px 0;">{max_p:,.2f} €</h2>
-        </div>
-        <div class="card" style="background-color: #F0FDF4; color: #166534;">
-            <p style="margin:0;">AHORRO FISCAL ESTIMADO (IRPF)</p>
-            <h2 style="font-size: 32px; margin: 10px 0;">{ahorro:,.2f} €</h2>
-            <p style="margin:0; font-size: 1.0em; font-weight: bold;">EFICIENCIA FISCAL (Tramos IRPF Catalunya): {eficiencia:.1f}%</p>
-        </div>
-        <div class="card" style="background-color: #1e293b; color: #10B981;">
-            <p style="margin:0;">INVERSIÓN TOTAL (EMPRESA + TÚ)</p>
-            <h2 style="font-size: 32px; margin: 10px 0;">{(emp_t + max_p):,.2f} €</h2>
-        </div>
-    """, unsafe_allow_html=True)
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("⬅️ ATRÁS"): st.session_state.paso = 1; st.rerun()
-    with col2:
-        if st.button("PLANIFICAR RUTA ➡️", type="primary"): st.session_state.paso = 3; st.rerun()
-
-elif st.session_state.paso == 3:
-    st.markdown("#### 📁 Tu Planificacion (Paso 3/3) ")
-    st.subheader("Indica aqui lo que has hecho ya este año")
-    
-    mes_actual = datetime.datetime.now().month
-    meses_restantes = max(1, 12 - mes_actual)
-    
-    c_m = st.number_input("Aportación mensual actual (€)", value=0.0, step=100.0, min_value=0.0)
-    e_y = st.number_input("Aportaciones extras ya realizadas este año (€)", value=0.0, step=100.0, min_value=0.0)
-    
-    total_anual_previsto = (c_m * 12) + e_y
-    extra_necesario = max(0.0, st.session_state.max_p - total_anual_previsto)
-    nueva_cuota_total = c_m + (extra_necesario / meses_restantes) if extra_necesario > 0 else max(0.0, (st.session_state.max_p - e_y) / 12)
-
-    if extra_necesario <= 0:
-        st.success("✅ ¡Felicidades! Con tus cuotas actuales ya alcanzan el objetivo fiscal para este año.")
-
-    st.markdown("### Dos caminos para tu tranquilidad futura")
-    colA, colB = st.columns(2)
-    with colA:
-        st.info("**OPCIÓN A: Aportación Única**")
-        st.metric("Realizar un pago de", f"{extra_necesario:,.2f} €")
-    with colB:
-        st.success("**OPCIÓN B: Ajuste Mensual**")
-        st.metric(f"Subir cuota a (durante {meses_restantes} meses)" if extra_necesario > 0 else "Ajustar cuota a", f"{nueva_cuota_total:,.2f} €/mes")
-
-    st.divider()
-    pdf_t = generar_pdf_tecnico(st.session_state.empresa_total, st.session_state.max_p, st.session_state.inversion, st.session_state.ahorro, (st.session_state.max_p - st.session_state.ahorro), st.session_state.sb, st.session_state.cuota_ss, 2000.0, st.session_state.base_pre, st.session_state.eficiencia, 40.0)
-    pdf_v = generar_pdf_visual_v2(st.session_state.max_p, st.session_state.ahorro, st.session_state.inversion, extra_necesario, nueva_cuota_total, meses_restantes)
-    st.download_button("📄 Descargar Informe Técnico", data=bytes(pdf_t), file_name="Tecnico_AportaMax.pdf", use_container_width=True)
-    st.download_button("🚀 Descargar Plan de Acción (CTA)", data=bytes(pdf_v), file_name="Plan_Accion.pdf", use_container_width=True)
-    if st.button("⬅️ VOLVER A RESULTADOS"): st.session_state.paso = 2; st.rerun()
+    pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), 0, nueva_cuota_total, meses_restantes)
+    st.download_button("🚀 Descargar Hoja de Ruta", data=bytes(pdf_v), file_name="Plan_Accion_2026.pdf", key="plan_pdf", use_container_width=True, type="primary")
