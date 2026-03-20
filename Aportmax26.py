@@ -230,7 +230,7 @@ with tab1:
         st.plotly_chart(fig, use_container_width=True)
     
     pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
-    st.download_button("📄 Informe Fiscal Detallado", data=bytes(pdf_t), file_name="Informe_Fiscal.pdf", use_container_width=True)
+    st.download_button("📄 Informe Fiscal Detallado", data=pdf_t.encode('latin-1'), file_name="Informe_Fiscal.pdf", use_container_width=True)
 
 with tab2:
     st.markdown("### 🎯 Plan Estratégico Personalizado")
