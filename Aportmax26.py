@@ -319,7 +319,7 @@ with tab2:
     st.markdown("<br>", unsafe_allow_html=True)
     pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes, ya_aportado)
     st.download_button(
-        "🚀 DESCARGAR HOJA DE RUTA (PDF)", 
+        st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v.encode('latin-1'), file_name="Plan_Accion.pdf", key="plan_pdf_final", use_container_width=True, type="primary")
         data=bytes(pdf_v), 
         file_name="Plan_Accion.pdf", 
         key="plan_pdf_final", 
