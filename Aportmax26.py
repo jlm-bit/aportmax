@@ -189,7 +189,8 @@ with st.sidebar:
         e_y = st.number_input("Aport. Extras ya realizadas (€)", value=0.0, max_value=MAX_P_LIMIT, step=100.0)
 
 # --- 5. LÓGICA DE CÁLCULO ---
-meses_restantes = 10 
+hoy = datetime.date.today()
+meses_restantes = 12 - hoy.month + 1 # Cálculo automático de meses restantes incluyendo el actual
 meses_pasados = 12 - meses_restantes
 CUOTA_SS = min(sb, 5101.0 * 12) * 0.0635 
 base_pre = max(0.0, sb - CUOTA_SS - 2000.0)
