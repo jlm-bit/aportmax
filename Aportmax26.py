@@ -357,27 +357,29 @@ with tab2:
 with tab3:
     st.markdown("### 🔮 Simulador Dinámico de Jubilación")
     
-    # 1. Bloque de Entradas de Datos (Diseño Compacto)
+    # 1. Bloque de Entradas de Datos con Diseño Mejorado
     col_input1, col_input2 = st.columns(2)
     with col_input1:
         edad_act = st.number_input("Tu Edad Actual", value=40, min_value=18, max_value=62)
-        saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=0.0, step=1000.0, min_value=0.0)
+        saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=10000.0, step=1000.0, min_value=0.0)
     
     with col_input2:
-        # CAMBIO DE FORMATO: Selector visual de edad de jubilación
-        edad_jub = st.select_slider(
+        # MEJORA VISUAL: Selector de botones horizontales para la jubilación
+        edad_jub = st.radio(
             "Selecciona tu edad prevista de jubilación",
             options=[63, 64, 65, 66, 67],
-            value=67
+            index=4, # Por defecto 67
+            horizontal=True,
+            help="La edad legal ordinaria es a los 67 años, pero puedes simular jubilaciones anticipadas."
         )
         rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 5.0)
     
-    # Parámetros internos
+    # --- Lógica de Cálculo ---
     rent_decimal = rent_pct / 100
     crecimiento_anual = 0.0 
     años_restantes = edad_jub - edad_act
     
-    # 2. Simulación paso a paso
+    # Simulación año a año
     edades = np.arange(edad_act, edad_jub + 1)
     cap_acumulado = []
     aport_acumuladas = []
@@ -398,7 +400,7 @@ with tab3:
         suma_aportada += cuota_año_actual
         cuota_año_actual *= (1 + crecimiento_anual)
 
-    # 3. Gráfico de Área Apilada
+    # 2. Gráfico de Área Apilada
     fig_j = go.Figure()
 
     fig_j.add_trace(go.Scatter(
@@ -409,7 +411,7 @@ with tab3:
 
     fig_j.add_trace(go.Scatter(
         x=edades, y=intereses_acumulados,
-        mode='lines', name='Intereses Acumulados',
+        mode='lines', name='Intereses Ganados',
         stackgroup='one', fillcolor='rgba(16, 185, 129, 0.6)', line=dict(width=0)
     ))
 
@@ -419,12 +421,13 @@ with tab3:
         yaxis_title="Capital acumulado (EUR)",
         hovermode='x unified',
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-        height=450
+        height=450,
+        margin=dict(l=0, r=0, t=60, b=0)
     )
 
     st.plotly_chart(fig_j, use_container_width=True)
 
-    # 4. Métricas de Resultados
+    # 3. Métricas de Resultados
     total_final = cap_acumulado[-1]
     aportado_final = aport_acumuladas[-1]
     interes_final = intereses_acumulados[-1]
@@ -432,6 +435,10 @@ with tab3:
     c1, c2, c3 = st.columns(3)
     c1.metric("Aportación Total", f"{aportado_final:,.0f} EUR")
     c2.metric("Intereses Totales", f"{interes_final:,.0f} EUR")
-    c3.metric(f"Fondo a los {edad_jub} años", f"{total_final:,.0f} EUR")
+    c3.metric(f"Fondo Final ({edad_jub} años)", f"{total_final:,.0f} EUR")
 
-    st.success(f"🎯 Con la jubilación a los **{edad_jub} años**, el interés compuesto te aporta un extra de **{interes_final:,.0f} EUR**.")
+    # Alerta visual de la "pérdida" por jubilación anticipada si elige menos de 67
+    if edad_jub < 67:
+        st.warning(f"⚠️ Al jubilarte a los {edad_jub} años, dejas de capitalizar {67 - edad_jub} años de interés compuesto.")
+    else:
+        st.success(f"🎯 Escenario optimizado: Jubilación a los {edad_jub} años con el máximo aprovechamiento del tiempo.")
