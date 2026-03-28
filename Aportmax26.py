@@ -354,43 +354,65 @@ with tab2:
     pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes, ya_aportado)
     st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
 
-with tab3:
-    st.markdown("### 🔮 Capitalización a la Jubilación (67 años)")
+with t3:
+    st.markdown("### 🔮 El Poder del Interés Compuesto")
     
-    # 1. Slider de rentabilidad (usando punto decimal para Python)
-    rent_pct = st.slider("Rentabilidad anual estimada (%)", 1.0, 10.0, 5.0) 
+    # 1. Configuración de años y rentabilidad
+    años_restantes = 67 - edad
+    rent_pct = st.slider("Rentabilidad anual estimada (%)", 1.0, 10.0, 7.0) 
     rent_decimal = rent_pct / 100
     
-    # 2. Cálculo de años y capital final
-    # (Asegúrate de que 'edad' y 'total_inv' estén definidos antes en tu código)
-    años_restantes = 67 - edad
-    cap_final = total_inv * ((1 + rent_decimal) ** años_restantes)
+    # 2. Cálculos de capitalización
+    # Inversión inicial (lo que se pone este año 2026)
+    principal = total_inv 
     
-    # 3. Mensaje de éxito
-    st.success(f"La inversión total de este año ({total_inv:,.2f} EUR) se convertirá en **{cap_final:,.2f} EUR** al jubilarte al {rent_pct}% anual.")
+    # Generamos los datos año a año
+    edades = np.arange(edad, 68)
+    años_pasados = np.arange(0, len(edades))
+    
+    # Capital total en cada año: Principal * (1 + r)^n
+    capital_total = principal * ((1 + rent_decimal) ** años_pasados)
+    intereses_acumulados = capital_total - principal
+    solo_principal = np.full(len(edades), principal)
 
-    # 4. Configuración del gráfico de evolución
-    x_graf = np.arange(0, años_restantes + 1)
-    y_graf = total_inv * ((1 + rent_decimal) ** x_graf)
-    
-    fig_j = go.Figure(data=go.Scatter(
-        x=edad + x_graf, 
-        y=y_graf, 
-        fill='tozeroy', 
-        line_color='#3B82F6',
-        hovertemplate='Edad: %{x}<br>Capital: %{y:,.2f} EUR'
+    # 3. Gráfico Desglosado (Área Apilada)
+    fig_j = go.Figure()
+
+    # Capa 1: El dinero que pusiste originalmente
+    fig_j.add_trace(go.Scatter(
+        x=edades, y=solo_principal,
+        mode='lines',
+        name='Capital Aportado (2026)',
+        stackgroup='one',
+        fillcolor='rgba(30, 58, 138, 0.5)', # Azul oscuro
+        line=dict(width=0.5, color='rgb(30, 58, 138)')
     ))
-    
+
+    # Capa 2: Los intereses que crecen sobre el dinero
+    fig_j.add_trace(go.Scatter(
+        x=edades, y=intereses_acumulados,
+        mode='lines',
+        name='Intereses Ganados',
+        stackgroup='one',
+        fillcolor='rgba(16, 185, 129, 0.5)', # Verde
+        line=dict(width=0.5, color='rgb(16, 185, 129)')
+    ))
+
     fig_j.update_layout(
-        title=f"Crecimiento estimado al {rent_pct}% anual",
-        xaxis_title="Edad",
-        yaxis_title="Capital Acumulado (EUR)",
-        height=400,
-        margin=dict(l=0, r=0, t=40, b=0)
+        title=f"Proyección a {años_restantes} años (Jubilación a los 67)",
+        xaxis_title="Tu Edad",
+        yaxis_title="Valor del Fondo (EUR)",
+        hovermode='x unicode',
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        height=450
     )
-    
-    # 5. Renderizado del gráfico (aquí es donde va el use_container_width)
+
     st.plotly_chart(fig_j, use_container_width=True)
-    
-    # 6. Nota informativa final (ahora limpia de errores)
-    st.info("⚠️ **Nota:** Este cálculo solo proyecta la aportación de este año 2026. No incluye aportaciones futuras.")
+
+    # 4. Resumen de beneficios en tarjetas
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Inversión Hoy", f"{principal:,.2f} EUR")
+    c2.metric("Intereses Totales", f"{intereses_acumulados[-1]:,.2f} EUR", delta=f"{rent_pct}% anual")
+    c3.metric("Capital Final", f"{capital_total[-1]:,.2f} EUR")
+
+    st.info(f"💡 **Dato clave:** Al jubilarte, el **{(intereses_acumulados[-1]/capital_total[-1])*100:.1f}%** de tu dinero serán intereses generados por no haber tocado la inversión.")
