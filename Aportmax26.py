@@ -368,7 +368,7 @@ import io
 # ------------------------------------------------------------------------
 
 with tab3:
-    st.markdown("### 🔮 Comparativa Final: Plan Optimizado vs. Solo Empresa")
+    st.markdown("### 🔮 SIMULADOR JUBILACION: Impacto de aportaciones voluntarias")
     
     # 1. Entradas de Datos con opción de aportación flexible
     col_in1, col_in2 = st.columns(2)
@@ -497,8 +497,8 @@ with tab3:
     # Fila 1: Comparativa de Capitales ("El Botín")
     st.markdown("#### 💰 Comparativa de Capitales")
     c1, c2, c3 = st.columns(3)
-    c1.metric("Capital TOTAL", f"{cap_a:,.0f} €")
-    c2.metric("Capital SOLO EMPRESA", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
+    c1.metric("Capital TOTAL (EMPRESA + EMPLEADO)", f"{cap_a:,.0f} €")
+    c2.metric("Capital (SOLO EMPRESA)", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
     c3.metric("Diferencia de Ahorro", f"{dif_cap:,.0f} €", help="Dinero extra que tendrías por mantener tu aportación elegida.")
 
     # Fila 2: Comparativa de Rentas ("El Sueldo Mensual")
