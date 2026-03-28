@@ -143,25 +143,66 @@ def generar_pdf_tecnico(empresa_total, max_p, inversion_t, ahorro, esfuerzo, sb,
 def generar_pdf_visual_v2(max_p, ahorro, inversion, extra, cuota_r, meses, ya_aportado):
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_fill_color(30, 58, 138); pdf.rect(0, 0, 15, 297, 'F')
-    pdf.set_xy(25, 20)
-    pdf.set_font("helvetica", 'B', 24); pdf.set_text_color(30, 58, 138); pdf.cell(0, 10, "TU HOJA DE RUTA 2026", ln=True)
     
-    pdf.set_fill_color(240, 248, 255); pdf.rect(25, 45, 165, 55, 'F')
-    pdf.set_xy(30, 52); pdf.set_font("helvetica", 'B', 12); pdf.set_text_color(0, 0, 0); pdf.cell(0, 10, "OBJETIVO DE APORTACION PERSONAL TOTAL:", ln=True)
-    pdf.set_xy(30, 65); pdf.set_font("helvetica", 'B', 28); pdf.set_text_color(30, 58, 138); pdf.cell(0, 15, f"{max_p:,.2f} EUR", ln=True)
-    pdf.set_xy(30, 82); pdf.set_font("helvetica", 'B', 14); pdf.set_text_color(34, 197, 94); 
-    pdf.cell(0, 10, f"AHORRO FISCAL ESTIMADO: {ahorro:,.2f} EUR", ln=True)
+    # --- Encabezado ---
+    pdf.set_fill_color(30, 58, 138); pdf.rect(0, 0, 210, 40, 'F')
+    pdf.set_xy(10, 12)
+    pdf.set_font("helvetica", 'B', 22); pdf.set_text_color(255, 255, 255)
+    pdf.cell(0, 10, "TU ESTRATEGIA DE AHORRO 2026", align='C', ln=True)
+    pdf.set_font("helvetica", '', 10)
+    pdf.cell(0, 8, "Plan Personalizado para la Maximizacion del Beneficio Fiscal", align='C', ln=True)
+
+    # --- Bloque 1: El Objetivo ---
+    pdf.ln(15)
+    pdf.set_fill_color(240, 248, 255); pdf.rect(10, 45, 190, 45, 'F')
+    pdf.set_xy(15, 50); pdf.set_font("helvetica", 'B', 12); pdf.set_text_color(30, 58, 138)
+    pdf.cell(0, 10, "OBJETIVO DE APORTACION PERSONAL TOTAL:", ln=True)
+    pdf.set_x(15); pdf.set_font("helvetica", 'B', 28); pdf.cell(0, 15, f"{max_p:,.2f} EUR", ln=True)
+    pdf.set_x(15); pdf.set_font("helvetica", 'B', 14); pdf.set_text_color(34, 197, 94)
+    pdf.cell(0, 10, f"AHORRO FISCAL ESTIMADO (IRPF): {ahorro:,.2f} EUR", ln=True)
+
+    # --- Bloque 2: Plan de Ejecucion ---
+    pdf.set_xy(10, 100); pdf.set_font("helvetica", 'B', 14); pdf.set_text_color(0, 0, 0)
+    pdf.cell(0, 10, "COMO ALCANZAR TU MAXIMO AHORRO:", ln=True)
+    pdf.ln(2)
     
-    pdf.set_xy(25, 115); pdf.set_font("helvetica", 'B', 16); pdf.set_text_color(0, 0, 0); pdf.cell(0, 10, "ACCIONES RECOMENDADAS:", ln=True)
+    # Opcion A
+    pdf.set_x(15); pdf.set_font("helvetica", 'B', 11); pdf.set_text_color(30, 58, 138)
+    pdf.cell(0, 8, f"OPCION A: Nueva Cuota Mensual de {cuota_r:,.2f} EUR", ln=True)
+    pdf.set_x(20); pdf.set_font("helvetica", '', 10); pdf.set_text_color(60, 60, 60)
+    pdf.multi_cell(0, 5, f"Ajusta tu aportacion periodica para los {meses} meses restantes del año. Es la forma mas comoda de diluir el esfuerzo de ahorro.")
+    pdf.ln(3)
+
+    # Opcion B
+    pdf.set_x(15); pdf.set_font("helvetica", 'B', 11); pdf.set_text_color(30, 58, 138)
+    pdf.cell(0, 8, f"OPCION B: Aportacion Extraordinaria de {extra:,.2f} EUR", ln=True)
+    pdf.set_x(20); pdf.set_font("helvetica", '', 10); pdf.set_text_color(60, 60, 60)
+    pdf.multi_cell(0, 5, "Realiza un ingreso unico antes del 31 de diciembre. Ideal si dispones de liquidez puntual o bonus.")
+    
+    # --- Bloque 3: Guia de Pasos ---
+    pdf.ln(10)
+    pdf.set_fill_color(248, 250, 252); pdf.rect(10, 165, 190, 85, 'F')
+    pdf.set_xy(15, 170); pdf.set_font("helvetica", 'B', 12); pdf.set_text_color(0, 0, 0)
+    pdf.cell(0, 8, "PASOS PARA REALIZAR LA APORTACION:", ln=True)
+    
+    pdf.set_font("helvetica", 'B', 10); pdf.set_x(15); pdf.cell(0, 8, "En CaixaBankNow / Aporta+:", ln=True)
+    pdf.set_font("helvetica", '', 10); pdf.set_text_color(80, 80, 80)
     pasos = [
-        (f"OPCION 1: Nueva Cuota Mensual: {cuota_r:,.2f} EUR", f"Actualiza tu aportacion periodica para los {meses} meses restantes."),
-        (f"OPCION 2: Ingreso Extraordinario: {extra:,.2f} EUR", f"Realiza una aportacion unica."),
-        (f"Estado Actual: Ya has aportado {ya_aportado:,.2f} EUR", "Cifra acumulada hasta la fecha.")
+        "1. Accede a tu banca online o al portal Aporta+ de VidaCaixa.",
+        "2. Dirigete a la seccion de 'Pensiones' o 'Mis Planes de Empleo'.",
+        "3. Selecciona tu Plan de Empleo (PPE) actual y pulsa en 'Gestionar' u 'Operar'.",
+        "4. Elige 'Aportacion Unica' o 'Modificar Cuota Mensual' segun tu preferencia.",
+        "5. Introduce el importe recomendado en este informe y firma la operacion.",
+        "6. ¡Listo! Tu ahorro fiscal se reflejara en la proxima Declaracion de la Renta."
     ]
-    for t, s in pasos:
-        pdf.set_x(30); pdf.set_font("helvetica", 'B', 12); pdf.set_text_color(30, 58, 138); pdf.cell(0, 8, t, ln=True)
-        pdf.set_x(35); pdf.set_font("helvetica", '', 11); pdf.set_text_color(60, 60, 60); pdf.multi_cell(0, 6, s); pdf.ln(5)
+    for paso in pasos:
+        pdf.set_x(20); pdf.multi_cell(0, 6, paso)
+
+    # --- Pie de pagina ---
+    pdf.set_y(-25); pdf.set_font("helvetica", 'I', 8); pdf.set_text_color(150, 150, 150)
+    pdf.cell(0, 5, "Nota: Este documento es una simulacion basada en la normativa fiscal de Catalunya 2026.", align='C', ln=True)
+    pdf.cell(0, 5, "Asegurate de realizar tus aportaciones antes del cierre del ejercicio (31/12).", align='C')
+    
     return pdf.output(dest='S').encode('latin-1', errors='replace')
 
 # --- 4. SIDEBAR (CON MIN_VALUE=0.0) ---
