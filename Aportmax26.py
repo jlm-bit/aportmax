@@ -249,7 +249,7 @@ total_inv = emp_t + max_p
 
 # Calculamos el ahorro y los meses (ya lo tienes en tu lógica anterior)
 ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
-años_jub = 67 - edad  # 'edad' viene del sidebar
+# años_jub = 67 - edad  # 'edad' viene del sidebar
 
 # --- 6. RENDERIZADO PRINCIPAL ---
 st.markdown('<div class="main-header"><h1 style="margin:0;">📈 APORTAMAX 2026</h1></div>', unsafe_allow_html=True)
