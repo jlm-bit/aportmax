@@ -354,7 +354,7 @@ with tab2:
     pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes, ya_aportado)
     st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
 
-with t3:
+with tab3:
     st.markdown("### 🔮 El Poder del Interés Compuesto")
     
     # 1. Configuración de años y rentabilidad
