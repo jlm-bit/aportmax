@@ -355,60 +355,81 @@ with tab2:
     st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
 
 with tab3:
-    st.markdown("### 🔮 Simulador Dinámico de Jubilación")
+    st.markdown("### 🔮 Simulador Detallado de Jubilación")
     
-    # 1. Bloque de Entradas de Datos con Diseño Mejorado
+    # 1. Bloque de Entradas de Datos
     col_input1, col_input2 = st.columns(2)
     with col_input1:
         edad_act = st.number_input("Tu Edad Actual", value=40, min_value=18, max_value=62)
-        saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=10000.0, step=1000.0, min_value=0.0)
+        saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=0.0, step=1000.0, min_value=0.0)
     
     with col_input2:
-        # MEJORA VISUAL: Selector de botones horizontales para la jubilación
         edad_jub = st.radio(
             "Selecciona tu edad prevista de jubilación",
             options=[63, 64, 65, 66, 67],
-            index=4, # Por defecto 67
-            horizontal=True,
-            help="La edad legal ordinaria es a los 67 años, pero puedes simular jubilaciones anticipadas."
+            index=4,
+            horizontal=True
         )
-        rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 5.0)
+        rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 4.5)
     
-    # --- Lógica de Cálculo ---
+    # --- Lógica de Cálculo Desglosada ---
     rent_decimal = rent_pct / 100
     crecimiento_anual = 0.0 
     años_restantes = edad_jub - edad_act
     
-    # Simulación año a año
     edades = np.arange(edad_act, edad_jub + 1)
     cap_acumulado = []
-    aport_acumuladas = []
+    acum_empresa = []
+    acum_empleado = []
     intereses_acumulados = []
     
     saldo_actual = saldo_existente 
-    suma_aportada = saldo_existente 
-    cuota_año_actual = total_inv 
+    total_empresa = 0
+    total_empleado = saldo_existente # Asumimos el saldo inicial como aportación previa del empleado
+    
+    # Variables de flujo anual (vienen de tus cálculos del Tab 1)
+    # emp_t es la aportación anual de la empresa
+    # max_p es tu aportación personal máxima
+    cuota_emp_anual = emp_t - e_riesgo
+    cuota_personal_anual = max_p 
     
     for i in range(len(edades)):
+        # 1. El saldo anterior genera intereses
         interes_año = saldo_actual * rent_decimal
         
+        # 2. Guardamos la foto del año actual para el gráfico
         cap_acumulado.append(saldo_actual)
-        aport_acumuladas.append(suma_aportada)
-        intereses_acumulados.append(saldo_actual - suma_aportada)
+        acum_empresa.append(total_empresa)
+        acum_empleado.append(total_empleado)
+        intereses_acumulados.append(saldo_actual - (total_empresa + total_empleado))
         
-        saldo_actual += cuota_año_actual + interes_año
-        suma_aportada += cuota_año_actual
-        cuota_año_actual *= (1 + crecimiento_anual)
+        # 3. Actualizamos saldos para el año que viene
+        saldo_actual += cuota_emp_anual + cuota_personal_anual + interes_año
+        total_empresa += cuota_emp_anual
+        total_empleado += cuota_personal_anual
+        
+        # 4. Aplicamos el crecimiento del 2% a ambas aportaciones
+        cuota_emp_anual *= (1 + crecimiento_anual)
+        cuota_personal_anual *= (1 + crecimiento_anual)
 
-    # 2. Gráfico de Área Apilada
+    # 2. Gráfico de Área Apilada (Triple Capa)
     fig_j = go.Figure()
 
+    # Capa 1: Aportaciones Empresa (Azul Oscuro)
     fig_j.add_trace(go.Scatter(
-        x=edades, y=aport_acumuladas,
-        mode='lines', name='Capital Aportado Total',
-        stackgroup='one', fillcolor='rgba(30, 58, 138, 0.6)', line=dict(width=0)
+        x=edades, y=acum_empresa,
+        mode='lines', name='Aport. Empresa',
+        stackgroup='one', fillcolor='rgba(30, 58, 138, 0.8)', line=dict(width=0)
     ))
 
+    # Capa 2: Aportaciones Empleado (Azul Claro)
+    fig_j.add_trace(go.Scatter(
+        x=edades, y=acum_empleado,
+        mode='lines', name='Aport. Empleado',
+        stackgroup='one', fillcolor='rgba(59, 130, 246, 0.6)', line=dict(width=0)
+    ))
+
+    # Capa 3: Intereses (Verde)
     fig_j.add_trace(go.Scatter(
         x=edades, y=intereses_acumulados,
         mode='lines', name='Intereses Ganados',
@@ -416,29 +437,22 @@ with tab3:
     ))
 
     fig_j.update_layout(
-        title=f"Proyección hasta los {edad_jub} años",
+        title=f"Desglose de Capital a los {edad_jub} años",
         xaxis_title="Edad",
         yaxis_title="Capital acumulado (EUR)",
         hovermode='x unified',
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-        height=450,
-        margin=dict(l=0, r=0, t=60, b=0)
+        height=500
     )
 
     st.plotly_chart(fig_j, use_container_width=True)
 
-    # 3. Métricas de Resultados
-    total_final = cap_acumulado[-1]
-    aportado_final = aport_acumuladas[-1]
-    interes_final = intereses_acumulados[-1]
+    # 3. Métricas de Resultados Detalladas
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Total Empresa", f"{total_empresa:,.0f} EUR")
+    c2.metric("Total Empleado", f"{total_empleado:,.0f} EUR")
+    c3.metric("Total Intereses", f"{intereses_acumulados[-1]:,.0f} EUR")
+    c4.metric("FONDO FINAL", f"{cap_acumulado[-1]:,.0f} EUR")
 
-    c1, c2, c3 = st.columns(3)
-    c1.metric("Aportación Total", f"{aportado_final:,.0f} EUR")
-    c2.metric("Intereses Totales", f"{interes_final:,.0f} EUR")
-    c3.metric(f"Fondo Final ({edad_jub} años)", f"{total_final:,.0f} EUR")
-
-    # Alerta visual de la "pérdida" por jubilación anticipada si elige menos de 67
-    if edad_jub < 67:
-        st.warning(f"⚠️ Al jubilarte a los {edad_jub} años, dejas de capitalizar {67 - edad_jub} años de interés compuesto.")
-    else:
-        st.success(f"🎯 Escenario optimizado: Jubilación a los {edad_jub} años con el máximo aprovechamiento del tiempo.")
+    st.info(f"💡 **Análisis:** Al jubilarte, el **{(intereses_acumulados[-1]/cap_acumulado[-1])*100:.1f}%** de tu fondo "
+            f"será dinero 'gratis' generado por los intereses de mercado.")
