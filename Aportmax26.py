@@ -473,3 +473,41 @@ with tab3:
     * **Consumo de Capital:** La renta mensual de **{renta_a:,.2f} €** asume que agotas el capital en **20 años** tras la jubilación.
     * **Interés Compuesto:** Los intereses se reinvierten anualmente al **{rent_pct}%** neto de comisiones.
     """)
+
+# 6. Botón de Descarga de Informe
+    st.markdown("---")
+    
+    # Preparamos el contenido del informe en texto plano
+    informe_txt = f"""
+    INFORME DE PROYECCIÓN DE JUBILACIÓN - APORTMAX
+    -------------------------------------------
+    Fecha del informe: 2026
+    Edad Actual: {edad_act} años
+    Edad Jubilación: {edad_jub} años
+    Saldo Inicial: {saldo_existente:,.2f} €
+    Rentabilidad Estimada: {rent_pct}%
+    
+    ESCENARIO A: PLAN FULL (Empresa + Empleado)
+    - Aportación Anual Fija: {cuota_empresa_fija + cuota_empleado_fija:,.2f} €
+    - Capital al Jubilarse: {cap_a:,.2f} €
+    - Renta Mensual (20 años): {renta_a:,.2f} €/mes
+    
+    ESCENARIO B: SOLO EMPRESA
+    - Aportación Anual Fija: {cuota_empresa_fija:,.2f} €
+    - Capital al Jubilarse: {cap_b:,.2f} €
+    - Renta Mensual (20 años): {renta_b:,.2f} €/mes
+    
+    DIFERENCIA / VALOR DE TU APORTACIÓN
+    - Capital Extra: {dif_cap:,.2f} €
+    - Sobresueldo Mensual: {dif_renta:,.2f} €/mes
+    
+    Nota: Los cálculos son estimaciones basadas en aportaciones constantes y no garantizan rentabilidades futuras.
+    """
+
+    # Creamos el botón de descarga
+    st.download_button(
+        label="📥 Descargar mi Informe de Jubilación",
+        data=informe_txt,
+        file_name=f"Proyeccion_Jubilacion_{edad_act}_a_{edad_jub}.txt",
+        mime="text/plain",
+    )
