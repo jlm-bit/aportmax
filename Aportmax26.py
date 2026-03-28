@@ -65,8 +65,6 @@ st.markdown("""
             background: white; border-radius: 15px; padding: 25px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;
         }
-        
-        /* FORZADO DE COLOR AZUL PARA BOTONES PRIMARY */
         div.stButton > button[kind="primary"], div.stDownloadButton > button[kind="primary"] {
             background-color: #3b82f6 !important;
             color: white !important;
@@ -92,7 +90,6 @@ def generar_pdf_tecnico(empresa_total, max_p, inversion_t, ahorro, esfuerzo, sb,
     pdf.cell(0, 10, f"Ejercicio Fiscal 2026 | Catalunya", align='L')
     pdf.set_text_color(40, 40, 40); pdf.ln(20)
     
-    # Resumen
     pdf.set_font("helvetica", 'B', 10); pdf.set_fill_color(245, 247, 250)
     pdf.cell(0, 8, " 1. RESUMEN EJECUTIVO DE LA OPERACION", fill=True, ln=True); pdf.ln(2)
     pdf.set_font("helvetica", size=8.5)
@@ -109,7 +106,6 @@ def generar_pdf_tecnico(empresa_total, max_p, inversion_t, ahorro, esfuerzo, sb,
         pdf.cell(140, 6, label, border='B' if i < 5 else 0)
         pdf.cell(0, 6, val, border='B' if i < 5 else 0, align='R', ln=True)
     
-    # Tabla Fiscal
     pdf.ln(5)
     pdf.set_font("helvetica", 'B', 9); pdf.set_fill_color(245, 247, 250)
     pdf.cell(0, 8, " 2. TRAMOS IRPF APLICADOS (CATALUNYA 2026)", fill=True, ln=True); pdf.ln(2)
@@ -129,7 +125,6 @@ def generar_pdf_tecnico(empresa_total, max_p, inversion_t, ahorro, esfuerzo, sb,
         pdf.cell(60, 4, f"{sup if isinstance(sup, str) else f'{sup:,.0f}'}", border=1, align='C')
         pdf.cell(70, 4, tipo, border=1, align='C', ln=True)
 
-    # Desglose y Aviso Legal
     pdf.ln(5)
     pdf.set_font("helvetica", 'B', 9); pdf.set_fill_color(245, 247, 250)
     pdf.cell(0, 8, " 3. DESGLOSE TECNICO Y AVISO LEGAL", fill=True, ln=True); pdf.ln(2)
@@ -138,7 +133,7 @@ def generar_pdf_tecnico(empresa_total, max_p, inversion_t, ahorro, esfuerzo, sb,
     pdf.cell(140, 5, "Base Liquidable Final tras Reduccion:"); pdf.cell(0, 5, f"{(base_pre - max_p):,.2f} EUR", align='R', ln=True)
     
     pdf.ln(3); pdf.set_font("helvetica", 'B', 7); pdf.set_text_color(180, 0, 0)
-    pdf.multi_cell(0, 4, "AVISO LEGAL: Los calculos mostrados son una estimacion basada en la normativa fiscal proyectada para 2026 en Cataluna. Esta informacion no constituye asesoramiento financiero oficial.")
+    pdf.multi_cell(0, 4, "AVISO LEGAL: Calculos estimados segun normativa 2026.")
     
     pdf.set_y(-15); pdf.set_font("helvetica", 'I', 7); pdf.set_text_color(120, 120, 120)
     pdf.cell(0, 5, "Documento generado para fines de planificacion interna.", align='C', ln=True)
@@ -161,15 +156,15 @@ def generar_pdf_visual_v2(max_p, ahorro, inversion, extra, cuota_r, meses, ya_ap
     pdf.set_xy(25, 115); pdf.set_font("helvetica", 'B', 16); pdf.set_text_color(0, 0, 0); pdf.cell(0, 10, "ACCIONES RECOMENDADAS:", ln=True)
     pasos = [
         (f"OPCION 1: Nueva Cuota Mensual: {cuota_r:,.2f} EUR", f"Actualiza tu aportacion periodica para los {meses} meses restantes."),
-        (f"OPCION 2: Ingreso Extraordinario: {extra:,.2f} EUR", f"Realiza una aportacion unica manteniendo tu cuota actual."),
-        (f"Estado Actual: Ya has aportado {ya_aportado:,.2f} EUR", "Cifra acumulada hasta la fecha segun tus datos.")
+        (f"OPCION 2: Ingreso Extraordinario: {extra:,.2f} EUR", f"Realiza una aportacion unica."),
+        (f"Estado Actual: Ya has aportado {ya_aportado:,.2f} EUR", "Cifra acumulada hasta la fecha.")
     ]
     for t, s in pasos:
         pdf.set_x(30); pdf.set_font("helvetica", 'B', 12); pdf.set_text_color(30, 58, 138); pdf.cell(0, 8, t, ln=True)
         pdf.set_x(35); pdf.set_font("helvetica", '', 11); pdf.set_text_color(60, 60, 60); pdf.multi_cell(0, 6, s); pdf.ln(5)
     return pdf.output(dest='S').encode('latin-1', errors='replace')
 
-# --- 4. SIDEBAR CON VALIDACIÓN MIN_VALUE=0.0 ---
+# --- 4. SIDEBAR (CON MIN_VALUE=0.0) ---
 with st.sidebar:
     st.header("⚙️ DATOS NECESARIOS")
     with st.expander("👤 DATOS EMPRESA", expanded=True):
@@ -240,25 +235,39 @@ with tab2:
     </div>""", unsafe_allow_html=True)
 
     if ya_aportado > max_p:
-        st.error(f"⚠️ **HAS SUPERADO EL LÍMITE MÁXIMO:** Aportación de {ya_aportado:,.2f} € excede el límite de {max_p:,.2f} €.")
+        st.error(f"⚠️ **HAS SUPERADO EL LÍMITE:** Aportación de {ya_aportado:,.2f} € excede el límite de {max_p:,.2f} €.")
     elif ya_aportado + (c_m * meses_restantes) >= max_p:
-        st.success("✅ **PLANIFICACIÓN CORRECTA**")
+        st.success("✅ **PLANIFICACIÓN PERFECTA**")
     else:
         st.markdown(f"""
             <div class="plan-box" style="border-left: 10px solid #1e40af;">
-                <div class="step-pill" style="background: #1e40af; color: white;">OPCIÓN 1 (RECOMENDADA): INCREMENTO CUOTA MENSUAL</div>
+                <div class="step-pill" style="background: #1e40af; color: white;">OPCIÓN 1 (RECOMENDADA)</div>
                 <h1 style="color: #1e40af; margin:0; font-size: 1.9rem;">+{diferencia_mensual:,.2f} €<span style="font-size: 1.4rem; color: #64748b;"> / mes</span></h1>
-                <p>Tu nueva aportación total será de <b>{nueva_cuota_total:,.2f} €/mes</b></p>
+                <p>Nueva cuota total: <b>{nueva_cuota_total:,.2f} €/mes</b></p>
                 <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px dashed #cbd5e1; margin-top: 25px;">
                     <div class="step-pill" style="background: #64748b; color: white;">OPCIÓN 2: APORTACIÓN EXTRAORDINARIA</div>
                     <h2 style="color: #334155; margin: 5px 0 0 0; font-size: 1.7rem">{aportacion_extraordinaria_neta:,.2f} €</h2>
-                    <p style="color: #64748b; font-size: 0.85rem;">*Manteniendo tu aportación actual de {c_m:,.2f} €/mes.</p>
                 </div>
             </div>
         """, unsafe_allow_html=True)
 
     st.markdown("---")
-    st.link_button("✨ Acceder a Aporta+ (VidaCaixa)", "https://aportamas.vidacaixa.es/", use_container_width=True, type="primary")
-    
+    st.markdown("#### 🚀 ¿Cómo realizar tu aportación?")
+    col_web, col_steps = st.columns([1, 1.5])
+    with col_web:
+        st.markdown("**Vías de Acceso Online**")
+        st.link_button("✨ Acceder a Aporta+ (VidaCaixa)", "https://aportamas.vidacaixa.es/pasos-para-el-alta-de-usuario", use_container_width=True, type="primary")
+        st.link_button("🏦 Ir a CaixaBankNow", "https://www.caixabank.es/particular/home/particulares_es.html", use_container_width=True, type="secondary")
+        st.info("💡 **Dato:** Aporta+ es la plataforma de VidaCaixa para gestionar tus planes de empleo.")
+    with col_steps:
+        st.markdown("**Pasos a seguir:**")
+        st.markdown("""
+        1. **Identifícate** en tu plataforma (Aporta+ o CaixaBankNow).
+        2. Localiza la sección de **'Pensiones'** o **'Mis Planes'**.
+        3. Selecciona tu **Plan de Empleo (PPE)** y pulsa **'Gestionar'**.
+        4. Elige **'Aportación Única'** o **'Modificar periódica'**.
+        5. Introduce el importe y **firma la operación**.
+        """)
+
     pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes, ya_aportado)
     st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
