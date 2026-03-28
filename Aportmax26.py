@@ -356,20 +356,40 @@ with tab2:
     st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
 
 with tab3:
-    st.markdown("### 🔮 Comparativa Final: Plan Full vs. Solo Empresa")
+    st.markdown("### 🔮 Simulador de Jubilación Personalizado")
     
-    # 1. Entradas de Datos
+    # 1. Entradas de Datos con opción de aportación flexible
     col_in1, col_in2 = st.columns(2)
     with col_in1:
-        # Usamos keys únicas para evitar conflictos con otros inputs del app
-        edad_act = st.number_input("Tu Edad Actual", value=40, min_value=18, max_value=62, key="edad_final")
-        saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=0.0, step=1000.0, min_value=0.0, key="saldo_final")
-    
+        edad_act = st.number_input("Tu Edad Actual", value=40, min_value=18, max_value=62, key="edad_flex")
+        saldo_existente = st.number_input("Saldo acumulado actual (€)", value=0.0, step=1000.0, key="saldo_flex")
+        
+        # NUEVA MEJORA: Selección de nivel de aportación personal
+        modo_aportacion = st.radio(
+            "Tu aportación personal mensual:",
+            ["Máximo Legal", "Cantidad Personalizada"],
+            horizontal=True,
+            help="El máximo legal depende de la aportación de tu empresa (según normativa 2026)."
+        )
+        
+        if modo_aportacion == "Máximo Legal":
+            mi_aportacion_anual = max_p - e_riesgo
+            st.caption(f"Aportarás {mi_aportacion_anual:,.2f} € al año (neto de riesgo).")
+        else:
+            # Slider para elegir una cantidad entre 0 y el máximo calculado en el Tab 1
+            mi_aportacion_anual = st.slider(
+                "Elegir aportación anual personalizada (€)", 
+                min_value=0.0, 
+                max_value=float(max_p - e_riesgo), 
+                value=float((max_p - e_riesgo) / 2),
+                step=100.0
+            )
+
     with col_in2:
-        edad_jub = st.radio("Edad prevista de jubilación", [63, 64, 65, 66, 67], index=4, horizontal=True, key="jub_final")
-        rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 4.0, key="rent_final")
+        edad_jub = st.radio("Edad prevista de jubilación", [63, 64, 65, 66, 67], index=4, horizontal=True)
+        rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 4.0)
     
-    # --- Lógica de Simulación (Aportaciones fijas de 2026) ---
+    # --- Lógica de Simulación ---
     rent_dec = rent_pct / 100
     edades = np.arange(edad_act, edad_jub + 1)
     
@@ -382,12 +402,13 @@ with tab3:
     saldo_b = saldo_existente
     aport_acum_a = saldo_existente
     
-    # Cuotas FIJAS basadas en el cálculo previo del Tab 1
+    # Cuotas FIJAS
     cuota_empresa_fija = emp_t 
-    cuota_empleado_fija = max_p - e_riesgo 
+    # Ahora usamos 'mi_aportacion_anual' definida arriba
+    cuota_empleado_fija = mi_aportacion_anual 
     
     for i in range(len(edades)):
-        # ESCENARIO A: Plan Full (Tú + Empresa)
+        # ESCENARIO A: Plan Elegido (Tú + Empresa)
         int_a = saldo_a * rent_dec
         cap_total_evol.append(saldo_a)
         solo_capital_evol.append(aport_acum_a)
@@ -397,10 +418,12 @@ with tab3:
         int_b = saldo_b * rent_dec
         cap_solo_empresa_evol.append(saldo_b)
         
-        # Actualización de saldos para el siguiente año
+        # Actualización
         saldo_a += (cuota_empresa_fija + cuota_empleado_fija) + int_a
         saldo_b += cuota_empresa_fija + int_b
         aport_acum_a += (cuota_empresa_fija + cuota_empleado_fija)
+
+    # ... (El resto del código de gráficos, métricas y PDF se mantiene igual) ...
 
     # 2. Gráfico de Evolución con Colores Profesionales
     fig_j = go.Figure()
