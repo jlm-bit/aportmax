@@ -355,7 +355,7 @@ with tab2:
     st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
 
 with tab3:
-    st.markdown("### 🔮 Comparativa: Plan Optimizado vs. Solo Empresa (Aportación Fija)")
+    st.markdown("### 🔮 Comparativa de Renta Mensual: Plan Full vs. Solo Empresa")
     
     # 1. Entradas de Datos
     col_in1, col_in2 = st.columns(2)
@@ -367,17 +367,13 @@ with tab3:
         edad_jub = st.radio("Edad prevista de jubilación", [63, 64, 65, 66, 67], index=4, horizontal=True, key="jub_tab3")
         rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 4.0, key="rent_tab3")
     
-    # --- Lógica de Simulación (Aportaciones fijas 0% crecimiento) ---
+    # --- Lógica de Simulación (Aportaciones fijas) ---
     rent_dec = rent_pct / 100
-    # Eliminamos el crecimiento_anual (fijado a 0)
     edades = np.arange(edad_act, edad_jub + 1)
     
-    # Listas Escenario A: Plan Full (Tú + Empresa)
     cap_total_evol = []
     solo_capital_evol = []
     interes_evol = []
-    
-    # Lista Escenario B: Solo Empresa
     cap_solo_empresa_evol = []
     
     saldo_a = saldo_existente
@@ -389,26 +385,23 @@ with tab3:
     cuota_empleado_fija = max_p - e_riesgo 
     
     for i in range(len(edades)):
-        # ESCENARIO A: Crecimiento con ahorro constante
+        # ESCENARIO A: Plan Full
         int_a = saldo_a * rent_dec
         cap_total_evol.append(saldo_a)
         solo_capital_evol.append(aport_acum_a)
         interes_evol.append(saldo_a - aport_acum_a)
         
-        # ESCENARIO B: Crecimiento solo con lo que pone la empresa (fijo)
+        # ESCENARIO B: Solo Empresa
         int_b = saldo_b * rent_dec
         cap_solo_empresa_evol.append(saldo_b)
         
-        # Actualización de saldos (Sin multiplicar por crecimiento_anual)
+        # Actualización de saldos
         saldo_a += (cuota_empresa_fija + cuota_empleado_fija) + int_a
         saldo_b += cuota_empresa_fija + int_b
-        
         aport_acum_a += (cuota_empresa_fija + cuota_empleado_fija)
 
     # 2. Gráfico Comparativo
     fig_j = go.Figure()
-    
-    # Capas del Plan Full (Aportación constante)
     fig_j.add_trace(go.Scatter(
         x=edades, y=solo_capital_evol,
         mode='lines', name='Capital Aportado (Tú + Emp)',
@@ -419,8 +412,6 @@ with tab3:
         mode='lines', name='Intereses Acumulados',
         stackgroup='one', fillcolor='rgba(16, 185, 129, 0.6)', line=dict(width=0)
     ))
-    
-    # Línea del Escenario "Solo Empresa"
     fig_j.add_trace(go.Scatter(
         x=edades, y=cap_solo_empresa_evol,
         mode='lines', name='Si dejas de aportar tú',
@@ -428,25 +419,33 @@ with tab3:
     ))
 
     fig_j.update_layout(
-        title=f"Proyección a los {edad_jub} años (Aportación fija de {cuota_empresa_fija + cuota_empleado_fija:,.0f}€/año)",
+        title=f"Proyección de Capital hasta los {edad_jub} años",
         xaxis_title="Edad", yaxis_title="Euros (€)",
         hovermode='x unified', height=450,
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
     )
     st.plotly_chart(fig_j, use_container_width=True)
 
-    # 3. Métricas y Renta Final
-    cap_final_a = cap_total_evol[-1]
-    cap_final_b = cap_solo_empresa_evol[-1]
-    diferencia = cap_final_a - cap_final_b
-    renta_mensual = cap_final_a / (20 * 12)
+    # 3. Cálculo de las 2 Rentas Mensuales
+    años_renta = 20
+    meses = años_renta * 12
+    
+    cap_final_full = cap_total_evol[-1]
+    cap_final_solo_emp = cap_solo_empresa_evol[-1]
+    
+    renta_full = cap_final_full / meses
+    renta_solo_emp = cap_final_solo_emp / meses
+    dif_renta = renta_full - renta_solo_emp
 
+    # 4. Panel de Resultados Comparativo
     st.markdown("---")
+    st.markdown("#### 💰 Comparativa de Renta Mensual (Consumo en 20 años)")
+    
     c1, c2, c3 = st.columns(3)
-    c1.metric("Capital Final", f"{cap_final_a:,.0f} €")
-    c2.metric("Pérdida por no aportar", f"-{diferencia:,.0f} €", delta_color="inverse")
-    c3.metric("Renta Mensual Est.", f"{renta_mensual:,.2f} €/mes")
+    c1.metric("Renta PLAN FULL", f"{renta_full:,.2f} €/mes", help="Aportando tú y la empresa.")
+    c2.metric("Renta SOLO EMPRESA", f"{renta_solo_emp:,.2f} €/mes", delta=f"-{dif_renta:,.2f} €", delta_color="inverse")
+    c3.metric("Capital Final Full", f"{cap_final_full:,.0f} €")
 
-    st.info(f"💰 **Resultado:** Manteniendo tu aportación anual de **{cuota_empleado_fija:,.2f} €** constante en el tiempo, "
-            f"conseguirás un fondo final de **{cap_final_a:,.0f} €**. "
-            f"Sin tu ayuda, el plan de la empresa solo alcanzaría los **{cap_final_b:,.0f} €**.")
+    # Mensaje de cierre potente
+    st.warning(f"💡 **Decisión clave:** Mantener tu aportación hoy supone cobrar **{dif_renta:,.2f} € más cada mes** durante toda tu jubilación. "
+               f"Sin tu parte, el fondo final se quedaría en **{cap_final_solo_emp:,.0f} €**.")
