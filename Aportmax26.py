@@ -355,7 +355,7 @@ with tab2:
     st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
 
 with tab3:
-    st.markdown("### 🔮 Comparativa de Renta Mensual: Plan Full vs. Solo Empresa")
+    st.markdown("### 🔮 Comparativa Final: Plan Full vs. Solo Empresa")
     
     # 1. Entradas de Datos
     col_in1, col_in2 = st.columns(2)
@@ -367,7 +367,7 @@ with tab3:
         edad_jub = st.radio("Edad prevista de jubilación", [63, 64, 65, 66, 67], index=4, horizontal=True, key="jub_tab3")
         rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 4.0, key="rent_tab3")
     
-    # --- Lógica de Simulación (Aportaciones fijas) ---
+    # --- Lógica de Simulación (Aportaciones fijas 2026) ---
     rent_dec = rent_pct / 100
     edades = np.arange(edad_act, edad_jub + 1)
     
@@ -380,7 +380,7 @@ with tab3:
     saldo_b = saldo_existente
     aport_acum_a = saldo_existente
     
-    # Cuotas FIJAS basadas en el cálculo de 2026
+    # Cuotas FIJAS (Sin crecimiento futuro)
     cuota_empresa_fija = emp_t 
     cuota_empleado_fija = max_p - e_riesgo 
     
@@ -395,57 +395,54 @@ with tab3:
         int_b = saldo_b * rent_dec
         cap_solo_empresa_evol.append(saldo_b)
         
-        # Actualización de saldos
+        # Actualización
         saldo_a += (cuota_empresa_fija + cuota_empleado_fija) + int_a
         saldo_b += cuota_empresa_fija + int_b
         aport_acum_a += (cuota_empresa_fija + cuota_empleado_fija)
 
-    # 2. Gráfico Comparativo
+    # 2. Gráfico de Evolución
     fig_j = go.Figure()
-    fig_j.add_trace(go.Scatter(
-        x=edades, y=solo_capital_evol,
-        mode='lines', name='Capital Aportado (Tú + Emp)',
-        stackgroup='one', fillcolor='rgba(30, 58, 138, 0.7)', line=dict(width=0)
-    ))
-    fig_j.add_trace(go.Scatter(
-        x=edades, y=interes_evol,
-        mode='lines', name='Intereses Acumulados',
-        stackgroup='one', fillcolor='rgba(16, 185, 129, 0.6)', line=dict(width=0)
-    ))
-    fig_j.add_trace(go.Scatter(
-        x=edades, y=cap_solo_empresa_evol,
-        mode='lines', name='Si dejas de aportar tú',
-        line=dict(color='#EF4444', width=3, dash='dot')
-    ))
+    fig_j.add_trace(go.Scatter(x=edades, y=solo_capital_evol, mode='lines', name='Capital Aportado (Full)', stackgroup='one', fillcolor='rgba(30, 58, 138, 0.7)', line=dict(width=0)))
+    fig_j.add_trace(go.Scatter(x=edades, y=interes_evol, mode='lines', name='Intereses Acumulados', stackgroup='one', fillcolor='rgba(16, 185, 129, 0.6)', line=dict(width=0)))
+    fig_j.add_trace(go.Scatter(x=edades, y=cap_solo_empresa_evol, mode='lines', name='Si dejas de aportar tú', line=dict(color='#EF4444', width=3, dash='dot')))
 
     fig_j.update_layout(
-        title=f"Proyección de Capital hasta los {edad_jub} años",
+        title=f"Proyección de Fondos a los {edad_jub} años",
         xaxis_title="Edad", yaxis_title="Euros (€)",
-        hovermode='x unified', height=450,
+        hovermode='x unified', height=400,
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
     )
     st.plotly_chart(fig_j, use_container_width=True)
 
-    # 3. Cálculo de las 2 Rentas Mensuales
+    # 3. Cálculos de Comparación
     años_renta = 20
     meses = años_renta * 12
     
-    cap_final_full = cap_total_evol[-1]
-    cap_final_solo_emp = cap_solo_empresa_evol[-1]
+    # Capitales
+    cap_a = cap_total_evol[-1]
+    cap_b = cap_solo_empresa_evol[-1]
+    dif_cap = cap_a - cap_b
     
-    renta_full = cap_final_full / meses
-    renta_solo_emp = cap_final_solo_emp / meses
-    dif_renta = renta_full - renta_solo_emp
+    # Rentas
+    renta_a = cap_a / meses
+    renta_b = cap_b / meses
+    dif_renta = renta_a - renta_b
 
-    # 4. Panel de Resultados Comparativo
+    # 4. Panel de Resultados: Capital y Renta
     st.markdown("---")
-    st.markdown("#### 💰 Comparativa de Renta Mensual (Consumo en 20 años)")
     
+    # FILA 1: Comparativa de Capitales (El "Botín")
+    st.subheader("💰 Comparativa de Capitales")
     c1, c2, c3 = st.columns(3)
-    c1.metric("Renta PLAN FULL", f"{renta_full:,.2f} €/mes", help="Aportando tú y la empresa.")
-    c2.metric("Renta SOLO EMPRESA", f"{renta_solo_emp:,.2f} €/mes", delta=f"-{dif_renta:,.2f} €", delta_color="inverse")
-    c3.metric("Capital Final Full", f"{cap_final_full:,.0f} €")
+    c1.metric("Capital PLAN FULL", f"{cap_a:,.0f} €")
+    c2.metric("Capital SOLO EMPRESA", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
+    c3.metric("Diferencia de Ahorro", f"{dif_cap:,.0f} €", help="Dinero extra que tendrías por mantener tu aportación.")
 
-    # Mensaje de cierre potente
-    st.warning(f"💡 **Decisión clave:** Mantener tu aportación hoy supone cobrar **{dif_renta:,.2f} € más cada mes** durante toda tu jubilación. "
-               f"Sin tu parte, el fondo final se quedaría en **{cap_final_solo_emp:,.0f} €**.")
+    # FILA 2: Comparativa de Rentas (El "Sueldo")
+    st.subheader("📅 Comparativa de Renta Mensual")
+    r1, r2, r3 = st.columns(3)
+    r1.metric("Renta PLAN FULL", f"{renta_a:,.2f} €/mes")
+    r2.metric("Renta SOLO EMPRESA", f"{renta_b:,.2f} €/mes", delta=f"-{dif_renta:,.2f} €/mes", delta_color="inverse")
+    r3.metric("Sobresueldo Mensual", f"{dif_renta:,.2f} €/mes", help="Dinero mensual extra durante 20 años.")
+
+    st.success(f"🎯 **Conclusión:** Mantener tu plan activo te permite jubilarte con **{dif_cap:,.0f} € más** de capital, lo que se traduce en un nivel de vida de **{dif_renta:,.2f} € extra cada mes**.")
