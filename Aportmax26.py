@@ -80,7 +80,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- 3. FUNCIONES PDF (SÍMBOLO € SUSTITUIDO POR EUR PARA EVITAR ERROR) ---
+# --- 3. FUNCIONES PDF ---
 @st.cache_data
 def generar_pdf_tecnico(empresa_total, max_p, inversion_t, ahorro, esfuerzo, sb, ss, gastos, base_pre, eficiencia):
     pdf = FPDF()
@@ -135,10 +135,10 @@ def generar_pdf_tecnico(empresa_total, max_p, inversion_t, ahorro, esfuerzo, sb,
     pdf.cell(0, 8, " 3. DESGLOSE TECNICO Y AVISO LEGAL", fill=True, ln=True); pdf.ln(2)
     pdf.set_font("helvetica", size=7.5)
     pdf.cell(140, 5, "Sueldo Bruto Anual:"); pdf.cell(0, 5, f"{sb:,.2f} EUR", align='R', ln=True)
-    pdf.cell(140, 5, "Base Liquidable Final tras Reduccion (incluye Cuota Trabajador a la SS y Gastos Dificil Justificación):"); pdf.cell(0, 5, f"{(base_pre - max_p):,.2f} EUR", align='R', ln=True)
+    pdf.cell(140, 5, "Base Liquidable Final tras Reduccion:"); pdf.cell(0, 5, f"{(base_pre - max_p):,.2f} EUR", align='R', ln=True)
     
     pdf.ln(3); pdf.set_font("helvetica", 'B', 7); pdf.set_text_color(180, 0, 0)
-    pdf.multi_cell(0, 4, "AVISO LEGAL: Los calculos mostrados son una estimacion basada en la normativa fiscal proyectada para 2026 en Cataluna. Esta informacion no constituye asesoramiento financiero oficial. Los resultados pueden variar segun las circunstancias personales del contribuyente.")
+    pdf.multi_cell(0, 4, "AVISO LEGAL: Los calculos mostrados son una estimacion basada en la normativa fiscal proyectada para 2026 en Cataluna. Esta informacion no constituye asesoramiento financiero oficial.")
     
     pdf.set_y(-15); pdf.set_font("helvetica", 'I', 7); pdf.set_text_color(120, 120, 120)
     pdf.cell(0, 5, "Documento generado para fines de planificacion interna.", align='C', ln=True)
@@ -152,7 +152,6 @@ def generar_pdf_visual_v2(max_p, ahorro, inversion, extra, cuota_r, meses, ya_ap
     pdf.set_xy(25, 20)
     pdf.set_font("helvetica", 'B', 24); pdf.set_text_color(30, 58, 138); pdf.cell(0, 10, "TU HOJA DE RUTA 2026", ln=True)
     
-    # Caja de Objetivo
     pdf.set_fill_color(240, 248, 255); pdf.rect(25, 45, 165, 55, 'F')
     pdf.set_xy(30, 52); pdf.set_font("helvetica", 'B', 12); pdf.set_text_color(0, 0, 0); pdf.cell(0, 10, "OBJETIVO DE APORTACION PERSONAL TOTAL:", ln=True)
     pdf.set_xy(30, 65); pdf.set_font("helvetica", 'B', 28); pdf.set_text_color(30, 58, 138); pdf.cell(0, 15, f"{max_p:,.2f} EUR", ln=True)
@@ -170,13 +169,13 @@ def generar_pdf_visual_v2(max_p, ahorro, inversion, extra, cuota_r, meses, ya_ap
         pdf.set_x(35); pdf.set_font("helvetica", '', 11); pdf.set_text_color(60, 60, 60); pdf.multi_cell(0, 6, s); pdf.ln(5)
     return pdf.output(dest='S').encode('latin-1', errors='replace')
 
-# --- 4. SIDEBAR ---
+# --- 4. SIDEBAR CON VALIDACIÓN MIN_VALUE=0.0 ---
 with st.sidebar:
     st.header("⚙️ DATOS NECESARIOS")
     with st.expander("👤 DATOS EMPRESA", expanded=True):
-        sb = st.number_input("Sueldo Bruto Anual (€)", value=60000.0, step=1000.0)
-        e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=0.0, step=25.0)
-        e_riesgo = st.number_input("Prima Anual Riesgo PPE (€)", value=0.0, step=25.0)
+        sb = st.number_input("Sueldo Bruto Anual (€)", value=60000.0, step=1000.0, min_value=0.0)
+        e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=0.0, step=25.0, min_value=0.0)
+        e_riesgo = st.number_input("Prima Anual Riesgo PPE (€)", value=0.0, step=25.0, min_value=0.0)
         emp_t = min(e_ahorro * 12 + e_riesgo, 10000.0)
 
     CUOTA_SS_PRE = min(sb, 5101.0 * 12) * 0.0635 
@@ -185,12 +184,12 @@ with st.sidebar:
     if (emp_t + MAX_P_LIMIT) > (BASE_PRE_LIMIT * 0.30): MAX_P_LIMIT = max(0.0, (BASE_PRE_LIMIT * 0.30) - emp_t)
 
     with st.expander("📅 APORTACIONES PERSONALES", expanded=True):
-        c_m = st.number_input("Aport. periódica mensual (€)", value=0.0, step=50.0)
-        e_y = st.number_input("Aport. Extras ya realizadas (€)", value=0.0, max_value=MAX_P_LIMIT, step=100.0)
+        c_m = st.number_input("Aport. periódica mensual (€)", value=0.0, step=50.0, min_value=0.0)
+        e_y = st.number_input("Aport. Extras ya realizadas (€)", value=0.0, max_value=max(0.0, MAX_P_LIMIT), step=100.0, min_value=0.0)
 
 # --- 5. LÓGICA DE CÁLCULO ---
 hoy = datetime.date.today()
-meses_restantes = 12 - hoy.month + 1 # Cálculo automático de meses restantes incluyendo el actual
+meses_restantes = 12 - hoy.month + 1
 meses_pasados = 12 - meses_restantes
 CUOTA_SS = min(sb, 5101.0 * 12) * 0.0635 
 base_pre = max(0.0, sb - CUOTA_SS - 2000.0)
@@ -230,8 +229,8 @@ with tab1:
         st.plotly_chart(fig, use_container_width=True)
     
     pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
-   
-    st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, ...)
+    st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf")
+
 with tab2:
     st.markdown("### 🎯 Plan Estratégico Personalizado")
     st.markdown(f"""<div class="kpi-container">
@@ -242,81 +241,24 @@ with tab2:
 
     if ya_aportado > max_p:
         st.error(f"⚠️ **HAS SUPERADO EL LÍMITE MÁXIMO:** Aportación de {ya_aportado:,.2f} € excede el límite de {max_p:,.2f} €.")
-        st.markdown(f"""<div class="option-card" style="border-left-color: #dc2626; background-color: #fef2f2;">
-            <h3 style="color: #991b1b; margin-top:0;">ATENCIÓN: EXCESO</h3>
-            <p style="color: #991b1b;">Has aportado <b>{ya_aportado - max_p:,.2f} €</b> de más. Pausa tu cuota de {c_m:,.2f} € ya.</p>
-        </div>""", unsafe_allow_html=True)
     elif ya_aportado + (c_m * meses_restantes) >= max_p:
-        ajuste_necesario = c_m - nueva_cuota_total
-        if ajuste_necesario > 0.01:
-            st.warning("🔔 **AJUSTE RECOMENDADO:** Reduce tu cuota para no excederte del límite.")
-            st.markdown(f"""<div class="option-card" style="border-left-color: #f59e0b; background-color: #fffbeb;">
-                <h3 style="color: #92400e; margin-top:0;">✅ AJUSTE DE CUOTA</h3>
-                <p style="color: #92400e;">Cambia tu aportación a <b>{nueva_cuota_total:,.2f} €/mes</b> para no exceder el límite.</p>
-            </div>""", unsafe_allow_html=True)
-        else:
-            st.success("✅ **PLANIFICACIÓN PERFECTA**")
-            st.markdown(f"""<div class="option-card" style="border-left-color: #10B981; background-color: #f0fdf4;">
-                <p style="color: #065f46; font-size: 1.1em; margin:0;">Con <b>{c_m:,.2f} €/mes</b> llegarás exacto al límite legal.</p>
-            </div>""", unsafe_allow_html=True)
+        st.success("✅ **PLANIFICACIÓN CORRECTA**")
     else:
         st.markdown(f"""
             <div class="plan-box" style="border-left: 10px solid #1e40af;">
-                <div class="step-pill" style="background: #1e40af; color: white;">OPCIÓN 1 (RECOMENDADA): INCREMENTO DE TU APORTACIÓN MENSUAL AL PLAN DE PENSIONES</div>
-                <div style="margin: 15px 0;">
-                    <p style="margin:0; color: #64748b; font-size: 0.9rem; font-weight: bold;">SUBE TU CUOTA EN:</p>
-                    <h1 style="color: #1e40af; margin:0; font-size: 1.9rem;">+{diferencia_mensual:,.2f} €<span style="font-size: 1.4rem; color: #64748b;"> / mes</span></h1>
-                    <p style="margin: 5px 0 0 0; color: #1e40af; font-size: 1.1rem;">
-                        Tu nueva aportación total será de <b>{nueva_cuota_total:,.2f} €/mes</b>
-                    </p>
-                </div>
+                <div class="step-pill" style="background: #1e40af; color: white;">OPCIÓN 1 (RECOMENDADA): INCREMENTO CUOTA MENSUAL</div>
+                <h1 style="color: #1e40af; margin:0; font-size: 1.9rem;">+{diferencia_mensual:,.2f} €<span style="font-size: 1.4rem; color: #64748b;"> / mes</span></h1>
+                <p>Tu nueva aportación total será de <b>{nueva_cuota_total:,.2f} €/mes</b></p>
                 <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px dashed #cbd5e1; margin-top: 25px;">
                     <div class="step-pill" style="background: #64748b; color: white;">OPCIÓN 2: APORTACIÓN EXTRAORDINARIA</div>
-                    <p style="margin: 10px 0 0 0; color: #334155; font-size: 0.8rem;">
-                        Si prefieres no tocar tu cuota mensual, realiza una <b>aportación extraordinaria</b> única de:
-                    </p>
                     <h2 style="color: #334155; margin: 5px 0 0 0; font-size: 1.7rem">{aportacion_extraordinaria_neta:,.2f} €</h2>
-                    <p style="margin: 5px 0 0 0; color: #64748b; font-size: 0.85rem;">
-                        *Manteniendo tu aportación actual de {c_m:,.2f} €/mes hasta diciembre.
-                    </p>
+                    <p style="color: #64748b; font-size: 0.85rem;">*Manteniendo tu aportación actual de {c_m:,.2f} €/mes.</p>
                 </div>
             </div>
         """, unsafe_allow_html=True)
 
-    # --- SECCIÓN CAIXABANK / APORTA+ ---
     st.markdown("---")
-    st.markdown("#### 🚀 ¿Cómo realizar tu aportación?")
-    col_web, col_steps = st.columns([1, 1.5])
+    st.link_button("✨ Acceder a Aporta+ (VidaCaixa)", "https://aportamas.vidacaixa.es/", use_container_width=True, type="primary")
     
-    with col_web:
-        st.markdown("**Vías de Acceso Online**")
-        st.link_button(
-            "✨ Acceder a Aporta+ (VidaCaixa)", 
-            "https://aportamas.vidacaixa.es/pasos-para-el-alta-de-usuario", 
-            use_container_width=True, 
-            type="primary"
-        )
-        st.link_button(
-            "🏦 Ir a CaixaBankNow", 
-            "https://www.caixabank.es/particular/home/particulares_es.html", 
-            use_container_width=True, 
-            type="secondary"
-        )
-        st.info("💡 **Dato:** Aporta+ es la plataforma específica de VidaCaixa para gestionar de forma ágil tus planes de pensiones de empleo.")
-
-    with col_steps:
-        st.markdown("**Pasos a seguir:**")
-        st.markdown("""
-        1. **Identifícate** en tu plataforma preferida (Aporta+ o CaixaBankNow).
-        2. Localiza la sección de **'Pensiones'** o **'Mis Planes'**.
-        3. Selecciona tu **Plan de Empleo (PPE)** y pulsa en el botón **'Gestionar'** o **'Aportar'**.
-        4. Elige el tipo de movimiento:
-            * **'Aportación Única'** para ingresos puntuales.
-            * **'Modificar aportación periódica'** para cambiar tu cuota mensual.
-        5. Introduce el importe recomendado en tu plan y **firma la operación**.
-        """)
-
-    st.markdown("<br>", unsafe_allow_html=True)
     pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes, ya_aportado)
- 
-    st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, ...)
+    st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
