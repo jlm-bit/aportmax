@@ -218,10 +218,40 @@ with tab1:
                 <p style="margin:0; font-weight: bold;">Tax Return: {eficiencia:.1f}%</p>
             </div>
         """, unsafe_allow_html=True)
+    
+    # ... (Todo el código previo igual hasta la sección del gráfico en el tab1)
+
     with col_right:
-        fig = go.Figure(data=[go.Pie(labels=['Esfuerzo Neto', 'Ahorro Fiscal', 'Empresa'], values=[esfuerzo_neto, ahorro, emp_t], hole=.6, marker_colors=['#3B82F6', '#10B981', '#1E293B'])])
-        fig.update_layout(margin=dict(t=30, b=0, l=0, r=0), height=300, showlegend=True, legend=dict(orientation="h", y=-0.1))
+        # 1. Calculamos el valor total para la etiqueta central
+        total_inversion = esfuerzo_neto + ahorro + emp_t
+        
+        fig = go.Figure(data=[go.Pie(
+            labels=['Esfuerzo Neto', 'Ahorro Fiscal', 'Empresa'], 
+            values=[esfuerzo_neto, ahorro, emp_t], 
+            hole=.6, 
+            marker_colors=['#3B82F6', '#10B981', '#1E293B'],
+            textinfo='none' # Quitamos los números de los quesitos para que quede limpio
+        )])
+        
+        # 2. Añadimos la anotación central
+        fig.update_layout(
+            margin=dict(t=30, b=0, l=0, r=0), 
+            height=300, 
+            showlegend=True, 
+            legend=dict(orientation="h", y=-0.1),
+            annotations=[dict(
+                text=f'TOTAL<br><b>{total_inversion:,.0f} €</b>', 
+                x=0.5, y=0.5, 
+                font_size=16, 
+                showarrow=False,
+                font_family="Arial"
+            )]
+        )
         st.plotly_chart(fig, use_container_width=True)
+
+  
+    
+   
     
     pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
     st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf")
