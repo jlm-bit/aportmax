@@ -345,16 +345,43 @@ with tab2:
 
 with tab3:
     st.markdown("### 🔮 Capitalización a la Jubilación (67 años)")
-    rent = st.slider("Rentabilidad anual estimada (%)", 1.0, 7.0, 4.0) / 100
-    años_jub = 67 - 40
-    # cap_final = total_inv * ((1 + rent) ** años_jub)
-    cap_final = total_inv * ((1 + 0,07) ** años_jub)
     
-    st.success(f"La inversión total de este año ({total_inv:,.2f} €) se convertirá en **{cap_final:,.2f} €** al jubilarte.")
+    # Selector de rentabilidad dinámica
+    rent_input = st.slider("Rentabilidad anual estimada (%)", 1.0, 10.0, 5.0) 
+    rent_decimal = rent_input / 100
     
+    # Cálculo de años restantes (usando la variable 'edad' definida en el sidebar)
+    años_jub = 67 - edad
+    
+    # Cálculo del capital final basado en la inversión total (Empresa + Personal)
+    # Fórmula: Capital = Principal * (1 + r)^n
+    cap_final = total_inv * ((1 + rent_decimal) ** años_jub)
+    
+    # Mensaje de impacto
+    st.success(f"Si mantienes una rentabilidad del {rent_input}%, tu inversión de este año ({total_inv:,.2f} €) "
+               f"se convertirá en **{cap_final:,.2f} €** cuando cumplas 67 años.")
+    
+    # Generación de la curva de crecimiento para el gráfico
     x_graf = np.arange(0, años_jub + 1)
-    y_graf = total_inv * ((1 + rent) ** x_graf)
-    fig_j = go.Figure(data=go.Scatter(x=edad + x_graf, y=y_graf, fill='tozeroy', line_color='#3B82F6'))
-    fig_j.update_layout(title="Evolución de la aportación 2026", xaxis_title="Edad", yaxis_title="Capital acumulado (€)")
+    y_graf = total_inv * ((1 + rent_decimal) ** x_graf)
+    
+    # Gráfico interactivo
+    fig_j = go.Figure(data=go.Scatter(
+        x=edad + x_graf, 
+        y=y_graf, 
+        fill='tozeroy', 
+        line_color='#3B82F6',
+        hovertemplate='Edad: %{x}<br>Capital: %{y:,.2f} €'
+    ))
+    
+    fig_j.update_layout(
+        title=f"Crecimiento estimado al {rent_input}% anual",
+        xaxis_title="Edad del contribuyente",
+        yaxis_title="Valor del Fondo (€)",
+        margin=dict(l=20, r=20, t=40, b=20),
+        height=400
+    )
+    
     st.plotly_chart(fig_j, use_container_width=True)
-
+    
+    st.info("💡 **Nota:** Este cálculo asume que no realizas más aportaciones en el futuro y que la rentabilidad es constante. El poder del interés compuesto es mayor cuanto antes empieces.")
