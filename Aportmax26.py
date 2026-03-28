@@ -353,45 +353,41 @@ with tab2:
     pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes, ya_aportado)
     st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
 
-with tab3:
+with t3: # Asegúrate de que coincida con el nombre de tu tab (t3 o tab3)
     st.markdown("### 🔮 Capitalización a la Jubilación (67 años)")
     
-    # Selector de rentabilidad dinámica
-    rent_input = st.slider("Rentabilidad anual estimada (%)", 1.0, 10.0, 5.0) 
-    rent_decimal = rent_input / 100
+    # 1. Slider para que el usuario elija la rentabilidad
+    rent_pct = st.slider("Rentabilidad anual estimada (%)", 1.0, 10.0, 5.0) 
+    rent_decimal = rent_pct / 100
     
-    # Cálculo de años restantes (usando la variable 'edad' definida en el sidebar)
-    años_jub = 67 - edad
-    
-    # Cálculo del capital final basado en la inversión total (Empresa + Personal)
-    # Fórmula: Capital = Principal * (1 + r)^n
+    # 2. Cálculo del Capital Final (Interés Compuesto)
+    # Usamos total_inv que calculamos arriba
     cap_final = total_inv * ((1 + rent_decimal) ** años_jub)
     
-    # Mensaje de impacto
-    st.success(f"Si mantienes una rentabilidad del {rent_input}%, tu inversión de este año ({total_inv:,.2f} €) "
-               f"se convertirá en **{cap_final:,.2f} €** cuando cumplas 67 años.")
-    
-    # Generación de la curva de crecimiento para el gráfico
+    # 3. Mensaje de éxito con formato
+    st.success(f"La inversión total de este año ({total_inv:,.2f} EUR) se convertirá en **{cap_final:,.2f} EUR** al jubilarte con un {rent_pct}% de rentabilidad.")
+
+    # 4. Gráfico de evolución temporal
     x_graf = np.arange(0, años_jub + 1)
     y_graf = total_inv * ((1 + rent_decimal) ** x_graf)
     
-    # Gráfico interactivo
     fig_j = go.Figure(data=go.Scatter(
         x=edad + x_graf, 
         y=y_graf, 
         fill='tozeroy', 
         line_color='#3B82F6',
-        hovertemplate='Edad: %{x}<br>Capital: %{y:,.2f} €'
+        hovertemplate='Edad: %{x}<br>Capital: %{y:,.2f} EUR'
     ))
     
     fig_j.update_layout(
-        title=f"Crecimiento estimado al {rent_input}% anual",
-        xaxis_title="Edad del contribuyente",
-        yaxis_title="Valor del Fondo (€)",
-        margin=dict(l=20, r=20, t=40, b=20),
+        title=f"Crecimiento de la inversión al {rent_pct}% anual",
+        xaxis_title="Edad",
+        yaxis_title="Capital Acumulado (EUR)",
+        margin=dict(l=0, r=0, t=40, b=0),
         height=400
     )
-    
     st.plotly_chart(fig_j, use_container_width=True)
+    
+    st.info("⚠️ **Nota:** Este cálculo solo proyecta la aportación de este año 2026. No incluye aportaciones futuras.")use_container_width=True)
     
     st.info("💡 **Nota:** Este cálculo asume que no realizas más aportaciones en el futuro y que la rentabilidad es constante. El poder del interés compuesto es mayor cuanto antes empieces.")
