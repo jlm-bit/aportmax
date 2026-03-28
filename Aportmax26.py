@@ -463,7 +463,7 @@ with tab3:
     st.markdown("#### 📅 Comparativa de Renta Mensual (20 años)")
     r1, r2, r3 = st.columns(3)
     r1.metric("Renta PLAN FULL", f"{renta_a:,.2f} €/mes")
-    r2.metric("Renta SOLO EMPRESA", f"{renta_b:,.2f} €/mes", delta=f"-{dif_renta:,.2f} €/mes", delta_color="inverse")
+    r2.metric("Renta si dejas de invertir en tu PLAN", f"{renta_b:,.2f} €/mes", delta=f"-{dif_renta:,.2f} €/mes", delta_color="inverse")
     r3.metric("Sobresueldo Mensual", f"{dif_renta:,.2f} €/mes")
 
     # 5. Cierre con Notas
