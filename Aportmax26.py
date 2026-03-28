@@ -142,7 +142,7 @@ def generar_pdf_tecnico(empresa_total, max_p, inversion_t, ahorro, esfuerzo, sb,
     
     pdf.set_y(-15); pdf.set_font("helvetica", 'I', 7); pdf.set_text_color(120, 120, 120)
     pdf.cell(0, 5, "Documento generado para fines de planificacion interna.", align='C', ln=True)
-    return pdf.output()
+    return pdf.output(dest='S').encode('latin-1', errors='replace')
 
 @st.cache_data
 def generar_pdf_visual_v2(max_p, ahorro, inversion, extra, cuota_r, meses, ya_aportado):
@@ -168,7 +168,7 @@ def generar_pdf_visual_v2(max_p, ahorro, inversion, extra, cuota_r, meses, ya_ap
     for t, s in pasos:
         pdf.set_x(30); pdf.set_font("helvetica", 'B', 12); pdf.set_text_color(30, 58, 138); pdf.cell(0, 8, t, ln=True)
         pdf.set_x(35); pdf.set_font("helvetica", '', 11); pdf.set_text_color(60, 60, 60); pdf.multi_cell(0, 6, s); pdf.ln(5)
-    return pdf.output()
+    return pdf.output(dest='S').encode('latin-1', errors='replace')
 
 # --- 4. SIDEBAR ---
 with st.sidebar:
@@ -230,8 +230,8 @@ with tab1:
         st.plotly_chart(fig, use_container_width=True)
     
     pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
-    st.download_button("📄 Informe Fiscal Detallado", data=pdf_t.encode('latin-1'), file_name="Informe_Fiscal.pdf", use_container_width=True)
-
+   
+    st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, ...)
 with tab2:
     st.markdown("### 🎯 Plan Estratégico Personalizado")
     st.markdown(f"""<div class="kpi-container">
@@ -318,6 +318,5 @@ with tab2:
 
     st.markdown("<br>", unsafe_allow_html=True)
     pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes, ya_aportado)
-    st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v.encode('latin-1'), file_name="Plan_Accion.pdf", key="plan_pdf_final", use_container_width=True, type="primary")
-       
-    
+ 
+    st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, ...)
