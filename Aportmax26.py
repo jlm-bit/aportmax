@@ -356,18 +356,19 @@ with tab2:
 with tab3:
     st.markdown("### 🔮 Capitalización a la Jubilación (67 años)")
     
-    # 1. Slider de rentabilidad (usando punto decimal)
+    # 1. Slider de rentabilidad (usando punto decimal para Python)
     rent_pct = st.slider("Rentabilidad anual estimada (%)", 1.0, 10.0, 5.0) 
     rent_decimal = rent_pct / 100
     
-    # 2. Cálculo de años y capital (asegúrate de que 'edad' y 'total_inv' estén definidos antes)
+    # 2. Cálculo de años y capital final
+    # (Asegúrate de que 'edad' y 'total_inv' estén definidos antes en tu código)
     años_restantes = 67 - edad
     cap_final = total_inv * ((1 + rent_decimal) ** años_restantes)
     
     # 3. Mensaje de éxito
     st.success(f"La inversión total de este año ({total_inv:,.2f} EUR) se convertirá en **{cap_final:,.2f} EUR** al jubilarte al {rent_pct}% anual.")
 
-    # 4. Gráfico de evolución
+    # 4. Configuración del gráfico de evolución
     x_graf = np.arange(0, años_restantes + 1)
     y_graf = total_inv * ((1 + rent_decimal) ** x_graf)
     
@@ -383,14 +384,12 @@ with tab3:
         title=f"Crecimiento estimado al {rent_pct}% anual",
         xaxis_title="Edad",
         yaxis_title="Capital Acumulado (EUR)",
-        height=400
+        height=400,
+        margin=dict(l=0, r=0, t=40, b=0)
     )
     
-    # Línea del gráfico
+    # 5. Renderizado del gráfico (aquí es donde va el use_container_width)
     st.plotly_chart(fig_j, use_container_width=True)
     
-    # Nota informativa (Corregida sin el error de paréntesis)
+    # 6. Nota informativa final (ahora limpia de errores)
     st.info("⚠️ **Nota:** Este cálculo solo proyecta la aportación de este año 2026. No incluye aportaciones futuras.")
-    st.info("⚠️ **Nota:** Este cálculo solo proyecta la aportación de este año 2026. No incluye aportaciones futuras.")use_container_width=True)
-    
-    st.info("💡 **Nota:** Este cálculo asume que no realizas más aportaciones en el futuro y que la rentabilidad es constante. El poder del interés compuesto es mayor cuanto antes empieces.")
