@@ -1,6 +1,7 @@
 import numpy as np
 import streamlit as st
 from fpdf import FPDF
+import io
 import datetime
 import plotly.graph_objects as go
 
@@ -475,39 +476,73 @@ with tab3:
     """)
 
 # 6. Botón de Descarga de Informe
+ # --- SECCIÓN DE DESCARGA PDF ---
     st.markdown("---")
     
-    # Preparamos el contenido del informe en texto plano
-    informe_txt = f"""
-    INFORME DE PROYECCIÓN DE JUBILACIÓN - APORTMAX
-    -------------------------------------------
-    Fecha del informe: 2026
-    Edad Actual: {edad_act} años
-    Edad Jubilación: {edad_jub} años
-    Saldo Inicial: {saldo_existente:,.2f} €
-    Rentabilidad Estimada: {rent_pct}%
-    
-    ESCENARIO A: PLAN FULL (Empresa + Empleado)
-    - Aportación Anual Fija: {cuota_empresa_fija + cuota_empleado_fija:,.2f} €
-    - Capital al Jubilarse: {cap_a:,.2f} €
-    - Renta Mensual (20 años): {renta_a:,.2f} €/mes
-    
-    ESCENARIO B: SOLO EMPRESA
-    - Aportación Anual Fija: {cuota_empresa_fija:,.2f} €
-    - Capital al Jubilarse: {cap_b:,.2f} €
-    - Renta Mensual (20 años): {renta_b:,.2f} €/mes
-    
-    DIFERENCIA / VALOR DE TU APORTACIÓN
-    - Capital Extra: {dif_cap:,.2f} €
-    - Sobresueldo Mensual: {dif_renta:,.2f} €/mes
-    
-    Nota: Los cálculos son estimaciones basadas en aportaciones constantes y no garantizan rentabilidades futuras.
-    """
+    def generar_pdf(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct):
+        pdf = FPDF()
+        pdf.add_page()
+        
+        # Título
+        pdf.set_font("Arial", 'B', 16)
+        pdf.cell(200, 10, txt="INFORME DE PROYECCIÓN DE JUBILACIÓN", ln=True, align='C')
+        pdf.ln(10)
+        
+        # Datos de entrada
+        pdf.set_font("Arial", 'B', 12)
+        pdf.cell(200, 10, txt="Datos del Análisis:", ln=True)
+        pdf.set_font("Arial", '', 11)
+        pdf.cell(200, 8, txt=f"- Edad Actual: {edad_act} años", ln=True)
+        pdf.cell(200, 8, txt=f"- Edad de Jubilación: {edad_jub} años", ln=True)
+        pdf.cell(200, 8, txt=f"- Rentabilidad Estimada: {rent_pct}% anual", ln=True)
+        pdf.ln(5)
+        
+        # Tabla de Resultados
+        pdf.set_font("Arial", 'B', 12)
+        pdf.cell(200, 10, txt="Comparativa de Escenarios:", ln=True)
+        
+        # Encabezados
+        pdf.set_font("Arial", 'B', 10)
+        pdf.cell(60, 10, "Concepto", 1)
+        pdf.cell(60, 10, "Plan FULL (Tú+Emp)", 1)
+        pdf.cell(60, 10, "Solo Empresa", 1)
+        pdf.ln()
+        
+        # Filas
+        pdf.set_font("Arial", '', 10)
+        pdf.cell(60, 10, "Capital Final", 1)
+        pdf.cell(60, 10, f"{cap_a:,.0f} EUR", 1)
+        pdf.cell(60, 10, f"{cap_b:,.0f} EUR", 1)
+        pdf.ln()
+        
+        pdf.cell(60, 10, "Renta Mensual (20 años)", 1)
+        pdf.cell(60, 10, f"{renta_a:,.2f} EUR", 1)
+        pdf.cell(60, 10, f"{renta_b:,.2f} EUR", 1)
+        pdf.ln(15)
+        
+        # Conclusión destacada
+        pdf.set_font("Arial", 'B', 12)
+        pdf.set_text_color(39, 174, 96) # Verde
+        pdf.cell(200, 10, txt="VALOR DE TU APORTACIÓN PERSONAL:", ln=True)
+        pdf.set_font("Arial", '', 11)
+        pdf.set_text_color(0, 0, 0)
+        pdf.multi_cell(0, 8, txt=f"Al mantener tu plan activo, generas un patrimonio extra de {dif_cap:,.0f} EUR, "
+                               f"lo que se traduce en un sobresueldo mensual de {dif_renta:,.2f} EUR durante tu jubilación.")
+        
+        pdf.ln(10)
+        pdf.set_font("Arial", 'I', 8)
+        pdf.multi_cell(0, 5, txt="Nota: Este documento es una simulación basada en aportaciones constantes. "
+                                 "Las rentabilidades pasadas no garantizan beneficios futuros. "
+                                 "Calculado con la herramienta APORTMAX 2026.")
+        
+        return pdf.output(dest='S').encode('latin-1')
 
-    # Creamos el botón de descarga
+    # Botón para disparar la descarga
+    pdf_bytes = generar_pdf(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct)
+    
     st.download_button(
-        label="📥 Descargar mi Informe de Jubilación",
-        data=informe_txt,
-        file_name=f"Proyeccion_Jubilacion_{edad_act}_a_{edad_jub}.txt",
-        mime="text/plain",
+        label="📥 Descargar Informe Proyección (PDF)",
+        data=pdf_bytes,
+        file_name=f"Informe_Jubilacion_{edad_act}.pdf",
+        mime="application/pdf",
     )
