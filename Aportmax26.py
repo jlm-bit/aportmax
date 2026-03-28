@@ -354,65 +354,83 @@ with tab2:
     pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes, ya_aportado)
     st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
 
-with tab3:
-    st.markdown("### 🔮 El Poder del Interés Compuesto")
+with t3:
+    st.markdown("### 🔮 Proyección de Aportación Recurrente (Crecimiento 2%)")
     
-    # 1. Configuración de años y rentabilidad
+    # 1. Configuración de parámetros
     años_restantes = 67 - edad
-    rent_pct = st.slider("Rentabilidad anual estimada (%)", 1.0, 10.0, 7.0) 
+    rent_pct = st.slider("Rentabilidad anual del mercado (%)", 1.0, 10.0, 7.0) 
     rent_decimal = rent_pct / 100
+    crecimiento_anual = 0.02  # Tu aportación sube un 2% cada año
     
-    # 2. Cálculos de capitalización
-    # Inversión inicial (lo que se pone este año 2026)
-    principal = total_inv 
-    
-    # Generamos los datos año a año
+    # 2. Cálculos año a año (Simulación dinámica)
     edades = np.arange(edad, 68)
-    años_pasados = np.arange(0, len(edades))
+    capital_acumulado = []
+    aportaciones_acumuladas = []
+    intereses_totales = []
     
-    # Capital total en cada año: Principal * (1 + r)^n
-    capital_total = principal * ((1 + rent_decimal) ** años_pasados)
-    intereses_acumulados = capital_total - principal
-    solo_principal = np.full(len(edades), principal)
+    saldo_actual = 0
+    total_aportado = 0
+    aportacion_este_año = total_inv # Empezamos con el máximo de 2026
+    
+    for i in range(len(edades)):
+        # El saldo anterior genera intereses
+        interes_generado = saldo_actual * rent_decimal
+        
+        # Sumamos la nueva aportación (que crece un 2% anual)
+        saldo_actual += aportacion_este_año + interes_generado
+        total_aportado += aportacion_este_año
+        
+        # Guardamos datos para el gráfico
+        capital_acumulado.append(saldo_actual)
+        aportaciones_acumuladas.append(total_aportado)
+        intereses_totales.append(saldo_actual - total_aportado)
+        
+        # Preparamos la aportación del año que viene (+2%)
+        aportacion_este_año *= (1 + crecimiento_anual)
 
-    # 3. Gráfico Desglosado (Área Apilada)
+    # 3. Gráfico de Área Apilada Desglosado
     fig_j = go.Figure()
 
-    # Capa 1: El dinero que pusiste originalmente
+    # Capa 1: Suma de todas tus aportaciones a lo largo del tiempo
     fig_j.add_trace(go.Scatter(
-        x=edades, y=solo_principal,
+        x=edades, y=aportaciones_acumuladas,
         mode='lines',
-        name='Capital Aportado (2026)',
+        name='Total Aportado (Base + 2% anual)',
         stackgroup='one',
-        fillcolor='rgba(30, 58, 138, 0.5)', # Azul oscuro
-        line=dict(width=0.5, color='rgb(30, 58, 138)')
+        fillcolor='rgba(30, 58, 138, 0.6)',
+        line=dict(width=0)
     ))
 
-    # Capa 2: Los intereses que crecen sobre el dinero
+    # Capa 2: Intereses generados por todas esas aportaciones
     fig_j.add_trace(go.Scatter(
-        x=edades, y=intereses_acumulados,
+        x=edades, y=intereses_totales,
         mode='lines',
         name='Intereses Ganados',
         stackgroup='one',
-        fillcolor='rgba(16, 185, 129, 0.5)', # Verde
-        line=dict(width=0.5, color='rgb(16, 185, 129)')
+        fillcolor='rgba(16, 185, 129, 0.6)',
+        line=dict(width=0)
     ))
 
     fig_j.update_layout(
-        title=f"Proyección a {años_restantes} años (Jubilación a los 67)",
+        title=f"Estrategia Recurrente hasta los 67 años",
         xaxis_title="Tu Edad",
-        yaxis_title="Valor del Fondo (EUR)",
-        hovermode='x unicode',
+        yaxis_title="Capital acumulado (EUR)",
+        hovermode='x unified',
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         height=450
     )
 
     st.plotly_chart(fig_j, use_container_width=True)
 
-    # 4. Resumen de beneficios en tarjetas
+    # 4. Métricas Finales
     c1, c2, c3 = st.columns(3)
-    c1.metric("Inversión Hoy", f"{principal:,.2f} EUR")
-    c2.metric("Intereses Totales", f"{intereses_acumulados[-1]:,.2f} EUR", delta=f"{rent_pct}% anual")
-    c3.metric("Capital Final", f"{capital_total[-1]:,.2f} EUR")
+    with c1:
+        st.metric("Total que habrás aportado", f"{total_aportado:,.0f} EUR")
+    with c2:
+        st.metric("Intereses totales", f"{intereses_totales[-1]:,.0f} EUR")
+    with c3:
+        st.metric("Fondo de Jubilación", f"{capital_total := capital_acumulado[-1]:,.0f} EUR")
 
-    st.info(f"💡 **Dato clave:** Al jubilarte, el **{(intereses_acumulados[-1]/capital_total[-1])*100:.1f}%** de tu dinero serán intereses generados por no haber tocado la inversión.")
+    st.info(f"🚀 **Potencial:** Aportando cada año y subiendo la cuota un 2%, "
+            f"terminarás con un capital **{capital_total/total_aportado:.1f} veces mayor** a lo que invertiste.")
