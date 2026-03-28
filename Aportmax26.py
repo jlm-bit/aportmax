@@ -355,23 +355,26 @@ with tab2:
     st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
 
 with tab3:
-    st.markdown("### 🔮 Simulación de Capital Estimado a la Jubilación")
+    st.markdown("### 🔮 Simulador Dinámico de Jubilación")
     
-    # 1. Variables locales (fuera del sidebar para mayor limpieza)
+    # 1. Bloque de Entradas de Datos (Fuera del Sidebar)
     col_input1, col_input2 = st.columns(2)
     with col_input1:
-        # El usuario introduce aquí lo que ya tiene ahorrado hoy
-        saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=10000.0, step=1000.0, min_value=0.0)
-    with col_input2:
-        # Slider de rentabilidad
-        rent_pct = st.slider("Rentabilidad anual estimada (%)", 1.0, 10.0, 5.0)
+        edad_act = st.number_input("Tu Edad Actual", value=40, min_value=18, max_value=62)
+        saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=0.0, step=1000.0, min_value=0.0)
     
+    with col_input2:
+        # Preguntamos la edad de jubilación entre 63 y 67
+        edad_jub = st.slider("Edad de jubilación estimada", 63, 67, 67)
+        rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 5.0)
+    
+    # Parámetros internos
     rent_decimal = rent_pct / 100
-    crecimiento_anual = 0.00 # Crecimiento de la aportación futura
-    años_restantes = 67 - edad
+    crecimiento_anual = 0.00 # Crecimiento de la aportación (0%)
+    años_restantes = edad_jub - edad_act
     
     # 2. Simulación paso a paso
-    edades = np.arange(edad, 68)
+    edades = np.arange(edad_act, edad_jub + 1)
     cap_acumulado = []
     aport_acumuladas = []
     intereses_acumulados = []
@@ -384,7 +387,7 @@ with tab3:
         # El saldo genera intereses
         interes_año = saldo_actual * rent_decimal
         
-        # Guardamos datos ANTES de sumar la aportación del año para ver la foto inicial
+        # Guardamos datos antes de actualizar para el siguiente ciclo
         cap_acumulado.append(saldo_actual)
         aport_acumuladas.append(suma_aportada)
         intereses_acumulados.append(saldo_actual - suma_aportada)
@@ -394,17 +397,15 @@ with tab3:
         suma_aportada += cuota_año_actual
         cuota_año_actual *= (1 + crecimiento_anual)
 
-    # 3. Gráfico de Área Apilada
+    # 3. Gráfico de Área Apilada (Desglose Capital vs Interés)
     fig_j = go.Figure()
 
-    # Capa de Capital (Saldo Inicial + Aportaciones crecientes)
     fig_j.add_trace(go.Scatter(
         x=edades, y=aport_acumuladas,
         mode='lines', name='Capital Aportado Total',
         stackgroup='one', fillcolor='rgba(30, 58, 138, 0.6)', line=dict(width=0)
     ))
 
-    # Capa de Intereses
     fig_j.add_trace(go.Scatter(
         x=edades, y=intereses_acumulados,
         mode='lines', name='Intereses Acumulados',
@@ -412,8 +413,8 @@ with tab3:
     ))
 
     fig_j.update_layout(
-        title=f"Proyección: Saldo de {saldo_existente:,.0f}€ + Aportaciones recurrentes",
-        xaxis_title="Tu Edad",
+        title=f"Proyección hasta los {edad_jub} años",
+        xaxis_title="Edad",
         yaxis_title="Capital acumulado (EUR)",
         hovermode='x unified',
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
@@ -422,7 +423,7 @@ with tab3:
 
     st.plotly_chart(fig_j, use_container_width=True)
 
-    # 4. Métricas de Cierre
+    # 4. Métricas de Resultados
     total_final = cap_acumulado[-1]
     aportado_final = aport_acumuladas[-1]
     interes_final = intereses_acumulados[-1]
@@ -430,7 +431,10 @@ with tab3:
     c1, c2, c3 = st.columns(3)
     c1.metric("Aportación Total", f"{aportado_final:,.0f} EUR")
     c2.metric("Intereses Totales", f"{interes_final:,.0f} EUR")
-    c3.metric("Fondo Final 67 años", f"{total_final:,.0f} EUR")
+    c3.metric(f"Fondo a los {edad_jub} años", f"{total_final:,.0f} EUR")
 
-    st.info(f"💡 **Dato:** Empezando con {saldo_existente:,.0f} EUR y aportando {total_inv:,.0f} EUR este año (creciendo al 2%), "
-            f"llegarás a la jubilación con un capital donde el **{(interes_final/total_final)*100:.1f}%** es puro beneficio de mercado.")
+    # Mensaje dinámico de impacto
+    st.success(f"🎯 **Resumen:** Jubilándote a los **{edad_jub} años**, habrás logrado que el mercado te genere "
+               f"**{interes_final:,.0f} EUR** extra sobre tu ahorro inicial y tus aportaciones.")
+
+    st.info(f"💡 **Nota:** Se asume que tu aportación de {total_inv:,.2f} € se mantiene constante.")
