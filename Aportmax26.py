@@ -347,7 +347,8 @@ with tab3:
     st.markdown("### 🔮 Capitalización a la Jubilación (67 años)")
     rent = st.slider("Rentabilidad anual estimada (%)", 1.0, 7.0, 4.0) / 100
     años_jub = 67 - 40
-    cap_final = total_inv * ((1 + rent) ** años_jub)
+    # cap_final = total_inv * ((1 + rent) ** años_jub)
+    cap_final = total_inv * ((1 + 0,07) ** años_jub)
     
     st.success(f"La inversión total de este año ({total_inv:,.2f} €) se convertirá en **{cap_final:,.2f} €** al jubilarte.")
     
