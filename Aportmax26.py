@@ -476,6 +476,17 @@ with tab3:
     ahorro_fiscal_anual = mi_aportacion_anual_neta * (t_marginal_uso / 100)
     st.success(f"🎯 **Ahorro Fiscal:** Al aportar esta cantidad, Hacienda te 'devuelve' **{ahorro_fiscal_anual:,.2f} €** en impuestos este año (basado en un tipo del {t_marginal_uso}%).")
 
+# 5. NOTAS IMPORTANTES DE LA SIMULACIÓN
+    st.markdown("---")
+    with st.expander("📝 Notas y Cláusulas de la Simulación", expanded=True):
+        st.markdown(f"""
+        * **Aportaciones Constantes:** Se asume que las cuotas (empresa y empleado) no varían hasta la jubilación.
+        * **Sin Efecto Inflación:** Los cálculos se muestran en euros corrientes (valor nominal actual).
+        * **Estimación de Renta:** La renta mensual se calcula dividiendo el capital final entre 240 mensualidades (20 años), sin contar rentabilidades adicionales tras la jubilación.
+        * **Interés Compuesto:** Se asume una reinversión anual neta del **{rent_pct}%**. Rentabilidades pasadas no garantizan futuras.
+        * **Fiscalidad:** El ahorro fiscal es una estimación basada en tu tipo marginal actual del **{t_marginal_uso}%**.
+        """)
+    
     # 6. Generación de PDF Profesional
     st.markdown("---")
     
