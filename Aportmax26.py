@@ -456,8 +456,8 @@ with tab3:
     st.markdown("#### 💰 Comparativa de Capitales")
     c1, c2, c3 = st.columns(3)
     c1.metric("Capital PLAN FULL (aport.max)", f"{cap_a:,.0f} €")
-    c2.metric("Capital SOLO EMPRESA", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
-    c3.metric("Lo que pierdes si no inviertes al máximo en PPE", f"{dif_cap:,.0f} €")
+    c2.metric("Capital si dejas de invertir en tu PLAN", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
+    c3.metric("Lo que pierdes ", f"{dif_cap:,.0f} €")
 
     # Fila 2: Comparativa de Rentas
     st.markdown("#### 📅 Comparativa de Renta Mensual (20 años)")
