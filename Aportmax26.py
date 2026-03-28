@@ -354,14 +354,14 @@ with tab2:
     pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes, ya_aportado)
     st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
 
-with t3:
+with tab3:
     st.markdown("### 🔮 Simulador Dinámico de Jubilación")
     
     # 1. Bloque de Entradas de Datos (Diseño Compacto)
     col_input1, col_input2 = st.columns(2)
     with col_input1:
         edad_act = st.number_input("Tu Edad Actual", value=40, min_value=18, max_value=62)
-        saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=10000.0, step=1000.0, min_value=0.0)
+        saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=0.0, step=1000.0, min_value=0.0)
     
     with col_input2:
         # CAMBIO DE FORMATO: Selector visual de edad de jubilación
@@ -370,11 +370,11 @@ with t3:
             options=[63, 64, 65, 66, 67],
             value=67
         )
-        rent_pct = st.slider("Rentabilidad anual estimada (%)", 1.0, 10.0, 7.0)
+        rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 5.0)
     
     # Parámetros internos
     rent_decimal = rent_pct / 100
-    crecimiento_anual = 0.02 
+    crecimiento_anual = 0.0 
     años_restantes = edad_jub - edad_act
     
     # 2. Simulación paso a paso
