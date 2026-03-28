@@ -353,22 +353,22 @@ with tab2:
     pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes, ya_aportado)
     st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
 
-with t3: # Asegúrate de que coincida con el nombre de tu tab (t3 o tab3)
+with tab3:
     st.markdown("### 🔮 Capitalización a la Jubilación (67 años)")
     
-    # 1. Slider para que el usuario elija la rentabilidad
+    # 1. Slider de rentabilidad (usando punto decimal)
     rent_pct = st.slider("Rentabilidad anual estimada (%)", 1.0, 10.0, 5.0) 
     rent_decimal = rent_pct / 100
     
-    # 2. Cálculo del Capital Final (Interés Compuesto)
-    # Usamos total_inv que calculamos arriba
-    cap_final = total_inv * ((1 + rent_decimal) ** años_jub)
+    # 2. Cálculo de años y capital (asegúrate de que 'edad' y 'total_inv' estén definidos antes)
+    años_restantes = 67 - edad
+    cap_final = total_inv * ((1 + rent_decimal) ** años_restantes)
     
-    # 3. Mensaje de éxito con formato
-    st.success(f"La inversión total de este año ({total_inv:,.2f} EUR) se convertirá en **{cap_final:,.2f} EUR** al jubilarte con un {rent_pct}% de rentabilidad.")
+    # 3. Mensaje de éxito
+    st.success(f"La inversión total de este año ({total_inv:,.2f} EUR) se convertirá en **{cap_final:,.2f} EUR** al jubilarte al {rent_pct}% anual.")
 
-    # 4. Gráfico de evolución temporal
-    x_graf = np.arange(0, años_jub + 1)
+    # 4. Gráfico de evolución
+    x_graf = np.arange(0, años_restantes + 1)
     y_graf = total_inv * ((1 + rent_decimal) ** x_graf)
     
     fig_j = go.Figure(data=go.Scatter(
@@ -380,14 +380,17 @@ with t3: # Asegúrate de que coincida con el nombre de tu tab (t3 o tab3)
     ))
     
     fig_j.update_layout(
-        title=f"Crecimiento de la inversión al {rent_pct}% anual",
+        title=f"Crecimiento estimado al {rent_pct}% anual",
         xaxis_title="Edad",
         yaxis_title="Capital Acumulado (EUR)",
-        margin=dict(l=0, r=0, t=40, b=0),
         height=400
     )
+    
+    # Línea del gráfico
     st.plotly_chart(fig_j, use_container_width=True)
     
+    # Nota informativa (Corregida sin el error de paréntesis)
+    st.info("⚠️ **Nota:** Este cálculo solo proyecta la aportación de este año 2026. No incluye aportaciones futuras.")
     st.info("⚠️ **Nota:** Este cálculo solo proyecta la aportación de este año 2026. No incluye aportaciones futuras.")use_container_width=True)
     
     st.info("💡 **Nota:** Este cálculo asume que no realizas más aportaciones en el futuro y que la rentabilidad es constante. El poder del interés compuesto es mayor cuanto antes empieces.")
