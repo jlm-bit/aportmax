@@ -355,104 +355,74 @@ with tab2:
     st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
 
 with tab3:
-    st.markdown("### 🔮 Simulador Detallado de Jubilación")
+    st.markdown("### 🔮 Tu Futuro: De Capital a Renta Mensual")
     
-    # 1. Bloque de Entradas de Datos
-    col_input1, col_input2 = st.columns(2)
-    with col_input1:
+    # 1. Entradas de Datos Centralizadas
+    col_in1, col_in2 = st.columns(2)
+    with col_in1:
         edad_act = st.number_input("Tu Edad Actual", value=40, min_value=18, max_value=62)
         saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=0.0, step=1000.0, min_value=0.0)
     
-    with col_input2:
-        edad_jub = st.radio(
-            "Selecciona tu edad prevista de jubilación",
-            options=[63, 64, 65, 66, 67],
-            index=4,
-            horizontal=True
-        )
-        rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 4.5)
+    with col_in2:
+        edad_jub = st.radio("Edad prevista de jubilación", [63, 64, 65, 66, 67], index=4, horizontal=True)
+        rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 4.0)
     
-    # --- Lógica de Cálculo Desglosada ---
-    rent_decimal = rent_pct / 100
-    crecimiento_anual = 0.0 
-    años_restantes = edad_jub - edad_act
-    
+    # --- Lógica de Simulación ---
+    rent_dec = rent_pct / 100
+    crecimiento_anual = 0.0
     edades = np.arange(edad_act, edad_jub + 1)
-    cap_acumulado = []
-    acum_empresa = []
-    acum_empleado = []
-    intereses_acumulados = []
     
-    saldo_actual = saldo_existente 
-    total_empresa = 0
-    total_empleado = saldo_existente # Asumimos el saldo inicial como aportación previa del empleado
+    cap_total_evol = []
+    solo_capital_evol = []
+    interes_evol = []
     
-    # Variables de flujo anual (vienen de tus cálculos del Tab 1)
-    # emp_t es la aportación anual de la empresa
-    # max_p es tu aportación personal máxima
-    cuota_emp_anual = emp_t - e_riesgo
-    cuota_personal_anual = max_p 
+    saldo_iter = saldo_existente
+    aport_acumulada_iter = saldo_existente
+    cuota_anual_hoy = total_inv-e_riesgo # Suma de Empresa + Empleado de 2026
     
     for i in range(len(edades)):
-        # 1. El saldo anterior genera intereses
-        interes_año = saldo_actual * rent_decimal
+        int_anual = saldo_iter * rent_dec
         
-        # 2. Guardamos la foto del año actual para el gráfico
-        cap_acumulado.append(saldo_actual)
-        acum_empresa.append(total_empresa)
-        acum_empleado.append(total_empleado)
-        intereses_acumulados.append(saldo_actual - (total_empresa + total_empleado))
+        cap_total_evol.append(saldo_iter)
+        solo_capital_evol.append(aport_acumulada_iter)
+        interes_evol.append(saldo_iter - aport_acumulada_iter)
         
-        # 3. Actualizamos saldos para el año que viene
-        saldo_actual += cuota_emp_anual + cuota_personal_anual + interes_año
-        total_empresa += cuota_emp_anual
-        total_empleado += cuota_personal_anual
-        
-        # 4. Aplicamos el crecimiento del 2% a ambas aportaciones
-        cuota_emp_anual *= (1 + crecimiento_anual)
-        cuota_personal_anual *= (1 + crecimiento_anual)
+        saldo_iter += cuota_anual_hoy + int_anual
+        aport_acumulada_iter += cuota_anual_hoy
+        cuota_anual_hoy *= (1 + crecimiento_anual)
 
-    # 2. Gráfico de Área Apilada (Triple Capa)
+    # 2. Gráfico de Dos Capas (Capital vs Interés)
     fig_j = go.Figure()
-
-    # Capa 1: Aportaciones Empresa (Azul Oscuro)
     fig_j.add_trace(go.Scatter(
-        x=edades, y=acum_empresa,
-        mode='lines', name='Aport. Empresa',
-        stackgroup='one', fillcolor='rgba(30, 58, 138, 0.8)', line=dict(width=0)
+        x=edades, y=solo_capital_evol,
+        mode='lines', name='Capital Aportado',
+        stackgroup='one', fillcolor='rgba(30, 58, 138, 0.7)', line=dict(width=0)
     ))
-
-    # Capa 2: Aportaciones Empleado (Azul Claro)
     fig_j.add_trace(go.Scatter(
-        x=edades, y=acum_empleado,
-        mode='lines', name='Aport. Empleado',
-        stackgroup='one', fillcolor='rgba(59, 130, 246, 0.6)', line=dict(width=0)
-    ))
-
-    # Capa 3: Intereses (Verde)
-    fig_j.add_trace(go.Scatter(
-        x=edades, y=intereses_acumulados,
+        x=edades, y=interes_evol,
         mode='lines', name='Intereses Ganados',
         stackgroup='one', fillcolor='rgba(16, 185, 129, 0.6)', line=dict(width=0)
     ))
-
     fig_j.update_layout(
-        title=f"Desglose de Capital a los {edad_jub} años",
-        xaxis_title="Edad",
-        yaxis_title="Capital acumulado (EUR)",
-        hovermode='x unified',
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-        height=500
+        title=f"Evolución del Fondo hasta los {edad_jub} años",
+        xaxis_title="Edad", yaxis_title="Euros (€)",
+        hovermode='x unified', height=450,
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
     )
-
     st.plotly_chart(fig_j, use_container_width=True)
 
-    # 3. Métricas de Resultados Detalladas
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Total Empresa", f"{total_empresa:,.0f} EUR")
-    c2.metric("Total Empleado", f"{total_empleado:,.0f} EUR")
-    c3.metric("Total Intereses", f"{intereses_acumulados[-1]:,.0f} EUR")
-    c4.metric("FONDO FINAL", f"{cap_acumulado[-1]:,.0f} EUR")
+    # 3. Cálculo de la Renta Mensual (El Toque Maestro)
+    capital_final = cap_total_evol[-1]
+    años_renta = 20 # Estimación estándar de consumo del capital
+    # Calculamos una renta mensual simple (Capital / meses)
+    renta_mensual = capital_final / (años_renta * 12)
 
-    st.info(f"💡 **Análisis:** Al jubilarte, el **{(intereses_acumulados[-1]/cap_acumulado[-1])*100:.1f}%** de tu fondo "
-            f"será dinero 'gratis' generado por los intereses de mercado.")
+    # 4. Panel de Resultados
+    st.markdown("---")
+    res1, res2, res3 = st.columns(3)
+    res1.metric("Capital Final", f"{capital_final:,.0f} €")
+    res2.metric("Intereses Totales", f"{interes_evol[-1]:,.0f} €")
+    res3.metric("Renta Mensual Est.", f"{renta_mensual:,.2f} €/mes", help="Basado en el consumo del capital durante 20 años tras la jubilación.")
+
+    st.success(f"💡 **Conclusión:** Si te jubilas a los {edad_jub} años, dispondrás de una hucha de **{capital_final:,.0f} €**. "
+               f"Esto equivale a un sobresueldo de **{renta_mensual:,.2f} € al mes** durante 20 años de jubilación.")
