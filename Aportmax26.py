@@ -355,74 +355,98 @@ with tab2:
     st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
 
 with tab3:
-    st.markdown("### 🔮 Simulador de jubilación")
+    st.markdown("### 🔮 Comparativa: Plan Optimizado vs. Solo Empresa (Aportación Fija)")
     
-    # 1. Entradas de Datos Centralizadas
+    # 1. Entradas de Datos
     col_in1, col_in2 = st.columns(2)
     with col_in1:
-        edad_act = st.number_input("Tu Edad Actual", value=40, min_value=18, max_value=62)
-        saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=0.0, step=1000.0, min_value=0.0)
+        edad_act = st.number_input("Tu Edad Actual", value=40, min_value=18, max_value=62, key="edad_tab3")
+        saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=0.0, step=1000.0, min_value=0.0, key="saldo_tab3")
     
     with col_in2:
-        edad_jub = st.radio("Edad prevista de jubilación", [63, 64, 65, 66, 67], index=4, horizontal=True)
-        rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 4.0)
+        edad_jub = st.radio("Edad prevista de jubilación", [63, 64, 65, 66, 67], index=4, horizontal=True, key="jub_tab3")
+        rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 4.0, key="rent_tab3")
     
-    # --- Lógica de Simulación ---
+    # --- Lógica de Simulación (Aportaciones fijas 0% crecimiento) ---
     rent_dec = rent_pct / 100
-    crecimiento_anual = 0.0
+    # Eliminamos el crecimiento_anual (fijado a 0)
     edades = np.arange(edad_act, edad_jub + 1)
     
+    # Listas Escenario A: Plan Full (Tú + Empresa)
     cap_total_evol = []
     solo_capital_evol = []
     interes_evol = []
     
-    saldo_iter = saldo_existente
-    aport_acumulada_iter = saldo_existente
-    cuota_anual_hoy = total_inv-e_riesgo # Suma de Empresa + Empleado de 2026
+    # Lista Escenario B: Solo Empresa
+    cap_solo_empresa_evol = []
+    
+    saldo_a = saldo_existente
+    saldo_b = saldo_existente
+    aport_acum_a = saldo_existente
+    
+    # Cuotas FIJAS basadas en el cálculo de 2026
+    cuota_empresa_fija = emp_t 
+    cuota_empleado_fija = max_p - e_riesgo 
     
     for i in range(len(edades)):
-        int_anual = saldo_iter * rent_dec
+        # ESCENARIO A: Crecimiento con ahorro constante
+        int_a = saldo_a * rent_dec
+        cap_total_evol.append(saldo_a)
+        solo_capital_evol.append(aport_acum_a)
+        interes_evol.append(saldo_a - aport_acum_a)
         
-        cap_total_evol.append(saldo_iter)
-        solo_capital_evol.append(aport_acumulada_iter)
-        interes_evol.append(saldo_iter - aport_acumulada_iter)
+        # ESCENARIO B: Crecimiento solo con lo que pone la empresa (fijo)
+        int_b = saldo_b * rent_dec
+        cap_solo_empresa_evol.append(saldo_b)
         
-        saldo_iter += cuota_anual_hoy + int_anual
-        aport_acumulada_iter += cuota_anual_hoy
-        cuota_anual_hoy *= (1 + crecimiento_anual)
+        # Actualización de saldos (Sin multiplicar por crecimiento_anual)
+        saldo_a += (cuota_empresa_fija + cuota_empleado_fija) + int_a
+        saldo_b += cuota_empresa_fija + int_b
+        
+        aport_acum_a += (cuota_empresa_fija + cuota_empleado_fija)
 
-    # 2. Gráfico de Dos Capas (Capital vs Interés)
+    # 2. Gráfico Comparativo
     fig_j = go.Figure()
+    
+    # Capas del Plan Full (Aportación constante)
     fig_j.add_trace(go.Scatter(
         x=edades, y=solo_capital_evol,
-        mode='lines', name='Capital Aportado',
+        mode='lines', name='Capital Aportado (Tú + Emp)',
         stackgroup='one', fillcolor='rgba(30, 58, 138, 0.7)', line=dict(width=0)
     ))
     fig_j.add_trace(go.Scatter(
         x=edades, y=interes_evol,
-        mode='lines', name='Intereses Ganados',
+        mode='lines', name='Intereses Acumulados',
         stackgroup='one', fillcolor='rgba(16, 185, 129, 0.6)', line=dict(width=0)
     ))
+    
+    # Línea del Escenario "Solo Empresa"
+    fig_j.add_trace(go.Scatter(
+        x=edades, y=cap_solo_empresa_evol,
+        mode='lines', name='Si dejas de aportar tú',
+        line=dict(color='#EF4444', width=3, dash='dot')
+    ))
+
     fig_j.update_layout(
-        title=f"Evolución del Fondo hasta los {edad_jub} años",
+        title=f"Proyección a los {edad_jub} años (Aportación fija de {cuota_empresa_fija + cuota_empleado_fija:,.0f}€/año)",
         xaxis_title="Edad", yaxis_title="Euros (€)",
         hovermode='x unified', height=450,
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
     )
     st.plotly_chart(fig_j, use_container_width=True)
 
-    # 3. Cálculo de la Renta Mensual (El Toque Maestro)
-    capital_final = cap_total_evol[-1]
-    años_renta = 20 # Estimación estándar de consumo del capital
-    # Calculamos una renta mensual simple (Capital / meses)
-    renta_mensual = capital_final / (años_renta * 12)
+    # 3. Métricas y Renta Final
+    cap_final_a = cap_total_evol[-1]
+    cap_final_b = cap_solo_empresa_evol[-1]
+    diferencia = cap_final_a - cap_final_b
+    renta_mensual = cap_final_a / (20 * 12)
 
-    # 4. Panel de Resultados
     st.markdown("---")
-    res1, res2, res3 = st.columns(3)
-    res1.metric("Capital Final", f"{capital_final:,.0f} €")
-    res2.metric("Intereses Generados a Futuro", f"{interes_evol[-1]:,.0f} €")
-    res3.metric("Renta Mensual Est.", f"{renta_mensual:,.2f} €/mes", help="Basado en el consumo del capital durante 20 años tras la jubilación.")
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Capital Final", f"{cap_final_a:,.0f} €")
+    c2.metric("Pérdida por no aportar", f"-{diferencia:,.0f} €", delta_color="inverse")
+    c3.metric("Renta Mensual Est.", f"{renta_mensual:,.2f} €/mes")
 
-    st.success(f"💡 **Conclusión:** Si te jubilas a los {edad_jub} años, dispondrás de una hucha de **{capital_final:,.0f} €**. "
-               f"Esto equivale a un sobresueldo de **{renta_mensual:,.2f} € al mes** durante 20 años de jubilación.")
+    st.info(f"💰 **Resultado:** Manteniendo tu aportación anual de **{cuota_empleado_fija:,.2f} €** constante en el tiempo, "
+            f"conseguirás un fondo final de **{cap_final_a:,.0f} €**. "
+            f"Sin tu ayuda, el plan de la empresa solo alcanzaría los **{cap_final_b:,.0f} €**.")
