@@ -421,7 +421,7 @@ with tab3:
     st.markdown("---")
     res1, res2, res3 = st.columns(3)
     res1.metric("Capital Final", f"{capital_final:,.0f} €")
-    res2.metric("Intereses Totales", f"{interes_evol[-1]:,.0f} €")
+    res2.metric("Intereses Generados a Futuro", f"{interes_evol[-1]:,.0f} €")
     res3.metric("Renta Mensual Est.", f"{renta_mensual:,.2f} €/mes", help="Basado en el consumo del capital durante 20 años tras la jubilación.")
 
     st.success(f"💡 **Conclusión:** Si te jubilas a los {edad_jub} años, dispondrás de una hucha de **{capital_final:,.0f} €**. "
