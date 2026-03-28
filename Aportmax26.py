@@ -498,14 +498,14 @@ with tab3:
     st.markdown("#### 💰 Comparativa de Capitales")
     c1, c2, c3 = st.columns(3)
     c1.metric("Capital TOTAL (EMPRESA + EMPLEADO)", f"{cap_a:,.0f} €")
-    c2.metric("Capital (SOLO EMPRESA)", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
+    c2.metric("Capital (si dejas de aportar)", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
     c3.metric("Diferencia de Ahorro", f"{dif_cap:,.0f} €", help="Dinero extra que tendrías por mantener tu aportación elegida.")
 
     # Fila 2: Comparativa de Rentas ("El Sueldo Mensual")
     st.markdown("#### 📅 Comparativa de Renta Mensual (Consumo en 20 años)")
     r1, r2, r3 = st.columns(3)
     r1.metric("Renta PLAN ELEGIDO", f"{renta_a:,.2f} €/mes")
-    r2.metric("Renta SOLO EMPRESA", f"{renta_b:,.2f} €/mes", delta=f"-{dif_renta:,.2f} €/mes", delta_color="inverse")
+    r2.metric("Renta (si dejas de aportar)", f"{renta_b:,.2f} €/mes", delta=f"-{dif_renta:,.2f} €/mes", delta_color="inverse")
     r3.metric("Sobresueldo Mensual", f"{dif_renta:,.2f} €/mes", help="Dinero mensual extra durante 20 años.")
 
     # 5. Cierre con Notas
