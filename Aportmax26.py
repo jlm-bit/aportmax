@@ -243,7 +243,7 @@ aportacion_extraordinaria_neta = max(0.0, pendiente_para_limite - total_mensual_
 # --- 6. RENDERIZADO PRINCIPAL ---
 st.markdown('<div class="main-header"><h1 style="margin:0;">📈 APORTAMAX 2026</h1></div>', unsafe_allow_html=True)
 
-tab1, tab2 = st.tabs(["1. Cálculo del Límite", "2. Plan de Acción"])
+tab1, tab2, tab3 = st.tabs(["💰 Cálculo Fiscal", "🎯 Plan de Acción", "🚀 Proyección Jubilación"])
 
 with tab1:
     col_left, col_right = st.columns([1, 1.2])
@@ -342,3 +342,18 @@ with tab2:
 
     pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes, ya_aportado)
     st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
+
+with tab3:
+    st.markdown("### 🔮 Capitalización a la Jubilación (67 años)")
+    rent = st.slider("Rentabilidad anual estimada (%)", 1.0, 7.0, 4.0) / 100
+    años_jub = 67 - edad
+    cap_final = total_inv * ((1 + rent) ** años_jub)
+    
+    st.success(f"La inversión total de este año ({total_inv:,.2f} €) se convertirá en **{cap_final:,.2f} €** al jubilarte.")
+    
+    x_graf = np.arange(0, años_jub + 1)
+    y_graf = total_inv * ((1 + rent) ** x_graf)
+    fig_j = go.Figure(data=go.Scatter(x=edad + x_graf, y=y_graf, fill='tozeroy', line_color='#3B82F6'))
+    fig_j.update_layout(title="Evolución de la aportación 2026", xaxis_title="Edad", yaxis_title="Capital acumulado (€)")
+    st.plotly_chart(fig_j, use_container_width=True)
+
