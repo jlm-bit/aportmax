@@ -435,7 +435,7 @@ with tab3:
     # 2. Gráfico de Evolución (Paleta de Azules)
     fig_j = go.Figure()
     # Área 1: Capital Aportado (Azul Marino)
-    fig_j.add_trace(go.Scatter(x=edades, y=solo_capital_evol, mode='lines', name='Capital (Tú+Emp)', stackgroup='one', fillcolor='#1E3A8A', line=dict(width=0)))
+    fig_j.add_trace(go.Scatter(x=edades, y=solo_capital_evol, mode='lines', name='APORTACIÓN (Tú+Emp)', stackgroup='one', fillcolor='#1E3A8A', line=dict(width=0)))
     # Área 2: Intereses (Azul Cielo)
     fig_j.add_trace(go.Scatter(x=edades, y=interes_evol, mode='lines', name='Intereses', stackgroup='one', fillcolor='rgba(147, 197, 253, 0.6)', line=dict(width=0)))
     # Línea comparativa (Cyan brillante)
