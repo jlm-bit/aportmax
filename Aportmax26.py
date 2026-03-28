@@ -360,14 +360,15 @@ with tab3:
     # 1. Entradas de Datos
     col_in1, col_in2 = st.columns(2)
     with col_in1:
-        edad_act = st.number_input("Tu Edad Actual", value=40, min_value=18, max_value=62, key="edad_tab3")
-        saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=0.0, step=1000.0, min_value=0.0, key="saldo_tab3")
+        # Usamos keys únicas para evitar conflictos con otros inputs del app
+        edad_act = st.number_input("Tu Edad Actual", value=40, min_value=18, max_value=62, key="edad_final")
+        saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=0.0, step=1000.0, min_value=0.0, key="saldo_final")
     
     with col_in2:
-        edad_jub = st.radio("Edad prevista de jubilación", [63, 64, 65, 66, 67], index=4, horizontal=True, key="jub_tab3")
-        rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 4.0, key="rent_tab3")
+        edad_jub = st.radio("Edad prevista de jubilación", [63, 64, 65, 66, 67], index=4, horizontal=True, key="jub_final")
+        rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 4.0, key="rent_final")
     
-    # --- Lógica de Simulación (Aportaciones fijas 2026) ---
+    # --- Lógica de Simulación (Aportaciones fijas de 2026) ---
     rent_dec = rent_pct / 100
     edades = np.arange(edad_act, edad_jub + 1)
     
@@ -380,12 +381,12 @@ with tab3:
     saldo_b = saldo_existente
     aport_acum_a = saldo_existente
     
-    # Cuotas FIJAS (Sin crecimiento futuro)
+    # Cuotas FIJAS basadas en el cálculo previo del Tab 1
     cuota_empresa_fija = emp_t 
     cuota_empleado_fija = max_p - e_riesgo 
     
     for i in range(len(edades)):
-        # ESCENARIO A: Plan Full
+        # ESCENARIO A: Plan Full (Tú + Empresa)
         int_a = saldo_a * rent_dec
         cap_total_evol.append(saldo_a)
         solo_capital_evol.append(aport_acum_a)
@@ -395,16 +396,38 @@ with tab3:
         int_b = saldo_b * rent_dec
         cap_solo_empresa_evol.append(saldo_b)
         
-        # Actualización
+        # Actualización de saldos para el siguiente año
         saldo_a += (cuota_empresa_fija + cuota_empleado_fija) + int_a
         saldo_b += cuota_empresa_fija + int_b
         aport_acum_a += (cuota_empresa_fija + cuota_empleado_fija)
 
-    # 2. Gráfico de Evolución
+    # 2. Gráfico de Evolución con Colores Profesionales
     fig_j = go.Figure()
-    fig_j.add_trace(go.Scatter(x=edades, y=solo_capital_evol, mode='lines', name='Capital Aportado (Full)', stackgroup='one', fillcolor='rgba(30, 58, 138, 0.7)', line=dict(width=0)))
-    fig_j.add_trace(go.Scatter(x=edades, y=interes_evol, mode='lines', name='Intereses Acumulados', stackgroup='one', fillcolor='rgba(16, 185, 129, 0.6)', line=dict(width=0)))
-    fig_j.add_trace(go.Scatter(x=edades, y=cap_solo_empresa_evol, mode='lines', name='Si dejas de aportar tú', line=dict(color='#EF4444', width=3, dash='dot')))
+
+    # Capa 1: Capital Aportado (Azul Petróleo)
+    fig_j.add_trace(go.Scatter(
+        x=edades, y=solo_capital_evol, 
+        mode='lines', name='Capital Aportado (Full)', 
+        stackgroup='one', 
+        fillcolor='rgba(44, 62, 80, 0.7)', 
+        line=dict(width=0)
+    ))
+
+    # Capa 2: Intereses (Verde Esmeralda)
+    fig_j.add_trace(go.Scatter(
+        x=edades, y=interes_evol, 
+        mode='lines', name='Intereses Acumulados', 
+        stackgroup='one', 
+        fillcolor='rgba(39, 174, 96, 0.6)', 
+        line=dict(width=0)
+    ))
+
+    # Línea Comparativa: Solo Empresa (Rojo Coral)
+    fig_j.add_trace(go.Scatter(
+        x=edades, y=cap_solo_empresa_evol, 
+        mode='lines', name='Si dejas de aportar tú', 
+        line=dict(color='#E74C3C', width=3, dash='dot')
+    ))
 
     fig_j.update_layout(
         title=f"Proyección de Fondos a los {edad_jub} años",
@@ -418,33 +441,35 @@ with tab3:
     años_renta = 20
     meses = años_renta * 12
     
-    # Capitales
     cap_a = cap_total_evol[-1]
     cap_b = cap_solo_empresa_evol[-1]
     dif_cap = cap_a - cap_b
     
-    # Rentas
     renta_a = cap_a / meses
     renta_b = cap_b / meses
     dif_renta = renta_a - renta_b
 
-    # 4. Panel de Resultados: Capital y Renta
+    # 4. Panel de Resultados Detallado
     st.markdown("---")
     
-    # FILA 1: Comparativa de Capitales (El "Botín")
-    st.subheader("💰 Comparativa de Capitales")
+    # Fila 1: Comparativa de Capitales
+    st.markdown("#### 💰 Comparativa de Capitales")
     c1, c2, c3 = st.columns(3)
-    c1.metric("Capital PLAN FULL (APORT.MAXIMA)", f"{cap_a:,.0f} €")
-    c2.metric("Capital SOLO APORTACIÓN EMPRESA", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
-    c3.metric("PÉRDIDA de Ahorro", f"{dif_cap:,.0f} €", help="Dinero extra que tendrías por mantener tu aportación.")
+    c1.metric("Capital PLAN FULL", f"{cap_a:,.0f} €")
+    c2.metric("Capital SOLO EMPRESA", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
+    c3.metric("Diferencia de Ahorro", f"{dif_cap:,.0f} €")
 
-    # FILA 2: Comparativa de Rentas (El "Sueldo")
-    st.subheader("📅 Comparativa de Renta Mensual")
+    # Fila 2: Comparativa de Rentas
+    st.markdown("#### 📅 Comparativa de Renta Mensual (20 años)")
     r1, r2, r3 = st.columns(3)
     r1.metric("Renta PLAN FULL", f"{renta_a:,.2f} €/mes")
     r2.metric("Renta SOLO EMPRESA", f"{renta_b:,.2f} €/mes", delta=f"-{dif_renta:,.2f} €/mes", delta_color="inverse")
-    r3.metric("Sobresueldo Mensual", f"{dif_renta:,.2f} €/mes", help="Dinero mensual extra durante 20 años.")
+    r3.metric("Sobresueldo Mensual", f"{dif_renta:,.2f} €/mes")
 
-    st.success(f"🎯 **Conclusión:** Mantener tu plan activo te permite jubilarte con **{dif_cap:,.0f} € más** de capital, lo que se traduce en un nivel de vida de **{dif_renta:,.2f} € extra cada mes**.")
-
-    st.success(f"🎯 **Notas:** Se ha considerado que la aportación máxima se mantiene constante a futuro**.")
+    # 5. Cierre con Notas
+    st.success(f"🎯 **Notas de la simulación:**")
+    st.markdown(f"""
+    * **Aportaciones Constantes:** Se ha considerado que las aportaciones se mantienen fijas en **{(cuota_empresa_fija + cuota_empleado_fija):,.0f} €/año** (Tú + Empresa).
+    * **Consumo de Capital:** La renta mensual de **{renta_a:,.2f} €** asume que agotas el capital en **20 años** tras la jubilación.
+    * **Interés Compuesto:** Los intereses se reinvierten anualmente al **{rent_pct}%** neto de comisiones.
+    """)
