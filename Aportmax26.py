@@ -206,9 +206,11 @@ def generar_pdf_visual_v2(max_p, ahorro, inversion, extra, cuota_r, meses, ya_ap
     return pdf.output(dest='S').encode('latin-1', errors='replace')
 
 # --- 4. SIDEBAR (CON MIN_VALUE=0.0) ---
+
 with st.sidebar:
     st.header("⚙️ DATOS NECESARIOS")
     with st.expander("👤 DATOS EMPRESA", expanded=True):
+        edad = st.number_input("Edad Actual", value=40, min_value=18, max_value=66)
         sb = st.number_input("Sueldo Bruto Anual (€)", value=60000.0, step=1000.0, min_value=0.0)
         e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=0.0, step=25.0, min_value=0.0)
         e_riesgo = st.number_input("Prima Anual Riesgo PPE (€)", value=0.0, step=25.0, min_value=0.0)
