@@ -497,7 +497,7 @@ with tab3:
     # Fila 1: Comparativa de Capitales ("El Botín")
     st.markdown("#### 💰 Comparativa de Capitales")
     c1, c2, c3 = st.columns(3)
-    c1.metric("Capital PLAN ELEGIDO", f"{cap_a:,.0f} €")
+    c1.metric("Capital TOTAL", f"{cap_a:,.0f} €")
     c2.metric("Capital SOLO EMPRESA", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
     c3.metric("Diferencia de Ahorro", f"{dif_cap:,.0f} €", help="Dinero extra que tendrías por mantener tu aportación elegida.")
 
