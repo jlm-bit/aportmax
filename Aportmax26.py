@@ -434,9 +434,9 @@ with tab3:
     # FILA 1: Comparativa de Capitales (El "Botín")
     st.subheader("💰 Comparativa de Capitales")
     c1, c2, c3 = st.columns(3)
-    c1.metric("Capital PLAN FULL", f"{cap_a:,.0f} €")
-    c2.metric("Capital SOLO EMPRESA", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
-    c3.metric("Diferencia de Ahorro", f"{dif_cap:,.0f} €", help="Dinero extra que tendrías por mantener tu aportación.")
+    c1.metric("Capital PLAN FULL (APORT.MAXIMA)", f"{cap_a:,.0f} €")
+    c2.metric("Capital SOLO APORTACIÓN EMPRESA", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
+    c3.metric("PÉRDIDA de Ahorro", f"{dif_cap:,.0f} €", help="Dinero extra que tendrías por mantener tu aportación.")
 
     # FILA 2: Comparativa de Rentas (El "Sueldo")
     st.subheader("📅 Comparativa de Renta Mensual")
@@ -446,3 +446,5 @@ with tab3:
     r3.metric("Sobresueldo Mensual", f"{dif_renta:,.2f} €/mes", help="Dinero mensual extra durante 20 años.")
 
     st.success(f"🎯 **Conclusión:** Mantener tu plan activo te permite jubilarte con **{dif_cap:,.0f} € más** de capital, lo que se traduce en un nivel de vida de **{dif_renta:,.2f} € extra cada mes**.")
+
+    st.success(f"🎯 **Notas:** Se ha considerado que la aportación máxima se mantiene constante a futuro**.")
