@@ -357,20 +357,24 @@ with tab2:
 with tab3:
     st.markdown("### 🔮 Simulador Dinámico de Jubilación")
     
-    # 1. Bloque de Entradas de Datos (Fuera del Sidebar)
+    # 1. Bloque de Entradas de Datos (Diseño Compacto)
     col_input1, col_input2 = st.columns(2)
     with col_input1:
         edad_act = st.number_input("Tu Edad Actual", value=40, min_value=18, max_value=62)
         saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=0.0, step=1000.0, min_value=0.0)
     
     with col_input2:
-        # Preguntamos la edad de jubilación entre 63 y 67
-        edad_jub = st.slider("Edad de jubilación estimada", 63, 67, 67)
+        # CAMBIO DE FORMATO: Selector visual de edad de jubilación
+        edad_jub = st.select_slider(
+            "Selecciona tu edad prevista de jubilación",
+            options=[63, 64, 65, 66, 67],
+            value=67
+        )
         rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 5.0)
     
     # Parámetros internos
     rent_decimal = rent_pct / 100
-    crecimiento_anual = 0.00 # Crecimiento de la aportación (0%)
+    crecimiento_anual = 0.0 
     años_restantes = edad_jub - edad_act
     
     # 2. Simulación paso a paso
@@ -381,23 +385,20 @@ with tab3:
     
     saldo_actual = saldo_existente 
     suma_aportada = saldo_existente 
-    cuota_año_actual = total_inv # Aportación inicial calculada en Tab 1
+    cuota_año_actual = total_inv 
     
     for i in range(len(edades)):
-        # El saldo genera intereses
         interes_año = saldo_actual * rent_decimal
         
-        # Guardamos datos antes de actualizar para el siguiente ciclo
         cap_acumulado.append(saldo_actual)
         aport_acumuladas.append(suma_aportada)
         intereses_acumulados.append(saldo_actual - suma_aportada)
         
-        # Actualizamos para el año siguiente
         saldo_actual += cuota_año_actual + interes_año
         suma_aportada += cuota_año_actual
         cuota_año_actual *= (1 + crecimiento_anual)
 
-    # 3. Gráfico de Área Apilada (Desglose Capital vs Interés)
+    # 3. Gráfico de Área Apilada
     fig_j = go.Figure()
 
     fig_j.add_trace(go.Scatter(
@@ -433,8 +434,4 @@ with tab3:
     c2.metric("Intereses Totales", f"{interes_final:,.0f} EUR")
     c3.metric(f"Fondo a los {edad_jub} años", f"{total_final:,.0f} EUR")
 
-    # Mensaje dinámico de impacto
-    st.success(f"🎯 **Resumen:** Jubilándote a los **{edad_jub} años**, habrás logrado que el mercado te genere "
-               f"**{interes_final:,.0f} EUR** extra sobre tu ahorro inicial y tus aportaciones.")
-
-    st.info(f"💡 **Nota:** Se asume que tu aportación de {total_inv:,.2f} € se mantiene constante.")
+    st.success(f"🎯 Con la jubilación a los **{edad_jub} años**, el interés compuesto te aporta un extra de **{interes_final:,.0f} EUR**.")
