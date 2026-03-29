@@ -520,10 +520,10 @@ with tab3:
     # Línea comparativa (Cyan brillante)
     fig_j.add_trace(go.Scatter(x=edades, y=cap_solo_empresa_evol, mode='lines', name='Si dejas de aportar tú', line=dict(color='#00D4FF', width=3, dash='dot')))
 
-    fig_j.update_layout(
-       title={
-            'text': f"<b>PROYECCIÓN DE FONDOS HASTA LOS {edad_jub} AÑOS</b><br><span style='font-size:14px; color:#64748b;'>Aportación Total destinada al ahorro: {aportacion_total_anual:,.2f} €/año</span>",
-            'y': 0.93,
+  fig_j.update_layout(
+        title={
+            'text': f"<b>PROYECCIÓN DE FONDOS HASTA LOS {edad_jub} AÑOS</b><br><span style='font-size:14px; color:#64748b;'>Aportación Total destinada al ahorro (Tú + Empresa): {cuota_empresa_fija + cuota_empleado_fija:,.2f} €/año</span>",
+            'y': 0.94, # Ajustado levemente hacia arriba
             'x': 0.5,
             'xanchor': 'center',
             'yanchor': 'top',
@@ -532,10 +532,12 @@ with tab3:
         xaxis_title="Edad del partícipe",
         yaxis_title="Capital acumulado (€)",
         hovermode='x unified',
-        height=450,
-        margin=dict(t=80, b=40, l=60, r=40),
+        height=480, # Subimos un poco el alto para acomodar el título doble
+        margin=dict(t=100, b=60, l=60, r=40), # Aumentamos 't' (top) de 80 a 100
         plot_bgcolor='white',
         paper_bgcolor='rgba(0,0,0,0)',
+        # ... resto de tu configuración de ejes y leyenda ...
+    )
         # Estilo de la cuadrícula
         xaxis=dict(
             showgrid=True, 
