@@ -346,31 +346,39 @@ with tab2:
     meses_nombres_es = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
                         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
     
+    # 1. Cálculos base
+    proyeccion_final = ya_aportado + (c_m * meses_restantes)
+    porcentaje_uso = min(proyeccion_final / max_p, 1.0) if max_p > 0 else 0
+
+    # 2. Definición de Estados (Crítico para evitar NameError)
+    if proyeccion_final > max_p:
+        color_alerta, icon_estado = "#ef4444", "⚠️"
+        msg_estado = f"EXCESO: +{proyeccion_final - max_p:,.0f}€"
+    elif proyeccion_final >= max_p * 0.98:
+        color_alerta, icon_estado = "#22c55e", "🎯"
+        msg_estado = "PLAN ÓPTIMO"
+    else:
+        color_alerta, icon_estado = "#f59e0b", "💡"
+        msg_estado = f"OPORTUNIDAD: +{max_p - proyeccion_final:,.0f}€"
+
     st.markdown("### 🎯 Plan de Acción Personal")
     
-    # --- 1. DESGLOSE COMPACTO ---
+    # --- 3. DESGLOSE COMPACTO ---
     c1, c2, c3 = st.columns(3)
-    
     with c1:
-        # Usamos el mes anterior al actual para el rango 'Ya aportado'
         mes_fin_ya = meses_nombres_es[hoy.month - 2] if hoy.month > 1 else "Ene"
-        st.markdown(f"<p style='margin:0; font-size:0.85rem;'><b>✅ Ya aportado</b></p><h4 style='margin:0;'>{ya_aportado:,.0f} €</h4><small style='color:#64748b;'>Ene - {mes_fin_ya}</small>", unsafe_allow_html=True)
-
+        st.markdown(f"<p style='margin:0; font-size:0.8rem;'><b>✅ Ya aportado</b></p><h4 style='margin:0;'>{ya_aportado:,.0f}€</h4><small style='color:#64748b;'>Ene-{mes_fin_ya[:3]}</small>", unsafe_allow_html=True)
     with c2:
-        st.markdown(f"<p style='margin:0; font-size:0.85rem;'><b>⏳ Pendiente</b></p><h4 style='margin:0;'>{c_m * meses_restantes:,.0f} €</h4><small style='color:#64748b;'>{meses_restantes} meses x {c_m:,.0f}€</small>", unsafe_allow_html=True)
-
+        st.markdown(f"<p style='margin:0; font-size:0.8rem;'><b>⏳ Pendiente</b></p><h4 style='margin:0;'>{c_m * meses_restantes:,.0f}€</h4><small style='color:#64748b;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
     with c3:
-        proyeccion_final = ya_aportado + (c_m * meses_restantes)
-        color_proy = "#ef4444" if proyeccion_final > max_p else "#1e293b"
-        st.markdown(f"<p style='margin:0; font-size:0.85rem;'><b>🚀 Total 2026</b></p><h4 style='margin:0; color:{color_proy};'>{proyeccion_final:,.0f} €</h4><small style='color:#64748b;'>Est. cierre</small>", unsafe_allow_html=True)
+        st.markdown(f"<p style='margin:0; font-size:0.8rem;'><b>🚀 Total 2026</b></p><h4 style='margin:0; color:{color_alerta};'>{proyeccion_final:,.0f}€</h4><small style='color:#64748b;'>Est. cierre</small>", unsafe_allow_html=True)
 
-    # --- 2. BARRA DE PROGRESO MÍNIMA ---
-    porcentaje_uso = min(proyeccion_final / max_p, 1.0) if max_p > 0 else 0
+    # --- 4. BARRA DE PROGRESO MÍNIMA ---
     st.markdown(f"""
         <div style="background: #f8fafc; padding: 8px 12px; border-radius: 8px; border: 1px solid #e2e8f0; margin-top: 10px;">
             <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 2px;">
                 <span style="font-weight: bold; color: #475569;">{icon_estado} {msg_estado}</span>
-                <span style="font-weight: bold; color: {color_alerta};">{proyeccion_final:,.0f} / {max_p:,.0f} €</span>
+                <span style="font-weight: bold; color: {color_alerta};">{proyeccion_final:,.0f} / {max_p:,.0f}€</span>
             </div>
             <div style="background-color: #e2e8f0; border-radius: 4px; height: 6px; width: 100%;">
                 <div style="background-color: {color_alerta}; width: {porcentaje_uso*100}%; height: 6px; border-radius: 4px;"></div>
