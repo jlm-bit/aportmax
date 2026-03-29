@@ -527,7 +527,7 @@ total_ahorro_anual = cuota_empresa_fija + cuota_empleado_fija
 # --- 2. CONFIGURACIÓN DEL LAYOUT ---
 fig_j.update_layout(
     title={
-        'text': f"<b>PROYECCIÓN DE FONDOS HASTA LOS {edad_jub} AÑOS</b><br><span style='font-size:14px; color:#64748b;'>Aportación Total destinada al ahorro (Tú + Empresa): {total_ahorro_anual:,.2f} €/año</span>",
+        'text': f"<b>PROYECCIÓN DE FONDOS HASTA LOS {edad_jub} AÑOS
         'y': 0.94,
         'x': 0.5,
         'xanchor': 'center',
