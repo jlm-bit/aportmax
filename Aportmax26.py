@@ -528,7 +528,7 @@ with tab3:
 
     st.plotly_chart(fig_j, use_container_width=True, config={'displayModeBar': False})
 
-    # 4. Cálculos finales y Métricas (Alineación corregida)
+   # 4. Cálculos finales y Métricas (Alineación corregida)
     cap_a, cap_b = cap_total_evol[-1], cap_solo_empresa_evol[-1]
     dif_cap = cap_a - cap_b
     renta_a, renta_b = cap_a / 240, cap_b / 240 
@@ -536,13 +536,30 @@ with tab3:
 
     st.markdown("#### 📊 Impacto en tu Jubilación")
     m1, m2, m3 = st.columns(3)
+    
+    # Patrimonio total acumulado
     m1.metric("Patrimonio Final", f"{cap_a:,.0f} €")
-    m2.metric("Plus por Aportar", f"+ {dif_cap:,.0f} €")
-    m3.metric("Renta Mensual Extra", f"+ {dif_renta:,.2f} €/mes")
+    
+    # Capital extra conseguido gracias a las aportaciones voluntarias
+    m2.metric("Plus por Aportar", f"{dif_cap:,.0f} €", delta="Ahorro Extra", delta_color="normal")
+    
+    # Sobresueldo mensual durante 20 años
+    m3.metric("Renta Mensual Extra", f"{dif_renta:,.2f} €/mes", delta="Sobresueldo", delta_color="normal")
 
     # 5. Descarga de Informe
+    st.markdown("---")
     try:
+        # Generamos los bytes del PDF
         pdf_out = preparar_pdf_simulacion(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, mi_aportacion_anual_neta)
-        st.download_button(label="📥 DESCARGAR INFORME DE JUBILACIÓN (PDF)", data=bytes(pdf_out), file_name=f"Simulacion_Jubilacion_{edad_act}.pdf", mime="application/pdf", key="btn_descarga_final_v3")
+        
+        # Botón de descarga con formato binario seguro
+        st.download_button(
+            label="📥 DESCARGAR INFORME DE JUBILACIÓN (PDF)", 
+            data=bytes(pdf_out), 
+            file_name=f"Simulacion_Jubilacion_{edad_act}.pdf", 
+            mime="application/pdf", 
+            key="btn_descarga_final_v3",
+            use_container_width=True
+        )
     except Exception as e:
         st.error(f"Error al generar el PDF: {e}")
