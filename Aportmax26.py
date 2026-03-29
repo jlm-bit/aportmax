@@ -522,7 +522,7 @@ with tab3:
         
 # --- 1. DECLARACIÓN PREVIA (Obligatorio para evitar NameError) ---
 # Asegúrate de que estas variables existan arriba en tu Tab 3
-total_ahorro_anual = cuota_empresa_fija + cuota_empleado_fija
+# total_ahorro_anual = cuota_empresa_fija + cuota_empleado_fija
 
 # --- 2. CONFIGURACIÓN DEL LAYOUT ---
 fig_j.update_layout(
