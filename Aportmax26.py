@@ -213,44 +213,49 @@ with st.sidebar:
     st.header("⚙️ DATOS NECESARIOS")
     
     with st.expander("👤 DATOS EMPRESA", expanded=True):
-        sb = st.number_input("Sueldo Bruto Anual (€)", value=60000.0, step=1000.0, min_value=0.0)
+        sb = st.number_input("Sueldo Bruto Anual (€)", value=65000.0, step=1000.0, min_value=0.0)
         e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=0.0, step=25.0, min_value=0.0)
         e_riesgo = st.number_input("Prima Anual Riesgo PPE (€)", value=0.0, step=25.0, min_value=0.0)
         
-        # --- CONTROL 1: La aportación de la empresa no supera los 10.000 € ---
-        emp_t_calculada = (e_ahorro * 12) + e_riesgo
-        emp_t = min(emp_t_calculada, 10000.0)
+        # --- CONTROL DE LÍMITE EMPRESA (Ahorro + Riesgo <= 10.000€) ---
+        emp_t_bruta = (e_ahorro * 12) + e_riesgo
+        emp_t = min(emp_t_bruta, 10000.0)
         
-        if emp_t_calculada > 10000.0:
-            st.warning("⚠️ La suma de aportación y riesgo de la empresa excede el límite de 10.000 €.")
+        if emp_t_bruta > 10000.0:
+            st.warning(f"⚠️ La aportación de la empresa se ha limitado a 10.000€ (Exceso: {emp_t_bruta - 10000.0:,.2f}€)")
 
     # --- LÓGICA DE LÍMITES FISCALES ---
     CUOTA_SS_PRE = min(sb, 5101.0 * 12) * 0.0635 
     BASE_PRE_LIMIT = max(0.0, sb - CUOTA_SS_PRE - 2000.0)
     
-    # Cálculo del máximo personal según coeficientes (función externa)
-    max_por_coeficiente = calcular_max_personal_adicional(emp_t, sb)
+    # Cálculo del máximo personal según coeficientes
+    max_personal_coef = calcular_max_personal_adicional(emp_t, sb)
     
-    # --- CONTROL 2: El total (Empresa + Personal) no puede superar los 10.000 € ---
-    # Además sumamos los 1.500 € de límite general si aplica, pero siempre capado a (10k - emp_t)
-    MAX_P_LIMIT = max(0.0, min(max_por_coeficiente + 1500, 10000.0 - emp_t))
+    # --- CONTROL TOTAL: EMPRESA + PERSONAL <= 10.000€ ---
+    # El límite personal es el menor de: (Coeficiente + 1500) o (Hueco hasta 10k)
+    MAX_P_LIMIT = max(0.0, min(max_personal_coef + 1500, 10000.0 - emp_t))
     
-    # --- CONTROL 3: Límite del 30% de la Base Imponible ---
+    # Límite del 30% de la Base Imponible
     if (emp_t + MAX_P_LIMIT) > (BASE_PRE_LIMIT * 0.30):
         MAX_P_LIMIT = max(0.0, (BASE_PRE_LIMIT * 0.30) - emp_t)
 
     with st.expander("📅 APORTACIONES PERSONALES", expanded=True):
-        # Aseguramos que el value no sea superior al nuevo límite calculado
-        c_m = st.number_input("Aport. periódica mensual (€)", value=0.0, step=50.0, min_value=0.0)
-        
-        # El max_value del input se ajusta dinámicamente al límite legal real
-        e_y = st.number_input(
-            "Aport. Extras ya realizadas (€)", 
-            value=0.0, 
-            max_value=max(0.0, float(MAX_P_LIMIT)), 
-            step=100.0, 
-            min_value=0.0
-        )
+        if MAX_P_LIMIT <= 0:
+            st.info("🚫 Has alcanzado el límite legal máximo de aportación anual (10.000€) con la aportación de la empresa.")
+            c_m = 0.0
+            e_y = 0.0
+        else:
+            # Aseguramos que el value no sea superior al nuevo límite calculado
+            c_m = st.number_input("Aport. periódica mensual (€)", value=0.0, step=50.0, min_value=0.0)
+            
+            # El max_value del input se ajusta dinámicamente al límite legal real
+            e_y = st.number_input(
+                "Aport. Extras ya realizadas (€)", 
+                value=0.0, 
+                max_value=max(0.0, float(MAX_P_LIMIT)), 
+                step=100.0, 
+                min_value=0.0
+            )
 
 # --- 5. LÓGICA DE CÁLCULO ---
 hoy = datetime.date.today()
