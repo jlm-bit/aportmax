@@ -519,8 +519,10 @@ with tab3:
     fig_j.add_trace(go.Scatter(x=edades, y=interes_evol, mode='lines', name='Intereses', stackgroup='one', fillcolor='rgba(147, 197, 253, 0.6)', line=dict(width=0)))
     # Línea comparativa (Cyan brillante)
     fig_j.add_trace(go.Scatter(x=edades, y=cap_solo_empresa_evol, mode='lines', name='Si dejas de aportar tú', line=dict(color='#00D4FF', width=3, dash='dot')))
-
-  fig_j.update_layout(
+    
+    aportacion_total_anual = cuota_empresa_fija + cuota_empleado_fija
+  
+fig_j.update_layout(
         title={
             'text': f"<b>PROYECCIÓN DE FONDOS HASTA LOS {edad_jub} AÑOS</b><br><span style='font-size:14px; color:#64748b;'>Aportación Total destinada al ahorro (Tú + Empresa): {cuota_empresa_fija + cuota_empleado_fija:,.2f} €/año</span>",
             'y': 0.94, # Ajustado levemente hacia arriba
