@@ -521,13 +521,13 @@ with tab3:
     fig_j.add_trace(go.Scatter(x=edades, y=cap_solo_empresa_evol, mode='lines', name='Si dejas de aportar tú', line=dict(color='#00D4FF', width=3, dash='dot')))
 
     fig_j.update_layout(
-        title={
-            'text': f"<b>PROYECCIÓN DE FONDOS HASTA LOS {edad_jub} AÑOS</b>",
-            'y':0.95,
-            'x':0.5,
+       title={
+            'text': f"<b>PROYECCIÓN DE FONDOS HASTA LOS {edad_jub} AÑOS</b><br><span style='font-size:14px; color:#64748b;'>Aportación Total destinada al ahorro: {aportacion_total_anual:,.2f} €/año</span>",
+            'y': 0.93,
+            'x': 0.5,
             'xanchor': 'center',
             'yanchor': 'top',
-            'font': dict(size=18, color='#1e293b')
+            'font': dict(size=20, color='#1e293b')
         },
         xaxis_title="Edad del partícipe",
         yaxis_title="Capital acumulado (€)",
