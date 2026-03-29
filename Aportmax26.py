@@ -373,18 +373,6 @@ with tab2:
     with c3:
         st.markdown(f"<p style='margin:0; font-size:0.8rem;'><b>🚀 Total 2026</b></p><h4 style='margin:0; color:{color_alerta};'>{proyeccion_final:,.0f}€</h4><small style='color:#64748b;'>Est. cierre</small>", unsafe_allow_html=True)
 
-    # --- 4. BARRA DE PROGRESO MÍNIMA ---
-    st.markdown(f"""
-        <div style="background: #f8fafc; padding: 8px 12px; border-radius: 8px; border: 1px solid #e2e8f0; margin-top: 10px;">
-            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 2px;">
-                <span style="font-weight: bold; color: #475569;">{icon_estado} {msg_estado}</span>
-                <span style="font-weight: bold; color: {color_alerta};">{proyeccion_final:,.0f} / {max_p:,.0f}€</span>
-            </div>
-            <div style="background-color: #e2e8f0; border-radius: 4px; height: 6px; width: 100%;">
-                <div style="background-color: {color_alerta}; width: {porcentaje_uso*100}%; height: 6px; border-radius: 4px;"></div>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
     
     # --- 1. LÓGICA DE PROYECCIÓN MES A MES ---
     proyeccion_final = ya_aportado + (c_m * meses_restantes)
