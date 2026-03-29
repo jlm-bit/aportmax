@@ -342,35 +342,39 @@ with tab1:
 with tab2:
     st.markdown("### 🎯 Plan de Acción Personal")
 
-   # --- 1. DESGLOSE DEL CÁLCULO (VISIÓN DETALLADA) ---
-    st.markdown("#### 📑 Desglose de tu situación actual")
+# --- 1. DESGLOSE DEL CÁLCULO (VERSIÓN COMPACTA) ---
+    st.write("#### 📑 Resumen de Proyección")
     
-    col_calc1, col_calc2, col_calc3 = st.columns(3)
+    # Usamos contenedores con estilo para reducir el espacio
+    c1, c2, c3 = st.columns(3)
     
-    # Calculamos el nombre del mes actual para el texto
-    meses_nombres_es = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
-                        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
-    mes_actual_nombre = meses_nombres_es[hoy.month - 1]
+    with c1:
+        st.markdown(f"<p style='margin-bottom:0; font-size:0.9rem;'><b>✅ Ya aportado</b></p><h3 style='margin-top:0;'>{ya_aportado:,.0f} €</h3>", unsafe_allow_html=True)
+        st.caption(f"Ene - {meses_nombres_es[hoy.month - 2]}")
 
-    with col_calc1:
-        st.markdown(f"**✅ Ya aportado**\n*(Ene - {meses_nombres_es[hoy.month - 2]})*")
-        st.subheader(f"{ya_aportado:,.2f} €")
-        st.caption("Capital consolidado en 2026")
+    with c2:
+        st.markdown(f"<p style='margin-bottom:0; font-size:0.9rem;'><b>⏳ Pendiente</b></p><h3 style='margin-top:0;'>{c_m * meses_restantes:,.0f} €</h3>", unsafe_allow_html=True)
+        st.caption(f"{meses_restantes} meses x {c_m:,.0f}€")
 
-    with col_calc2:
-        st.markdown(f"**⏳ Pendiente**\n*({meses_restantes} meses restantes)*")
-        st.subheader(f"{c_m * meses_restantes:,.2f} €")
-        st.caption(f"{meses_restantes} cuotas de {c_m:,.2f} €")
-
-    with col_calc3:
+    with c3:
         proyeccion_final = ya_aportado + (c_m * meses_restantes)
-        st.markdown("**🚀 Proyección Total**\n*(a 31 de Diciembre)*")
-        # Color dinámico para la Proyección Total
         color_proy = "#ef4444" if proyeccion_final > max_p else "#1e293b"
-        st.markdown(f"<h3 style='color: {color_proy}; margin:0;'>{proyeccion_final:,.2f} €</h3>", unsafe_allow_html=True)
-        st.caption("Suma de aportaciones estimadas")
+        st.markdown(f"<p style='margin-bottom:0; font-size:0.9rem;'><b>🚀 Total 2026</b></p><h3 style='margin-top:0; color:{color_proy};'>{proyeccion_final:,.0f} €</h3>", unsafe_allow_html=True)
+        st.caption("Estimación cierre")
 
-    st.markdown("---")
+    # --- 2. BARRA DE PROGRESO SLIM ---
+    porcentaje_uso = min(proyeccion_final / max_p, 1.0) if max_p > 0 else 0
+    st.markdown(f"""
+        <div style="background: #f8fafc; padding: 12px 15px; border-radius: 10px; border: 1px solid #e2e8f0; margin-top: 5px;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px;">
+                <span style="font-weight: bold;">{icon_estado} {msg_estado}</span>
+                <span style="font-weight: bold;">{proyeccion_final:,.0f} / {max_p:,.0f} €</span>
+            </div>
+            <div style="background-color: #e2e8f0; border-radius: 5px; height: 8px; width: 100%;">
+                <div style="background-color: {color_alerta}; width: {porcentaje_uso*100}%; height: 8px; border-radius: 5px;"></div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
     
     # --- 1. LÓGICA DE PROYECCIÓN MES A MES ---
     proyeccion_final = ya_aportado + (c_m * meses_restantes)
