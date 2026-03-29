@@ -520,9 +520,14 @@ with tab3:
     # Línea comparativa (Cyan brillante)
     fig_j.add_trace(go.Scatter(x=edades, y=cap_solo_empresa_evol, mode='lines', name='Si dejas de aportar tú', line=dict(color='#00D4FF', width=3, dash='dot')))
         
+# --- 1. DECLARACIÓN PREVIA (Obligatorio para evitar NameError) ---
+# Asegúrate de que estas variables existan arriba en tu Tab 3
+total_ahorro_anual = cuota_empresa_fija + cuota_empleado_fija
+
+# --- 2. CONFIGURACIÓN DEL LAYOUT ---
 fig_j.update_layout(
     title={
-        'text': f"<b>PROYECCIÓN DE FONDOS HASTA LOS {edad_jub} AÑOS</b><br><span style='font-size:14px; color:#64748b;'>Aportación Total destinada al ahorro (Tú + Empresa): {cuota_empresa_fija + cuota_empleado_fija:,.2f} €/año</span>",
+        'text': f"<b>PROYECCIÓN DE FONDOS HASTA LOS {edad_jub} AÑOS</b><br><span style='font-size:14px; color:#64748b;'>Aportación Total destinada al ahorro (Tú + Empresa): {total_ahorro_anual:,.2f} €/año</span>",
         'y': 0.94,
         'x': 0.5,
         'xanchor': 'center',
@@ -532,12 +537,10 @@ fig_j.update_layout(
     xaxis_title="Edad del partícipe",
     yaxis_title="Capital acumulado (€)",
     hovermode='x unified',
-    height=500, # Aumentado a 500 para que el título doble no asfixie el gráfico
-    margin=dict(t=120, b=60, l=60, r=40), # t=120 da el aire perfecto para el título + leyenda
+    height=500, 
+    margin=dict(t=120, b=60, l=60, r=40), # t=120 evita que el título pise la leyenda
     plot_bgcolor='white',
     paper_bgcolor='rgba(0,0,0,0)',
-    
-    # Estilo de la cuadrícula
     xaxis=dict(
         showgrid=True, 
         gridcolor='#f1f5f9', 
@@ -550,8 +553,6 @@ fig_j.update_layout(
         linecolor='#cbd5e1',
         tickformat=',.0f'
     ),
-    
-    # Leyenda horizontal superior
     legend=dict(
         orientation="h",
         yanchor="bottom",
@@ -559,17 +560,10 @@ fig_j.update_layout(
         xanchor="center",
         x=0.5,
         font=dict(size=11, color='#64748b')
-    ),
-    
-    # Interactividad
-    hoverlabel=dict(
-        bgcolor="white",
-        font_size=13,
-        font_family="Arial"
     )
 )
 
-# Renderizado final
+# --- 3. RENDERIZADO ---
 st.plotly_chart(fig_j, use_container_width=True, config={'displayModeBar': False})
 
     # 3. Cálculos de Resultados
