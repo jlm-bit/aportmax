@@ -342,67 +342,77 @@ with tab1:
 with tab2:
     st.markdown("### 🎯 Plan Estratégico Personalizado")
     
-    # --- LÓGICA DE PROYECCIÓN MENSUAL ---
-    # 1. Calculamos cuánto espacio queda antes de empezar
-    espacio_disponible = max_p - ya_aportado
+    # --- 1. LÓGICA DE PROYECCIÓN MES A MES ---
+    proyeccion_final = ya_aportado + (c_m * meses_restantes)
+    porcentaje_uso = min(proyeccion_final / max_p, 1.1) if max_p > 0 else 0
     
-    # 2. Simulamos los meses restantes
-    meses_nombres = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
-                     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
-    mes_actual_idx = hoy.month - 1 # 0-indexed
-    
-    plan_mensual = []
-    acumulado_simulado = ya_aportado
-    mes_exceso = None
-
-    for m in range(mes_actual_idx, 12):
-        if acumulado_simulado + c_m > max_p and mes_exceso is None:
-            mes_exceso = meses_nombres[m]
-        
-        # Solo sumamos al plan si no nos hemos pasado ya en meses anteriores 
-        # (o lo mostramos para que vea el error)
-        acumulado_simulado += c_m
-        plan_mensual.append({"Mes": meses_nombres[m], "Aportado": c_m, "Acumulado": acumulado_simulado})
-
-    # --- RENDERIZADO DE KPIs ---
-    st.markdown(f"""<div class="kpi-container">
-        <div class="kpi-card">Ya Aportado<br><b>{ya_aportado:,.2f} €</b></div>
-        <div class="kpi-card">Límite Personal Restante<br><b>{espacio_disponible:,.2f} €</b></div>
-        <div class="kpi-card">Meses hasta fin de año<br><b>{meses_restantes}</b></div>
-    </div>""", unsafe_allow_html=True)
-
-    # --- ALERTAS DINÁMICAS ---
-    if ya_aportado >= max_p:
-        st.error(f"❌ **LÍMITE ALCANZADO:** Ya has aportado {ya_aportado:,.2f} €. No puedes aportar más este año.")
-    
-    elif mes_exceso:
-        st.warning(f"⚠️ **ALERTA DE EXCESO:** Con tu cuota actual de {c_m:,.2f} €/mes, superarás tu límite legal en **{mes_exceso.upper()}**.")
-        st.info(f"Para no pasarte, deberías reducir tu cuota a **{nueva_cuota_total:,.2f} €** a partir de ahora.")
-    
-    elif ya_aportado + (c_m * meses_restantes) < max_p:
-        st.info(f"💡 **ESTÁS POR DEBAJO:** Aún tienes un hueco fiscal de **{max_p - (ya_aportado + c_m * meses_restantes):,.2f} €** que podrías aprovechar.")
-
-    # --- VISUALIZACIÓN DEL PLAN (OPCIONAL) ---
-    with st.expander("📅 Ver cronograma de aportaciones hasta diciembre"):
-        # Creamos una tabla simple para que el usuario vea el progreso
-        for fila in plan_mensual:
-            color = "red" if fila['Acumulado'] > max_p else "green"
-            st.write(f"**{fila['Mes']}**: {fila['Aportado']:,.2f}€ → Acumulado: :{color}[{fila['Acumulado']:,.2f}€] / {max_p:,.2f}€")
-
-    # --- BLOQUE DE ACCIÓN (Tu código original mejorado) ---
-    st.markdown("---")
-    if not mes_exceso and ya_aportado + (c_m * meses_restantes) >= max_p * 0.98:
-        st.success("✅ **PLANIFICACIÓN PERFECTA**: Alcanzarás el máximo ahorro sin pasarte.")
+    # Determinamos el color y el mensaje según el estado
+    if proyeccion_final > max_p:
+        color_alerta = "#ef4444"  # Rojo
+        msg_estado = f"⚠️ EXCESO DETECTADO: Superarás el límite en {proyeccion_final - max_p:,.2f} €"
+        icon_estado = "🚨"
+    elif proyeccion_final >= max_p * 0.95:
+        color_alerta = "#22c55e"  # Verde
+        msg_estado = "✅ PLAN ÓPTIMO: Estás maximizando tu ahorro fiscal"
+        icon_estado = "🎯"
     else:
+        color_alerta = "#f59e0b"  # Ámbar
+        msg_estado = f"💡 HUECO DISPONIBLE: Podrías aportar {max_p - proyeccion_final:,.2f} € más"
+        icon_estado = "ℹ️"
+
+    # --- 2. INDICADOR VISUAL DE PROGRESO ---
+    st.markdown(f"""
+        <div style="background: #f8fafc; padding: 20px; border-radius: 15px; border: 1px solid #e2e8f0; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span style="font-weight: bold; color: #1e293b;">{icon_estado} {msg_estado}</span>
+                <span style="font-weight: bold; color: {color_alerta};">{proyeccion_final:,.2f} / {max_p:,.2f} €</span>
+            </div>
+            <div style="background-color: #e2e8f0; border-radius: 10px; height: 12px; width: 100%;">
+                <div style="background-color: {color_alerta}; width: {porcentaje_uso*100}%; height: 12px; border-radius: 10px; transition: width 0.5s;"></div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # --- 3. RECOMENDACIÓN DE AJUSTE (Tu bloque mejorado) ---
+    if proyeccion_final != max_p:
         st.markdown(f"""
             <div class="plan-box" style="border-left: 10px solid #1e40af;">
                 <div class="step-pill" style="background: #1e40af; color: white;">AJUSTE RECOMENDADO</div>
-                <p>Para maximizar tu ahorro sin superar el límite de {max_p:,.2f} €:</p>
-                <h1 style="color: #1e40af; margin:0; font-size: 1.9rem;">{nueva_cuota_total:,.2f} €<span style="font-size: 1.4rem; color: #64748b;"> / mes</span></h1>
-                <p style="font-size: 0.9rem; color: #64748b;">(Diferencia de {diferencia_mensual:,.2f} € sobre tu cuota actual)</p>
+                <p style="margin-bottom: 5px;">Para alcanzar exactamente el límite de <b>{max_p:,.2f} €</b> sin pasarte:</p>
+                <div style="display: flex; align-items: baseline; gap: 10px;">
+                    <h1 style="color: #1e40af; margin:0; font-size: 2.2rem;">{nueva_cuota_total:,.2f} €</h1>
+                    <span style="font-size: 1.2rem; color: #64748b;"> / mes</span>
+                </div>
+                <p style="font-size: 0.95rem; color: #64748b; margin-top: 10px;">
+                    {"🔼 Sube" if diferencia_mensual > 0 else "🔽 Baja"} tu cuota actual en <b>{abs(diferencia_mensual):,.2f} €</b> durante los {meses_restantes} meses restantes.
+                </p>
             </div>
         """, unsafe_allow_html=True)
+    else:
+        st.balloons()
+        st.success("¡Tu planificación es exacta! No necesitas realizar ajustes en tu cuota mensual.")
 
+    # --- 4. CRONOGRAMA DETALLADO (Para ver CUÁNDO se pasa) ---
+    with st.expander("📅 Ver detalle mes a mes"):
+        meses_nombres = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+        current_month = hoy.month
+        temp_acumulado = ya_aportado
+        
+        cols = st.columns(4)
+        for i, m_idx in enumerate(range(current_month - 1, 12)):
+            temp_acumulado += c_m
+            with cols[i % 4]:
+                color_txt = "#ef4444" if temp_acumulado > max_p else "#1e293b"
+                st.markdown(f"""
+                    <div style="text-align: center; padding: 10px; border: 1px solid #f1f5f9; border-radius: 8px;">
+                        <small style="color: #64748b;">{meses_nombres[m_idx]}</small><br>
+                        <b style="color: {color_txt};">{temp_acumulado:,.0f} €</b>
+                    </div>
+                """, unsafe_allow_html=True)
+
+    st.markdown("---")
+   
     # ... [Resto de botones de link y descarga de PDF iguales] ...
 
     st.markdown("---")
