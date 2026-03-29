@@ -342,19 +342,35 @@ with tab1:
 with tab2:
     st.markdown("### 🎯 Plan de Acción Personal")
 
-    # --- 1. DESGLOSE DEL CÁLCULO (NUEVA SECCIÓN) ---
+   # --- 1. DESGLOSE DEL CÁLCULO (VISIÓN DETALLADA) ---
+    st.markdown("#### 📑 Desglose de tu situación actual")
+    
     col_calc1, col_calc2, col_calc3 = st.columns(3)
+    
+    # Calculamos el nombre del mes actual para el texto
+    meses_nombres_es = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+    mes_actual_nombre = meses_nombres_es[hoy.month - 1]
+
     with col_calc1:
-        st.write("📊 **Ya aportado (Ene-Mar):**")
+        st.markdown(f"**✅ Ya aportado**\n*(Ene - {meses_nombres_es[hoy.month - 2]})*")
         st.subheader(f"{ya_aportado:,.2f} €")
+        st.caption("Capital consolidado en 2026")
+
     with col_calc2:
-        st.write(f"⏳ **Meses restantes ({meses_restantes}):**")
+        st.markdown(f"**⏳ Pendiente**\n*({meses_restantes} meses restantes)*")
         st.subheader(f"{c_m * meses_restantes:,.2f} €")
-        st.caption(f"({meses_restantes} meses x {c_m:,.2f}€)")
+        st.caption(f"{meses_restantes} cuotas de {c_m:,.2f} €")
+
     with col_calc3:
         proyeccion_final = ya_aportado + (c_m * meses_restantes)
-        st.write("🚀 **Proyección total:**")
-        st.subheader(f"{proyeccion_final:,.2f} €")
+        st.markdown("**🚀 Proyección Total**\n*(a 31 de Diciembre)*")
+        # Color dinámico para la Proyección Total
+        color_proy = "#ef4444" if proyeccion_final > max_p else "#1e293b"
+        st.markdown(f"<h3 style='color: {color_proy}; margin:0;'>{proyeccion_final:,.2f} €</h3>", unsafe_allow_html=True)
+        st.caption("Suma de aportaciones estimadas")
+
+    st.markdown("---")
     
     # --- 1. LÓGICA DE PROYECCIÓN MES A MES ---
     proyeccion_final = ya_aportado + (c_m * meses_restantes)
