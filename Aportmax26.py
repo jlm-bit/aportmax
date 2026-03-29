@@ -340,39 +340,40 @@ with tab1:
     st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf")
 
 with tab2:
+    # --- 0. PREPARACIÓN DE DATOS (Evita NameError) ---
+    import datetime
+    hoy = datetime.date.today()
+    meses_nombres_es = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+    
     st.markdown("### 🎯 Plan de Acción Personal")
-
     
-# --- 1. DESGLOSE DEL CÁLCULO (VERSIÓN COMPACTA) ---
-    st.write("#### 📑 Resumen de Proyección")
-    
-    # Usamos contenedores con estilo para reducir el espacio
+    # --- 1. DESGLOSE COMPACTO ---
     c1, c2, c3 = st.columns(3)
     
     with c1:
-        st.markdown(f"<p style='margin-bottom:0; font-size:0.9rem;'><b>✅ Ya aportado</b></p><h3 style='margin-top:0;'>{ya_aportado:,.0f} €</h3>", unsafe_allow_html=True)
-        st.caption(f"Ene - {meses_nombres_es[hoy.month - 2]}")
+        # Usamos el mes anterior al actual para el rango 'Ya aportado'
+        mes_fin_ya = meses_nombres_es[hoy.month - 2] if hoy.month > 1 else "Ene"
+        st.markdown(f"<p style='margin:0; font-size:0.85rem;'><b>✅ Ya aportado</b></p><h4 style='margin:0;'>{ya_aportado:,.0f} €</h4><small style='color:#64748b;'>Ene - {mes_fin_ya}</small>", unsafe_allow_html=True)
 
     with c2:
-        st.markdown(f"<p style='margin-bottom:0; font-size:0.9rem;'><b>⏳ Pendiente</b></p><h3 style='margin-top:0;'>{c_m * meses_restantes:,.0f} €</h3>", unsafe_allow_html=True)
-        st.caption(f"{meses_restantes} meses x {c_m:,.0f}€")
+        st.markdown(f"<p style='margin:0; font-size:0.85rem;'><b>⏳ Pendiente</b></p><h4 style='margin:0;'>{c_m * meses_restantes:,.0f} €</h4><small style='color:#64748b;'>{meses_restantes} meses x {c_m:,.0f}€</small>", unsafe_allow_html=True)
 
     with c3:
         proyeccion_final = ya_aportado + (c_m * meses_restantes)
         color_proy = "#ef4444" if proyeccion_final > max_p else "#1e293b"
-        st.markdown(f"<p style='margin-bottom:0; font-size:0.9rem;'><b>🚀 Total 2026</b></p><h3 style='margin-top:0; color:{color_proy};'>{proyeccion_final:,.0f} €</h3>", unsafe_allow_html=True)
-        st.caption("Estimación cierre")
+        st.markdown(f"<p style='margin:0; font-size:0.85rem;'><b>🚀 Total 2026</b></p><h4 style='margin:0; color:{color_proy};'>{proyeccion_final:,.0f} €</h4><small style='color:#64748b;'>Est. cierre</small>", unsafe_allow_html=True)
 
-    # --- 2. BARRA DE PROGRESO SLIM ---
+    # --- 2. BARRA DE PROGRESO MÍNIMA ---
     porcentaje_uso = min(proyeccion_final / max_p, 1.0) if max_p > 0 else 0
     st.markdown(f"""
-        <div style="background: #f8fafc; padding: 12px 15px; border-radius: 10px; border: 1px solid #e2e8f0; margin-top: 5px;">
-            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px;">
-                <span style="font-weight: bold;">{icon_estado} {msg_estado}</span>
-                <span style="font-weight: bold;">{proyeccion_final:,.0f} / {max_p:,.0f} €</span>
+        <div style="background: #f8fafc; padding: 8px 12px; border-radius: 8px; border: 1px solid #e2e8f0; margin-top: 10px;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 2px;">
+                <span style="font-weight: bold; color: #475569;">{icon_estado} {msg_estado}</span>
+                <span style="font-weight: bold; color: {color_alerta};">{proyeccion_final:,.0f} / {max_p:,.0f} €</span>
             </div>
-            <div style="background-color: #e2e8f0; border-radius: 5px; height: 8px; width: 100%;">
-                <div style="background-color: {color_alerta}; width: {porcentaje_uso*100}%; height: 8px; border-radius: 5px;"></div>
+            <div style="background-color: #e2e8f0; border-radius: 4px; height: 6px; width: 100%;">
+                <div style="background-color: {color_alerta}; width: {porcentaje_uso*100}%; height: 6px; border-radius: 4px;"></div>
             </div>
         </div>
     """, unsafe_allow_html=True)
