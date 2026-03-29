@@ -342,6 +342,7 @@ with tab1:
 with tab2:
     st.markdown("### 🎯 Plan de Acción Personal")
 
+    
 # --- 1. DESGLOSE DEL CÁLCULO (VERSIÓN COMPACTA) ---
     st.write("#### 📑 Resumen de Proyección")
     
