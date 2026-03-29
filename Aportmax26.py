@@ -341,6 +341,20 @@ with tab1:
 
 with tab2:
     st.markdown("### 🎯 Plan de Acción Personal")
+
+    # --- 1. DESGLOSE DEL CÁLCULO (NUEVA SECCIÓN) ---
+    col_calc1, col_calc2, col_calc3 = st.columns(3)
+    with col_calc1:
+        st.write("📊 **Ya aportado (Ene-Mar):**")
+        st.subheader(f"{ya_aportado:,.2f} €")
+    with col_calc2:
+        st.write(f"⏳ **Meses restantes ({meses_restantes}):**")
+        st.subheader(f"{c_m * meses_restantes:,.2f} €")
+        st.caption(f"({meses_restantes} meses x {c_m:,.2f}€)")
+    with col_calc3:
+        proyeccion_final = ya_aportado + (c_m * meses_restantes)
+        st.write("🚀 **Proyección total:**")
+        st.subheader(f"{proyeccion_final:,.2f} €")
     
     # --- 1. LÓGICA DE PROYECCIÓN MES A MES ---
     proyeccion_final = ya_aportado + (c_m * meses_restantes)
