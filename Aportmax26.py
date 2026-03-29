@@ -448,47 +448,44 @@ import io
 with tab3:
     st.markdown("### 🔮 SIMULADOR JUBILACIÓN: Impacto de aportaciones voluntarias")
     
-    # 0. Recuperar variables de otros Tabs (Evita NameError)
-    # Buscamos el tipo marginal del Tab 1; si no existe, usamos 30.0% por defecto.
+    # 0. Recuperar variables de otros Tabs
     t_marginal_uso = st.session_state.get('tipo_marginal', 30.0) 
 
-    # 1. Entradas de Datos: Panel de Control
+    # 1. Entradas de Datos
     col_in1, col_in2 = st.columns(2)
     with col_in1:
         edad_act = st.number_input("Tu Edad Actual", value=40, min_value=18, max_value=62, key="edad_final")
         saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=0.0, step=1000.0, min_value=0.0, key="saldo_final")
         
         modo_aportacion = st.radio(
-            "Tu aportación personal mensual:",
+            "Tu aportación personal anual:",
             ["Máximo Legal", "Cantidad Personalizada"],
             horizontal=True,
             key="modo_aport_final"
         )
         
-        # El máximo legal neto viene definido por tus variables globales max_p y e_riesgo
-        max_legal_anual_neta = float(max_p - e_riesgo)
+        max_legal_anual_neta = float(MAX_P_LIMIT)
         
         if modo_aportacion == "Máximo Legal":
             mi_aportacion_anual_neta = max_legal_anual_neta
-            st.caption(f"✨ Aportarás el límite legal de {mi_aportacion_anual_neta:,.2f} €/año.")
+            st.info(f"✨ Límite proyectado: **{mi_aportacion_anual_neta:,.2f} €/año**.")
         else:
             mi_aportacion_anual_neta = st.slider(
-                "Elegir aportación anual personalizada (€)", 
+                "Aportación anual personalizada (€)", 
                 min_value=0.0, 
-                max_value=max_legal_anual_neta, 
+                max_value=max_legal_anual_neta if max_legal_anual_neta > 0 else 1.0, 
                 value=float(max_legal_anual_neta / 2),
                 step=100.0,
                 key="aport_pers_final"
             )
 
     with col_in2:
-        edad_jub = st.radio("Edad prevista de jubilación", [63, 64, 65, 66, 67], index=4, horizontal=True, key="jub_final")
+        edad_jub = st.radio("Edad de jubilación", [63, 64, 65, 66, 67], index=4, horizontal=True, key="jub_final")
         rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 4.0, key="rent_final")
     
-    # --- Lógica de Simulación (Aportaciones fijas) ---
+    # 2. Lógica de Simulación
     rent_dec = rent_pct / 100
     edades = np.arange(edad_act, edad_jub + 1)
-    
     cap_total_evol, solo_capital_evol, interes_evol, cap_solo_empresa_evol = [], [], [], []
     
     saldo_a, saldo_b, aport_acum_a = saldo_existente, saldo_existente, saldo_existente
@@ -496,152 +493,56 @@ with tab3:
     cuota_empleado_fija = mi_aportacion_anual_neta 
     
     for i in range(len(edades)):
-        # Escenario A (Full)
         int_a = saldo_a * rent_dec
         cap_total_evol.append(saldo_a)
         solo_capital_evol.append(aport_acum_a)
         interes_evol.append(saldo_a - aport_acum_a)
         
-        # Escenario B (Solo Empresa)
         int_b = saldo_b * rent_dec
         cap_solo_empresa_evol.append(saldo_b)
         
-        # Actualización de saldos
         saldo_a += (cuota_empresa_fija + cuota_empleado_fija) + int_a
         saldo_b += cuota_empresa_fija + int_b
         aport_acum_a += (cuota_empresa_fija + cuota_empleado_fija)
 
-    # 2. Gráfico de Evolución (Paleta de Azules)
+    # 3. Gráfico de Evolución
     fig_j = go.Figure()
-    # Área 1: Capital Aportado (Azul Marino)
-    fig_j.add_trace(go.Scatter(x=edades, y=solo_capital_evol, mode='lines', name='APORTACIÓN (Tú+Emp)', stackgroup='one', fillcolor='#1E3A8A', line=dict(width=0)))
-    # Área 2: Intereses (Azul Cielo)
-    fig_j.add_trace(go.Scatter(x=edades, y=interes_evol, mode='lines', name='Intereses', stackgroup='one', fillcolor='rgba(147, 197, 253, 0.6)', line=dict(width=0)))
-    # Línea comparativa (Cyan brillante)
-    fig_j.add_trace(go.Scatter(x=edades, y=cap_solo_empresa_evol, mode='lines', name='Si dejas de aportar tú', line=dict(color='#00D4FF', width=3, dash='dot')))
-        
-# --- 1. DECLARACIÓN PREVIA (Obligatorio para evitar NameError) ---
-# Asegúrate de que estas variables existan arriba en tu Tab 3
-    total_ahorro_anual = cuota_empresa_fija + cuota_empleado_fija
+    fig_j.add_trace(go.Scatter(x=edades, y=solo_capital_evol, mode='lines', name='CAPITAL APORTADO', stackgroup='one', fillcolor='#1E3A8A', line=dict(width=0)))
+    fig_j.add_trace(go.Scatter(x=edades, y=interes_evol, mode='lines', name='INTERESES GENERADOS', stackgroup='one', fillcolor='rgba(147, 197, 253, 0.6)', line=dict(width=0)))
+    fig_j.add_trace(go.Scatter(x=edades, y=cap_solo_empresa_evol, mode='lines', name='ESCENARIO SIN TU APORTACIÓN', line=dict(color='#EF4444', width=2, dash='dot')))
 
-# --- 2. CONFIGURACIÓN DEL LAYOUT ---
-fig_j.update_layout(
-    title={
-      'text': f"<b>PROYECCIÓN DE FONDOS HASTA LOS {edad_jub} AÑOS</b><br><span style='font-size:14px; color:#64748b;'>Aportación Total destinada al ahorro (Tú + Empresa): {cuota_empresa_fija + cuota_empleado_fija:,.2f} €/año</span>",
-        'y': 0.94,
-        'x': 0.5,
-        'xanchor': 'center',
-        'yanchor': 'top',
-        'font': dict(size=20, color='#1e293b')
-    },
-    xaxis_title="Edad del partícipe",
-    yaxis_title="Capital acumulado (€)",
-    hovermode='x unified',
-    height=500, 
-    margin=dict(t=120, b=60, l=60, r=40), # t=120 evita que el título pise la leyenda
-    plot_bgcolor='white',
-    paper_bgcolor='rgba(0,0,0,0)',
-    xaxis=dict(
-        showgrid=True, 
-        gridcolor='#f1f5f9', 
-        linecolor='#cbd5e1',
-        dtick=5
-    ),
-    yaxis=dict(
-        showgrid=True, 
-        gridcolor='#f1f5f9', 
-        linecolor='#cbd5e1',
-        tickformat=',.0f'
-    ),
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="center",
-        x=0.5,
-        font=dict(size=11, color='#64748b')
+    fig_j.update_layout(
+        title={
+            'text': f"<b>PROYECCIÓN DE FONDOS HASTA LOS {edad_jub} AÑOS</b><br><span style='font-size:14px; color:#64748b;'>Aportación Total destinada al ahorro (Tú + Empresa): {cuota_empresa_fija + cuota_empleado_fija:,.2f} €/año</span>",
+            'y': 0.94, 'x': 0.5, 'xanchor': 'center', 'yanchor': 'top',
+            'font': dict(size=20, color='#1e293b')
+        },
+        xaxis_title="Edad del partícipe",
+        yaxis_title="Capital acumulado (€)",
+        hovermode='x unified', height=500, margin=dict(t=120, b=60, l=60, r=40),
+        plot_bgcolor='white', paper_bgcolor='rgba(0,0,0,0)',
+        xaxis=dict(showgrid=True, gridcolor='#f1f5f9', linecolor='#cbd5e1', dtick=5),
+        yaxis=dict(showgrid=True, gridcolor='#f1f5f9', linecolor='#cbd5e1', tickformat=',.0f'),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="center", x=0.5, font=dict(size=11, color='#64748b'))
     )
-)
 
-# --- 3. RENDERIZADO ---
-st.plotly_chart(fig_j, use_container_width=True, config={'displayModeBar': False})
+    st.plotly_chart(fig_j, use_container_width=True, config={'displayModeBar': False})
 
-    # 3. Cálculos de Resultados
+    # 4. Cálculos finales y Métricas (Alineación corregida)
     cap_a, cap_b = cap_total_evol[-1], cap_solo_empresa_evol[-1]
     dif_cap = cap_a - cap_b
-    renta_a, renta_b = cap_a / 240, cap_b / 240 # Basado en 20 años (240 meses)
+    renta_a, renta_b = cap_a / 240, cap_b / 240 
     dif_renta = renta_a - renta_b
 
-    # 4. Panel de Resultados Detallado (CAPITALES Y RENTAS)
-    st.markdown("---")
-    
-    # Fila 1: CAPITALES
-    st.markdown("#### 💰 Comparativa de Capitales")
-    c1, c2, c3 = st.columns(3)
-    c1.metric("Capital TOTAL Final", f"{cap_a:,.0f} €")
-    c2.metric("Capital (Si dejas de aportar)", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
-    c3.metric("Diferencia de Ahorro", f"{dif_cap:,.0f} €", help="Dinero extra acumulado por tu aportación.")
+    st.markdown("#### 📊 Impacto en tu Jubilación")
+    m1, m2, m3 = st.columns(3)
+    m1.metric("Patrimonio Final", f"{cap_a:,.0f} €")
+    m2.metric("Plus por Aportar", f"+ {dif_cap:,.0f} €")
+    m3.metric("Renta Mensual Extra", f"+ {dif_renta:,.2f} €/mes")
 
-    # Fila 2: RENTAS
-    st.markdown("#### 📅 Comparativa de Renta Mensual (20 años)")
-    r1, r2, r3 = st.columns(3)
-    r1.metric("Renta PLAN ELEGIDO", f"{renta_a:,.2f} €/mes")
-    r2.metric("Renta (Si dejas de aportar)", f"{renta_b:,.2f} €/mes", delta=f"-{dif_renta:,.2f} €/mes", delta_color="inverse")
-    r3.metric("Sobresueldo Mensual", f"{dif_renta:,.2f} €/mes", help="Dinero mensual extra durante tu jubilación.")
-
-  
-# 5. NOTAS IMPORTANTES DE LA SIMULACIÓN
-    st.markdown("---")
-    with st.expander("📝 Notas y Cláusulas de la Simulación", expanded=True):
-        st.markdown(f"""
-        * **Aportaciones Constantes:** Se asume que las cuotas (empresa y empleado) no varían hasta la jubilación.
-        * **Estimación de Renta:** La renta mensual se calcula dividiendo el capital final entre 240 mensualidades (20 años), sin contar rentabilidades adicionales tras la jubilación.
-        * **Interés Compuesto:** Se asume una reinversión anual neta del **{rent_pct}%**. Rentabilidades pasadas no garantizan futuras.
-  
-        """)
-    
-    # 6. Generación de PDF Profesional
-    st.markdown("---")
-    
-    def generar_pdf_comparativo_v3(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, aport_elegida):
-        pdf = FPDF()
-        pdf.add_page()
-        
-        # Título
-        pdf.set_font("Arial", 'B', 16)
-        pdf.cell(200, 10, txt="INFORME DE PROYECCIÓN DE JUBILACIÓN", ln=True, align='C')
-        pdf.ln(10)
-        
-        # Datos entrada
-        pdf.set_font("Arial", '', 11)
-        pdf.cell(200, 8, txt=f"- Edad: {edad_act} años | Jubilacion prevista: {edad_jub} años", ln=True)
-        pdf.cell(200, 8, txt=f"- Aportacion Personal Elegida: {aport_elegida:,.2f} EUR/año", ln=True)
-        pdf.cell(200, 8, txt=f"- Rentabilidad estimada: {rent_pct}% anual", ln=True)
-        pdf.ln(10)
-        
-        # Tabla Comparativa
-        pdf.set_font("Arial", 'B', 12)
-        pdf.cell(60, 10, "Concepto", 1); pdf.cell(60, 10, "Plan Elegido", 1); pdf.cell(60, 10, "Solo Empresa", 1); pdf.ln()
-        
-        pdf.set_font("Arial", '', 11)
-        pdf.cell(60, 10, "Capital Final", 1); pdf.cell(60, 10, f"{cap_a:,.0f} EUR", 1); pdf.cell(60, 10, f"{cap_b:,.0f} EUR", 1); pdf.ln()
-        pdf.cell(60, 10, "Renta Mensual", 1); pdf.cell(60, 10, f"{renta_a:,.2f} EUR", 1); pdf.cell(60, 10, f"{renta_b:,.2f} EUR", 1); pdf.ln(15)
-        
-        # Conclusión
-        pdf.set_font("Arial", 'B', 12)
-        pdf.set_text_color(30, 58, 138)
-        pdf.multi_cell(0, 8, txt=f"VALOR ESTRATEGICO: Mantener tu plan activo te garantiza un patrimonio extra de {dif_cap:,.0f} EUR, aumentando tu nivel de vida mensual en {dif_renta:,.2f} EUR.")
-        
-        return pdf.output(dest='S').encode('latin-1')
-
+    # 5. Descarga de Informe
     try:
-        pdf_bytes = generar_pdf_comparativo_v3(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, mi_aportacion_anual_neta)
-        st.download_button(
-            label="📥 Descargar Informe Comparativo (PDF)",
-            data=pdf_bytes,
-            file_name=f"Proyeccion_Jubilacion_APORTMAX_{edad_act}.pdf",
-            mime="application/pdf",
-            key="btn_descarga_final"
-        )
+        pdf_out = preparar_pdf_simulacion(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, mi_aportacion_anual_neta)
+        st.download_button(label="📥 DESCARGAR INFORME DE JUBILACIÓN (PDF)", data=bytes(pdf_out), file_name=f"Simulacion_Jubilacion_{edad_act}.pdf", mime="application/pdf", key="btn_descarga_final_v3")
     except Exception as e:
-        st.error(f"Hubo un error al generar el PDF: {e}")
+        st.error(f"Error al generar el PDF: {e}")
