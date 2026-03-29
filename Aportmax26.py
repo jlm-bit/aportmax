@@ -340,7 +340,7 @@ with tab1:
     st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf")
 
 with tab2:
-    st.markdown("### 🎯 Plan Estratégico Personalizado")
+    st.markdown("### 🎯 Plan de Acción Personal")
     
     # --- 1. LÓGICA DE PROYECCIÓN MES A MES ---
     proyeccion_final = ya_aportado + (c_m * meses_restantes)
@@ -357,7 +357,7 @@ with tab2:
         icon_estado = "🎯"
     else:
         color_alerta = "#f59e0b"  # Ámbar
-        msg_estado = f"💡 HUECO DISPONIBLE: Podrías aportar {max_p - proyeccion_final:,.2f} € más"
+        msg_estado = f"💡 POSIBLE ACCIÓN: Podrías aportar como APORTACIÓN ÚNICA {max_p - proyeccion_final:,.2f} € más"
         icon_estado = "ℹ️"
 
     # --- 2. INDICADOR VISUAL DE PROGRESO ---
