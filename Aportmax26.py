@@ -521,12 +521,60 @@ with tab3:
     fig_j.add_trace(go.Scatter(x=edades, y=cap_solo_empresa_evol, mode='lines', name='Si dejas de aportar tú', line=dict(color='#00D4FF', width=3, dash='dot')))
 
     fig_j.update_layout(
-        title=f"Proyección de Fondos hasta los {edad_jub} años",
-        xaxis_title="Edad", yaxis_title="Euros (€)",
-        hovermode='x unified', height=400, plot_bgcolor='white',
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+        title={
+            'text': f"<b>PROYECCIÓN DE FONDOS HASTA LOS {edad_jub} AÑOS</b>",
+            'y':0.95,
+            'x':0.5,
+            'xanchor': 'center',
+            'yanchor': 'top',
+            'font': dict(size=18, color='#1e293b')
+        },
+        xaxis_title="Edad del partícipe",
+        yaxis_title="Capital acumulado (€)",
+        hovermode='x unified',
+        height=450,
+        margin=dict(t=80, b=40, l=60, r=40),
+        plot_bgcolor='white',
+        paper_bgcolor='rgba(0,0,0,0)',
+        # Estilo de la cuadrícula
+        xaxis=dict(
+            showgrid=True, 
+            gridcolor='#f1f5f9', 
+            linecolor='#cbd5e1',
+            dtick=5  # Muestra marca cada 5 años para limpieza
+        ),
+        yaxis=dict(
+            showgrid=True, 
+            gridcolor='#f1f5f9', 
+            linecolor='#cbd5e1',
+            tickformat=',.0f' # Formato miles sin decimales
+        ),
+        # Leyenda horizontal superior
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="center",
+            x=0.5,
+            font=dict(size=11, color='#64748b')
+        ),
+        # Interactividad
+        hoverlabel=dict(
+            bgcolor="white",
+            font_size=13,
+            font_family="Arial"
+        )
     )
-    st.plotly_chart(fig_j, use_container_width=True)
+
+    # Añadimos una anotación técnica opcional para dar rigor
+    fig_j.add_annotation(
+        text=f"Rentabilidad anual estimada: {rent_pct}%",
+        xref="paper", yref="paper",
+        x=1, y=-0.15, showarrow=False,
+        font=dict(size=10, color="#94a3b8")
+    )
+
+    st.plotly_chart(fig_j, use_container_width=True, config={'displayModeBar': False})
 
     # 3. Cálculos de Resultados
     cap_a, cap_b = cap_total_evol[-1], cap_solo_empresa_evol[-1]
