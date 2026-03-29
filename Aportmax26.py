@@ -341,28 +341,69 @@ with tab1:
 
 with tab2:
     st.markdown("### 🎯 Plan Estratégico Personalizado")
+    
+    # --- LÓGICA DE PROYECCIÓN MENSUAL ---
+    # 1. Calculamos cuánto espacio queda antes de empezar
+    espacio_disponible = max_p - ya_aportado
+    
+    # 2. Simulamos los meses restantes
+    meses_nombres = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+    mes_actual_idx = hoy.month - 1 # 0-indexed
+    
+    plan_mensual = []
+    acumulado_simulado = ya_aportado
+    mes_exceso = None
+
+    for m in range(mes_actual_idx, 12):
+        if acumulado_simulado + c_m > max_p and mes_exceso is None:
+            mes_exceso = meses_nombres[m]
+        
+        # Solo sumamos al plan si no nos hemos pasado ya en meses anteriores 
+        # (o lo mostramos para que vea el error)
+        acumulado_simulado += c_m
+        plan_mensual.append({"Mes": meses_nombres[m], "Aportado": c_m, "Acumulado": acumulado_simulado})
+
+    # --- RENDERIZADO DE KPIs ---
     st.markdown(f"""<div class="kpi-container">
-        <div class="kpi-card">Ya Aportado a día de hoy<br><b>{ya_aportado:,.2f} €</b></div>
-        <div class="kpi-card">Pendiente para alcanzar tu Objetivo<br><b>{max_p - ya_aportado:,.2f} €</b></div>
-        <div class="kpi-card">Meses restantes<br><b>{meses_restantes}</b></div>
+        <div class="kpi-card">Ya Aportado<br><b>{ya_aportado:,.2f} €</b></div>
+        <div class="kpi-card">Límite Personal Restante<br><b>{espacio_disponible:,.2f} €</b></div>
+        <div class="kpi-card">Meses hasta fin de año<br><b>{meses_restantes}</b></div>
     </div>""", unsafe_allow_html=True)
 
-    if ya_aportado > max_p:
-        st.error(f"⚠️ **HAS SUPERADO EL LÍMITE:** Aportación de {ya_aportado:,.2f} € excede el límite de {max_p:,.2f} €.")
-    elif ya_aportado + (c_m * meses_restantes) >= max_p:
-        st.success("✅ **PLANIFICACIÓN PERFECTA**")
+    # --- ALERTAS DINÁMICAS ---
+    if ya_aportado >= max_p:
+        st.error(f"❌ **LÍMITE ALCANZADO:** Ya has aportado {ya_aportado:,.2f} €. No puedes aportar más este año.")
+    
+    elif mes_exceso:
+        st.warning(f"⚠️ **ALERTA DE EXCESO:** Con tu cuota actual de {c_m:,.2f} €/mes, superarás tu límite legal en **{mes_exceso.upper()}**.")
+        st.info(f"Para no pasarte, deberías reducir tu cuota a **{nueva_cuota_total:,.2f} €** a partir de ahora.")
+    
+    elif ya_aportado + (c_m * meses_restantes) < max_p:
+        st.info(f"💡 **ESTÁS POR DEBAJO:** Aún tienes un hueco fiscal de **{max_p - (ya_aportado + c_m * meses_restantes):,.2f} €** que podrías aprovechar.")
+
+    # --- VISUALIZACIÓN DEL PLAN (OPCIONAL) ---
+    with st.expander("📅 Ver cronograma de aportaciones hasta diciembre"):
+        # Creamos una tabla simple para que el usuario vea el progreso
+        for fila in plan_mensual:
+            color = "red" if fila['Acumulado'] > max_p else "green"
+            st.write(f"**{fila['Mes']}**: {fila['Aportado']:,.2f}€ → Acumulado: :{color}[{fila['Acumulado']:,.2f}€] / {max_p:,.2f}€")
+
+    # --- BLOQUE DE ACCIÓN (Tu código original mejorado) ---
+    st.markdown("---")
+    if not mes_exceso and ya_aportado + (c_m * meses_restantes) >= max_p * 0.98:
+        st.success("✅ **PLANIFICACIÓN PERFECTA**: Alcanzarás el máximo ahorro sin pasarte.")
     else:
         st.markdown(f"""
             <div class="plan-box" style="border-left: 10px solid #1e40af;">
-                <div class="step-pill" style="background: #1e40af; color: white;">OPCIÓN 1 (RECOMENDADA)</div>
-                <h1 style="color: #1e40af; margin:0; font-size: 1.9rem;">+{diferencia_mensual:,.2f} €<span style="font-size: 1.4rem; color: #64748b;"> / mes</span></h1>
-                <p>Nueva cuota total: <b>{nueva_cuota_total:,.2f} €/mes</b></p>
-                <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px dashed #cbd5e1; margin-top: 25px;">
-                    <div class="step-pill" style="background: #64748b; color: white;">OPCIÓN 2: APORTACIÓN EXTRAORDINARIA</div>
-                    <h2 style="color: #334155; margin: 5px 0 0 0; font-size: 1.7rem">{aportacion_extraordinaria_neta:,.2f} €</h2>
-                </div>
+                <div class="step-pill" style="background: #1e40af; color: white;">AJUSTE RECOMENDADO</div>
+                <p>Para maximizar tu ahorro sin superar el límite de {max_p:,.2f} €:</p>
+                <h1 style="color: #1e40af; margin:0; font-size: 1.9rem;">{nueva_cuota_total:,.2f} €<span style="font-size: 1.4rem; color: #64748b;"> / mes</span></h1>
+                <p style="font-size: 0.9rem; color: #64748b;">(Diferencia de {diferencia_mensual:,.2f} € sobre tu cuota actual)</p>
             </div>
         """, unsafe_allow_html=True)
+
+    # ... [Resto de botones de link y descarga de PDF iguales] ...
 
     st.markdown("---")
     st.markdown("#### 🚀 ¿Cómo realizar tu aportación?")
