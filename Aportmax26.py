@@ -357,7 +357,7 @@ with tab2:
         icon_estado = "🎯"
     else:
         color_alerta = "#f59e0b"  # Ámbar
-        msg_estado = f"💡 POSIBLE ACCIÓN: Podrías aportar como APORTACIÓN ÚNICA {max_p - proyeccion_final:,.2f} € más"
+        msg_estado = f"💡 POSIBLE ACCIÓN: Podrías aportar como APORTACIÓN ÚNICA {max_p - proyeccion_final:,.2f} € más hasta 31 de diciembre"
         icon_estado = "ℹ️"
 
     # --- 2. INDICADOR VISUAL DE PROGRESO ---
@@ -410,9 +410,7 @@ with tab2:
                         <b style="color: {color_txt};">{temp_acumulado:,.0f} €</b>
                     </div>
                 """, unsafe_allow_html=True)
-
-    st.markdown("---")
-   
+     
     # ... [Resto de botones de link y descarga de PDF iguales] ...
 
     st.markdown("---")
