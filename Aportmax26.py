@@ -528,38 +528,94 @@ with tab3:
 
     st.plotly_chart(fig_j, use_container_width=True, config={'displayModeBar': False})
 
-   # 4. Cálculos finales y Métricas (Alineación corregida)
-    cap_a, cap_b = cap_total_evol[-1], cap_solo_empresa_evol[-1]
+ # 4. Cálculos finales y Comparativa Visual
+    cap_a = cap_total_evol[-1]
+    cap_b = cap_solo_empresa_evol[-1]
     dif_cap = cap_a - cap_b
-    renta_a, renta_b = cap_a / 240, cap_b / 240 
+    renta_a = cap_a / 240
+    renta_b = cap_b / 240 
     dif_renta = renta_a - renta_b
 
-    st.markdown("#### 📊 Impacto en tu Jubilación")
-    m1, m2, m3 = st.columns(3)
-    
-    # Patrimonio total acumulado
-    m1.metric("Patrimonio Final", f"{cap_a:,.0f} €")
-    
-    # Capital extra conseguido gracias a las aportaciones voluntarias
-    m2.metric("Plus por Aportar", f"{dif_cap:,.0f} €", delta="Ahorro Extra", delta_color="normal")
-    
-    # Sobresueldo mensual durante 20 años
-    m3.metric("Renta Mensual Extra", f"{dif_renta:,.2f} €/mes", delta="Sobresueldo", delta_color="normal")
-
-    # 5. Descarga de Informe
     st.markdown("---")
-    try:
-        # Generamos los bytes del PDF
-        pdf_out = preparar_pdf_simulacion(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, mi_aportacion_anual_neta)
+    
+    # --- FILA 1: COMPARATIVA DE CAPITALES ---
+    st.markdown("#### 💰 Comparativa de Capitales al Jubilarte")
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.metric("CAPITAL TOTAL FINAL", f"{cap_a:,.0f} €")
+    with c2:
+        st.metric("Si dejas de aportar tú", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
+    with c3:
+        st.info(f"**Patrimonio Extra:** +{dif_cap:,.0f} € acumulados gracias a tu aportación.")
+
+    # --- FILA 2: COMPARATIVA DE RENTAS ---
+    st.markdown("#### 📅 Comparativa de Renta Mensual (20 años)")
+    r1, r2, r3 = st.columns(3)
+    with r1:
+        st.metric("RENTA PLAN ELEGIDO", f"{renta_a:,.2f} €/mes")
+    with r2:
+        st.metric("Si dejas de aportar tú", f"{renta_b:,.2f} €/mes", delta=f"-{dif_renta:,.2f} €/mes", delta_color="inverse")
+    with r3:
+        st.success(f"**Sobresueldo:** +{dif_renta:,.2f} € al mes adicionales para tu jubilación.")
+
+    # 5. Función de Generación de PDF (Restaurada y Protegida)
+    st.markdown("---")
+    
+    def generar_pdf_comparativo_v3(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, aport_elegida):
+        pdf = FPDF()
+        pdf.add_page()
         
-        # Botón de descarga con formato binario seguro
+        # Título Profesional
+        pdf.set_font("Arial", 'B', 16)
+        pdf.set_text_color(30, 58, 138) # Azul Marino
+        pdf.cell(200, 15, txt="INFORME ESTRATEGICO DE JUBILACION", ln=True, align='C')
+        pdf.ln(5)
+        
+        # Datos de Entrada
+        pdf.set_font("Arial", '', 11)
+        pdf.set_text_color(0, 0, 0)
+        pdf.cell(200, 8, txt=f"Edad Actual: {edad_act} anos | Edad de Jubilacion: {edad_jub} anos", ln=True)
+        pdf.cell(200, 8, txt=f"Aportacion Personal: {aport_elegida:,.2f} EUR/ano | Rentabilidad: {rent_pct}%", ln=True)
+        pdf.ln(10)
+        
+        # Tabla Comparativa de Capitales y Rentas
+        pdf.set_font("Arial", 'B', 12)
+        pdf.set_fill_color(240, 240, 240)
+        pdf.cell(60, 10, "Concepto", 1, 0, 'L', True)
+        pdf.cell(65, 10, "Con tu Plan", 1, 0, 'C', True)
+        pdf.cell(65, 10, "Sin tu Aportacion", 1, 1, 'C', True)
+        
+        pdf.set_font("Arial", '', 11)
+        # Fila Capital
+        pdf.cell(60, 10, "Capital Final", 1)
+        pdf.cell(65, 10, f"{cap_a:,.0f} EUR", 1, 0, 'C')
+        pdf.cell(65, 10, f"{cap_b:,.0f} EUR", 1, 1, 'C')
+        # Fila Renta
+        pdf.cell(60, 10, "Renta Mensual", 1)
+        pdf.cell(65, 10, f"{renta_a:,.2f} EUR", 1, 0, 'C')
+        pdf.cell(65, 10, f"{renta_b:,.2f} EUR", 1, 1, 'C')
+        pdf.ln(15)
+        
+        # Conclusión Estratégica
+        pdf.set_font("Arial", 'B', 12)
+        pdf.set_text_color(30, 58, 138)
+        conclusion = (f"VALOR ESTRATEGICO: Mantener tu plan activo te garantiza un patrimonio "
+                      f"extra de {dif_cap:,.0f} EUR al jubilarte, lo que supone un "
+                      f"sobresueldo de {dif_renta:,.2f} EUR cada mes durante 20 anos.")
+        pdf.multi_cell(0, 8, txt=conclusion)
+        
+        return pdf.output(dest='S').encode('latin-1')
+
+    # Botón de Descarga Final
+    try:
+        pdf_bytes = generar_pdf_comparativo_v3(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, mi_aportacion_anual_neta)
         st.download_button(
-            label="📥 DESCARGAR INFORME DE JUBILACIÓN (PDF)", 
-            data=bytes(pdf_out), 
-            file_name=f"Simulacion_Jubilacion_{edad_act}.pdf", 
-            mime="application/pdf", 
-            key="btn_descarga_final_v3",
+            label="📥 DESCARGAR INFORME COMPARATIVO (PDF)",
+            data=bytes(pdf_bytes),
+            file_name=f"Informe_Jubilacion_{edad_act}_AportMax.pdf",
+            mime="application/pdf",
+            key="btn_descarga_final_tab3",
             use_container_width=True
         )
     except Exception as e:
-        st.error(f"Error al generar el PDF: {e}")
+        st.error(f"Error al generar el PDF del informe: {e}")
