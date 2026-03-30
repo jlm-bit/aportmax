@@ -607,64 +607,64 @@ with tab3:
     with r3:
         st.success(f"**Sobresueldo:** +{dif_renta:,.2f} € al mes adicionales para tu jubilación.")
 
-# --- FILA 2.5: EL PODER DEL INTERÉS COMPUESTO (NUEVA) ---
-st.markdown("#### 📈 Desglose de Crecimiento y Beneficios")
-
-# Cálculos lógicos
-años_plan = edad_jub - edad_act
-total_invertido_usuario = mi_aportacion_anual_neta * años_plan
-intereses_generados = cap_a - total_invertido_usuario
-porcentaje_interes = (intereses_generados / cap_a) * 100 if cap_a > 0 else 0
-
-i1, i2, i3 = st.columns(3)
-
-with i1:
-    st.metric(
-        label="TU ESFUERZO TOTAL", 
-        value=f"{total_invertido_usuario:,.0f} €",
-        help="Suma de todas tus aportaciones netas durante los años de plan."
-    )
-
-with i2:
-    st.metric(
-        label="INTERESES GENERADOS", 
-        value=f"{intereses_generados:,.0f} €",
-        delta=f"+{intereses_generados:,.0f} €",
-        delta_color="normal"
-    )
-
-with i3:
-    # Mostramos un mensaje potente sobre el peso del interés
-    st.warning(
-        f"**Efecto Multiplicador:**\n\nEl **{porcentaje_interes:.0f}%** de tu capital final son intereses. ¡El dinero trabaja para ti!"
-    )
-
-st.markdown("---")
-
-
-# --- FILA 4: Definición de Hipótesis ---
-st.markdown("#### ⚙️ Hipótesis y Bases del Modelo")
-
-h1, h2, h3, h4 = st.columns(4)
-
-with h1:
-    st.write("**📈 Aportaciones Futuras**")
-    st.caption(f"Se ha considerado que son constantes.")
-
-with h2:
-    st.write("**📈 Rentabilidad Proyectada**")
-    st.caption(f"Se ha aplicado una tasa anual media del **{rent_pct}%**. Esta rentabilidad es neta de comisiones de gestión y custodia estimadas.")
-
-with h3:
-    st.write("**⏳ Horizonte Temporal**")
-    st.caption(f"El plan contempla un periodo de acumulación de **{años_plan} años** (hasta los {edad_jub}). Los cálculos asumen aportaciones constantes y reinversión total de dividendos.")
-
-with h4:
-    st.write("**💶 Fiscalidad y Retiros**")
-    st.caption("La renta mensual se calcula sobre un periodo de **20 años de desinversión**. No se descuentan impuestos finales (IRPF/Plusvalías), que dependerán de la normativa vigente.")
-
-# --- CUADRO DE AVISO LEGAL (Opcional pero recomendado) ---
-st.warning("⚠️ **Nota importante:** Estas proyecciones son simulaciones basadas en datos históricos. Rentabilidades pasadas no garantizan resultados futuros. El capital final puede variar según la evolución real del mercado.")
+    # --- FILA 2.5: EL PODER DEL INTERÉS COMPUESTO (NUEVA) ---
+    st.markdown("#### 📈 Desglose de Crecimiento y Beneficios")
+    
+    # Cálculos lógicos
+    años_plan = edad_jub - edad_act
+    total_invertido_usuario = mi_aportacion_anual_neta * años_plan
+    intereses_generados = cap_a - total_invertido_usuario
+    porcentaje_interes = (intereses_generados / cap_a) * 100 if cap_a > 0 else 0
+    
+    i1, i2, i3 = st.columns(3)
+    
+    with i1:
+        st.metric(
+            label="TU ESFUERZO TOTAL", 
+            value=f"{total_invertido_usuario:,.0f} €",
+            help="Suma de todas tus aportaciones netas durante los años de plan."
+        )
+    
+    with i2:
+        st.metric(
+            label="INTERESES GENERADOS", 
+            value=f"{intereses_generados:,.0f} €",
+            delta=f"+{intereses_generados:,.0f} €",
+            delta_color="normal"
+        )
+    
+    with i3:
+        # Mostramos un mensaje potente sobre el peso del interés
+        st.warning(
+            f"**Efecto Multiplicador:**\n\nEl **{porcentaje_interes:.0f}%** de tu capital final son intereses. ¡El dinero trabaja para ti!"
+        )
+    
+    st.markdown("---")
+    
+    
+    # --- FILA 4: Definición de Hipótesis ---
+    st.markdown("#### ⚙️ Hipótesis y Bases del Modelo")
+    
+    h1, h2, h3, h4 = st.columns(4)
+    
+    with h1:
+        st.write("**📈 Aportaciones Futuras**")
+        st.caption(f"Se ha considerado que son constantes.")
+    
+    with h2:
+        st.write("**📈 Rentabilidad Proyectada**")
+        st.caption(f"Se ha aplicado una tasa anual media del **{rent_pct}%**. Esta rentabilidad es neta de comisiones de gestión y custodia estimadas.")
+    
+    with h3:
+        st.write("**⏳ Horizonte Temporal**")
+        st.caption(f"El plan contempla un periodo de acumulación de **{años_plan} años** (hasta los {edad_jub}). Los cálculos asumen aportaciones constantes y reinversión total de dividendos.")
+    
+    with h4:
+        st.write("**💶 Fiscalidad y Retiros**")
+        st.caption("La renta mensual se calcula sobre un periodo de **20 años de desinversión**. No se descuentan impuestos finales (IRPF/Plusvalías), que dependerán de la normativa vigente.")
+    
+    # --- CUADRO DE AVISO LEGAL (Opcional pero recomendado) ---
+    st.warning("⚠️ **Nota importante:** Estas proyecciones son simulaciones basadas en datos históricos. Rentabilidades pasadas no garantizan resultados futuros. El capital final puede variar según la evolución real del mercado.")
 
 
 
