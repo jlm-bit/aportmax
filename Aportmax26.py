@@ -220,6 +220,7 @@ with st.sidebar:
         # --- CONTROL DE LÍMITE EMPRESA (Ahorro + Riesgo <= 10.000€) ---
         emp_t_bruta = (e_ahorro * 12) + e_riesgo
         emp_t = min(emp_t_bruta, 10000.0)
+   
         
         if emp_t_bruta > 10000.0:
             st.warning(f"⚠️ La aportación de la empresa se ha limitado a 10.000€ (Exceso: {emp_t_bruta - 10000.0:,.2f}€)")
@@ -500,7 +501,7 @@ with tab3:
     # 1. Entradas de Datos
     col_in1, col_in2 = st.columns(2)
     with col_in1:
-        edad_act = st.number_input("Tu Edad Actual", value=40, min_value=18, max_value=62, key="edad_final")
+        edad_act = st.number_input("Tu Edad Actual", value=40, min_value=18, max_value=64, key="edad_final")
         saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=0.0, step=1000.0, min_value=0.0, key="saldo_final")
         
         modo_aportacion = st.radio(
@@ -535,7 +536,7 @@ with tab3:
     cap_total_evol, solo_capital_evol, interes_evol, cap_solo_empresa_evol = [], [], [], []
     
     saldo_a, saldo_b, aport_acum_a = saldo_existente, saldo_existente, saldo_existente
-    cuota_empresa_fija = emp_t 
+    cuota_empresa_fija = e_ahorro * 12
     cuota_empleado_fija = mi_aportacion_anual_neta 
     
     for i in range(len(edades)):
