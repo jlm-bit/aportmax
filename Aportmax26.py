@@ -292,65 +292,56 @@ st.markdown('<div class="main-header"><h1 style="margin:0;">📈 APORTAMAX 2026<
 tab1, tab2, tab3, tab4 = st.tabs(["💰 Cálculo Fiscal ", "🎯 Plan de Acción ", "🚀 Proyección Jubilación ", "🎯 Acerca de "])
 
 with tab1:
-    col_left, col_right = st.columns([1, 1.2])
+    col_left, col_right = st.columns([1.2, 1]) # Invertimos un poco el ratio para que los cuadros tengan aire
+    
     with col_left:
-        st.markdown(f"""
-            <div class="card" style="background-color: #1E3A8A; color: white;">
-                <p style="margin:0; opacity: 0.8;">MÁXIMA APORTACIÓN PERSONAL</p>
-                <h2 style="font-size: 32px; margin: 5px 0;">{max_p:,.2f} €</h2>
-            </div>
-            <div class="card" style="background-color: #F0FDF4; color: #166534;">
-                <p style="margin:0; opacity: 0.8;">AHORRO FISCAL (IRPF. Tramos Catalunya)</p>
-                <h2 style="font-size: 32px; margin: 5px 0;">{ahorro:,.2f} €</h2>
-                <p style="margin:0; font-weight: bold;">Tax Return: {eficiencia:.1f}%</p>
-            </div>
-        """, unsafe_allow_html=True)
+        # --- SUB-COLUMNAS PARA LOS CUADROS ---
+        sub_col1, sub_col2 = st.columns(2)
+        
+        with sub_col1:
+            st.markdown(f"""
+                <div style="background-color: #1E3A8A; color: white; padding: 20px; border-radius: 12px; height: 160px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                    <p style="margin:0; font-size: 12px; opacity: 0.8; font-weight: bold;">MÁXIMA APORTACIÓN PERSONAL</p>
+                    <h2 style="font-size: 28px; margin: 10px 0; color: white;">{max_p:,.2f} €</h2>
+                </div>
+            """, unsafe_allow_html=True)
+
+        with sub_col2:
+            st.markdown(f"""
+                <div style="background-color: #F0FDF4; color: #166534; padding: 20px; border-radius: 12px; height: 160px; text-align: center; border: 1px solid #DCFCE7; display: flex; flex-direction: column; justify-content: center;">
+                    <p style="margin:0; font-size: 12px; opacity: 0.9; font-weight: bold;">AHORRO FISCAL (IRPF)</p>
+                    <h2 style="font-size: 28px; margin: 10px 0; color: #166534;">{ahorro:,.2f} €</h2>
+                    <p style="margin:0; font-weight: bold; font-size: 14px;">Tax Return: {eficiencia:.1f}%</p>
+                </div>
+            """, unsafe_allow_html=True)
+            
+        # Botón de descarga debajo de los cuadros
+        st.markdown("<br>", unsafe_allow_html=True)
+        pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
+        st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf", use_container_width=True)
     
     with col_right:
-    # 1. Cálculo del total para la etiqueta central
+        # --- EL DONUT SE MANTIENE AQUÍ ---
         total_inversion = esfuerzo_neto + ahorro + emp_t
-    
-    fig = go.Figure(data=[go.Pie(
-        labels=['Esfuerzo Neto', 'Ahorro Fiscal', 'Empresa'], 
-        values=[esfuerzo_neto, ahorro, emp_t], 
-        hole=.65,
-        marker_colors=['#3B82F6', '#10B981', '#1E293B'],
-        textinfo='percent', 
-        hoverinfo='label+value',
-        insidetextorientation='horizontal' # Asegura que los % no roten
-    )])
-    
-    # 2. Configuración de Layout Pro
-    fig.update_layout(
-        title={
-            'text': "<b>Distribución de tu Inversión Anual</b>",
-            'y': 0.98,
-            'x': 0.5,
-            'xanchor': 'center',
-            'yanchor': 'top',
-            'font': {'size': 18, 'color': '#1E293B'}
-        },
-        margin=dict(t=80, b=20, l=10, r=10), 
-        height=420, # Un pelín más alto para evitar cortes
-        showlegend=True, 
-        legend=dict(
-            orientation="h", 
-            y=-0.1, 
-            x=0.5, 
-            xanchor="center",
-            font=dict(size=12) # Tamaño de fuente optimizado
-        ),
-        annotations=[dict(
-            text=f'TOTAL ANUAL<br><span style="font-size:18px; color:#1E293B"><b>{total_inversion:,.0f} €</b></span>', 
-            x=0.5, y=0.5, 
-            showarrow=False,
-            font_family="Arial"
-        )]
-    )
-    
-    # Configuramos el config para quitar la barra de herramientas de Plotly y que quede más limpio
-    st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
-
+        fig = go.Figure(data=[go.Pie(
+            labels=['Esfuerzo Neto', 'Ahorro Fiscal', 'Empresa'], 
+            values=[esfuerzo_neto, ahorro, emp_t], 
+            hole=.65,
+            marker_colors=['#3B82F6', '#10B981', '#1E293B'],
+            textinfo='percent', 
+            hoverinfo='label+value',
+            insidetextorientation='horizontal'
+        )])
+        
+        fig.update_layout(
+            title={'text': "<b>Distribución de tu Inversión Anual</b>", 'y': 0.98, 'x': 0.5, 'xanchor': 'center', 'font': {'size': 18}},
+            margin=dict(t=80, b=20, l=10, r=10), 
+            height=400, 
+            showlegend=True, 
+            legend=dict(orientation="h", y=-0.1, x=0.5, xanchor="center"),
+            annotations=[dict(text=f'TOTAL ANUAL<br><b>{total_inversion:,.0f} €</b>', x=0.5, y=0.5, showarrow=False, font_size=16)]
+        )
+        st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
       
     pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
     st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf")
