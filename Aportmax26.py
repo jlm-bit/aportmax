@@ -308,7 +308,7 @@ with tab1:
     
     with col_right:
     # 1. Cálculo del total para la etiqueta central
-    total_inversion = esfuerzo_neto + ahorro + emp_t
+        total_inversion = esfuerzo_neto + ahorro + emp_t
     
     fig = go.Figure(data=[go.Pie(
         labels=['Esfuerzo Neto', 'Ahorro Fiscal', 'Empresa'], 
