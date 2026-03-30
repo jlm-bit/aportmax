@@ -621,6 +621,34 @@ import os
 import matplotlib.pyplot as plt
 from fpdf import FPDF
 
+# --- SECCIÓN DE DESCARGA EN EL TAB 3 ---
+st.markdown("---")
+st.subheader("📄 Exportar Resultados")
+st.write("Genera un informe profesional en PDF con la comparativa detallada y los gráficos de proyección.")
+
+# Usamos un botón para disparar la generación
+if st.button("🚀 GENERAR INFORME DETALLADO", use_container_width=True):
+    with st.spinner("⏳ Procesando datos y dibujando gráficos..."):
+        try:
+            # Generar los bytes del PDF
+            pdf_bytes = generar_pdf_comparativo_v4(
+                edad_act, edad_jub, cap_a, cap_b, 
+                renta_a, renta_b, dif_cap, dif_renta, 
+                rent_pct, mi_aportacion_anual_neta
+            )
+            
+            # Si todo sale bien, mostramos el éxito y el botón de descarga real
+            st.success("✅ ¡Informe generado con éxito!")
+            st.download_button(
+                label="📥 DESCARGAR MI INFORME (PDF)",
+                data=pdf_bytes,
+                file_name=f"Informe_Jubilacion_AportMax_{edad_act}anos.pdf",
+                mime="application/pdf",
+                use_container_width=True
+            )
+        except Exception as e:
+            st.error(f"❌ Error al crear el PDF: {e}")
+
 def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, aport_elegida):
     pdf = FPDF()
     pdf.add_page()
