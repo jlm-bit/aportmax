@@ -608,16 +608,16 @@ with tab3:
     # 5. Función de Generación de PDF (Restaurada y Protegida)
     st.markdown("---")
     
-    def generar_pdf_comparativo_v3(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, aport_elegida):
-        pdf = FPDF()
-        pdf.add_page()
-        
-        # Título Profesional
-        pdf.set_font("Arial", 'B', 16)
-        pdf.set_text_color(30, 58, 138) # Azul Marino
-        pdf.cell(200, 15, txt="INFORME ESTRATEGICO DE JUBILACION", ln=True, align='C')
-        pdf.ln(5)
-        
+   def generar_pdf_comparativo_v3(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, aport_elegida):
+    pdf = FPDF()
+    pdf.add_page()
+    
+    # Título Profesional
+    pdf.set_font("Arial", 'B', 16)
+    pdf.set_text_color(30, 58, 138) # Azul Marino
+    pdf.cell(200, 15, txt="INFORME ESTRATEGICO DE JUBILACION", ln=True, align='C')
+    pdf.ln(5)
+    
     # --- Datos de Entrada en el PDF ---
     pdf.set_font("Arial", '', 11)
     pdf.set_text_color(0, 0, 0)
@@ -625,53 +625,53 @@ with tab3:
     # Línea 1: Edades
     pdf.cell(200, 8, txt=f"Edad Actual: {edad_act} anos | Edad de Jubilacion: {edad_jub} anos", ln=True)
     
-    # Línea 2: Aportación y Rentabilidad
-    pdf.cell(200, 8, txt=f"Aportacion Personal: {aport_personal_anual:,.2f} EUR/ano | Rentabilidad: {rent_pct}%", ln=True)
-    
-    # Línea 3: Aportación Total (Incluyendo Empresa si aplica)
-    # Suponiendo que 'aport_total_anual' es la variable que suma ambas
-    pdf.cell(200, 8, txt=f"Aportacion Total Proyecto (Pers. + Emp.): {aport_total_anual:,.2f} EUR/ano", ln=True)
+    # Línea 2: Aportación y Rentabilidad (Usamos aport_elegida que viene del parámetro)
+    pdf.cell(200, 8, txt=f"Tu Aportacion Personal: {aport_elegida:,.2f} EUR/ano | Rentabilidad: {rent_pct}%", ln=True)
     
     pdf.ln(10)
-        
-        # Tabla Comparativa de Capitales y Rentas
-        pdf.set_font("Arial", 'B', 12)
-        pdf.set_fill_color(240, 240, 240)
-        pdf.cell(60, 10, "Concepto", 1, 0, 'L', True)
-        pdf.cell(65, 10, "Con tu Plan", 1, 0, 'C', True)
-        pdf.cell(65, 10, "Sin tu Aportacion", 1, 1, 'C', True)
-        
-        pdf.set_font("Arial", '', 11)
-        # Fila Capital
-        pdf.cell(60, 10, "Capital Final", 1)
-        pdf.cell(65, 10, f"{cap_a:,.0f} EUR", 1, 0, 'C')
-        pdf.cell(65, 10, f"{cap_b:,.0f} EUR", 1, 1, 'C')
-        # Fila Renta
-        pdf.cell(60, 10, "Renta Mensual", 1)
-        pdf.cell(65, 10, f"{renta_a:,.2f} EUR", 1, 0, 'C')
-        pdf.cell(65, 10, f"{renta_b:,.2f} EUR", 1, 1, 'C')
-        pdf.ln(15)
-        
-        # Conclusión Estratégica
-        pdf.set_font("Arial", 'B', 12)
-        pdf.set_text_color(30, 58, 138)
-        conclusion = (f"VALOR ESTRATEGICO: Realizar aportaciones personales a tu Plan de Pensiones te supone incrementar tu saldo "
-                      f"en {dif_cap:,.0f} EUR al jubilarte, lo que supone un "
-                      f"sobresueldo de {dif_renta:,.2f} EUR cada mes durante 20 anos.")
-        pdf.multi_cell(0, 8, txt=conclusion)
-        
-        return pdf.output(dest='S').encode('latin-1')
+    
+    # Tabla Comparativa de Capitales y Rentas
+    pdf.set_font("Arial", 'B', 12)
+    pdf.set_fill_color(240, 240, 240)
+    pdf.cell(60, 10, "Concepto", 1, 0, 'L', True)
+    pdf.cell(65, 10, "Con tu Plan", 1, 0, 'C', True)
+    pdf.cell(65, 10, "Sin tu Aportacion", 1, 1, 'C', True)
+    
+    pdf.set_font("Arial", '', 11)
+    # Fila Capital
+    pdf.cell(60, 10, "Capital Final", 1)
+    pdf.cell(65, 10, f"{cap_a:,.0f} EUR", 1, 0, 'C')
+    pdf.cell(65, 10, f"{cap_b:,.0f} EUR", 1, 1, 'C')
+    # Fila Renta
+    pdf.cell(60, 10, "Renta Mensual", 1)
+    pdf.cell(65, 10, f"{renta_a:,.2f} EUR", 1, 0, 'C')
+    pdf.cell(65, 10, f"{renta_b:,.2f} EUR", 1, 1, 'C')
+    pdf.ln(15)
+    
+    # Conclusión Estratégica
+    pdf.set_font("Arial", 'B', 12)
+    pdf.set_text_color(30, 58, 138)
+    conclusion = (f"VALOR ESTRATEGICO: Realizar aportaciones personales a tu Plan de Pensiones te supone incrementar tu saldo "
+                  f"en {dif_cap:,.0f} EUR al jubilarte, lo que supone un "
+                  f"sobresueldo de {dif_renta:,.2f} EUR cada mes durante 20 anos.")
+    
+    # Usamos multi_cell para que el texto largo no se salga del PDF
+    pdf.multi_cell(0, 8, txt=conclusion)
+    
+    # Importante: encode('latin-1') para evitar errores de caracteres especiales en FPDF
+    return pdf.output(dest='S').encode('latin-1')
 
-    # Botón de Descarga Final
-    try:
-        pdf_bytes = generar_pdf_comparativo_v3(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, mi_aportacion_anual_neta)
-        st.download_button(
-            label="📥 DESCARGAR INFORME COMPARATIVO (PDF)",
-            data=bytes(pdf_bytes),
-            file_name=f"Informe_Jubilacion_{edad_act}_AportMax.pdf",
-            mime="application/pdf",
-            key="btn_descarga_final_tab3",
-            use_container_width=True
-        )
-    except Exception as e:
-        st.error(f"Error al generar el PDF del informe: {e}")
+# --- Lógica del Botón (Fuera de la función) ---
+try:
+    # Asegúrate de que 'mi_aportacion_anual_neta' esté definida en tu código
+    pdf_bytes = generar_pdf_comparativo_v3(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, mi_aportacion_anual_neta)
+    st.download_button(
+        label="📥 DESCARGAR INFORME COMPARATIVO (PDF)",
+        data=pdf_bytes, # Ya son bytes al retornar con .encode('latin-1')
+        file_name=f"Informe_Jubilacion_{edad_act}_AportMax.pdf",
+        mime="application/pdf",
+        key="btn_descarga_final_tab3",
+        use_container_width=True
+    )
+except Exception as e:
+    st.error(f"Error al generar el PDF del informe: {e}")
