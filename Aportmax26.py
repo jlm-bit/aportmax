@@ -534,10 +534,11 @@ with tab3:
     rent_dec = rent_pct / 100
     edades = np.arange(edad_act, edad_jub + 1)
     cap_total_evol, solo_capital_evol, interes_evol, cap_solo_empresa_evol = [], [], [], []
-    
     saldo_a, saldo_b, aport_acum_a = saldo_existente, saldo_existente, saldo_existente
     cuota_empresa_fija = e_ahorro * 12
     cuota_empleado_fija = mi_aportacion_anual_neta 
+    años_plan = edad_jub - edad_act
+   
     
     for i in range(len(edades)):
         int_a = saldo_a * rent_dec
@@ -551,6 +552,7 @@ with tab3:
         saldo_a += (cuota_empresa_fija + cuota_empleado_fija) + int_a
         saldo_b += cuota_empresa_fija + int_b
         aport_acum_a += (cuota_empresa_fija + cuota_empleado_fija)
+       
 
     # 3. Gráfico de Evolución
     fig_j = go.Figure()
