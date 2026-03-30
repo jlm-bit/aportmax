@@ -317,7 +317,7 @@ with tab1:
             
         # --- AVISO Y BOTÓN DE DESCARGA ---
             st.warning("")   
-            st.warning("⚠️ **Nota:** Los resultados mostrados se basan en los datos facilitados en el panel lateral. Revisar si son correctos.")   
+            st.warning("⚠️ **Nota: Los resultados mostrados se basan en los datos facilitados en el panel lateral. Revisar si son correctos.")   
     with col_right:
         # --- EL DONUT SE MANTIENE AQUÍ ---
         total_inversion = esfuerzo_neto + ahorro + emp_t
