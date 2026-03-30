@@ -507,7 +507,7 @@ with tab3:
         
         if modo_aportacion == "Máximo Legal":
             mi_aportacion_anual_neta = max_legal_anual_neta
-            st.info(f"✨ Límite proyectado: **{mi_aportacion_anual_neta:,.2f} €/año**.")
+            st.info(f"✨ Límite MÁXIMO PERSONAL: **{mi_aportacion_anual_neta:,.2f} €/año**.")
         else:
             mi_aportacion_anual_neta = st.slider(
                 "Aportación anual personalizada (€)", 
