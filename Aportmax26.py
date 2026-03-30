@@ -306,41 +306,48 @@ with tab1:
             </div>
         """, unsafe_allow_html=True)
     
-      with col_right:
-        # 1. Calculamos el valor total para la etiqueta central
-        total_inversion = esfuerzo_neto + ahorro + emp_t
-        
-        fig = go.Figure(data=[go.Pie(
-            labels=['Esfuerzo Neto', 'Ahorro Fiscal', 'Empresa'], 
-            values=[esfuerzo_neto, ahorro, emp_t], 
-            hole=.6, 
-            marker_colors=['#3B82F6', '#10B981', '#1E293B'],
-         #   textinfo='none' # Quitamos los números de los quesitos para que quede limpio
-        )])
-        
-        # 2. Añadimos la anotación central y el TÍTULO
-        fig.update_layout(
-            title={
-                'text': "<b>Distribución de tu Inversión Anual</b>",
-                'y': 0.95,
-                'x': 0.5,
-                'xanchor': 'center',
-                'yanchor': 'top',
-                'font': {'size': 18}
-            },
-            margin=dict(t=60, b=0, l=0, r=0), # Aumentamos el margen superior (t) para el título
-            height=350, 
-            showlegend=True, 
-            legend=dict(orientation="h", y=-0.1, x=0.5, xanchor="center"),
-            annotations=[dict(
-                text=f'TOTAL<br><b>{total_inversion:,.0f} €</b>', 
-                x=0.5, y=0.5, 
-                font_size=16, 
-                showarrow=False,
-                font_family="Arial"
-            )]
-        )
-        st.plotly_chart(fig, use_container_width=True)
+    with col_right:
+    # 1. Calculamos el valor total para la etiqueta central
+    total_inversion = esfuerzo_neto + ahorro + emp_t
+    
+    fig = go.Figure(data=[go.Pie(
+        labels=['Esfuerzo Neto', 'Ahorro Fiscal', 'Empresa'], 
+        values=[esfuerzo_neto, ahorro, emp_t], 
+        hole=.65, # Aumentamos un pelín el hueco para elegancia
+        marker_colors=['#3B82F6', '#10B981', '#1E293B'],
+        textinfo='percent', # Mostramos el % para dar más información de un vistazo
+        hoverinfo='label+value'
+    )])
+    
+    # 2. Configuración de Título, Márgenes y Anotación
+    fig.update_layout(
+        title={
+            'text': "<b>Distribución de tu Inversión Anual</b>",
+            'y': 0.98, # Lo subimos un poco más al borde superior
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top',
+            'font': {'size': 18, 'color': '#1E293B'}
+        },
+        # t=80 da espacio suficiente para que el título no toque el donut
+        margin=dict(t=80, b=20, l=10, r=10), 
+        height=400, # Subimos a 400 para que el título y la leyenda respiren
+        showlegend=True, 
+        legend=dict(
+            orientation="h", 
+            y=-0.15, 
+            x=0.5, 
+            xanchor="center"
+        ),
+        annotations=[dict(
+            text=f'TOTAL ANUAL<br><span style="font-size:18px"><b>{total_inversion:,.0f} €</b></span>', 
+            x=0.5, y=0.5, 
+            showarrow=False,
+            font_family="Arial"
+        )]
+    )
+    
+    st.plotly_chart(fig, use_container_width=True)
 
 
       
