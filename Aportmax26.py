@@ -747,8 +747,7 @@ with tab4:
 
         3.  **Liquidez y Contingencias:**
             * El rescate está vinculado a: jubilación, incapacidad, fallecimiento o dependencia.
-    #        * **Ventana de Liquidez (10 años):** Conforme a la normativa vigente en 2026, puedes rescatar aportaciones con una antigüedad mínima de 10 años sin necesidad de cumplir contingencias adicionales.
-
+         
         ### **Responsabilidad**
         Estas proyecciones son cálculos matemáticos basados en la legislación de **marzo de 2026**. Cambios legislativos futuros podrían alterar los límites de aportación o el tratamiento fiscal del rescate.
         """)
