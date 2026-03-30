@@ -428,7 +428,7 @@ with tab2:
                         <span style="font-size: 1.8rem; color: #64748b; font-weight: 600;">/ mes</span>
                     </div>
                     <p style="font-size: 1.2rem; color: #1e3a8a; margin-top: 20px; font-weight: 500;">
-                        {"🔼 <b>Sube</b>" if diferencia_mensual > 0 else "🔽 <b>Baja</b>"} tu cuota actual en 
+                        {"🔼 <b>ACCIÓN: Incrementa</b>" if diferencia_mensual > 0 else "🔽 <b>Reduce</b>"} tu aportación actual al Plan de Pensiones en 
                         <span style="font-size: 1.6rem; border-bottom: 3px solid #1e40af;">{abs(diferencia_mensual):,.2f} €</span> 
                         durante los {meses_restantes} meses restantes.
                     </p>
