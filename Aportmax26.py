@@ -585,6 +585,15 @@ with tab3:
     renta_b = cap_b / 240 
     dif_renta = renta_a - renta_b
 
+    # --- CÁLCULOS DE RENTABILIDAD ---
+años_plan = edad_jub - edad_act
+# Total que sale del bolsillo del usuario
+total_invertido_usuario = mi_aportacion_anual_neta * años_plan 
+# Lo que el mercado ha 'regalado' al usuario
+total_intereses = cap_a - total_invertido_usuario 
+# Porcentaje de éxito
+multiplicador = cap_a / total_invertido_usuario if total_invertido_usuario > 0 else 0
+
     st.markdown("---")
 
     
