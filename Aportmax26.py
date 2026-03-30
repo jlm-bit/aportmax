@@ -261,13 +261,11 @@ with st.sidebar:
 
 # --- 5. LÓGICA DE CÁLCULO ---
 any = 2026
-ssb = 5101,0*12
-tgss = 0.0635
 
 hoy = datetime.date.today()
 meses_restantes = 12 - hoy.month + 1
 meses_pasados = 12 - meses_restantes
-CUOTA_SS = min(sb, ssb) * tgss 
+CUOTA_SS = min(sb, 5101*12) * 0.064 
 base_pre = max(0.0, sb - CUOTA_SS - 2000.0)
 max_p = MAX_P_LIMIT
 ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
