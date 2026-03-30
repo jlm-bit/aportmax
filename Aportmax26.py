@@ -618,12 +618,21 @@ with tab3:
         pdf.cell(200, 15, txt="INFORME ESTRATEGICO DE JUBILACION", ln=True, align='C')
         pdf.ln(5)
         
-        # Datos de Entrada
-        pdf.set_font("Arial", '', 11)
-        pdf.set_text_color(0, 0, 0)
-        pdf.cell(200, 8, txt=f"Edad Actual: {edad_act} anos | Edad de Jubilacion: {edad_jub} anos", ln=True)
-        pdf.cell(200, 8, txt=f"Aportacion Personal: {aport_elegida:,.2f} EUR/ano | Rentabilidad: {rent_pct}%", ln=True)
-        pdf.ln(10)
+    # --- Datos de Entrada en el PDF ---
+    pdf.set_font("Arial", '', 11)
+    pdf.set_text_color(0, 0, 0)
+    
+    # Línea 1: Edades
+    pdf.cell(200, 8, txt=f"Edad Actual: {edad_act} anos | Edad de Jubilacion: {edad_jub} anos", ln=True)
+    
+    # Línea 2: Aportación y Rentabilidad
+    pdf.cell(200, 8, txt=f"Aportacion Personal: {aport_personal_anual:,.2f} EUR/ano | Rentabilidad: {rent_pct}%", ln=True)
+    
+    # Línea 3: Aportación Total (Incluyendo Empresa si aplica)
+    # Suponiendo que 'aport_total_anual' es la variable que suma ambas
+    pdf.cell(200, 8, txt=f"Aportacion Total Proyecto (Pers. + Emp.): {aport_total_anual:,.2f} EUR/ano", ln=True)
+    
+    pdf.ln(10)
         
         # Tabla Comparativa de Capitales y Rentas
         pdf.set_font("Arial", 'B', 12)
@@ -646,8 +655,8 @@ with tab3:
         # Conclusión Estratégica
         pdf.set_font("Arial", 'B', 12)
         pdf.set_text_color(30, 58, 138)
-        conclusion = (f"VALOR ESTRATEGICO: Mantener tu plan activo te garantiza un patrimonio "
-                      f"extra de {dif_cap:,.0f} EUR al jubilarte, lo que supone un "
+        conclusion = (f"VALOR ESTRATEGICO: Realizar aportaciones personales a tu Plan de Pensiones te supone incrementar tu saldo "
+                      f"en {dif_cap:,.0f} EUR al jubilarte, lo que supone un "
                       f"sobresueldo de {dif_renta:,.2f} EUR cada mes durante 20 anos.")
         pdf.multi_cell(0, 8, txt=conclusion)
         
