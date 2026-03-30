@@ -612,6 +612,53 @@ import io
 from fpdf import FPDF
 import datetime
 
+
+
+
+
+
+# --- LÓGICA DEL BOTÓN DE DESCARGA (Ubícalo en el Tab de Resultados) ---
+try:
+    # 1. Generamos los bytes del PDF llamando a la función
+    # Asegúrate de que estas variables existan en tu código antes de esta línea
+    pdf_bytes = generar_pdf_comparativo_v4(
+        edad_act, 
+        edad_jub, 
+        cap_a, 
+        cap_b, 
+        renta_a, 
+        renta_b, 
+        dif_cap, 
+        dif_renta, 
+        rent_pct, 
+        mi_aportacion_anual_neta # O la variable que uses para la aportación
+    )
+    
+    # 2. Creamos un contenedor visual para el botón
+    st.markdown("### 📄 Tu Informe Estratégico")
+    st.info("Haz clic en el botón de abajo para descargar el análisis detallado con gráficos y comparativas.")
+    
+    # 3. El botón de Streamlit
+    st.download_button(
+        label="📥 DESCARGAR INFORME COMPARATIVO (PDF)",
+        data=pdf_bytes,
+        file_name=f"Informe_Jubilacion_{edad_act}_AportMax.pdf",
+        mime="application/pdf",
+        key="btn_descarga_pdf_v4",
+        use_container_width=True
+    )
+
+except Exception as e:
+    st.error(f"No se pudo generar el PDF en este momento. Error técnico: {e}")
+
+
+
+
+
+
+
+
+
 # --- 5. Función de Generación de PDF (Corregida y Robusta) ---
 def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, aport_elegida):
     pdf = FPDF()
