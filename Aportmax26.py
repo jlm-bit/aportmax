@@ -729,7 +729,38 @@ if st.button("🚀 GENERAR INFORME DE LA PROYECCIÓN (pdf)", use_container_width
         except Exception as e:
             st.error(f"❌ Error al crear el PDF: {e}")
 
+
 with tab4:
+    # --- RESUMEN EJECUTIVO DEL PROGRAMA ---
+    st.info("### 📋 Resumen del Simulador de Estrategia")
+    
+    col_res1, col_res2 = st.columns(2)
+    
+    with col_res1:
+        st.markdown("""
+        **¿Qué hace este programa?**
+        * **Proyecta tu futuro:** Calcula cuánto dinero tendrás al jubilarte basándose en tu ahorro actual y aportaciones futuras.
+        * **Compara Escenarios:** Enfrenta visualmente el éxito de mantener tu plan activo frente al riesgo de detenerlo hoy.
+        * **Analiza el Interés Compuesto:** Desglosa qué parte de tu capital es ahorro directo y cuánto es beneficio generado por el mercado.
+        """)
+
+    with col_res2:
+        st.markdown("""
+        **Garantías Técnicas y Legales:**
+        * **Actualización 2026:** Cálculos ajustados a los límites legales de 1.500€ (individual) y 8.500€ (empleo).
+        * **Matemática Financiera:** Uso de fórmulas de capitalización compuesta y rentas constantes para una precisión bancaria.
+        * **Transparencia Total:** Información detallada sobre fiscalidad de rescate y ventanas de liquidez a 10 años.
+        """)
+    
+    st.markdown("---") # Separador visual antes de entrar en el detalle legal
+
+    # --- AQUÍ CONTINÚAN TUS EXPANDERS DE LEGISLACIÓN ---
+    with st.expander("⚖️ Legislación Detallada y Límites de Aportación"):
+        # (El contenido detallado que ya teníamos...)
+        st.write("Detalle legislativo aquí...")
+
+
+    
     st.markdown("### 📚 Información Legal y Metodología")
     
     # --- SECCIÓN: LEGISLACIÓN Y LÍMITES ---
