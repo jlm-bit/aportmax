@@ -585,14 +585,6 @@ with tab3:
     renta_b = cap_b / 240 
     dif_renta = renta_a - renta_b
 
-    # --- CÁLCULOS DE RENTABILIDAD ---
-años_plan = edad_jub - edad_act
-# Total que sale del bolsillo del usuario
-total_invertido_usuario = mi_aportacion_anual_neta * años_plan 
-# Lo que el mercado ha 'regalado' al usuario
-total_intereses = cap_a - total_invertido_usuario 
-# Porcentaje de éxito
-multiplicador = cap_a / total_invertido_usuario if total_invertido_usuario > 0 else 0
 
     st.markdown("---")
 
@@ -608,29 +600,6 @@ multiplicador = cap_a / total_invertido_usuario if total_invertido_usuario > 0 e
         st.info(f"**Patrimonio Extra:** +{dif_cap:,.0f} € acumulados gracias a tu aportación.")
 
 
-st.markdown("#### 📈 El Poder del Interés Compuesto")
-i1, i2, i3 = st.columns(3)
-
-with i1:
-    st.metric(
-        label="TU ESFUERZO (Inversión)", 
-        value=f"{total_invertido_usuario:,.0f} €",
-        help="Suma total de tus aportaciones anuales netas."
-    )
-
-with i2:
-    # Mostramos los intereses con un delta positivo en verde
-    st.metric(
-        label="INTERESES GENERADOS", 
-        value=f"{total_intereses:,.0f} €", 
-        delta=f"{multiplicador:.1f}x tu capital",
-        delta_color="normal"
-    )
-
-with i3:
-    # Mensaje de refuerzo psicológico
-    porcentaje_mercado = (total_intereses / cap_a) * 100
-    st.success(f"**¡Dato Brutal!**\n\nEl **{porcentaje_mercado:.0f}%** de tu jubilación lo paga el mercado, no tú.")
     
     # --- FILA 2: COMPARATIVA DE RENTAS ---
     st.markdown("#### 📅 Comparativa de Renta Mensual (20 años)")
