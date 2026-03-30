@@ -733,7 +733,7 @@ with tab4:
     st.markdown("### 📚 Información Legal y Metodología")
     
     # --- SECCIÓN: LEGISLACIÓN Y LÍMITES ---
-    with st.expander("⚖️ Legislación Aplicable y Límites de Aportación", expanded=False):
+    with st.expander("⚖️ Legislación Aplicable y Límites de Aportación a Planes de Pensiones de Empleo", expanded=False):
         st.markdown(f"""
         ### **Marco Legal de Aportaciones**
         La simulación se rige por la normativa vigente en **marzo de 2026** sobre el Impuesto sobre la Renta de las Personas Físicas (IRPF):
@@ -757,5 +757,5 @@ with tab4:
     with st.expander("ℹ️ Acerca de esta Herramienta"):
         st.write("""
         Este simulador ha sido desarrollado para ilustrar el impacto del interés compuesto y la constancia en el ahorro a largo plazo. 
-        Para consultas vinculantes, se recomienda acudir a un asesor fiscal o financiero certificado.
+        Para consultas vinculantes, se recomienda acudir a un asesor fiscal o financiero.
         """)
