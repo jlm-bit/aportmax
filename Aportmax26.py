@@ -732,16 +732,16 @@ if st.button("🚀 GENERAR INFORME DE LA PROYECCIÓN (pdf)", use_container_width
 
 with tab4:
     # --- RESUMEN EJECUTIVO DEL PROGRAMA ---
-    st.info("### 📋 Funcionalades de la plataforma AportaMax")
+    st.info("### 📋 Funcionalidades de la plataforma AportaMax")
     
     col_res1, col_res2 = st.columns(2)
     
     with col_res1:
         st.markdown("""
         **¿Qué hace este programa?**
-        * **Calcula la Aportación Máxima Personal a tu Plan de Pensiones de Empleo:** Calcula la devolución del ÏRPF que supone.
-        * **Ayuda a planificar tu ahorro:** Define un plan para que puedas ahorrar hasta lo máximo permitido.
-        * **Proyecta los fondos a tu jubilación:** D* Calcula cuánto dinero tendrás al jubilarte basándose en tu ahorro actual y aportaciones futuras.
+        * **Calcular la Aportación Máxima Personal a tu Plan de Pensiones de Empleo:** Calcula la devolución del ÏRPF que supone.
+        * **Ayudarte a planificar tu ahorro:** Define un plan para que puedas ahorrar hasta lo máximo permitido.
+        * **Proyectar los fondos a tu jubilación:** Calcula cuánto dinero tendrás al jubilarte basándose en tu ahorro actual y aportaciones futuras.
      
         """)
 
@@ -767,7 +767,7 @@ with tab4:
             * Este límite puede incrementarse en hasta **8.500 € adicionales** (total 10.000 €) mediante contribuciones empresariales o planes de empleo.
 
         2.  **Tratamiento Fiscal (Diferimiento):**
-            * Las aportaciones reducen la base imponible del IRPF, generando un **ahorro fiscal inmediato** según tu tipo marginal (entre el 19% y el 50%).
+            * Las aportaciones reducen la base imponible del IRPF, generando un **ahorro fiscal inmediato** según tu tipo marginal (entre el 19% y el 50% en Catalunya).
             * *Nota:* Los resultados de este simulador se muestran en valores brutos. El ahorro fiscal real supone un "descuento" extra en tu esfuerzo de ahorro anual.
 
         3.  **Liquidez y Contingencias:**
