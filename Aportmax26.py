@@ -632,10 +632,6 @@ import io
 from fpdf import FPDF
 import datetime
 
-
-
-
-
 # --- 5. Función de Generación de PDF (VERSIÓN DEFINITIVA CORREGIDA) ---
 
 import os
@@ -732,3 +728,26 @@ if st.button("🚀 GENERAR INFORME DE LA PROYECCIÓN (pdf)", use_container_width
             st.error(f"Faltan datos para generar el informe. Asegúrate de completar los cálculos. ({e})")
         except Exception as e:
             st.error(f"❌ Error al crear el PDF: {e}")
+
+with tab4:
+
+   # --- SECCIÓN: LEGISLACIÓN Y LÍMITES ---
+with st.expander("⚖️ Legislación Aplicable y Límites de Aportación"):
+    st.markdown(f"""
+    ### **Marco Legal de Aportaciones**
+    La simulación se rige por la normativa vigente sobre el Impuesto sobre la Renta de las Personas Físicas (IRPF) y la regulación de instrumentos de previsión social:
+
+    1.  **Límite General de Aportación:** * Según la normativa actual, el límite máximo de reducción en la base imponible por aportaciones a sistemas de previsión social (Planes de Pensiones, PPA, etc.) es de **1.500 € anuales** para aportaciones individuales.
+        * Este límite puede incrementarse en hasta **8.500 € adicionales** (total 10.000 €) si provienen de contribuciones empresariales o de ahorro vinculado a planes de empleo.
+
+    2.  **Tratamiento Fiscal (Diferimiento):**
+        * Las aportaciones realizadas permiten reducir directamente la base imponible del IRPF, lo que genera un **ahorro fiscal inmediato** según tu tipo marginal (entre el 19% y el 47% aproximadamente).
+        * *Nota:* Este simulador muestra valores **brutos** de aportación neta. El ahorro fiscal real no se ha sumado al capital final, aunque en la práctica supone un menor coste para el inversor.
+
+    3.  **Liquidez y Contingencias:**
+        * Se recuerda que estos capitales están sujetos a supuestos de liquidez restringidos: jubilación, incapacidad, fallecimiento, dependencia severa o desempleo de larga duración.
+        * **Regla de los 10 años:** Según la legislación, a partir de 2025/2026 es posible rescatar aportaciones con al menos 10 años de antigüedad sin necesidad de cumplir las contingencias anteriores.
+
+    ### **Responsabilidad**
+    Esta herramienta calcula proyecciones basadas en las leyes vigentes a **marzo de 2026**. Cualquier cambio legislativo posterior podría afectar los límites de aportación o el tratamiento fiscal del rescate.
+    """)
