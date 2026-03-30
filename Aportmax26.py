@@ -306,7 +306,7 @@ with tab1:
             </div>
         """, unsafe_allow_html=True)
     
-   with col_right:
+    with col_right:
     # 1. Cálculo del total para la etiqueta central
     total_inversion = esfuerzo_neto + ahorro + emp_t
     
