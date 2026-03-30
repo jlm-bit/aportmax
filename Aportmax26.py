@@ -733,10 +733,10 @@ with tab4:
     st.markdown("### 📚 Información Legal y Metodología")
     
     # --- SECCIÓN: LEGISLACIÓN Y LÍMITES ---
-    with st.expander("⚖️ Límites de Aportación a Planes de Pensiones de Empleo", expanded=False):
+    with st.expander("⚖️ Notas Legales", expanded=False):
         st.markdown(f"""
        
-        La simulación se rige por la normativa vigente en **marzo de 2026** sobre el Impuesto sobre la Renta de las Personas Físicas (IRPF):
+        La simulación se rige por la normativa vigente en **marzo de 2026** sobre el Impuesto sobre IRPF y la Ley de Planes y Fondos de Pensiones:
 
         1.  **Límite General de Aportación:** * El límite máximo de reducción en la base imponible por aportaciones individuales a sistemas de previsión social es de **1.500 € anuales**.
             * Este límite puede incrementarse en hasta **8.500 € adicionales** (total 10.000 €) mediante contribuciones empresariales o planes de empleo.
