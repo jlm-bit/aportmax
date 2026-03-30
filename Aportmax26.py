@@ -637,16 +637,25 @@ def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_
     pdf.cell(0, 6, f"Aportacion Personal: {aport_elegida:,.2f} EUR/ano | Rentabilidad: {rent_pct}%", ln=True)
     pdf.ln(5)
 
-    # --- GENERACIÓN DEL GRÁFICO ---
+   # --- GENERACIÓN DEL GRÁFICO (CORRECCIÓN startswith) ---
     plt.figure(figsize=(6, 4))
-    categorias = ['Sin tu Aportacion', 'Con tu Plan']
-    valores = [cap_b, cap_a]
-    colores = ['#cbd5e1', '#1e40af'] 
+    # ... (tu código de plt.bar y plt.title igual que antes) ...
+    plt.bar(['Sin tu Aportacion', 'Con tu Plan'], [cap_b, cap_a], color=['#cbd5e1', '#1e40af'])
     
-    plt.bar(categorias, valores, color=colores, width=0.6)
-    plt.title('Capital Acumulado al Jubilarte (EUR)', fontsize=12, fontweight='bold', pad=15)
-    plt.ylabel('Euros (€)')
-    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    img_buf = io.BytesIO()
+    plt.savefig(img_buf, format='png', bbox_inches='tight', dpi=150)
+    img_buf.seek(0)
+    
+    # ESTA ES LA LÍNEA CLAVE:
+    # Registramos la imagen en el diccionario interno de fpdf con un nombre ficticio
+    pdf.image(img_buf, x=55, y=pdf.get_y(), w=100, type='PNG') 
+    
+    # Si lo anterior falla, la alternativa "manual" de FPDF es esta:
+    # pdf.image("grafico.png", x=55, y=pdf.get_y(), w=100) 
+    # Pero con BytesIO, fpdf 1.7.2 a veces requiere que el buffer se pase así:
+    
+    plt.close() 
+    pdf.ln(75)
     
     # Guardar gráfico en memoria
     img_buf = io.BytesIO()
