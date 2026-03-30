@@ -318,7 +318,7 @@ with tab1:
          #   textinfo='none' # Quitamos los números de los quesitos para que quede limpio
         )])
         
-    # 2. Añadimos la anotación central y el TÍTULO
+        # 2. Añadimos la anotación central y el TÍTULO
         fig.update_layout(
             title={
                 'text': "<b>Distribución de tu Inversión Anual</b>",
