@@ -318,23 +318,7 @@ with tab1:
          #   textinfo='none' # Quitamos los números de los quesitos para que quede limpio
         )])
         
-        # 2. Añadimos la anotación central
-        fig.update_layout(
-            margin=dict(t=30, b=0, l=0, r=0), 
-            height=300, 
-            showlegend=True, 
-            legend=dict(orientation="h", y=-0.1),
-            annotations=[dict(
-                text=f'TOTAL<br><b>{total_inversion:,.0f} €</b>', 
-                x=0.5, y=0.5, 
-                font_size=16, 
-                showarrow=False,
-                font_family="Arial"
-            )]
-        )
-        st.plotly_chart(fig, use_container_width=True)
-
-# 2. Añadimos la anotación central y el TÍTULO
+    # 2. Añadimos la anotación central y el TÍTULO
         fig.update_layout(
             title={
                 'text': "<b>Distribución de tu Inversión Anual</b>",
