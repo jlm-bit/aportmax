@@ -313,7 +313,7 @@ with tab1:
             values=[esfuerzo_neto, ahorro, emp_t], 
             hole=.6, 
             marker_colors=['#3B82F6', '#10B981', '#1E293B'],
-            textinfo='none' # Quitamos los números de los quesitos para que quede limpio
+         #   textinfo='none' # Quitamos los números de los quesitos para que quede limpio
         )])
         
         # 2. Añadimos la anotación central
@@ -377,7 +377,7 @@ with tab2:
     
     with c4:
         # Aportación extraordinaria única
-        st.markdown(f"<p style='margin:0; font-size:0.8rem;'><b>💰 APORT. ÚNICA</b></p><h4 style='margin:0; font-size:1.1rem; color:#1e40af;'>{aportacion_extraordinaria_neta:,.0f}€</h4><small style='color:#64748b; font-size:0.65rem;'>Aport.hasta el límite</small>", unsafe_allow_html=True)
+        st.markdown(f"<p style='margin:0; font-size:0.9rem;'><b>💰 APORT. ÚNICA</b></p><h4 style='margin:0; font-size:1.1rem; color:#1e40af;'>{aportacion_extraordinaria_neta:,.0f}€</h4><small style='color:#64748b; font-size:0.65rem;'>Aport.hasta el límite</small>", unsafe_allow_html=True)
    
   
    
@@ -583,7 +583,7 @@ with tab3:
     with c1:
         st.metric("CAPITAL TOTAL FINAL", f"{cap_a:,.0f} €")
     with c2:
-        st.metric("Si dejas de aportar tú", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
+        st.metric("CAPITAL (Si dejas de aportar)", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
     with c3:
         st.info(f"**Patrimonio Extra:** +{dif_cap:,.0f} € acumulados gracias a tu aportación.")
 
@@ -593,7 +593,7 @@ with tab3:
     with r1:
         st.metric("RENTA PLAN ELEGIDO", f"{renta_a:,.2f} €/mes")
     with r2:
-        st.metric("Si dejas de aportar tú", f"{renta_b:,.2f} €/mes", delta=f"-{dif_renta:,.2f} €/mes", delta_color="inverse")
+        st.metric("RENTA (Si dejas de aportar)", f"{renta_b:,.2f} €/mes", delta=f"-{dif_renta:,.2f} €/mes", delta_color="inverse")
     with r3:
         st.success(f"**Sobresueldo:** +{dif_renta:,.2f} € al mes adicionales para tu jubilación.")
 
