@@ -641,12 +641,6 @@ with i3:
 
 st.markdown("---")
 
-# --- FILA 3: Definición de Hipótesis ---
-st.markdown("#### ⚙️ Hipótesis del Modelo")
-# Aquí puedes continuar con tus st.info o columnas de hipótesis...
- 
-
-# --- FILA 4: Definicion de Hipotesis ---
 
 # --- FILA 4: Definición de Hipótesis ---
 st.markdown("#### ⚙️ Hipótesis y Bases del Modelo")
@@ -657,15 +651,15 @@ with h1:
     st.write("**📈 Aportaciones Futuras**")
     st.caption(f"Se ha considerado que son constantes.")
 
-with h1:
+with h2:
     st.write("**📈 Rentabilidad Proyectada**")
     st.caption(f"Se ha aplicado una tasa anual media del **{rent_pct}%**. Esta rentabilidad es neta de comisiones de gestión y custodia estimadas.")
 
-with h2:
+with h3:
     st.write("**⏳ Horizonte Temporal**")
     st.caption(f"El plan contempla un periodo de acumulación de **{años_plan} años** (hasta los {edad_jub}). Los cálculos asumen aportaciones constantes y reinversión total de dividendos.")
 
-with h3:
+with h4:
     st.write("**💶 Fiscalidad y Retiros**")
     st.caption("La renta mensual se calcula sobre un periodo de **20 años de desinversión**. No se descuentan impuestos finales (IRPF/Plusvalías), que dependerán de la normativa vigente.")
 
