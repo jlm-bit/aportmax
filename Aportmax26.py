@@ -413,7 +413,7 @@ with tab2:
     """, unsafe_allow_html=True)
 
 st.markdown(f"""
-    <div style="border-left: 25px solid #1e40af; background: #f0f7ff; padding: 30px; border-radius: 0 20px 20px 0; margin: 20px 0;">
+    <div style="border-left: 25px solid #1e40af; background: #f0f7ff; padding: 30px; border-radius: 0 20px 20px 0; margin: 25px 0;">
         <div style="background: #1e40af; color: white; padding: 8px 18px; border-radius: 25px; font-size: 1.05rem; font-weight: bold; display: inline-block; margin-bottom: 20px; letter-spacing: 0.5px;">
             🎯 RECOMENDACIÓN: AJUSTAR LA APORTACIÓN VOLUNTARIA MENSUAL
         </div>
@@ -436,6 +436,9 @@ st.markdown(f"""
         </p>
     </div>
 """, unsafe_allow_html=True)
+
+
+
     # --- 4. CRONOGRAMA DETALLADO (Para ver CUÁNDO se pasa) ---
     with st.expander("📅 Ver detalle mes a mes"):
         meses_nombres = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
