@@ -315,7 +315,8 @@ with tab1:
                 </div>
             """, unsafe_allow_html=True)
             
-           
+        # --- AVISO Y BOTÓN DE DESCARGA ---
+    st.warning("⚠️ **Nota:** Los resultados mostrados son estimaciones basadas exclusivamente en los datos facilitados en el panel lateral. Este informe tiene carácter informativo y no constituye asesoramiento financiero oficial.")   
     with col_right:
         # --- EL DONUT SE MANTIENE AQUÍ ---
         total_inversion = esfuerzo_neto + ahorro + emp_t
