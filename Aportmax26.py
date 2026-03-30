@@ -732,16 +732,17 @@ if st.button("🚀 GENERAR INFORME DE LA PROYECCIÓN (pdf)", use_container_width
 
 with tab4:
     # --- RESUMEN EJECUTIVO DEL PROGRAMA ---
-    st.info("### 📋 Resumen del Simulador de Estrategia")
+    st.info("### 📋 Funcionalades de la plataforma AportaMax")
     
     col_res1, col_res2 = st.columns(2)
     
     with col_res1:
         st.markdown("""
         **¿Qué hace este programa?**
-        * **Proyecta tu futuro:** Calcula cuánto dinero tendrás al jubilarte basándose en tu ahorro actual y aportaciones futuras.
-        * **Compara Escenarios:** Enfrenta visualmente el éxito de mantener tu plan activo frente al riesgo de detenerlo hoy.
-        * **Analiza el Interés Compuesto:** Desglosa qué parte de tu capital es ahorro directo y cuánto es beneficio generado por el mercado.
+        * **Calcula la Aportación Máxima Personal a tu Plan de Pensiones de Empleo:** Calcula la devolución del ÏRPF que supone.
+        * **Ayuda a planificar tu ahorro:** Define un plan para que puedas ahorrar hasta lo máximo permitido.
+        * **Proyecta los fondos a tu jubilación:** D* Calcula cuánto dinero tendrás al jubilarte basándose en tu ahorro actual y aportaciones futuras.
+     
         """)
 
     with col_res2:
@@ -749,7 +750,7 @@ with tab4:
         **Garantías Técnicas y Legales:**
         * **Actualización 2026:** Cálculos ajustados a los límites legales de 1.500€ (individual) y 8.500€ (empleo).
         * **Matemática Financiera:** Uso de fórmulas de capitalización compuesta y rentas constantes para una precisión bancaria.
-        * **Transparencia Total:** Información detallada sobre fiscalidad de rescate y ventanas de liquidez a 10 años.
+        * **Transparencia Total:** Información detallada sobre fiscalidad.
         """)
     
     st.markdown("---") # Separador visual antes de entrar en el detalle legal
