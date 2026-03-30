@@ -373,7 +373,7 @@ with tab2:
     with c3:
         # Proyección antes de la extra
         proy_base = ya_aportado + (c_m * meses_restantes)
-        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>📈 PROY. BASE</b></p><h4 style='margin:0; font-size:1.1rem;'>{proy_base:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Aportacion planificada</small>", unsafe_allow_html=True)
+        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>📈 SUMA</b></p><h4 style='margin:0; font-size:1.1rem;'>{proy_base:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Aportacion planificada</small>", unsafe_allow_html=True)
     
     with c4:
         # Aportación extraordinaria única
@@ -414,16 +414,44 @@ with tab2:
 
     # --- 3. RECOMENDACIÓN DE AJUSTE (Tu bloque mejorado) ---
     if proyeccion_final != max_p:
+        if abs(proyeccion_final - max_p) > 1.0:
         st.markdown(f"""
-            <div class="plan-box" style="border-left: 20px solid #1e40af;">
-                <div class="step-pill" style="background: #1e40af; color: white;">RECOMENDACIÓN : AJUSTAR LA APORTACIÓN VOLUNTARIA MENSUAL AL PLAN DE PENSIONES</div>
-                <p style="margin-bottom: 10px;">De acuerdo a nuestra recomedación, para alcanzar exactamente el límite de <b>{max_p:,.2f} €</b> sin pasarte, debes ajustar tu aportación mensual a un total de:</p>
-                <div style="display: flex; align-items: baseline; gap: 14px;">
-                    <h1 style="color: #1e40af; margin:0; font-size: 2.0rem;">{nueva_cuota_total:,.2f} €</h1>
-                    <span style="font-size: 1.0rem; color: #64748b;"> / mes</span>
+            <div style="
+                border-left: 25px solid #1e40af; 
+                background: #f0f7ff; 
+                padding: 30px; 
+                border-radius: 0 20px 20px 0; 
+                margin: 20px 0;
+            ">
+                <div style="
+                    background: #1e40af; 
+                    color: white; 
+                    padding: 8px 18px; 
+                    border-radius: 25px; 
+                    font-size: 1.05rem; 
+                    font-weight: bold; 
+                    display: inline-block; 
+                    margin-bottom: 20px;
+                    letter-spacing: 0.5px;
+                ">
+                    🎯 RECOMENDACIÓN: AJUSTAR LA APORTACIÓN VOLUNTARIA MENSUAL
                 </div>
-                <p style="font-size: 0.95rem; color: #64748b; margin-top: 10px;">
-                    {"🔼 Sube" if diferencia_mensual > 0 else "🔽 Baja"} tu cuota actual en <b>{abs(diferencia_mensual):,.2f} €</b> durante los {meses_restantes} meses restantes.
+                
+                <p style="margin-bottom: 15px; font-size: 1.25rem; color: #1e293b; line-height: 1.4;">
+                    De acuerdo a nuestra recomendación, para alcanzar exactamente el límite de <b>{max_p:,.2f} €</b> sin pasarte, debes ajustar tu aportación mensual a un total de:
+                </p>
+                
+                <div style="display: flex; align-items: baseline; gap: 15px; margin: 10px 0;">
+                    <h1 style="color: #1e40af; margin:0; font-size: 3.8rem; font-weight: 800;">
+                        {nueva_cuota_total:,.2f} €
+                    </h1>
+                    <span style="font-size: 1.8rem; color: #64748b; font-weight: 600;">/ mes</span>
+                </div>
+                
+                <p style="font-size: 1.2rem; color: #1e3a8a; margin-top: 20px; font-weight: 500;">
+                    {"🔼 <b>Sube</b>" if diferencia_mensual > 0 else "🔽 <b>Baja</b>"} tu cuota actual en 
+                    <span style="font-size: 1.4rem; border-bottom: 3px solid #1e40af;">{abs(diferencia_mensual):,.2f} €</span> 
+                    durante los {meses_restantes} meses restantes.
                 </p>
             </div>
         """, unsafe_allow_html=True)
