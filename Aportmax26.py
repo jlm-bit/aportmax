@@ -412,57 +412,30 @@ with tab2:
         </div>
     """, unsafe_allow_html=True)
 
-# --- 3. RECOMENDACIÓN DE AJUSTE (Corregido y Alineado) ---
-    if proyeccion_final != max_p:
-        if abs(proyeccion_final - max_p) > 1.0:
-            st.markdown(f"""
-                <div style="
-                    border-left: 25px solid #1e40af; 
-                    background: #f0f7ff; 
-                    padding: 30px; 
-                    border-radius: 0 20px 20px 0; 
-                    margin: 20px 0;
-                ">
-                    <div style="
-                        background: #1e40af; 
-                        color: white; 
-                        padding: 8px 18px; 
-                        border-radius: 25px; 
-                        font-size: 1.05rem; 
-                        font-weight: bold; 
-                        display: inline-block; 
-                        margin-bottom: 20px;
-                        letter-spacing: 0.5px;
-                    ">
-                        🎯 RECOMENDACIÓN: AJUSTAR LA APORTACIÓN VOLUNTARIA MENSUAL
-                    </div>
-                    
-                    <p style="margin-bottom: 15px; font-size: 1.25rem; color: #1e293b; line-height: 1.4;">
-                        De acuerdo a nuestra recomendación, para alcanzar exactamente el límite de <b>{max_p:,.2f} €</b> sin pasarte, debes ajustar tu aportación mensual a un total de:
-                    </p>
-                    
-                    <div style="display: flex; align-items: baseline; gap: 15px; margin: 10px 0;">
-                        <h1 style="color: #1e40af; margin:0; font-size: 3.8rem; font-weight: 800;">
-                            {nueva_cuota_total:,.2f} €
-                        </h1>
-                        <span style="font-size: 1.8rem; color: #64748b; font-weight: 600;">/ mes</span>
-                    </div>
-                    
-                    <p style="font-size: 1.2rem; color: #1e3a8a; margin-top: 20px; font-weight: 500;">
-                        {"🔼 <b>Sube</b>" if diferencia_mensual > 0 else "🔽 <b>Baja</b>"} tu cuota actual en 
-                        <span style="font-size: 1.4rem; border-bottom: 3px solid #1e40af;">{abs(diferencia_mensual):,.2f} €</span> 
-                        durante los {meses_restantes} meses restantes.
-                    </p>
-                </div>
-            """, unsafe_allow_html=True)
-    else:
-        st.balloons()
-        st.markdown(f"""
-            <div style="background-color: #f0fdf4; border-left: 10px solid #22c55e; padding: 20px; border-radius: 10px;">
-                <h3 style="color: #166534; margin: 0;">🎯 ¡Planificación Exacta!</h3>
-                <p style="color: #166534; margin: 5px 0 0 0;">No necesitas realizar ajustes. Estás aprovechando al máximo tu ahorro fiscal para 2026.</p>
-            </div>
-        """, unsafe_allow_html=True)
+st.markdown(f"""
+    <div style="border-left: 25px solid #1e40af; background: #f0f7ff; padding: 30px; border-radius: 0 20px 20px 0; margin: 20px 0;">
+        <div style="background: #1e40af; color: white; padding: 8px 18px; border-radius: 25px; font-size: 1.05rem; font-weight: bold; display: inline-block; margin-bottom: 20px; letter-spacing: 0.5px;">
+            🎯 RECOMENDACIÓN: AJUSTAR LA APORTACIÓN VOLUNTARIA MENSUAL
+        </div>
+        
+        <p style="margin-bottom: 15px; font-size: 1.25rem; color: #1e293b; line-height: 1.4;">
+            De acuerdo a nuestra recomendación, para alcanzar exactamente el límite de <b>{max_p:,.2f} €</b> sin pasarte, debes ajustar tu aportación mensual a un total de:
+        </p>
+        
+        <div style="display: flex; align-items: baseline; gap: 15px; margin: 10px 0;">
+            <h1 style="color: #1e40af; margin:0; font-size: 3.8rem; font-weight: 800;">
+                {nueva_cuota_total:,.2f} €
+            </h1>
+            <span style="font-size: 1.8rem; color: #64748b; font-weight: 600;">/ mes</span>
+        </div>
+        
+        <p style="font-size: 1.2rem; color: #1e3a8a; margin-top: 20px; font-weight: 500;">
+            {"🔼 <b>Sube</b>" if diferencia_mensual > 0 else "🔽 <b>Baja</b>"} tu cuota actual en 
+            <span style="font-size: 1.4rem; border-bottom: 3px solid #1e40af;">{abs(diferencia_mensual):,.2f} €</span> 
+            durante los {meses_restantes} meses restantes.
+        </p>
+    </div>
+""", unsafe_allow_html=True)
     # --- 4. CRONOGRAMA DETALLADO (Para ver CUÁNDO se pasa) ---
     with st.expander("📅 Ver detalle mes a mes"):
         meses_nombres = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
