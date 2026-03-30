@@ -289,7 +289,7 @@ ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 # --- 6. RENDERIZADO PRINCIPAL ---
 st.markdown('<div class="main-header"><h1 style="margin:0;">📈 APORTAMAX 2026</h1></div>', unsafe_allow_html=True)
 
-tab1, tab2, tab3, tab4 = st.tabs(["💰 Cálculo Fiscal ", "🎯 Plan de Acción ", "🚀 Proyección Jubilación ", "🎯 Acerca de "])
+tab1, tab2, tab3, tab4 = st.tabs(["💰 Cálculo de Aportación ", "🎯 Plan de Ahorro del año ", "🚀 Proyección a la Jubilación ", "🎯 Acerca de "])
 
 with tab1:
     col_left, col_right = st.columns([1.2, 1]) # Invertimos un poco el ratio para que los cuadros tengan aire
