@@ -306,9 +306,7 @@ with tab1:
             </div>
         """, unsafe_allow_html=True)
     
-    # ... (Todo el código previo igual hasta la sección del gráfico en el tab1)
-
-    with col_right:
+      with col_right:
         # 1. Calculamos el valor total para la etiqueta central
         total_inversion = esfuerzo_neto + ahorro + emp_t
         
@@ -335,6 +333,31 @@ with tab1:
             )]
         )
         st.plotly_chart(fig, use_container_width=True)
+
+# 2. Añadimos la anotación central y el TÍTULO
+        fig.update_layout(
+            title={
+                'text': "<b>Distribución de tu Inversión Anual</b>",
+                'y': 0.95,
+                'x': 0.5,
+                'xanchor': 'center',
+                'yanchor': 'top',
+                'font': {'size': 18}
+            },
+            margin=dict(t=60, b=0, l=0, r=0), # Aumentamos el margen superior (t) para el título
+            height=350, 
+            showlegend=True, 
+            legend=dict(orientation="h", y=-0.1, x=0.5, xanchor="center"),
+            annotations=[dict(
+                text=f'TOTAL<br><b>{total_inversion:,.0f} €</b>', 
+                x=0.5, y=0.5, 
+                font_size=16, 
+                showarrow=False,
+                font_family="Arial"
+            )]
+        )
+        st.plotly_chart(fig, use_container_width=True)
+
 
       
     pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
