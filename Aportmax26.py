@@ -755,8 +755,8 @@ with tab4:
         st.markdown("""
         **Garantías Técnicas y Legales:**
         * **Actualización 2026:** Cálculos ajustados a los límites legales de 1.500€ (individual) y 8.500€ (empleo).
-        * **Matemática Financiera:** Uso de fórmulas de capitalización compuesta y rentas constantes para una precisión bancaria.
-        * **Transparencia Total:** Información detallada sobre fiscalidad.
+        * **Matemática Financiera:** Uso de fórmulas de capitalización compuesta y rentas constantes.
+        * **Fiscalidad:** Información detallada sobre fiscalidad (Catalunya).
         """)
     
     st.markdown("---") # Separador visual antes de entrar en el detalle legal
