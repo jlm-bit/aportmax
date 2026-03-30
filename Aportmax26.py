@@ -605,12 +605,14 @@ with tab3:
     with r3:
         st.success(f"**Sobresueldo:** +{dif_renta:,.2f} € al mes adicionales para tu jubilación.")
 
-    # 5. Función de Generación de PDF (Restaurada y Protegida)
-    st.markdown("---")
-    
+import matplotlib
+matplotlib.use('Agg') # CRITICO: Configura Matplotlib para trabajar en servidores sin pantalla
 import matplotlib.pyplot as plt
 import io
+from fpdf import FPDF
+import datetime
 
+# --- 5. Función de Generación de PDF (Corregida y Robusta) ---
 def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, aport_elegida):
     pdf = FPDF()
     pdf.add_page()
@@ -631,27 +633,26 @@ def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_
     pdf.cell(0, 6, f"Aportacion Personal: {aport_elegida:,.2f} EUR/ano | Rentabilidad: {rent_pct}%", ln=True)
     pdf.ln(5)
 
-    # --- GENERACIÓN DEL GRÁFICO (MATPLOTLIB) ---
+    # --- GENERACIÓN DEL GRÁFICO ---
     plt.figure(figsize=(6, 4))
     categorias = ['Sin tu Aportacion', 'Con tu Plan']
     valores = [cap_b, cap_a]
-    colores = ['#cbd5e1', '#1e40af'] # Gris vs Azul
+    colores = ['#cbd5e1', '#1e40af'] 
     
     plt.bar(categorias, valores, color=colores, width=0.6)
     plt.title('Capital Acumulado al Jubilarte (EUR)', fontsize=12, fontweight='bold', pad=15)
     plt.ylabel('Euros (€)')
     plt.grid(axis='y', linestyle='--', alpha=0.7)
     
-    # Guardar gráfico en memoria
+    # Guardar gráfico en memoria sin generar archivo físico
     img_buf = io.BytesIO()
     plt.savefig(img_buf, format='png', bbox_inches='tight', dpi=150)
     img_buf.seek(0)
-    plt.close() # Cerrar para no consumir RAM
+    plt.close() 
     
-    # Insertar imagen en PDF (centrada)
-    # x=55 para centrar una imagen de 100mm en una página de 210mm
+    # Insertar imagen en PDF
     pdf.image(img_buf, x=55, y=pdf.get_y(), w=100)
-    pdf.ln(75) # Salto de línea para no escribir encima de la imagen
+    pdf.ln(75) 
 
     # --- TABLA DE RESULTADOS ---
     pdf.set_font("Arial", 'B', 11)
@@ -663,10 +664,11 @@ def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_
     
     pdf.set_text_color(0, 0, 0)
     pdf.set_font("Arial", '', 10)
+    # Fila Capital
     pdf.cell(60, 10, " Capital Final", 1)
     pdf.cell(65, 10, f"{cap_a:,.0f} EUR", 1, 0, 'C')
     pdf.cell(65, 10, f"{cap_b:,.0f} EUR", 1, 1, 'C')
-    
+    # Fila Renta
     pdf.cell(60, 10, " Renta Mensual (20a)", 1)
     pdf.cell(65, 10, f"{renta_a:,.2f} EUR", 1, 0, 'C')
     pdf.cell(65, 10, f"{renta_b:,.2f} EUR", 1, 1, 'C')
@@ -680,4 +682,8 @@ def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_
                    f"{dif_cap:,.0f} EUR adicionales, mejorando tu renta en {dif_renta:,.2f} EUR/mes.")
     pdf.multi_cell(0, 10, txt=texto_concl, border='L', align='L', fill=True)
 
+    # Retornar los bytes del PDF
     return pdf.output(dest='S').encode('latin-1')
+
+# Ejemplo de llamada en el Tab 3
+# pdf_bytes = generar_pdf_comparativo_v4(...)
