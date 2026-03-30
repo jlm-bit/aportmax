@@ -586,6 +586,7 @@ with tab3:
     dif_renta = renta_a - renta_b
 
     st.markdown("---")
+
     
     # --- FILA 1: COMPARATIVA DE CAPITALES ---
     st.markdown("#### 💰 Comparativa de Capitales al Jubilarte")
@@ -597,6 +598,31 @@ with tab3:
     with c3:
         st.info(f"**Patrimonio Extra:** +{dif_cap:,.0f} € acumulados gracias a tu aportación.")
 
+
+st.markdown("#### 📈 El Poder del Interés Compuesto")
+i1, i2, i3 = st.columns(3)
+
+with i1:
+    st.metric(
+        label="TU ESFUERZO (Inversión)", 
+        value=f"{total_invertido_usuario:,.0f} €",
+        help="Suma total de tus aportaciones anuales netas."
+    )
+
+with i2:
+    # Mostramos los intereses con un delta positivo en verde
+    st.metric(
+        label="INTERESES GENERADOS", 
+        value=f"{total_intereses:,.0f} €", 
+        delta=f"{multiplicador:.1f}x tu capital",
+        delta_color="normal"
+    )
+
+with i3:
+    # Mensaje de refuerzo psicológico
+    porcentaje_mercado = (total_intereses / cap_a) * 100
+    st.success(f"**¡Dato Brutal!**\n\nEl **{porcentaje_mercado:.0f}%** de tu jubilación lo paga el mercado, no tú.")
+    
     # --- FILA 2: COMPARATIVA DE RENTAS ---
     st.markdown("#### 📅 Comparativa de Renta Mensual (20 años)")
     r1, r2, r3 = st.columns(3)
