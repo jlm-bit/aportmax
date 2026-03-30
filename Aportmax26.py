@@ -332,10 +332,7 @@ with tab1:
         )
         st.plotly_chart(fig, use_container_width=True)
 
-  
-    
-   
-    
+      
     pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
     st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf")
 
@@ -371,16 +368,16 @@ with tab2:
         st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>✅ YA APORTADO</b></p><h4 style='margin:0; font-size:1.1rem;'>{ya_aportado:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Ene-{mes_fin_ya[:3]}</small>", unsafe_allow_html=True)
     
     with c2:
-        st.markdown(f"<p style='margin:0; font-size:0.65rem;'><b>⏳ PENDIENTE</b></p><h4 style='margin:0; font-size:1.1rem;'>{c_m * meses_restantes:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
+        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>⏳ PENDIENTE</b></p><h4 style='margin:0; font-size:1.1rem;'>{c_m * meses_restantes:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
     
     with c3:
         # Proyección antes de la extra
         proy_base = ya_aportado + (c_m * meses_restantes)
-        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>📈 PROY. BASE</b></p><h4 style='margin:0; font-size:1.1rem;'>{proy_base:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Sin extra</small>", unsafe_allow_html=True)
+        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>📈 PROY. BASE</b></p><h4 style='margin:0; font-size:1.1rem;'>{proy_base:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Aportacion planificada</small>", unsafe_allow_html=True)
     
     with c4:
         # Aportación extraordinaria única
-        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>💰 APORT. ÚNICA</b></p><h4 style='margin:0; font-size:1.1rem; color:#1e40af;'>{aportacion_extraordinaria_neta:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Ingreso extra</small>", unsafe_allow_html=True)
+        st.markdown(f"<p style='margin:0; font-size:0.8rem;'><b>💰 APORT. ÚNICA</b></p><h4 style='margin:0; font-size:1.1rem; color:#1e40af;'>{aportacion_extraordinaria_neta:,.0f}€</h4><small style='color:#64748b; font-size:0.65rem;'>Aport.hasta el límite</small>", unsafe_allow_html=True)
    
   
    
