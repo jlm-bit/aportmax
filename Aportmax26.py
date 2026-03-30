@@ -286,7 +286,7 @@ ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 # --- 6. RENDERIZADO PRINCIPAL ---
 st.markdown('<div class="main-header"><h1 style="margin:0;">📈 APORTAMAX 2026</h1></div>', unsafe_allow_html=True)
 
-tab1, tab2, tab3 = st.tabs(["      💰    Cálculo Fiscal   ", "      🎯    Plan de Acción   ", "      🚀    Proyección Jubilación   "])
+tab1, tab2, tab3, tab4 = st.tabs(["💰 Cálculo Fiscal ", "🎯 Plan de Acción ", "🚀 Proyección Jubilación ", "🎯 Acerca de "])
 
 with tab1:
     col_left, col_right = st.columns([1, 1.2])
@@ -585,9 +585,7 @@ with tab3:
     renta_b = cap_b / 240 
     dif_renta = renta_a - renta_b
 
-
     st.markdown("---")
-
     
     # --- FILA 1: COMPARATIVA DE CAPITALES ---
     st.markdown("#### 💰 Comparativa de Capitales al Jubilarte")
@@ -598,9 +596,7 @@ with tab3:
         st.metric("CAPITAL (Si dejas de aportar)", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
     with c3:
         st.info(f"**Patrimonio Extra:** +{dif_cap:,.0f} € acumulados gracias a tu aportación.")
- 
-
-    
+     
     # --- FILA 2: COMPARATIVA DE RENTAS ---
     st.markdown("#### 📅 Comparativa de Renta Mensual (20 años)")
     r1, r2, r3 = st.columns(3)
@@ -610,6 +606,13 @@ with tab3:
         st.metric("RENTA (Si dejas de aportar)", f"{renta_b:,.2f} €/mes", delta=f"-{dif_renta:,.2f} €/mes", delta_color="inverse")
     with r3:
         st.success(f"**Sobresueldo:** +{dif_renta:,.2f} € al mes adicionales para tu jubilación.")
+
+  # --- FILA 3: Definicion de Hipotesis ---
+
+
+
+
+
 
 import matplotlib
 matplotlib.use('Agg') # CRITICO: Configura Matplotlib para trabajar en servidores sin pantalla
