@@ -364,16 +364,19 @@ with tab2:
     st.markdown("### 🎯 Plan de Acción Personal")
     
     # --- 3. DESGLOSE COMPACTO ---
-    c1, c2, c3 = st.columns(3)
+    c1, c2, c3, c4, c5 = st.columns(5)
     with c1:
         mes_fin_ya = meses_nombres_es[hoy.month - 2] if hoy.month > 1 else "Ene"
-        st.markdown(f"<p style='margin:0; font-size:0.8rem;'><b>✅ Ya aportado</b></p><h4 style='margin:0;'>{ya_aportado:,.0f}€</h4><small style='color:#64748b;'>Ene-{mes_fin_ya[:3]}</small>", unsafe_allow_html=True)
+        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>✅ Ya aportado</b></p><h4 style='margin:0;'>{ya_aportado:,.0f}€</h4><small style='color:#64748b;'>Ene-{mes_fin_ya[:3]}</small>", unsafe_allow_html=True)
     with c2:
-        st.markdown(f"<p style='margin:0; font-size:0.8rem;'><b>⏳ Pendiente</b></p><h4 style='margin:0;'>{c_m * meses_restantes:,.0f}€</h4><small style='color:#64748b;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
+        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>⏳ Aportaciones futuras de este año</b></p><h4 style='margin:0;'>{c_m * meses_restantes:,.0f}€</h4><small style='color:#64748b;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
     with c3:
-        st.markdown(f"<p style='margin:0; font-size:0.8rem;'><b>🚀 Total 2026</b></p><h4 style='margin:0; color:{color_alerta};'>{proyeccion_final:,.0f}€</h4><small style='color:#64748b;'>Est. cierre</small>", unsafe_allow_html=True)
-
-    
+        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>🚀 Total </b></p><h4 style='margin:0; color:{color_alerta};'>{proyeccion_final:,.0f}€</h4><small style='color:#64748b;'>Est. cierre</small>", unsafe_allow_html=True)
+    with c4:
+        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>🚀 APORTACIÓN ÚNICA</b></p><h4 style='margin:0; color:{color_alerta};'>{proyeccion_final:,.0f}€</h4><small style='color:#64748b;'>Est. cierre</small>", unsafe_allow_html=True)
+    with c5:
+        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>🚀 Total 2026</b></p><h4 style='margin:0; color:{color_alerta};'>{proyeccion_final:,.0f}€</h4><small style='color:#64748b;'>Est. cierre</small>", unsafe_allow_html=True)
+   
     # --- 1. LÓGICA DE PROYECCIÓN MES A MES ---
     proyeccion_final = ya_aportado + (c_m * meses_restantes)
     porcentaje_uso = min(proyeccion_final / max_p, 1.1) if max_p > 0 else 0
