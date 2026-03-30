@@ -616,10 +616,7 @@ import datetime
 
 
 
-
-
-
-# --- 5. Función de Generación de PDF (Corregida y Robusta) ---
+# --- 5. Función de Generación de PDF (VERSIÓN DEFINITIVA CORREGIDA) ---
 def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, aport_elegida):
     pdf = FPDF()
     pdf.add_page()
@@ -651,14 +648,15 @@ def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_
     plt.ylabel('Euros (€)')
     plt.grid(axis='y', linestyle='--', alpha=0.7)
     
-    # Guardar gráfico en memoria sin generar archivo físico
+    # Guardar gráfico en memoria
     img_buf = io.BytesIO()
     plt.savefig(img_buf, format='png', bbox_inches='tight', dpi=150)
     img_buf.seek(0)
-    plt.close() 
     
-    # Insertar imagen en PDF
-    pdf.image(img_buf, x=55, y=pdf.get_y(), w=100)
+    # SOLUCIÓN AL ERROR rfind: Añadimos type="PNG"
+    pdf.image(img_buf, x=55, y=pdf.get_y(), w=100, type="PNG")
+    
+    plt.close() # Liberar memoria
     pdf.ln(75) 
 
     # --- TABLA DE RESULTADOS ---
@@ -671,11 +669,10 @@ def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_
     
     pdf.set_text_color(0, 0, 0)
     pdf.set_font("Arial", '', 10)
-    # Fila Capital
     pdf.cell(60, 10, " Capital Final", 1)
     pdf.cell(65, 10, f"{cap_a:,.0f} EUR", 1, 0, 'C')
     pdf.cell(65, 10, f"{cap_b:,.0f} EUR", 1, 1, 'C')
-    # Fila Renta
+    
     pdf.cell(60, 10, " Renta Mensual (20a)", 1)
     pdf.cell(65, 10, f"{renta_a:,.2f} EUR", 1, 0, 'C')
     pdf.cell(65, 10, f"{renta_b:,.2f} EUR", 1, 1, 'C')
@@ -689,57 +686,30 @@ def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_
                    f"{dif_cap:,.0f} EUR adicionales, mejorando tu renta en {dif_renta:,.2f} EUR/mes.")
     pdf.multi_cell(0, 10, txt=texto_concl, border='L', align='L', fill=True)
 
-    # Retornar los bytes del PDF
     return pdf.output(dest='S').encode('latin-1')
 
-# Ejemplo de llamada en el Tab 3
-# pdf_bytes = generar_pdf_comparativo_v4(...)
-
-
-
-
-
-
-
-
-
-
-
-
-# --- LÓGICA DEL BOTÓN DE DESCARGA (Ubícalo en el Tab de Resultados) ---
+# --- LÓGICA DEL BOTÓN (Asegúrate de que esté después de la función en el código) ---
+st.markdown("---")
 try:
-    # 1. Generamos los bytes del PDF llamando a la función
-    # Asegúrate de que estas variables existan en tu código antes de esta línea
-    pdf_bytes = generar_pdf_comparativo_v4(
-        edad_act, 
-        edad_jub, 
-        cap_a, 
-        cap_b, 
-        renta_a, 
-        renta_b, 
-        dif_cap, 
-        dif_renta, 
-        rent_pct, 
-        mi_aportacion_anual_neta # O la variable que uses para la aportación
+    # Generar bytes ANTES del botón para asegurar disponibilidad
+    # NOTA: Asegúrate de que mi_aportacion_anual_neta esté calculada arriba
+    pdf_output = generar_pdf_comparativo_v4(
+        edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, 
+        dif_cap, dif_renta, rent_pct, mi_aportacion_anual_neta
     )
     
-    # 2. Creamos un contenedor visual para el botón
     st.markdown("### 📄 Tu Informe Estratégico")
-    st.info("Haz clic en el botón de abajo para descargar el análisis detallado con gráficos y comparativas.")
+    st.info("El análisis incluye la comparativa visual y el desglose de renta.")
     
-    # 3. El botón de Streamlit
     st.download_button(
         label="📥 DESCARGAR INFORME COMPARATIVO (PDF)",
-        data=pdf_bytes,
-        file_name=f"Informe_Jubilacion_{edad_act}_AportMax.pdf",
+        data=pdf_output,
+        file_name=f"Informe_Jubilacion_{edad_act}.pdf",
         mime="application/pdf",
-        key="btn_descarga_pdf_v4",
+        key="btn_descarga_v4_final",
         use_container_width=True
     )
-
+except NameError as ne:
+    st.warning(f"Esperando cálculos finales... ({ne})")
 except Exception as e:
-    st.error(f"No se pudo generar el PDF en este momento. Error técnico: {e}")
-
-
-
-
+    st.error(f"Error técnico al preparar PDF: {e}")
