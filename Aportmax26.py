@@ -402,7 +402,7 @@ with tab2:
         icon_estado = "🎯"
     else:
         color_alerta = "#f59e0b"  # Ámbar
-        msg_estado = f"💡 POSIBLE ACCIÓN: Podrías aportar como APORTACIÓN ÚNICA {max_p - proyeccion_final:,.2f} € más hasta 31 de diciembre"
+        msg_estado = f"💡 POSIBLE ACCIÓN: Podrías aportar como APORTACIÓN EXTRA {max_p - proyeccion_final:,.2f} € (hasta 31 de diciembre)"
         icon_estado = "ℹ️"
 
     # --- 2. INDICADOR VISUAL DE PROGRESO ---
