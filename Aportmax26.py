@@ -418,7 +418,7 @@ with tab2:
             st.markdown(f"""
                 <div style="border-left: 25px solid #1e40af; background: #f0f7ff; padding: 30px; border-radius: 0 20px 20px 0; margin: 20px 0;">
                     <div style="background: #1e40af; color: white; padding: 8px 18px; border-radius: 25px; font-size: 1.05rem; font-weight: bold; display: inline-block; margin-bottom: 20px; letter-spacing: 0.5px;">
-                        🎯 ALTERNATIVA RECOMENDADA:   AJUSTAR LA APORTACIÓN VOLUNTARIA MENSUAL
+                        🎯 ALTERNATIVA RECOMENDADA:   AJUSTAR LA APORTACIÓN VOLUNTARIA MENSUAL A TU PLAN DE PENSIONES
                     </div>
                     <p style="margin-bottom: 10px; font-size: 1.00rem; color: #1e293b; line-height: 1.4;">
                         De acuerdo a nuestra recomendación, para alcanzar exactamente el límite de <b>{max_p:,.2f} €</b> sin pasarte, debes ajustar tu aportación mensual a un total de:
