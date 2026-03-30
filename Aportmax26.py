@@ -735,7 +735,7 @@ with tab4:
     # --- SECCIÓN: LEGISLACIÓN Y LÍMITES ---
     with st.expander("⚖️ Límites de Aportación a Planes de Pensiones de Empleo", expanded=False):
         st.markdown(f"""
-        ### **Marco Legal de Aportaciones**
+       
         La simulación se rige por la normativa vigente en **marzo de 2026** sobre el Impuesto sobre la Renta de las Personas Físicas (IRPF):
 
         1.  **Límite General de Aportación:** * El límite máximo de reducción en la base imponible por aportaciones individuales a sistemas de previsión social es de **1.500 € anuales**.
@@ -747,8 +747,8 @@ with tab4:
 
         3.  **Liquidez y Contingencias:**
             * El rescate está vinculado a: jubilación, incapacidad, fallecimiento o dependencia.
-         
-        ### **Responsabilidad**
+        
+        
         Estas proyecciones son cálculos matemáticos basados en la legislación de **marzo de 2026**. Cambios legislativos futuros podrían alterar los límites de aportación o el tratamiento fiscal del rescate.
         """)
 
