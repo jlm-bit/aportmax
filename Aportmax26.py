@@ -297,7 +297,7 @@ with tab1:
                 <h2 style="font-size: 32px; margin: 5px 0;">{max_p:,.2f} €</h2>
             </div>
             <div class="card" style="background-color: #F0FDF4; color: #166534;">
-                <p style="margin:0; opacity: 0.8;">AHORRO FISCAL (IRPF)</p>
+                <p style="margin:0; opacity: 0.8;">AHORRO FISCAL (IRPF. Tramos Catalunya)</p>
                 <h2 style="font-size: 32px; margin: 5px 0;">{ahorro:,.2f} €</h2>
                 <p style="margin:0; font-weight: bold;">Tax Return: {eficiencia:.1f}%</p>
             </div>
@@ -754,27 +754,20 @@ with tab4:
         """)
     
     st.markdown("---") # Separador visual antes de entrar en el detalle legal
-
-    # --- AQUÍ CONTINÚAN TUS EXPANDERS DE LEGISLACIÓN ---
-    with st.expander("⚖️ Legislación Detallada y Límites de Aportación"):
-        # (El contenido detallado que ya teníamos...)
-        st.write("Detalle legislativo aquí...")
-
-
-    
+ 
     st.markdown("### 📚 Información Legal y Metodología")
     
     # --- SECCIÓN: LEGISLACIÓN Y LÍMITES ---
     with st.expander("⚖️ Notas Legales", expanded=False):
         st.markdown(f"""
        
-        La simulación se rige por la normativa vigente en **marzo de 2026** sobre el Impuesto sobre IRPF y la Ley de Planes y Fondos de Pensiones:
+        La simulación se rige por la normativa vigente en **marzo de 2026** sobre el Impuesto sobre IRPF (tramos en Catalunya) y la Ley de Planes y Fondos de Pensiones:
 
         1.  **Límite General de Aportación:** * El límite máximo de reducción en la base imponible por aportaciones individuales a sistemas de previsión social es de **1.500 € anuales**.
             * Este límite puede incrementarse en hasta **8.500 € adicionales** (total 10.000 €) mediante contribuciones empresariales o planes de empleo.
 
         2.  **Tratamiento Fiscal (Diferimiento):**
-            * Las aportaciones reducen la base imponible del IRPF, generando un **ahorro fiscal inmediato** según tu tipo marginal (entre el 19% y el 47%).
+            * Las aportaciones reducen la base imponible del IRPF, generando un **ahorro fiscal inmediato** según tu tipo marginal (entre el 19% y el 50%).
             * *Nota:* Los resultados de este simulador se muestran en valores brutos. El ahorro fiscal real supone un "descuento" extra en tu esfuerzo de ahorro anual.
 
         3.  **Liquidez y Contingencias:**
