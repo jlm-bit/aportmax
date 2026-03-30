@@ -608,60 +608,76 @@ with tab3:
     # 5. Función de Generación de PDF (Restaurada y Protegida)
     st.markdown("---")
     
-# --- Asegúrate de que esta línea esté pegada al margen izquierdo si no está dentro de una clase/tab ---
-def generar_pdf_comparativo_v3(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, aport_elegida):
+import matplotlib.pyplot as plt
+import io
+
+def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, aport_elegida):
     pdf = FPDF()
     pdf.add_page()
     
-    # Título Profesional
+    # --- CABECERA ---
+    pdf.set_fill_color(30, 58, 138)
+    pdf.rect(0, 0, 210, 35, 'F')
     pdf.set_font("Arial", 'B', 16)
-    pdf.set_text_color(30, 58, 138)
-    pdf.cell(200, 15, txt="INFORME ESTRATEGICO DE JUBILACION", ln=True, align='C')
-    pdf.ln(5)
+    pdf.set_text_color(255, 255, 255)
+    pdf.cell(190, 20, txt="INFORME ESTRATEGICO DE JUBILACION", ln=True, align='C')
+    pdf.ln(15)
     
-    # Datos de Entrada
-    pdf.set_font("Arial", '', 11)
+    # --- DATOS RESUMEN ---
     pdf.set_text_color(0, 0, 0)
-    pdf.cell(200, 8, txt=f"Edad Actual: {edad_act} anos | Edad de Jubilacion: {edad_jub} anos", ln=True)
-    pdf.cell(200, 8, txt=f"Aportacion Personal: {aport_elegida:,.2f} EUR/ano | Rentabilidad: {rent_pct}%", ln=True)
-    pdf.ln(10)
+    pdf.set_font("Arial", 'B', 11)
+    pdf.cell(0, 8, f"Simulacion para Edad {edad_act} -> {edad_jub} anos", ln=True)
+    pdf.set_font("Arial", '', 10)
+    pdf.cell(0, 6, f"Aportacion Personal: {aport_elegida:,.2f} EUR/ano | Rentabilidad: {rent_pct}%", ln=True)
+    pdf.ln(5)
+
+    # --- GENERACIÓN DEL GRÁFICO (MATPLOTLIB) ---
+    plt.figure(figsize=(6, 4))
+    categorias = ['Sin tu Aportacion', 'Con tu Plan']
+    valores = [cap_b, cap_a]
+    colores = ['#cbd5e1', '#1e40af'] # Gris vs Azul
     
-    # Tabla
-    pdf.set_font("Arial", 'B', 12)
-    pdf.set_fill_color(240, 240, 240)
-    pdf.cell(60, 10, "Concepto", 1, 0, 'L', True)
-    pdf.cell(65, 10, "Con tu Plan", 1, 0, 'C', True)
-    pdf.cell(65, 10, "Sin tu Aportacion", 1, 1, 'C', True)
+    plt.bar(categorias, valores, color=colores, width=0.6)
+    plt.title('Capital Acumulado al Jubilarte (EUR)', fontsize=12, fontweight='bold', pad=15)
+    plt.ylabel('Euros (€)')
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
     
-    pdf.set_font("Arial", '', 11)
-    pdf.cell(60, 10, "Capital Final", 1)
+    # Guardar gráfico en memoria
+    img_buf = io.BytesIO()
+    plt.savefig(img_buf, format='png', bbox_inches='tight', dpi=150)
+    img_buf.seek(0)
+    plt.close() # Cerrar para no consumir RAM
+    
+    # Insertar imagen en PDF (centrada)
+    # x=55 para centrar una imagen de 100mm en una página de 210mm
+    pdf.image(img_buf, x=55, y=pdf.get_y(), w=100)
+    pdf.ln(75) # Salto de línea para no escribir encima de la imagen
+
+    # --- TABLA DE RESULTADOS ---
+    pdf.set_font("Arial", 'B', 11)
+    pdf.set_fill_color(30, 58, 138)
+    pdf.set_text_color(255, 255, 255)
+    pdf.cell(60, 10, " Concepto", 1, 0, 'L', True)
+    pdf.cell(65, 10, "CON TU PLAN", 1, 0, 'C', True)
+    pdf.cell(65, 10, "SIN TU APORTACION", 1, 1, 'C', True)
+    
+    pdf.set_text_color(0, 0, 0)
+    pdf.set_font("Arial", '', 10)
+    pdf.cell(60, 10, " Capital Final", 1)
     pdf.cell(65, 10, f"{cap_a:,.0f} EUR", 1, 0, 'C')
     pdf.cell(65, 10, f"{cap_b:,.0f} EUR", 1, 1, 'C')
     
-    pdf.cell(60, 10, "Renta Mensual", 1)
+    pdf.cell(60, 10, " Renta Mensual (20a)", 1)
     pdf.cell(65, 10, f"{renta_a:,.2f} EUR", 1, 0, 'C')
     pdf.cell(65, 10, f"{renta_b:,.2f} EUR", 1, 1, 'C')
-    pdf.ln(15)
     
-    # Conclusión
-    pdf.set_font("Arial", 'B', 12)
+    # --- CONCLUSIÓN ---
+    pdf.ln(10)
+    pdf.set_fill_color(239, 246, 255)
+    pdf.set_font("Arial", 'B', 11)
     pdf.set_text_color(30, 58, 138)
-    conclusion = (f"VALOR ESTRATEGICO: Realizar aportaciones personales te supone incrementar tu saldo "
-                  f"en {dif_cap:,.0f} EUR al jubilarte, lo que supone un "
-                  f"sobresueldo de {dif_renta:,.2f} EUR al mes.")
-    pdf.multi_cell(0, 8, txt=conclusion)
-    
-    return pdf.output(dest='S').encode('latin-1')
+    texto_concl = (f"INCREMENTO PATRIMONIAL: Realizar este plan te permite jubilarte con "
+                   f"{dif_cap:,.0f} EUR adicionales, mejorando tu renta en {dif_renta:,.2f} EUR/mes.")
+    pdf.multi_cell(0, 10, txt=texto_concl, border='L', align='L', fill=True)
 
-# --- El botón de descarga debe estar indentado según donde quieras que aparezca ---
-try:
-    pdf_output = generar_pdf_comparativo_v3(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, mi_aportacion_anual_neta)
-    st.download_button(
-        label="📥 DESCARGAR INFORME (PDF)",
-        data=pdf_output,
-        file_name="Informe_AportMax.pdf",
-        mime="application/pdf",
-        use_container_width=True
-    )
-except Exception as e:
-    st.error(f"Error: {e}")
+    return pdf.output(dest='S').encode('latin-1')
