@@ -617,43 +617,19 @@ import datetime
 
 
 # --- 5. Función de Generación de PDF (VERSIÓN DEFINITIVA CORREGIDA) ---
+
 import os
+import io
 import matplotlib.pyplot as plt
 from fpdf import FPDF
+import streamlit as st
 
-# --- SECCIÓN DE DESCARGA EN EL TAB 3 ---
-st.markdown("---")
-st.subheader("📄 Exportar Resultados")
-st.write("Genera un informe profesional en PDF con la comparativa detallada y los gráficos de proyección.")
-
-# Usamos un botón para disparar la generación
-if st.button("🚀 GENERAR INFORME DETALLADO", use_container_width=True):
-    with st.spinner("⏳ Procesando datos y dibujando gráficos..."):
-        try:
-            # Generar los bytes del PDF
-            pdf_bytes = generar_pdf_comparativo_v4(
-                edad_act, edad_jub, cap_a, cap_b, 
-                renta_a, renta_b, dif_cap, dif_renta, 
-                rent_pct, mi_aportacion_anual_neta
-            )
-            
-            # Si todo sale bien, mostramos el éxito y el botón de descarga real
-            st.success("✅ ¡Informe generado con éxito!")
-            st.download_button(
-                label="📥 DESCARGAR MI INFORME (PDF)",
-                data=pdf_bytes,
-                file_name=f"Informe_Jubilacion_AportMax_{edad_act}anos.pdf",
-                mime="application/pdf",
-                use_container_width=True
-            )
-        except Exception as e:
-            st.error(f"❌ Error al crear el PDF: {e}")
-
+# --- 1. PRIMERO DEFINES LA FUNCIÓN (Margen izquierdo, columna 0) ---
 def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, aport_elegida):
     pdf = FPDF()
     pdf.add_page()
     
-    # --- CABECERA ---
+    # Cabecera
     pdf.set_fill_color(30, 58, 138)
     pdf.rect(0, 0, 210, 35, 'F')
     pdf.set_font("Arial", 'B', 16)
@@ -661,7 +637,7 @@ def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_
     pdf.cell(190, 20, txt="INFORME ESTRATEGICO DE JUBILACION", ln=True, align='C')
     pdf.ln(15)
     
-    # --- DATOS RESUMEN ---
+    # Datos
     pdf.set_text_color(0, 0, 0)
     pdf.set_font("Arial", 'B', 11)
     pdf.cell(0, 8, f"Simulacion para Edad {edad_act} -> {edad_jub} anos", ln=True)
@@ -669,28 +645,21 @@ def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_
     pdf.cell(0, 6, f"Aportacion Personal: {aport_elegida:,.2f} EUR/ano | Rentabilidad: {rent_pct}%", ln=True)
     pdf.ln(5)
 
-    # --- GENERACIÓN DEL GRÁFICO (SOLUCIÓN DEFINITIVA) ---
+    # Gráfico con solución temporal
     plt.figure(figsize=(6, 4))
     plt.bar(['Sin tu Aportacion', 'Con tu Plan'], [cap_b, cap_a], color=['#cbd5e1', '#1e40af'], width=0.6)
-    plt.title('Capital Acumulado al Jubilarte (EUR)', fontsize=12, fontweight='bold', pad=15)
-    plt.ylabel('Euros (EUR)')
-    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.title('Capital Acumulado al Jubilarte (EUR)', fontsize=12, fontweight='bold')
     
-    # Guardamos el archivo físicamente de forma temporal
-    temp_img = "temp_grafico_pdf.png"
+    temp_img = f"temp_grafico_{edad_act}.png" # Nombre dinámico para evitar conflictos
     plt.savefig(temp_img, format='png', bbox_inches='tight', dpi=150)
-    plt.close() # Cerramos el plot para liberar recursos
+    plt.close()
     
-    # Insertamos la imagen usando la ruta del archivo (esto evita el error startswith)
     pdf.image(temp_img, x=55, y=pdf.get_y(), w=100)
-    
-    # IMPORTANTE: Borramos el archivo temporal para no llenar el servidor de basura
     if os.path.exists(temp_img):
         os.remove(temp_img)
-        
     pdf.ln(75) 
 
-    # --- TABLA DE RESULTADOS ---
+    # Tabla
     pdf.set_font("Arial", 'B', 11)
     pdf.set_fill_color(30, 58, 138)
     pdf.set_text_color(255, 255, 255)
@@ -708,7 +677,6 @@ def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_
     pdf.cell(65, 10, f"{renta_a:,.2f} EUR", 1, 0, 'C')
     pdf.cell(65, 10, f"{renta_b:,.2f} EUR", 1, 1, 'C')
     
-    # --- CONCLUSIÓN ---
     pdf.ln(10)
     pdf.set_fill_color(239, 246, 255)
     pdf.set_font("Arial", 'B', 11)
@@ -718,3 +686,29 @@ def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_
     pdf.multi_cell(0, 10, txt=texto_concl, border='L', align='L', fill=True)
 
     return pdf.output(dest='S').encode('latin-1')
+
+# --- 2. DESPUÉS COLOCAS EL BOTÓN (Dentro de tu Tab o sección de resultados) ---
+st.markdown("---")
+if st.button("🚀 GENERAR INFORME DETALLADO", use_container_width=True):
+    with st.spinner("⏳ Procesando datos y dibujando gráficos..."):
+        try:
+            # Asegúrate de que las variables (edad_act, cap_a, etc.) estén definidas antes
+            pdf_bytes = generar_pdf_comparativo_v4(
+                edad_act, edad_jub, cap_a, cap_b, 
+                renta_a, renta_b, dif_cap, dif_renta, 
+                rent_pct, mi_aportacion_anual_neta
+            )
+            
+            st.success("✅ ¡Informe generado con éxito!")
+            st.download_button(
+                label="📥 DESCARGAR MI INFORME (PDF)",
+                data=pdf_bytes,
+                file_name=f"Informe_Jubilacion_AportMax_{edad_act}anos.pdf",
+                mime="application/pdf",
+                use_container_width=True,
+                key="download_pdf_final" # Clave única para evitar errores de duplicidad
+            )
+        except NameError as e:
+            st.error(f"Faltan datos para generar el informe. Asegúrate de completar los cálculos. ({e})")
+        except Exception as e:
+            st.error(f"❌ Error al crear el PDF: {e}")
