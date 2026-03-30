@@ -306,49 +306,50 @@ with tab1:
             </div>
         """, unsafe_allow_html=True)
     
-    with col_right:
-    # 1. Calculamos el valor total para la etiqueta central
+   with col_right:
+    # 1. Cálculo del total para la etiqueta central
     total_inversion = esfuerzo_neto + ahorro + emp_t
     
     fig = go.Figure(data=[go.Pie(
         labels=['Esfuerzo Neto', 'Ahorro Fiscal', 'Empresa'], 
         values=[esfuerzo_neto, ahorro, emp_t], 
-        hole=.65, # Aumentamos un pelín el hueco para elegancia
+        hole=.65,
         marker_colors=['#3B82F6', '#10B981', '#1E293B'],
-        textinfo='percent', # Mostramos el % para dar más información de un vistazo
-        hoverinfo='label+value'
+        textinfo='percent', 
+        hoverinfo='label+value',
+        insidetextorientation='horizontal' # Asegura que los % no roten
     )])
     
-    # 2. Configuración de Título, Márgenes y Anotación
+    # 2. Configuración de Layout Pro
     fig.update_layout(
         title={
             'text': "<b>Distribución de tu Inversión Anual</b>",
-            'y': 0.98, # Lo subimos un poco más al borde superior
+            'y': 0.98,
             'x': 0.5,
             'xanchor': 'center',
             'yanchor': 'top',
             'font': {'size': 18, 'color': '#1E293B'}
         },
-        # t=80 da espacio suficiente para que el título no toque el donut
         margin=dict(t=80, b=20, l=10, r=10), 
-        height=400, # Subimos a 400 para que el título y la leyenda respiren
+        height=420, # Un pelín más alto para evitar cortes
         showlegend=True, 
         legend=dict(
             orientation="h", 
-            y=-0.15, 
+            y=-0.1, 
             x=0.5, 
-            xanchor="center"
+            xanchor="center",
+            font=dict(size=12) # Tamaño de fuente optimizado
         ),
         annotations=[dict(
-            text=f'TOTAL ANUAL<br><span style="font-size:18px"><b>{total_inversion:,.0f} €</b></span>', 
+            text=f'TOTAL ANUAL<br><span style="font-size:18px; color:#1E293B"><b>{total_inversion:,.0f} €</b></span>', 
             x=0.5, y=0.5, 
             showarrow=False,
             font_family="Arial"
         )]
     )
     
-    st.plotly_chart(fig, use_container_width=True)
-
+    # Configuramos el config para quitar la barra de herramientas de Plotly y que quede más limpio
+    st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
 
       
     pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
