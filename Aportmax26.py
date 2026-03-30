@@ -598,7 +598,7 @@ with tab3:
         st.metric("CAPITAL (Si dejas de aportar)", f"{cap_b:,.0f} €", delta=f"-{dif_cap:,.0f} €", delta_color="inverse")
     with c3:
         st.info(f"**Patrimonio Extra:** +{dif_cap:,.0f} € acumulados gracias a tu aportación.")
-        st.info(f"**Intereses generados en total:** +{dif_cap:,.0f} €.")
+ 
 
     
     # --- FILA 2: COMPARATIVA DE RENTAS ---
