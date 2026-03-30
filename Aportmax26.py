@@ -417,7 +417,7 @@ with tab2:
         st.markdown(f"""
             <div class="plan-box" style="border-left: 20px solid #1e40af;">
                 <div class="step-pill" style="background: #1e40af; color: white;">RECOMENDACIÓN : AJUSTAR LA APORTACIÓN VOLUNTARIA MENSUAL AL PLAN DE PENSIONES</div>
-                <p style="margin-bottom: 10px;">Para alcanzar exactamente el límite de <b>{max_p:,.2f} €</b> sin pasarte:</p>
+                <p style="margin-bottom: 10px;">Para alcanzar exactamente el límite de <b>{max_p:,.2f} €</b> sin pasarte, debes ajustar tu aportación mensual a un total de:</p>
                 <div style="display: flex; align-items: baseline; gap: 10px;">
                     <h1 style="color: #1e40af; margin:0; font-size: 2.0rem;">{nueva_cuota_total:,.2f} €</h1>
                     <span style="font-size: 1.0rem; color: #64748b;"> / mes</span>
