@@ -415,7 +415,7 @@ with tab2:
     # --- 3. RECOMENDACIÓN DE AJUSTE (Tu bloque mejorado) ---
     if proyeccion_final != max_p:
         st.markdown(f"""
-            <div class="plan-box" style="border-left: 12px solid #1e40af;">
+            <div class="plan-box" style="border-left: 20px solid #1e40af;">
                 <div class="step-pill" style="background: #1e40af; color: white;">RECOMENDACIÓN : AJUSTAR LA APORTACIÓN VOLUNTARIA MENSUAL AL PLAN DE PENSIONES</div>
                 <p style="margin-bottom: 5px;">Para alcanzar exactamente el límite de <b>{max_p:,.2f} €</b> sin pasarte:</p>
                 <div style="display: flex; align-items: baseline; gap: 10px;">
