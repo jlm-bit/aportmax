@@ -621,7 +621,7 @@ with tab3:
         st.caption(f"Se ha aplicado una tasa anual media del **{rent_pct}%**. Esta rentabilidad es neta de comisiones de gestión y custodia estimadas.")
     with h3:
         st.write("**💶 Fiscalidad y Retiros**")
-        st.caption("La renta mensual se calcula sobre un periodo de **20 años de desinversión**. No se descuentan impuestos finales (IRPF/Plusvalías), que dependerán de la normativa vigente.")
+        st.caption("La renta mensual se calcula sobre un periodo de **20 años de desinversión**. No se considera rentabilidad durante este periodo (se confeccionará módulo específico). No se descuentan impuestos finales (IRPF/Plusvalías), que dependerán de la normativa vigente.")
         # --- CUADRO DE AVISO LEGAL (Opcional pero recomendado) ---
     st.warning("⚠️ **Nota importante:** Estas proyecciones son simulaciones basadas en datos históricos. Rentabilidades pasadas no garantizan resultados futuros. El capital final puede variar según la evolución real del mercado.")
 
