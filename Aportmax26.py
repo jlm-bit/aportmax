@@ -309,17 +309,13 @@ with tab1:
         with sub_col2:
             st.markdown(f"""
                 <div style="background-color: #F0FDF4; color: #166534; padding: 20px; border-radius: 12px; height: 160px; text-align: center; border: 1px solid #DCFCE7; display: flex; flex-direction: column; justify-content: center;">
-                    <p style="margin:0; font-size: 12px; opacity: 0.9; font-weight: bold;">AHORRO FISCAL (IRPF)</p>
+                    <p style="margin:0; font-size: 12px; opacity: 0.9; font-weight: bold;">AHORRO FISCAL (IRPF Catalunya)</p>
                     <h2 style="font-size: 28px; margin: 10px 0; color: #166534;">{ahorro:,.2f} €</h2>
                     <p style="margin:0; font-weight: bold; font-size: 14px;">Tax Return: {eficiencia:.1f}%</p>
                 </div>
             """, unsafe_allow_html=True)
             
-        # Botón de descarga debajo de los cuadros
-        st.markdown("<br>", unsafe_allow_html=True)
-        pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
-        st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf", use_container_width=True)
-    
+           
     with col_right:
         # --- EL DONUT SE MANTIENE AQUÍ ---
         total_inversion = esfuerzo_neto + ahorro + emp_t
