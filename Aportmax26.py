@@ -363,8 +363,8 @@ with tab2:
 
     st.markdown("### 🎯 Plan de Acción Personal")
     
-  # --- 3. DESGLOSE COMPACTO (5 COLUMNAS) ---
-    c1, c2, c3, c4, c5 = st.columns(5)
+  # --- 3. DESGLOSE COMPACTO (4 COLUMNAS) ---
+    c1, c2, c3, c4 = st.columns(4)
     
     with c1:
         mes_fin_ya = meses_nombres_es[hoy.month - 2] if hoy.month > 1 else "Ene"
@@ -381,10 +381,8 @@ with tab2:
     with c4:
         # Aportación extraordinaria única
         st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>💰 APORT. ÚNICA</b></p><h4 style='margin:0; font-size:1.1rem; color:#1e40af;'>{aportacion_extraordinaria_neta:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Ingreso extra</small>", unsafe_allow_html=True)
-    
-    with c5:
-        # Total Real Final
-        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>🚀 TOTAL 2026</b></p><h4 style='margin:0; font-size:1.1rem; color:{color_alerta};'>{proyeccion_final:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Cierre año</small>", unsafe_allow_html=True)
+   
+  
    
     # --- 1. LÓGICA DE PROYECCIÓN MES A MES ---
     proyeccion_final = ya_aportado + (c_m * meses_restantes)
