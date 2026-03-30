@@ -617,6 +617,10 @@ import datetime
 
 
 # --- 5. Función de Generación de PDF (VERSIÓN DEFINITIVA CORREGIDA) ---
+import os
+import matplotlib.pyplot as plt
+from fpdf import FPDF
+
 def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, dif_cap, dif_renta, rent_pct, aport_elegida):
     pdf = FPDF()
     pdf.add_page()
@@ -637,35 +641,25 @@ def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_
     pdf.cell(0, 6, f"Aportacion Personal: {aport_elegida:,.2f} EUR/ano | Rentabilidad: {rent_pct}%", ln=True)
     pdf.ln(5)
 
-   # --- GENERACIÓN DEL GRÁFICO (CORRECCIÓN startswith) ---
+    # --- GENERACIÓN DEL GRÁFICO (SOLUCIÓN DEFINITIVA) ---
     plt.figure(figsize=(6, 4))
-    # ... (tu código de plt.bar y plt.title igual que antes) ...
-    plt.bar(['Sin tu Aportacion', 'Con tu Plan'], [cap_b, cap_a], color=['#cbd5e1', '#1e40af'])
+    plt.bar(['Sin tu Aportacion', 'Con tu Plan'], [cap_b, cap_a], color=['#cbd5e1', '#1e40af'], width=0.6)
+    plt.title('Capital Acumulado al Jubilarte (EUR)', fontsize=12, fontweight='bold', pad=15)
+    plt.ylabel('Euros (EUR)')
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
     
-    img_buf = io.BytesIO()
-    plt.savefig(img_buf, format='png', bbox_inches='tight', dpi=150)
-    img_buf.seek(0)
+    # Guardamos el archivo físicamente de forma temporal
+    temp_img = "temp_grafico_pdf.png"
+    plt.savefig(temp_img, format='png', bbox_inches='tight', dpi=150)
+    plt.close() # Cerramos el plot para liberar recursos
     
-    # ESTA ES LA LÍNEA CLAVE:
-    # Registramos la imagen en el diccionario interno de fpdf con un nombre ficticio
-    pdf.image(img_buf, x=55, y=pdf.get_y(), w=100, type='PNG') 
+    # Insertamos la imagen usando la ruta del archivo (esto evita el error startswith)
+    pdf.image(temp_img, x=55, y=pdf.get_y(), w=100)
     
-    # Si lo anterior falla, la alternativa "manual" de FPDF es esta:
-    # pdf.image("grafico.png", x=55, y=pdf.get_y(), w=100) 
-    # Pero con BytesIO, fpdf 1.7.2 a veces requiere que el buffer se pase así:
-    
-    plt.close() 
-    pdf.ln(75)
-    
-    # Guardar gráfico en memoria
-    img_buf = io.BytesIO()
-    plt.savefig(img_buf, format='png', bbox_inches='tight', dpi=150)
-    img_buf.seek(0)
-    
-    # SOLUCIÓN AL ERROR rfind: Añadimos type="PNG"
-    pdf.image(img_buf, x=55, y=pdf.get_y(), w=100, type="PNG")
-    
-    plt.close() # Liberar memoria
+    # IMPORTANTE: Borramos el archivo temporal para no llenar el servidor de basura
+    if os.path.exists(temp_img):
+        os.remove(temp_img)
+        
     pdf.ln(75) 
 
     # --- TABLA DE RESULTADOS ---
@@ -696,29 +690,3 @@ def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_
     pdf.multi_cell(0, 10, txt=texto_concl, border='L', align='L', fill=True)
 
     return pdf.output(dest='S').encode('latin-1')
-
-# --- LÓGICA DEL BOTÓN (Asegúrate de que esté después de la función en el código) ---
-st.markdown("---")
-try:
-    # Generar bytes ANTES del botón para asegurar disponibilidad
-    # NOTA: Asegúrate de que mi_aportacion_anual_neta esté calculada arriba
-    pdf_output = generar_pdf_comparativo_v4(
-        edad_act, edad_jub, cap_a, cap_b, renta_a, renta_b, 
-        dif_cap, dif_renta, rent_pct, mi_aportacion_anual_neta
-    )
-    
-    st.markdown("### 📄 Tu Informe Estratégico")
-    st.info("El análisis incluye la comparativa visual y el desglose de renta.")
-    
-    st.download_button(
-        label="📥 DESCARGAR INFORME COMPARATIVO (PDF)",
-        data=pdf_output,
-        file_name=f"Informe_Jubilacion_{edad_act}.pdf",
-        mime="application/pdf",
-        key="btn_descarga_v4_final",
-        use_container_width=True
-    )
-except NameError as ne:
-    st.warning(f"Esperando cálculos finales... ({ne})")
-except Exception as e:
-    st.error(f"Error técnico al preparar PDF: {e}")
