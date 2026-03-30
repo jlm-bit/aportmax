@@ -247,7 +247,7 @@ with st.sidebar:
             e_y = 0.0
         else:
             # Aseguramos que el value no sea superior al nuevo límite calculado
-            c_m = st.number_input("Aport. periódica mensual (€)", value=0.0, step=50.0, min_value=0.0)
+            c_m = st.number_input("Aport.periódica mensual (€)", value=0.0, step=50.0, min_value=0.0)
             
             # El max_value del input se ajusta dinámicamente al límite legal real
             e_y = st.number_input(
@@ -258,11 +258,16 @@ with st.sidebar:
                 min_value=0.0
             )
 
+
 # --- 5. LÓGICA DE CÁLCULO ---
+any = 2026
+ssb = 5101,0*12
+tgss = 0.0635
+
 hoy = datetime.date.today()
 meses_restantes = 12 - hoy.month + 1
 meses_pasados = 12 - meses_restantes
-CUOTA_SS = min(sb, 5101.0 * 12) * 0.0635 
+CUOTA_SS = min(sb, ssb) * tgss 
 base_pre = max(0.0, sb - CUOTA_SS - 2000.0)
 max_p = MAX_P_LIMIT
 ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
