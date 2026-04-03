@@ -366,7 +366,7 @@ with tab2:
         color_alerta, icon_estado = "#f59e0b", "💡"
         msg_estado = f"OPORTUNIDAD: +{max_p - proyeccion_final:,.0f}€"
 
-    st.markdown("### 🎯 Plan de Acción Personal")
+  #  st.markdown("### 🎯 Plan de Acción Personal")
     
   # --- 3. DESGLOSE COMPACTO (4 COLUMNAS) ---
     c1, c2, c3, c4 = st.columns(4)
@@ -500,7 +500,7 @@ import io
 # e_riesgo: Coste anual del seguro de riesgo (Tab 1)
 # ------------------------------------------------------------------------
 with tab3:
-    st.markdown("### 🔮 SIMULADOR JUBILACIÓN: Impacto de aportaciones voluntarias")
+  #  st.markdown("### 🔮 SIMULADOR JUBILACIÓN: Impacto de aportaciones voluntarias")
     
     # 0. Recuperar variables de otros Tabs
     t_marginal_uso = st.session_state.get('tipo_marginal', 30.0) 
