@@ -371,14 +371,14 @@ with tab1:
     
     with c1:
         mes_fin_ya = meses_nombres_es[hoy.month - 2] if hoy.month > 1 else "Ene"
-        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>✅ YA APORTADO</b></p><h4 style='margin:0; font-size:1.1rem;'>{ya_aportado:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Ene-{mes_fin_ya[:3]}</small>", unsafe_allow_html=True)
+        st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>✅ Ya aportado</b></p><h4 style='margin:0; font-size:1.1rem;'>{ya_aportado:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Ene-{mes_fin_ya[:3]}</small>", unsafe_allow_html=True)
     
     with c2:
-        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>⏳ PENDIENTE</b></p><h4 style='margin:0; font-size:1.1rem;'>{c_m * meses_restantes:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
+        st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>⏳ Planificado resto de año</b></p><h4 style='margin:0; font-size:1.1rem;'>{c_m * meses_restantes:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
   
     with c3:
         # Aportación extraordinaria única
-        st.markdown(f"<p style='margin:0; font-size:0.8rem;'><b>💰 APORT.ÚNICA (para máximo)</b></p><h4 style='margin:0; font-size:1.8rem; color:#1e40af;'>{aportacion_extraordinaria_neta:,.0f}€</h4><small style='color:#64748b; font-size:0.65rem;'>Aport.para alcanzar el límite</small>", unsafe_allow_html=True)
+        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>💰 APORTACIÓNÚNICA (para máximo)</b></p><h4 style='margin:0; font-size:1.8rem; color:#1e40af;'>{aportacion_extraordinaria_neta:,.0f}€</h4><small style='color:#64748b; font-size:0.65rem;'>Aport.para alcanzar el límite</small>", unsafe_allow_html=True)
 
      
        
@@ -451,6 +451,7 @@ with tab2:
 # --- 3. RECOMENDACIÓN DE AJUSTE ---
     if proyeccion_final != max_p:
         if abs(proyeccion_final - max_p) > 1.0:
+            with st.expander("📅 Ver detalle mes a mes"):
             st.markdown(f"""
                 <div style="border-left: 12px solid #1e40af; background: #f0f7ff; padding: 30px; border-radius: 0 10px 10px 0; margin: 10px 0;">
                     <div style="background: #1e40af; color: white; padding: 8px 18px; border-radius: 25px; font-size: 1.0rem; font-weight: bold; display: inline-block; margin-bottom: 20px; letter-spacing: 0.5px;">
