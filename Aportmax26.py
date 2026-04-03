@@ -449,9 +449,10 @@ with tab2:
     """, unsafe_allow_html=True)
 
 # --- 3. RECOMENDACIÓN DE AJUSTE ---
+    with st.expander("📅 Ver detalle mes a mes"):
     if proyeccion_final != max_p:
         if abs(proyeccion_final - max_p) > 1.0:
-        with st.expander("📅 Ver detalle mes a mes"):
+     
             st.markdown(f"""
                 <div style="border-left: 12px solid #1e40af; background: #f0f7ff; padding: 30px; border-radius: 0 10px 10px 0; margin: 10px 0;">
                     <div style="background: #1e40af; color: white; padding: 8px 18px; border-radius: 25px; font-size: 1.0rem; font-weight: bold; display: inline-block; margin-bottom: 20px; letter-spacing: 0.5px;">
