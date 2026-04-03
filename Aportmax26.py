@@ -478,22 +478,28 @@ with tab2:
 
     
     st.markdown("---")
-    st.expander("#### 🚀 ¿Cómo realizar tu aportación?")
-    col_web, col_steps = st.columns([1, 1.5])
+with st.expander("#### 🚀 ¿Cómo realizar tu aportación?"):
+    col_web, col_steps = st.columns([1, 1.5], gap="large")
+    
     with col_web:
         st.markdown("**Vías de Acceso Online**")
-        st.link_button("✨ Acceder a Aporta+ (VidaCaixa)", "https://aportamas.vidacaixa.es/pasos-para-el-alta-de-usuario", use_container_width=True, type="primary")
-        st.link_button("🏦 Ir a CaixaBankNow", "https://www.caixabank.es/particular/home/particulares_es.html", use_container_width=True, type="secondary")
-        st.info("💡 **Dato:** Aporta+ es la plataforma de VidaCaixa para gestionar tus planes de empleo.")
+        st.link_button("✨ Acceder a Aporta+", "https://...", use_container_width=True, type="primary")
+        st.link_button("🏦 Ir a CaixaBankNow", "https://...", use_container_width=True)
+        # Un pequeño divisor visual ayuda a separar la info del botón
+        st.divider()
+        st.caption("💡 **Dato:** Aporta+ es la plataforma de VidaCaixa para gestionar tus planes de empleo.")
+        
     with col_steps:
         st.markdown("**Pasos a seguir:**")
-        st.markdown("""
-        1. **Identifícate** en tu plataforma (Aporta+ o CaixaBankNow).
-        2. Localiza la sección de **'Pensiones'** o **'Mis Planes'**.
-        3. Selecciona tu **Plan de Empleo (PPE)** y pulsa **'Gestionar'**.
-        4. Elige **'Aportación Única'** o **'Modificar periódica'**.
-        5. Introduce el importe y **firma la operación**.
-        """)
+        # El uso de contenedores aquí ayuda a que el texto no se vea "flotando"
+        with st.container(border=True):
+            st.markdown("""
+            1. **Identifícate** en la plataforma elegida.
+            2. Localiza la sección de **'Pensiones'** o **'Mis Planes'**.
+            3. Selecciona tu **Plan de Empleo (PPE)** y pulsa **'Gestionar'**.
+            4. Elige **'Aportación Única'** o **'Modificar periódica'**.
+            5. Introduce el importe y **firma la operación**.
+            """)
 
     pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes, ya_aportado)
     st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
