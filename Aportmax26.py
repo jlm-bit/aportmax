@@ -429,7 +429,7 @@ with tab2:
                         🎯 ALTERNATIVA RECOMENDADA:   AJUSTAR LA APORTACIÓN VOLUNTARIA MENSUAL A TU PLAN DE PENSIONES
                     </div>
                     <p style="margin-bottom: 10px; font-size: 1.00rem; color: #1e293b; line-height: 1.4;">
-                        De acuerdo a nuestra recomendación, para alcanzar exactamente el límite de <b>{max_p:,.2f} €</b> sin pasarte, debes ajustar tu aportación mensual a un total de:
+                        De acuerdo a nuestra recomendación, para alcanzar exactamente el límite de aportación máxima al Plan de Pensiones de Empleo de <b>{max_p:,.2f} €</b> sin pasarte, debes ajustar tu aportación mensual a un total de:
                     </p>
                     <div style="display: flex; align-items: baseline; gap: 3px; margin: 0px 0;">
                         <h1 style="color: #1e40af; margin:0; font-size: 1.8rem; font-weight: 800;">{nueva_cuota_total:,.2f} €</h1>
