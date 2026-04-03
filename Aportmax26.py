@@ -365,7 +365,7 @@ with tab1:
     
     with c4:
         # Aportación extraordinaria única
-        st.markdown(f"<p style='margin:0; font-size:1.2rem;'><b>💰 APORT.ÚNICA (para máximo)</b></p><h4 style='margin:0; font-size:1.1rem; color:#1e40af;'>{aportacion_extraordinaria_neta:,.0f}€</h4><small style='color:#64748b; font-size:0.65rem;'>Aport.para alcanzar el límite</small>", unsafe_allow_html=True)
+        st.markdown(f"<p style='margin:0; font-size:0.8rem;'><b>💰 APORT.ÚNICA (para máximo)</b></p><h4 style='margin:0; font-size:1.5rem; color:#1e40af;'>{aportacion_extraordinaria_neta:,.0f}€</h4><small style='color:#64748b; font-size:0.65rem;'>Aport.para alcanzar el límite</small>", unsafe_allow_html=True)
     
     
     
