@@ -342,6 +342,12 @@ with tab1:
         st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
       
  # --- 3. DESGLOSE COMPACTO (4 COLUMNAS) ---
+
+    import datetime
+    hoy = datetime.date.today()
+    meses_nombres_es = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+    
     c1, c2, c3, c4 = st.columns(4)
     
     with c1:
