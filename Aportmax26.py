@@ -478,7 +478,7 @@ with tab2:
 
     
     st.markdown("---")
-with st.expander("#### 🚀 ¿Cómo realizar tu aportación?"):
+with st.expander("🚀 ¿Cómo realizar tu aportación?"):
     col_web, col_steps = st.columns([1, 1.5], gap="large")
     
     with col_web:
@@ -501,8 +501,8 @@ with st.expander("#### 🚀 ¿Cómo realizar tu aportación?"):
             5. Introduce el importe y **firma la operación**.
             """)
 
-    pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes, ya_aportado)
-    st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
+pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes, ya_aportado)
+st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
 
 import plotly.graph_objects as go
 import numpy as np
