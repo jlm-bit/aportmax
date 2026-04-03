@@ -426,7 +426,7 @@ with tab2:
         color_alerta = "#ef4444"  # Rojo
         msg_estado = f"⚠️ EXCESO DETECTADO: Superarás el límite en {proyeccion_final - max_p:,.2f} €"
         icon_estado = "🚨"
-    elif proyeccion_final = max_p:
+    elif proyeccion_final = max_p*0.98:
         color_alerta = "#22c55e"  # Verde
         msg_estado = "✅ PLAN ÓPTIMO: Estás maximizando tu ahorro fiscal según los datos informados"
         icon_estado = "🎯"
