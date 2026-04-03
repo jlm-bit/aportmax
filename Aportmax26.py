@@ -367,7 +367,7 @@ with tab1:
     unsafe_allow_html=True
 )
     
-    c1, c2, c3, c4 = st.columns(4)
+    c1, c2, c3  = st.columns(3)
     
     with c1:
         mes_fin_ya = meses_nombres_es[hoy.month - 2] if hoy.month > 1 else "Ene"
@@ -375,17 +375,13 @@ with tab1:
     
     with c2:
         st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>⏳ PENDIENTE</b></p><h4 style='margin:0; font-size:1.1rem;'>{c_m * meses_restantes:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
-    
+  
     with c3:
-        # Proyección antes de la extra
-        proy_base = ya_aportado + (c_m * meses_restantes)
-        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>📈 SUMA</b></p><h4 style='margin:0; font-size:1.1rem;'>{proy_base:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Aportacion planificada</small>", unsafe_allow_html=True)
-    
-    with c4:
         # Aportación extraordinaria única
         st.markdown(f"<p style='margin:0; font-size:0.8rem;'><b>💰 APORT.ÚNICA (para máximo)</b></p><h4 style='margin:0; font-size:1.8rem; color:#1e40af;'>{aportacion_extraordinaria_neta:,.0f}€</h4><small style='color:#64748b; font-size:0.65rem;'>Aport.para alcanzar el límite</small>", unsafe_allow_html=True)
-    
-    
+
+     
+       
     
     st.markdown("---")
     pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
@@ -420,27 +416,7 @@ with tab2:
 
   #  st.markdown("### 🎯 Plan de Acción Personal")
     
-  # --- 3. DESGLOSE COMPACTO (4 COLUMNAS) ---
-    c1, c2, c3, c4 = st.columns(4)
-    
-    with c1:
-        mes_fin_ya = meses_nombres_es[hoy.month - 2] if hoy.month > 1 else "Ene"
-        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>✅ YA APORTADO</b></p><h4 style='margin:0; font-size:1.1rem;'>{ya_aportado:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Ene-{mes_fin_ya[:3]}</small>", unsafe_allow_html=True)
-    
-    with c2:
-        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>⏳ PENDIENTE</b></p><h4 style='margin:0; font-size:1.1rem;'>{c_m * meses_restantes:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
-    
-    with c3:
-        # Proyección antes de la extra
-        proy_base = ya_aportado + (c_m * meses_restantes)
-        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>📈 SUMA</b></p><h4 style='margin:0; font-size:1.1rem;'>{proy_base:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Aportacion planificada</small>", unsafe_allow_html=True)
-    
-    with c4:
-        # Aportación extraordinaria única
-        st.markdown(f"<p style='margin:0; font-size:0.9rem;'><b>💰 APORT.ÚNICA (para máximo)</b></p><h4 style='margin:0; font-size:1.1rem; color:#1e40af;'>{aportacion_extraordinaria_neta:,.0f}€</h4><small style='color:#64748b; font-size:0.65rem;'>Aport.para alcanzar el límite</small>", unsafe_allow_html=True)
-   
-  
-   
+ 
     # --- 1. LÓGICA DE PROYECCIÓN MES A MES ---
     proyeccion_final = ya_aportado + (c_m * meses_restantes)
     porcentaje_uso = min(proyeccion_final / max_p, 1.1) if max_p > 0 else 0
