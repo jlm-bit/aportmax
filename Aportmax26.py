@@ -348,6 +348,7 @@ with tab1:
     meses_nombres_es = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
                         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
     
+    st.markdown("---")
     c1, c2, c3, c4 = st.columns(4)
     
     with c1:
