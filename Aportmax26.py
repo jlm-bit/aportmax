@@ -300,17 +300,17 @@ with tab1:
         
         with sub_col1:
             st.markdown(f"""
-                <div style="background-color: #1E3A8A; color: white; padding: 20px; border-radius: 12px; height: 160px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
-                    <p style="margin:0; font-size: 12px; opacity: 0.8; font-weight: bold;">MÁXIMA APORTACIÓN PERSONAL</p>
-                    <h2 style="font-size: 24px; margin: 10px 0; color: white;">{max_p:,.2f} €</h2>
+                <div style="background-color: #1E3A8A; color: white; padding: 20px; border-radius: 11px; height: 160px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                    <p style="margin:0; font-size: 11px; opacity: 0.8; font-weight: bold;">MÁXIMA APORTACIÓN PERSONAL</p>
+                    <h2 style="font-size: 22px; margin: 10px 0; color: white;">{max_p:,.2f} €</h2>
                 </div>
             """, unsafe_allow_html=True)
 
         with sub_col2:
             st.markdown(f"""
-                <div style="background-color: #F0FDF4; color: #166534; padding: 20px; border-radius: 12px; height: 160px; text-align: center; border: 1px solid #DCFCE7; display: flex; flex-direction: column; justify-content: center;">
-                    <p style="margin:0; font-size: 12px; opacity: 0.9; font-weight: bold;">AHORRO FISCAL (IRPF Catalunya)</p>
-                    <h2 style="font-size: 24px; margin: 10px 0; color: #166534;">{ahorro:,.2f} €</h2>
+                <div style="background-color: #F0FDF4; color: #166534; padding: 20px; border-radius: 11px; height: 160px; text-align: center; border: 1px solid #DCFCE7; display: flex; flex-direction: column; justify-content: center;">
+                    <p style="margin:0; font-size: 11px; opacity: 0.9; font-weight: bold;">AHORRO FISCAL (IRPF Catalunya)</p>
+                    <h2 style="font-size: 22px; margin: 10px 0; color: #166534;">{ahorro:,.2f} €</h2>
                     <p style="margin:0; font-weight: bold; font-size: 14px;">Tax Return: {eficiencia:.1f}%</p>
                 </div>
             """, unsafe_allow_html=True)
@@ -438,7 +438,7 @@ with tab2:
                     <p style="font-size: 1.2rem; color: #1e3a8a; margin-top: 20px; font-weight: 500;">
                         {"🔼 <b>ACCIÓN: Incrementa</b>" if diferencia_mensual > 0 else "🔽 <b>Reduce</b>"} tu aportación actual al Plan de Pensiones en 
                         <span style="font-size: 1.6rem; border-bottom: 3px solid #1e40af;">{abs(diferencia_mensual):,.2f} €</span> 
-                        durante los {meses_restantes} meses restantes de este año.
+                        durante los {meses_restantes} meses restantes de este año. Ya al año siguente tu aportación va a ser menor al poder prorratear por los 12 meses del año 
                     </p>
                 </div>
             """, unsafe_allow_html=True)
