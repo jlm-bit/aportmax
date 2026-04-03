@@ -332,7 +332,7 @@ with tab1:
         )])
         
         fig.update_layout(
-            title={'text': "<b>Distribución de tu Inversión Anual</b>", 'y': 0.98, 'x': 0.5, 'xanchor': 'center', 'font': {'size': 18}},
+            title={'text': "<b>Distribución de tu Inversión Anual</b>", 'y': 0.98, 'x': 0.5, 'xanchor': 'center', 'font': {'size': 16}},
             margin=dict(t=80, b=20, l=10, r=10), 
             height=400, 
             showlegend=True, 
@@ -435,7 +435,7 @@ with tab2:
                         <h1 style="color: #1e40af; margin:0; font-size: 2.5rem; font-weight: 800;">{nueva_cuota_total:,.2f} €</h1>
                         <span style="font-size: 1.8rem; color: #64748b; font-weight: 600;">/ mes</span>
                     </div>
-                    <p style="font-size: 1.2rem; color: #1e3a8a; margin-top: 20px; font-weight: 500;">
+                    <p style="font-size: 1.0rem; color: #1e3a8a; margin-top: 20px; font-weight: 500;">
                         {"🔼 <b>ACCIÓN: Incrementa</b>" if diferencia_mensual > 0 else "🔽 <b>Reduce</b>"} tu aportación actual al Plan de Pensiones en 
                         <span style="font-size: 1.6rem; border-bottom: 3px solid #1e40af;">{abs(diferencia_mensual):,.2f} €</span> 
                         durante los {meses_restantes} meses restantes de este año. Ya al año siguente tu aportación va a ser menor al poder prorratear por los 12 meses del año 
