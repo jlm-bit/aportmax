@@ -341,8 +341,35 @@ with tab1:
         )
         st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
       
+ # --- 3. DESGLOSE COMPACTO (4 COLUMNAS) ---
+    c1, c2, c3, c4 = st.columns(4)
+    
+    with c1:
+        mes_fin_ya = meses_nombres_es[hoy.month - 2] if hoy.month > 1 else "Ene"
+        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>✅ YA APORTADO</b></p><h4 style='margin:0; font-size:1.1rem;'>{ya_aportado:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Ene-{mes_fin_ya[:3]}</small>", unsafe_allow_html=True)
+    
+    with c2:
+        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>⏳ PENDIENTE</b></p><h4 style='margin:0; font-size:1.1rem;'>{c_m * meses_restantes:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
+    
+    with c3:
+        # Proyección antes de la extra
+        proy_base = ya_aportado + (c_m * meses_restantes)
+        st.markdown(f"<p style='margin:0; font-size:0.7rem;'><b>📈 SUMA</b></p><h4 style='margin:0; font-size:1.1rem;'>{proy_base:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Aportacion planificada</small>", unsafe_allow_html=True)
+    
+    with c4:
+        # Aportación extraordinaria única
+        st.markdown(f"<p style='margin:0; font-size:0.9rem;'><b>💰 APORT.ÚNICA (para máximo)</b></p><h4 style='margin:0; font-size:1.1rem; color:#1e40af;'>{aportacion_extraordinaria_neta:,.0f}€</h4><small style='color:#64748b; font-size:0.65rem;'>Aport.para alcanzar el límite</small>", unsafe_allow_html=True)
+    
+    
+    
+    
     pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
     st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf")
+
+
+
+
+
 
 with tab2:
     # --- 0. PREPARACIÓN DE DATOS (Evita NameError) ---
@@ -426,7 +453,7 @@ with tab2:
             st.markdown(f"""
                 <div style="border-left: 12px solid #1e40af; background: #f0f7ff; padding: 30px; border-radius: 0 10px 10px 0; margin: 10px 0;">
                     <div style="background: #1e40af; color: white; padding: 8px 18px; border-radius: 25px; font-size: 1.0rem; font-weight: bold; display: inline-block; margin-bottom: 20px; letter-spacing: 0.5px;">
-                        🎯 ALTERNATIVA RECOMENDADA:   Ajustar la aportación voluntaria mensual a tu plan de pensiones de emepleo
+                        🎯 ALTERNATIVA RECOMENDADA:   Ajustar la aportación voluntaria mensual a tu plan de pensiones de empleo
                     </div>
                     <p style="margin-bottom: 5px; font-size: 1.0rem; color: #1e293b; line-height: 1.4;">
                         De acuerdo a nuestra recomendación, para alcanzar exactamente el límite de aportación máxima al Plan de Pensiones de Empleo de <b>{max_p:,.2f} €</b> sin pasarte, debes ajustar tu aportación mensual a un total de:
