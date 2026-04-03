@@ -424,8 +424,8 @@ with tab2:
     if proyeccion_final != max_p:
         if abs(proyeccion_final - max_p) > 1.0:
             st.markdown(f"""
-                <div style="border-left: 25px solid #1e40af; background: #f0f7ff; padding: 30px; border-radius: 0 10px 10px 0; margin: 10px 0;">
-                    <div style="background: #1e40af; color: white; padding: 8px 18px; border-radius: 25px; font-size: 1.05rem; font-weight: bold; display: inline-block; margin-bottom: 20px; letter-spacing: 0.5px;">
+                <div style="border-left: 15px solid #1e40af; background: #f0f7ff; padding: 30px; border-radius: 0 10px 10px 0; margin: 10px 0;">
+                    <div style="background: #1e40af; color: white; padding: 8px 18px; border-radius: 25px; font-size: 1.0rem; font-weight: bold; display: inline-block; margin-bottom: 20px; letter-spacing: 0.5px;">
                         🎯 ALTERNATIVA RECOMENDADA:   AJUSTAR LA APORTACIÓN VOLUNTARIA MENSUAL A TU PLAN DE PENSIONES
                     </div>
                     <p style="margin-bottom: 10px; font-size: 1.00rem; color: #1e293b; line-height: 1.4;">
