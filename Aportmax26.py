@@ -432,8 +432,8 @@ with tab2:
                         De acuerdo a nuestra recomendación, para alcanzar exactamente el límite de <b>{max_p:,.2f} €</b> sin pasarte, debes ajustar tu aportación mensual a un total de:
                     </p>
                     <div style="display: flex; align-items: baseline; gap: 15px; margin: 10px 0;">
-                        <h1 style="color: #1e40af; margin:0; font-size: 2.0rem; font-weight: 800;">{nueva_cuota_total:,.2f} €</h1>
-                        <span style="font-size: 1.8rem; color: #64748b; font-weight: 600;">/ mes</span>
+                        <h1 style="color: #1e40af; margin:0; font-size: 1.8rem; font-weight: 800;">{nueva_cuota_total:,.2f} €</h1>
+                        <span style="font-size: 1.6rem; color: #64748b; font-weight: 600;">/ mes</span>
                     </div>
                     <p style="font-size: 1.0rem; color: #1e3a8a; margin-top: 20px; font-weight: 500;">
                         {"🔼 <b>ACCIÓN: Incrementa</b>" if diferencia_mensual > 0 else "🔽 <b>Reduce</b>"} tu aportación actual al Plan de Pensiones en 
