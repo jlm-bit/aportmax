@@ -424,7 +424,7 @@ with tab2:
     if proyeccion_final != max_p:
         if abs(proyeccion_final - max_p) > 1.0:
             st.markdown(f"""
-                <div style="border-left: 25px solid #1e40af; background: #f0f7ff; padding: 30px; border-radius: 0 20px 20px 0; margin: 20px 0;">
+                <div style="border-left: 25px solid #1e40af; background: #f0f7ff; padding: 30px; border-radius: 0 10px 10px 0; margin: 10px 0;">
                     <div style="background: #1e40af; color: white; padding: 8px 18px; border-radius: 25px; font-size: 1.05rem; font-weight: bold; display: inline-block; margin-bottom: 20px; letter-spacing: 0.5px;">
                         🎯 ALTERNATIVA RECOMENDADA:   AJUSTAR LA APORTACIÓN VOLUNTARIA MENSUAL A TU PLAN DE PENSIONES
                     </div>
@@ -435,7 +435,7 @@ with tab2:
                         <h1 style="color: #1e40af; margin:0; font-size: 1.6rem; font-weight: 800;">{nueva_cuota_total:,.2f} €</h1>
                         <span style="font-size: 1.4rem; color: #64748b; font-weight: 600;">/mes durante los {meses_restantes} meses restantes de este año</span>
                     </div>
-                    <p style="font-size: 0.9rem; color: #1e3a8a; margin-top: 20px; font-weight: 500;">
+                    <p style="font-size: 1.0rem; color: #1e3a8a; margin-top: 20px; font-weight: 500;">
                         {"🔼 <b>ACCIÓN: Incrementa</b>" if diferencia_mensual > 0 else "🔽 <b>Reduce</b>"} tu aportación actual al Plan de Pensiones en 
                         <span style="font-size: 1.4rem; border-bottom: 3px solid #1e40af;">{abs(diferencia_mensual):,.2f} €</span> 
                         durante los {meses_restantes} meses restantes de este año. Ya al año siguente tu aportación va a ser menor al poder prorratear por los 12 meses del año. 
