@@ -426,9 +426,9 @@ with tab2:
         color_alerta = "#ef4444"  # Rojo
         msg_estado = f"⚠️ EXCESO DETECTADO: Superarás el límite en {proyeccion_final - max_p:,.2f} €"
         icon_estado = "🚨"
-    elif proyeccion_final >= max_p * 0.95:
+    elif proyeccion_final = max_p:
         color_alerta = "#22c55e"  # Verde
-        msg_estado = "✅ PLAN ÓPTIMO: Estás maximizando tu ahorro fiscal"
+        msg_estado = "✅ PLAN ÓPTIMO: Estás maximizando tu ahorro fiscal según los datos informados"
         icon_estado = "🎯"
     else:
         color_alerta = "#f59e0b"  # Ámbar
@@ -449,7 +449,7 @@ with tab2:
     """, unsafe_allow_html=True)
 
 # --- 3. RECOMENDACIÓN DE AJUSTE ---
-    with st.expander("📅 Ver detalle mes a mes"):
+   
     if proyeccion_final != max_p:
         if abs(proyeccion_final - max_p) > 1.0:
      
@@ -476,29 +476,9 @@ with tab2:
         st.balloons()
         st.success("¡Tu planificación es exacta!")
 
-    # --- 4. CRONOGRAMA DETALLADO (Para ver CUÁNDO se pasa) ---
-    with st.expander("📅 Ver detalle mes a mes"):
-        meses_nombres = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
-                         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
-        current_month = hoy.month
-        temp_acumulado = ya_aportado
-        
-        cols = st.columns(4)
-        for i, m_idx in enumerate(range(current_month - 1, 12)):
-            temp_acumulado += c_m
-            with cols[i % 4]:
-                color_txt = "#ef4444" if temp_acumulado > max_p else "#1e293b"
-                st.markdown(f"""
-                    <div style="text-align: center; padding: 10px; border: 1px solid #f1f5f9; border-radius: 8px;">
-                        <small style="color: #64748b;">{meses_nombres[m_idx]}</small><br>
-                        <b style="color: {color_txt};">{temp_acumulado:,.0f} €</b>
-                    </div>
-                """, unsafe_allow_html=True)
-     
-    # ... [Resto de botones de link y descarga de PDF iguales] ...
-
+    
     st.markdown("---")
-    st.markdown("#### 🚀 ¿Cómo realizar tu aportación?")
+    st.expander("#### 🚀 ¿Cómo realizar tu aportación?")
     col_web, col_steps = st.columns([1, 1.5])
     with col_web:
         st.markdown("**Vías de Acceso Online**")
