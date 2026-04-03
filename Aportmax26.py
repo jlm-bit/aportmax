@@ -353,13 +353,13 @@ with tab1:
     <hr style="margin: 1em 0;">
     <div style="text-align: center;">
         <p style='margin:0; font-size:1.0rem;'>
-            <b>💰 APORTACIÓN ÚNICA PERSONAL (para máximo)</b>
+            <b>💰 ¿Cuanto puedes aportar más? (para máximo)</b>
         </p>
         <h4 style='margin:0; font-size:2.0rem; color:#1e40af; line-height:1.1;'>
             {aportacion_extraordinaria_neta:,.0f}€
         </h4>
         <p style='margin:0; color:#64748b; font-size:0.9rem;'>
-            Aport. para alcanzar el límite
+            Aportación que debes realizar para alcanzar el límite
         </p>
     </div>
     <hr style="margin: 1em 0;">
