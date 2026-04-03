@@ -428,14 +428,14 @@ with tab2:
                     <div style="background: #1e40af; color: white; padding: 8px 18px; border-radius: 25px; font-size: 1.0rem; font-weight: bold; display: inline-block; margin-bottom: 20px; letter-spacing: 0.5px;">
                         🎯 ALTERNATIVA RECOMENDADA:   AJUSTAR LA APORTACIÓN VOLUNTARIA MENSUAL A TU PLAN DE PENSIONES
                     </div>
-                    <p style="margin-bottom: 10px; font-size: 0.9rem; color: #1e293b; line-height: 1.4;">
+                    <p style="margin-bottom: 5px; font-size: 1.0rem; color: #1e293b; line-height: 1.4;">
                         De acuerdo a nuestra recomendación, para alcanzar exactamente el límite de aportación máxima al Plan de Pensiones de Empleo de <b>{max_p:,.2f} €</b> sin pasarte, debes ajustar tu aportación mensual a un total de:
                     </p>
                     <div style="display: flex; align-items: baseline; gap: 3px; margin: 0px 0;">
                         <h1 style="color: #1e40af; margin:0; font-size: 1.6rem; font-weight: 800;">{nueva_cuota_total:,.2f} €</h1>
                         <span style="font-size: 1.4rem; color: #64748b; font-weight: 600;">/mes durante los {meses_restantes} meses restantes de este año</span>
                     </div>
-                    <p style="font-size: 0.9rem; color: #1e3a8a; margin-top: 20px; font-weight: 500;">
+                    <p style="font-size: 1.0rem; color: #1e3a8a; margin-top: 10px; font-weight: 500;">
                         {"🔼 <b>ACCIÓN: Incrementa</b>" if diferencia_mensual > 0 else "🔽 <b>Reduce</b>"} tu aportación actual al Plan de Pensiones en 
                         <span style="font-size: 1.4rem; border-bottom: 3px solid #1e40af;">{abs(diferencia_mensual):,.2f} €</span> 
                         durante los {meses_restantes} meses restantes de este año. Ya al año siguente tu aportación va a ser menor al poder prorratear por los 12 meses del año. 
