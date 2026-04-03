@@ -349,7 +349,7 @@ with tab1:
                         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
     
     st.markdown("---")
-    st.markdown(f"<p style='margin:0; font-size:1.2rem;'><b>💰 APORT.ÚNICA (para máximo)</b></p><h4 style='margin:0; font-size:2.0rem; color:#1e40af;'>{aportacion_extraordinaria_neta:,.0f}€</h4><small style='color:#64748b; font-size:0.65rem;'>Aport.para alcanzar el límite</small>", unsafe_allow_html=True)
+    st.markdown(f"<p style='margin:60; font-size:1.2rem;'><b>💰 APORT.ÚNICA (para máximo)</b></p><h4 style='margin:80; font-size:2.0rem; color:#1e40af;'>{aportacion_extraordinaria_neta:,.0f}€</h4><small style='color:#64748b; font-size:0.65rem;'>Aport.para alcanzar el límite</small>", unsafe_allow_html=True)
     st.markdown("---")
     
     c1, c2, c3, c4 = st.columns(4)
