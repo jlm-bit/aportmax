@@ -300,15 +300,15 @@ with tab1:
         
         with sub_col1:
             st.markdown(f"""
-                <div style="background-color: #1E3A8A; color: white; padding: 20px; border-radius: 11px; height: 170px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
-                    <p style="margin:0; font-size: 11px; opacity: 0.8; font-weight: bold;">MÁXIMA APORTACIÓN PERSONAL</p>
+                <div style="background-color: #1E3A8A; color: white; padding: 20px; border-radius: 11px; height: 200px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                    <p style="margin:0; font-size: 12px; opacity: 0.8; font-weight: bold;">MÁXIMA APORTACIÓN PERSONAL</p>
                     <h2 style="font-size: 22px; margin: 10px 0; color: white;">{max_p:,.2f} €</h2>
                 </div>
             """, unsafe_allow_html=True)
 
         with sub_col2:
             st.markdown(f"""
-                <div style="background-color: #F0FDF4; color: #166534; padding: 20px; border-radius: 11px; height: 170px; text-align: center; border: 1px solid #DCFCE7; display: flex; flex-direction: column; justify-content: center;">
+                <div style="background-color: #F0FDF4; color: #166534; padding: 20px; border-radius: 11px; height: 180px; text-align: center; border: 1px solid #DCFCE7; display: flex; flex-direction: column; justify-content: center;">
                     <p style="margin:0; font-size: 11px; opacity: 0.9; font-weight: bold;">AHORRO FISCAL (IRPF Catalunya)</p>
                     <h2 style="font-size: 22px; margin: 10px 0; color: #166534;">{ahorro:,.2f} €</h2>
                     <p style="margin:0; font-weight: bold; font-size: 14px;">Tax Return: {eficiencia:.1f}%</p>
