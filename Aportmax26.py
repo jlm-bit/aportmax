@@ -300,7 +300,7 @@ with tab1:
         
         with sub_col1:
             st.markdown(f"""
-                <div style="background-color: #1E3A8A; color: white; padding: 20px; border-radius: 11px; height: 160px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                <div style="background-color: #1E3A8A; color: white; padding: 20px; border-radius: 11px; height: 170px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
                     <p style="margin:0; font-size: 11px; opacity: 0.8; font-weight: bold;">MÁXIMA APORTACIÓN PERSONAL</p>
                     <h2 style="font-size: 22px; margin: 10px 0; color: white;">{max_p:,.2f} €</h2>
                 </div>
@@ -308,7 +308,7 @@ with tab1:
 
         with sub_col2:
             st.markdown(f"""
-                <div style="background-color: #F0FDF4; color: #166534; padding: 20px; border-radius: 11px; height: 160px; text-align: center; border: 1px solid #DCFCE7; display: flex; flex-direction: column; justify-content: center;">
+                <div style="background-color: #F0FDF4; color: #166534; padding: 20px; border-radius: 11px; height: 170px; text-align: center; border: 1px solid #DCFCE7; display: flex; flex-direction: column; justify-content: center;">
                     <p style="margin:0; font-size: 11px; opacity: 0.9; font-weight: bold;">AHORRO FISCAL (IRPF Catalunya)</p>
                     <h2 style="font-size: 22px; margin: 10px 0; color: #166534;">{ahorro:,.2f} €</h2>
                     <p style="margin:0; font-weight: bold; font-size: 14px;">Tax Return: {eficiencia:.1f}%</p>
@@ -513,7 +513,7 @@ with tab3:
         
         modo_aportacion = st.radio(
             "Tu aportación personal anual:",
-            ["Máximo Legal", "Cantidad Personalizada"],
+            ["Aportación Máxima", "Cantidad Personalizada"],
             horizontal=True,
             key="modo_aport_final"
         )
@@ -522,7 +522,7 @@ with tab3:
         
         if modo_aportacion == "Máximo Legal":
             mi_aportacion_anual_neta = max_legal_anual_neta
-            st.info(f"✨ Límite MÁXIMO PERSONAL: **{mi_aportacion_anual_neta:,.2f} €/año**.")
+            st.info(f"✨ Aportación Máxima: **{mi_aportacion_anual_neta:,.2f} €/año**.")
         else:
             mi_aportacion_anual_neta = st.slider(
                 "Aportación anual personalizada (€)", 
@@ -560,7 +560,8 @@ with tab3:
         saldo_b += cuota_empresa_fija + int_b
         aport_acum_a += (cuota_empresa_fija + cuota_empleado_fija)
        
-
+    st.markdown("---") # Separador visual antes de entrar en el gráfico
+    
     # 3. Gráfico de Evolución
     fig_j = go.Figure()
     fig_j.add_trace(go.Scatter(x=edades, y=solo_capital_evol, mode='lines', name='CAPITAL APORTADO', stackgroup='one', fillcolor='#1E3A8A', line=dict(width=0)))
@@ -739,7 +740,7 @@ if st.button("🚀 GENERAR INFORME DE LA PROYECCIÓN (pdf)", use_container_width
 
 with tab4:
     # --- RESUMEN EJECUTIVO DEL PROGRAMA ---
-    st.info("### 📋 Funcionalidades de la plataforma AportaMax")
+    # st.info("### 📋 Funcionalidades de la plataforma AportaMax")
     
     col_res1, col_res2 = st.columns(2)
     
@@ -754,8 +755,8 @@ with tab4:
 
     with col_res2:
         st.markdown("""
-        **Garantías Técnicas y Legales:**
-        * **Actualización 2026:** Cálculos ajustados a los límites legales de 1.500€ (individual) y 8.500€ (empleo).
+        **Aspectos Técnicos y Legales:**
+        * **Actualización 2026:** Cálculos ajustados a los límites legales vigentes en 2026.
         * **Matemática Financiera:** Uso de fórmulas de capitalización compuesta y rentas constantes.
         * **Fiscalidad:** Información detallada sobre fiscalidad (Catalunya).
         """)
