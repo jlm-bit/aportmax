@@ -404,7 +404,7 @@ with tab2:
         icon_estado = "🎯"
     else:
         color_alerta = "#f59e0b"  # Ámbar
-        msg_estado = f"💡 POSIBLE ACCIÓN: Podrías aportar como APORTACIÓN EXTRA {max_p - proyeccion_final:,.2f} € (hasta 31 de diciembre)"
+        msg_estado = f"💡 Puedes aportar hasta {max_p - proyeccion_final:,.2f} € (hasta 31 de diciembre)"
         icon_estado = "ℹ️"
 
     # --- 2. INDICADOR VISUAL DE PROGRESO ---
@@ -426,7 +426,7 @@ with tab2:
             st.markdown(f"""
                 <div style="border-left: 12px solid #1e40af; background: #f0f7ff; padding: 30px; border-radius: 0 10px 10px 0; margin: 10px 0;">
                     <div style="background: #1e40af; color: white; padding: 8px 18px; border-radius: 25px; font-size: 1.0rem; font-weight: bold; display: inline-block; margin-bottom: 20px; letter-spacing: 0.5px;">
-                        🎯 ALTERNATIVA RECOMENDADA:   AJUSTAR LA APORTACIÓN VOLUNTARIA MENSUAL A TU PLAN DE PENSIONES
+                        🎯 ALTERNATIVA RECOMENDADA:   Ajustar la aportación voluntaria mensual a tu plan de pensiones de emepleo
                     </div>
                     <p style="margin-bottom: 5px; font-size: 1.0rem; color: #1e293b; line-height: 1.4;">
                         De acuerdo a nuestra recomendación, para alcanzar exactamente el límite de aportación máxima al Plan de Pensiones de Empleo de <b>{max_p:,.2f} €</b> sin pasarte, debes ajustar tu aportación mensual a un total de:
