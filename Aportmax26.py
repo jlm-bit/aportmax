@@ -289,7 +289,7 @@ ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 # --- 6. RENDERIZADO PRINCIPAL ---
 st.markdown('<div class="main-header"><h1 style="margin:0;">📈 APORTAMAX 2026</h1></div>', unsafe_allow_html=True)
 
-tab1, tab2, tab3, tab4 = st.tabs(["💰 Cálculo de Aportación ", "🎯 Plan de Ahorro del año ", "🚀 Proyección a la Jubilación ", "🎯 Acerca de "])
+tab1, tab2, tab3, tab4 = st.tabs(["💰 Aportación Máxima ", "🎯 Plan de Ahorro del año ", "🚀 Proyección a la Jubilación ", "🎯 Acerca de "])
 
 with tab1:
     col_left, col_right = st.columns([1.2, 1]) # Invertimos un poco el ratio para que los cuadros tengan aire
@@ -431,9 +431,9 @@ with tab2:
                     <p style="margin-bottom: 10px; font-size: 1.00rem; color: #1e293b; line-height: 1.4;">
                         De acuerdo a nuestra recomendación, para alcanzar exactamente el límite de <b>{max_p:,.2f} €</b> sin pasarte, debes ajustar tu aportación mensual a un total de:
                     </p>
-                    <div style="display: flex; align-items: baseline; gap: 5px; margin: 3px 0;">
-                        <h1 style="color: #1e40af; margin:0; font-size: 1.8rem; font-weight: 400;">{nueva_cuota_total:,.2f} €</h1>
-                        <span style="font-size: 1.6rem; color: #64748b; font-weight: 600;">/ mes</span>
+                    <div style="display: flex; align-items: baseline; gap: 3px; margin: 3px 0;">
+                        <h1 style="color: #1e40af; margin:0; font-size: 1.8rem; font-weight: 800;">{nueva_cuota_total:,.2f} €</h1>
+                        <span style="font-size: 1.6rem; color: #64748b; font-weight: 600;">/mes</span>
                     </div>
                     <p style="font-size: 1.0rem; color: #1e3a8a; margin-top: 20px; font-weight: 500;">
                         {"🔼 <b>ACCIÓN: Incrementa</b>" if diferencia_mensual > 0 else "🔽 <b>Reduce</b>"} tu aportación actual al Plan de Pensiones en 
