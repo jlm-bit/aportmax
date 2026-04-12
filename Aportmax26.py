@@ -400,7 +400,7 @@ with st.expander("ℹ️ ¿Te recomiendo como hacerlo?"):
         icon_estado = "🎯"
     else:
         color_alerta = "#f59e0b"  # Ámbar
-        msg_estado = f"💡 Puedes aportar hasta {max_p - proyeccion_final:,.2f} € (hasta 31 de diciembre)"
+        msg_estado = f"💡 Puedes aportar hasta {max_p - proyeccion_final:,.2f} € adicionales (hasta 31 de diciembre)"
         icon_estado = "ℹ️"
 
     # --- 2. INDICADOR VISUAL DE PROGRESO (Estilo Minimal) ---
@@ -437,7 +437,7 @@ with st.expander("ℹ️ ¿Te recomiendo como hacerlo?"):
                     </p>
                     <div style="margin-bottom: 20px;">
                         <span style="font-size: 2.2rem; font-weight: 300; color: {color_acentuado};">{nueva_cuota_total:,.2f} €</span>
-                        <span style="font-size: 1rem; color: #94a3b8;"> / mes (durante los meses que quedan del año</span>
+                        <span style="font-size: 1rem; color: #94a3b8;"> / mes (durante los meses que quedan del año)</span>
                     </div>
                     <div style="padding-top: 15px; border-top: 1px solid #f1f5f9; font-size: 0.9rem; color: #475569;">
                         {"🔼 <b> Esto es, incrementar</b>" if diferencia_mensual > 0 else "🔽 <b>reducir</b>"} la cuota actual en <b>{abs(diferencia_mensual):,.2f} €</b> durante {meses_restantes} meses.
@@ -604,7 +604,85 @@ with tab2:
         st.success(f"**Sobresueldo:** +{dif_renta:,.2f} € al mes adicionales para tu jubilación.")
  
     st.markdown("---")
+
+
+    # --- SECCIÓN: IMPACTO FINAL (DISEÑO PREMIUM) ---
+    st.markdown("#### 🏁 El impacto de tu decisión hoy")
+
+    # Estilo CSS para las tarjetas (puedes poner esto al principio del script o aquí mismo)
+    st.markdown("""
+        <style>
+        .metric-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #f0f2f6;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .metric-label {
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # --- FILA 1: CAPITALES ---
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.markdown(f"""<div class="metric-card" style="border-top: 5px solid #1E3A8A;">
+            <div class="metric-label">Capital Final Estimado</div>
+            <div class="metric-value" style="color: #1E3A8A;">{cap_a:,.0f} €</div>
+            <div style="font-size: 0.75rem; color: #1e3a8a; font-weight: bold;">CON TU APORTACIÓN</div>
+        </div>""", unsafe_allow_html=True)
     
+    with c2:
+        st.markdown(f"""<div class="metric-card" style="border-top: 5px solid #94a3b8;">
+            <div class="metric-label">Sin Aportación Extra</div>
+            <div class="metric-value" style="color: #64748b;">{cap_b:,.0f} €</div>
+            <div style="font-size: 0.75rem; color: #ef4444; font-weight: bold;">↓ {dif_cap:,.0f} € MENOS</div>
+        </div>""", unsafe_allow_html=True)
+        
+    with c3:
+        st.markdown(f"""<div class="metric-card" style="background-color: #1E3A8A; border-top: 5px solid #3b82f6;">
+            <div class="metric-label" style="color: #cbd5e1;">Patrimonio Extra</div>
+            <div class="metric-value" style="color: white;">+{dif_cap:,.0f} €</div>
+            <div style="font-size: 0.75rem; color: #3b82f6; font-weight: bold;">DINERO ADICIONAL</div>
+        </div>""", unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # --- FILA 2: RENTAS ---
+    r1, r2, r3 = st.columns(3)
+    with r1:
+        st.markdown(f"""<div class="metric-card" style="border-top: 5px solid #10B981;">
+            <div class="metric-label">Renta Mensual Plan</div>
+            <div class="metric-value" style="color: #10B981;">{renta_a:,.2f} €</div>
+            <div style="font-size: 0.75rem; color: #10b981;">AL MES (DURANTE 20 AÑOS)</div>
+        </div>""", unsafe_allow_html=True)
+
+    with r2:
+        st.markdown(f"""<div class="metric-card" style="border-top: 5px solid #94a3b8;">
+            <div class="metric-label">Renta sin Esfuerzo</div>
+            <div class="metric-value" style="color: #64748b;">{renta_b:,.2f} €</div>
+            <div style="font-size: 0.75rem; color: #ef4444; font-weight: bold;">↓ {dif_renta:,.2f} € MENOS</div>
+        </div>""", unsafe_allow_html=True)
+
+    with r3:
+        st.markdown(f"""<div class="metric-card" style="background-color: #DCFCE7; border-top: 5px solid #10B981;">
+            <div class="metric-label" style="color: #166534;">Mejora de Vida</div>
+            <div class="metric-value" style="color: #166534;">+{dif_renta:,.2f} €</div>
+            <div style="font-size: 0.75rem; color: #10b981; font-weight: bold;">SOBRESUELDO MENSUAL</div>
+        </div>""", unsafe_allow_html=True)
+
+    st.markdown("---")
     
     # --- FILA 4: Definición de Hipótesis ---
     st.markdown("#### ⚙️ Hipótesis y Bases del Modelo")
