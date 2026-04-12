@@ -472,7 +472,7 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
     """, unsafe_allow_html=True)
 
 
-    # --- 3. RECOMENDACIÓN DE AJUSTE (Estilo Elegante) ---
+   
 # --- 3. RECOMENDACIÓN DE AJUSTE (Estilo Elegante) ---
 
     if proyeccion_final != max_p:
