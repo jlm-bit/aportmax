@@ -334,85 +334,85 @@ with tab1:
     """, 
     unsafe_allow_html=True
 )
-    with st.expander("ℹ️ ¿Cómo realizar tu aportación on line?"):
-    col_left, col_right = st.columns([1.2, 1]) # Invertimos un poco el ratio para que los cuadros tengan aire
-    
-    with col_left:
-        # --- SUB-COLUMNAS PARA LOS CUADROS ---
-        sub_col1, sub_col2 = st.columns(2)
+    with st.expander("ℹ️ Datos detallados"):
+        col_left, col_right = st.columns([1.2, 1]) # Invertimos un poco el ratio para que los cuadros tengan aire
         
-        with sub_col1:
-            st.markdown(f"""
-                <div style="background-color: #1E3A8A; color: white; padding: 20px; border-radius: 11px; height: 200px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
-                    <p style="margin:0; font-size: 12px; opacity: 0.8; font-weight: bold;">MÁXIMA APORTACIÓN PERSONAL</p>
-                    <h2 style="font-size: 22px; margin: 10px 0; color: white;">{max_p:,.2f} €</h2>
-                </div>
-            """, unsafe_allow_html=True)
-
-        with sub_col2:
-            st.markdown(f"""
-                <div style="background-color: #F0FDF4; color: #166534; padding: 20px; border-radius: 11px; height: 190px; text-align: center; border: 1px solid #DCFCE7; display: flex; flex-direction: column; justify-content: center;">
-                    <p style="margin:0; font-size: 11px; opacity: 0.9; font-weight: bold;">AHORRO FISCAL (IRPF Catalunya)</p>
-                    <h2 style="font-size: 22px; margin: 10px 0; color: #166534;">{ahorro:,.2f} €</h2>
-                    <p style="margin:0; font-weight: bold; font-size: 14px;">Tax Return: {eficiencia:.1f}%</p>
-                </div>
-            """, unsafe_allow_html=True)
+        with col_left:
+            # --- SUB-COLUMNAS PARA LOS CUADROS ---
+            sub_col1, sub_col2 = st.columns(2)
             
-        # --- AVISO Y BOTÓN DE DESCARGA ---
-        st.warning("")   
-        st.warning("⚠️ **Nota: Los resultados mostrados se basan en los datos facilitados en el panel lateral. Revisar si son correctos.**")   
-    with col_right:
-        # --- EL DONUT SE MANTIENE AQUÍ ---
-        total_inversion = esfuerzo_neto + ahorro + emp_t
-        fig = go.Figure(data=[go.Pie(
-            labels=['Esfuerzo Neto', 'Ahorro Fiscal', 'Empresa'], 
-            values=[esfuerzo_neto, ahorro, emp_t], 
-            hole=.65,
-            marker_colors=['#3B82F6', '#10B981', '#1E293B'],
-            textinfo='percent', 
-            hoverinfo='label+value',
-            insidetextorientation='horizontal'
-        )])
+            with sub_col1:
+                st.markdown(f"""
+                    <div style="background-color: #1E3A8A; color: white; padding: 20px; border-radius: 11px; height: 200px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                        <p style="margin:0; font-size: 12px; opacity: 0.8; font-weight: bold;">MÁXIMA APORTACIÓN PERSONAL</p>
+                        <h2 style="font-size: 22px; margin: 10px 0; color: white;">{max_p:,.2f} €</h2>
+                    </div>
+                """, unsafe_allow_html=True)
+    
+            with sub_col2:
+                st.markdown(f"""
+                    <div style="background-color: #F0FDF4; color: #166534; padding: 20px; border-radius: 11px; height: 190px; text-align: center; border: 1px solid #DCFCE7; display: flex; flex-direction: column; justify-content: center;">
+                        <p style="margin:0; font-size: 11px; opacity: 0.9; font-weight: bold;">AHORRO FISCAL (IRPF Catalunya)</p>
+                        <h2 style="font-size: 22px; margin: 10px 0; color: #166534;">{ahorro:,.2f} €</h2>
+                        <p style="margin:0; font-weight: bold; font-size: 14px;">Tax Return: {eficiencia:.1f}%</p>
+                    </div>
+                """, unsafe_allow_html=True)
+                
+            # --- AVISO Y BOTÓN DE DESCARGA ---
+            st.warning("")   
+            st.warning("⚠️ **Nota: Los resultados mostrados se basan en los datos facilitados en el panel lateral. Revisar si son correctos.**")   
+        with col_right:
+            # --- EL DONUT SE MANTIENE AQUÍ ---
+            total_inversion = esfuerzo_neto + ahorro + emp_t
+            fig = go.Figure(data=[go.Pie(
+                labels=['Esfuerzo Neto', 'Ahorro Fiscal', 'Empresa'], 
+                values=[esfuerzo_neto, ahorro, emp_t], 
+                hole=.65,
+                marker_colors=['#3B82F6', '#10B981', '#1E293B'],
+                textinfo='percent', 
+                hoverinfo='label+value',
+                insidetextorientation='horizontal'
+            )])
+            
+            fig.update_layout(
+                title={'text': "<b>Distribución de tu Inversión Anual</b>", 'y': 0.98, 'x': 0.5, 'xanchor': 'center', 'font': {'size': 16}},
+                margin=dict(t=80, b=20, l=10, r=10), 
+                height=400, 
+                showlegend=True, 
+                legend=dict(orientation="h", y=-0.1, x=0.5, xanchor="center"),
+                annotations=[dict(text=f'TOTAL ANUAL<br><b>{total_inversion:,.0f} €</b>', x=0.5, y=0.5, showarrow=False, font_size=16)]
+            )
+            st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+          
+     # --- 3. DESGLOSE COMPACTO (4 COLUMNAS) ---
+    
+        import datetime
+        hoy = datetime.date.today()
+        meses_nombres_es = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
         
-        fig.update_layout(
-            title={'text': "<b>Distribución de tu Inversión Anual</b>", 'y': 0.98, 'x': 0.5, 'xanchor': 'center', 'font': {'size': 16}},
-            margin=dict(t=80, b=20, l=10, r=10), 
-            height=400, 
-            showlegend=True, 
-            legend=dict(orientation="h", y=-0.1, x=0.5, xanchor="center"),
-            annotations=[dict(text=f'TOTAL ANUAL<br><b>{total_inversion:,.0f} €</b>', x=0.5, y=0.5, showarrow=False, font_size=16)]
-        )
-        st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+        
+        c1, c2, c3, c4  = st.columns(4)
+        
+        with c1:
+            mes_fin_ya = meses_nombres_es[hoy.month - 2] if hoy.month > 1 else "Ene"
+            st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>✅ Ya aportado</b></p><h4 style='margin:0; font-size:1.1rem;'>{ya_aportado:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Ene-{mes_fin_ya[:3]}</small>", unsafe_allow_html=True)
+        
+        with c2:
+            st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>⏳ Ya planificado (resto de año)</b></p><h4 style='margin:0; font-size:1.1rem;'>{c_m * meses_restantes:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
       
- # --- 3. DESGLOSE COMPACTO (4 COLUMNAS) ---
-
-    import datetime
-    hoy = datetime.date.today()
-    meses_nombres_es = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
-                        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+        with c3:
+            st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>✅ % cumplimiento</b></p><h4 style='margin:0; font-size:1.1rem;'>{cumplimiento_plan:,.0f}%</h4>", unsafe_allow_html=True) 
+        with c4:
+            # Aportación extraordinaria única
+            st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>💰 APORTACIÓN ÚNICA (para máximo)</b></p><h4 style='margin:0; font-size:1.8rem; color:#1e40af;'>{aportacion_extraordinaria_neta:,.0f}€</h4><small style='color:#64748b; font-size:0.65rem;'>Aport.para alcanzar el límite</small>", unsafe_allow_html=True)
     
-    
-    c1, c2, c3, c4  = st.columns(4)
-    
-    with c1:
-        mes_fin_ya = meses_nombres_es[hoy.month - 2] if hoy.month > 1 else "Ene"
-        st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>✅ Ya aportado</b></p><h4 style='margin:0; font-size:1.1rem;'>{ya_aportado:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Ene-{mes_fin_ya[:3]}</small>", unsafe_allow_html=True)
-    
-    with c2:
-        st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>⏳ Ya planificado (resto de año)</b></p><h4 style='margin:0; font-size:1.1rem;'>{c_m * meses_restantes:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
-  
-    with c3:
-        st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>✅ % cumplimiento</b></p><h4 style='margin:0; font-size:1.1rem;'>{cumplimiento_plan:,.0f}%</h4>", unsafe_allow_html=True) 
-    with c4:
-        # Aportación extraordinaria única
-        st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>💰 APORTACIÓN ÚNICA (para máximo)</b></p><h4 style='margin:0; font-size:1.8rem; color:#1e40af;'>{aportacion_extraordinaria_neta:,.0f}€</h4><small style='color:#64748b; font-size:0.65rem;'>Aport.para alcanzar el límite</small>", unsafe_allow_html=True)
-
-     
-       
-    
-    st.markdown("---")
-    # pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
-    # st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf")
+         
+           
+        
+        st.markdown("---")
+        # pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
+        # st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf")
 
 with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y de forma facil"):
     # --- 0. PREPARACIÓN DE DATOS (Evita NameError) ---
