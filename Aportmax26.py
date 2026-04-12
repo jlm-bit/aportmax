@@ -236,6 +236,9 @@ meses_pasados = 12 - meses_restantes
 CUOTA_SS = min(sb, 5101*12) * 0.064 
 base_pre = max(0.0, sb - CUOTA_SS - 2000.0)
 max_p = MAX_P_LIMIT
+max_p12 = max_p/12
+max_now = max_p * meses_pasados
+
 ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 eficiencia = (ahorro / max_p * 100) if max_p > 0 else 0
 esfuerzo_neto = max_p - ahorro
@@ -246,6 +249,8 @@ diferencia_mensual = nueva_cuota_total - c_m
 total_mensual_previsto = c_m * meses_restantes
 aportacion_extraordinaria_neta = max(0.0, pendiente_para_limite - total_mensual_previsto)
 cumplimiento_plan = ((c_m *12 + e_y)*100)/max_p if max_p > 0 else 0
+extra_now = 
+
 
 # --- CÁLCULOS GLOBALES (Poner esto ANTES de los st.tabs) ---
 # Sumamos lo que pone la empresa y lo que pones tú (el máximo permitido)
@@ -478,9 +483,9 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
                     <p style="text-transform: uppercase; letter-spacing: 1px; font-size: 0.7rem; color: #64748b; font-weight: 700; margin-bottom: 15px;">
                         Estrategia Sugerida    {"🔼 (<b> Incrementar</b>" if diferencia_mensual > 0 else "🔽 <b>reducir</b>"} la cuota actual en <b>{abs(diferencia_mensual):,.2f} €</b> durante {meses_restantes} meses).
                     </p>
-                    <p style="font-size: 0.95rem; color: #1e293b; line-height: 1.5; margin-bottom: 20px;">
-                        Para ajustarte al límite de <b>{max_p:,.2f} €</b>, la nueva cuota mensual recomendada es:
-                    </p>
+                  #  <p style="font-size: 0.95rem; color: #1e293b; line-height: 1.5; margin-bottom: 20px;">
+                  #      Para ajustarte al límite de <b>{max_p:,.2f} €</b>, la nueva cuota mensual recomendada es:
+                  #  </p>
                     <div style="margin-bottom: 10px;">
                         <span style="font-size: 1.4rem; font-weight: 350; color: {color_acentuado};">{nueva_cuota_total:,.2f} €</span>
                         <span style="font-size: 1rem; color: #94a3b8;"> / mes (durante los meses que quedan del año)</span>
