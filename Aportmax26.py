@@ -438,7 +438,7 @@ with st.expander("ℹ️ Estrategia de Ahorro Máximo Optimizado", expanded=True
 
     # --- 3. COMPARATIVA DE ESTRATEGIAS ---
     if faltante_total > 1.0:
-        st.markdown("#### 💡 Elige cómo quieres alcanzar tu objetivo")
+        st.markdown("#### 💡 Proponemos 2 formulas para alcanzar tu objetivo")
         
         col1, col2 = st.columns(2)
         
@@ -449,7 +449,7 @@ with st.expander("ℹ️ Estrategia de Ahorro Máximo Optimizado", expanded=True
                     <p style="font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase;">Opción A: Ajuste de Cuota</p>
                     <p style="font-size: 1.6rem; font-weight: 850; color: #1e293b; margin: 10px 0;">{cuota_mensual_pura:,.2f} € <span style="font-size: 0.9rem; font-weight: 400;">/mes</span></p>
                     <p style="font-size: 0.8rem; color: #475569; line-height: 1.4;">
-                        Incrementa tu cuota actual de {c_m:,.2f} € hasta alcanzar la aportación máxima en {meses_restantes} meses. Si bien esta opción, te permite no realizar aportaciones extraordinarias, tiens que considerar que deberás revisar esta cifra el año que viene y ajustarla aproximadamente a la cuota expuesta en el punto b (sujeto tambien a los nuevos datos del año que viene)
+                        Incrementa tu cuota actual de {c_m:,.2f} € hasta alcanzar la aportación máxima en {meses_restantes} meses. Si bien esta opción, te permite no realizar aportaciones extraordinarias, tienes que considerar que deberás revisar esta cifra el año que viene y ajustarla aproximadamente a la cuota expuesta en el punto b (sujeto tambien a los nuevos datos del año que viene)
                     </p>
                 </div>
             """, unsafe_allow_html=True)
