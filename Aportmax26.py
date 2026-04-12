@@ -213,7 +213,7 @@ with st.sidebar:
     st.header("⚙️ DATOS NECESARIOS")
     
     with st.expander("👤 DATOS EMPRESA", expanded=True):
-        sb = st.number_input("Sueldo Bruto Anual (€)", value=65000.0, step=1000.0, min_value=0.0)
+        sb = st.number_input("Sueldo Bruto Anual (€)", value=0.0, step=1000.0, min_value=0.0)
         e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=0.0, step=25.0, min_value=0.0)
         e_riesgo = st.number_input("Prima Anual Riesgo PPE (€)", value=0.0, step=25.0, min_value=0.0)
         
@@ -221,6 +221,8 @@ with st.sidebar:
         emp_t_bruta = (e_ahorro * 12) + e_riesgo
         emp_t = min(emp_t_bruta, 10000.0)
    
+        if sb = 0.0:
+            st.warning(f"⚠️ Introduce tus datos personales") 
         
         if emp_t_bruta > 10000.0:
             st.warning(f"⚠️ La aportación de la empresa se ha limitado a 10.000€ (Exceso: {emp_t_bruta - 10000.0:,.2f}€)")
@@ -292,6 +294,27 @@ st.markdown('<div class="main-header"><h1 style="margin:0;">📈 APORTAMAX 2026<
 tab1, tab2, tab3, tab4 = st.tabs(["💰 Aportación Máxima ", "🎯 Plan de Ahorro del año ", "🚀 Proyección a la Jubilación ", "🎯 Acerca de "])
 
 with tab1:
+
+
+    st.markdown(
+    f"""
+    <hr style="margin: 1em 0;">
+    <div style="text-align: center;">
+        <p style='margin:0; font-size:1.0rem;'>
+            <b>💰 ¿Cuanto puedes aportar más? (para máximo)</b>
+        </p>
+        <h4 style='margin:0; font-size:2.0rem; color:#1e40af; line-height:1.1;'>
+            {aportacion_extraordinaria_neta:,.0f}€
+        </h4>
+        <p style='margin:0; color:#64748b; font-size:0.9rem;'>
+            Aportación que debes realizar para alcanzar el límite
+        </p>
+    </div>
+    <hr style="margin: 1em 0;">
+    """, 
+    unsafe_allow_html=True
+)
+    
     col_left, col_right = st.columns([1.2, 1]) # Invertimos un poco el ratio para que los cuadros tengan aire
     
     with col_left:
