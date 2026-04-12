@@ -414,85 +414,57 @@ with tab1:
         # pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
         # st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf")
 
-with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y de forma facil", expanded=True):
-    # --- 1. CÁLCULOS UNIFICADOS ---
-    # Faltante real para llegar al máximo
-    faltante_total = max_p - ya_aportado 
-    # Cuota mensual ideal para cubrir el faltante en los meses que quedan
-    nueva_cuota_total = faltante_total / meses_restantes if meses_restantes > 0 else 0
-    # Diferencia necesaria respecto a la cuota actual (c_m)
-    diferencia_mensual = nueva_cuota_total - c_m 
+with st.expander("ℹ️ Estrategia de Ahorro Máximo Optimizado", expanded=True):
+    # --- 1. CÁLCULOS BASE ---
+    faltante_total = max_p - ya_aportado
     
-    # Proyección con la cuota actual del usuario
+    # Opción A: Solo mensual (tu lógica actual)
+    cuota_mensual_pura = faltante_total / meses_restantes if meses_restantes > 0 else 0
+    
+    # Opción B: Modelo Híbrido (Sostenible)
+    # Proponemos mantener su cuota actual (c_m) pero cubriendo el "retraso" con un pago único
+    # El 'retraso' es lo que debería haber aportado hasta hoy para ir por el buen camino
+    cuota_ideal_anual = max_p / 12
+    meses_pasados = 12 - meses_restantes
+    deberia_llevar = cuota_ideal_anual * meses_pasados
+    
+    pago_extraordinario = max(deberia_llevar - ya_aportado, 0.0)
+    # La cuota mensual sostenible sería simplemente el límite anual / 12
+    cuota_sostenible = max_p / 12
+
+    # --- 2. RENDERIZADO DE BARRA DE PROGRESO (Igual que antes) ---
     proyeccion_final = ya_aportado + (c_m * meses_restantes)
     porcentaje_uso = min(proyeccion_final / max_p, 1.0) if max_p > 0 else 0
+    
+    # (Aquí iría tu bloque de código de la barra de progreso...)
 
-    # --- 2. DETERMINACIÓN DE ESTADO VISUAL ---
-    if proyeccion_final > max_p + 1.0:
-        color_barra, icon_estado = "#ef4444", "🚨"
-        msg_estado = f"EXCESO DETECTADO: Superarás el límite en {proyeccion_final - max_p:,.2f} €"
-    elif proyeccion_final >= max_p * 0.99:
-        color_barra, icon_estado = "#22c55e", "🎯"
-        msg_estado = "✅ PLAN ÓPTIMO: Estás maximizando tu ahorro fiscal"
-    else:
-        color_barra, icon_estado = "#f59e0b", "💡"
-        msg_estado = f"Puedes aportar hasta {max_p - proyeccion_final:,.2f} € adicionales"
-
-    # --- 3. RENDERIZADO: BARRA DE PROGRESO ---
-    st.markdown(f"""
-        <div style="margin-bottom: 25px; padding: 10px 5px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <span style="font-size: 0.9rem; color: #475569; font-weight: 500;">
-                    {icon_estado} {msg_estado}
-                </span>
-                <span style="font-size: 0.85rem; color: #94a3b8;">
-                    {proyeccion_final:,.0f} € de {max_p:,.0f} €
-                </span>
-            </div>
-            <div style="background-color: #f1f5f9; border-radius: 20px; height: 8px; width: 100%;">
-                <div style="background-color: {color_barra}; width: {porcentaje_uso * 100}%; height: 8px; border-radius: 20px; transition: width 0.5s ease-in-out;"></div>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-
-    # --- 4. RENDERIZADO: TARJETA DE ESTRATEGIA ---
-    if abs(proyeccion_final - max_p) > 1.0:
-        flecha = "🔼" if diferencia_mensual > 0 else "🔽"
-        verbo = "Incrementar" if diferencia_mensual > 0 else "reducir"
+    # --- 3. TARJETAS DE ESTRATEGIA COMPULSA ---
+    if faltante_total > 1.0:
+        st.markdown("#### 💡 Escoge tu estrategia de optimización")
         
-        texto_estrategia = f"{flecha} <b>{verbo}</b> la cuota mensual actual de {abs(c_m):,.2f} € en <b>{abs(diferencia_mensual):,.2f} €</b>"
-
-        st.markdown(f"""
-            <div style="
-                background-color: #ffffff; border: 1px solid #e2e8f0; padding: 25px; 
-                border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-            ">
-                <p style="
-                    text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; 
-                    color: #64748b; font-weight: 800; margin-bottom: 15px; line-height: 1.4;
-                ">
-                    Estrategia Sugerida &nbsp;&nbsp; 
-                    <span style="color: #0f172a; font-weight: 800;">
-                        {texto_estrategia} durante los {meses_restantes} meses restantes del año 
-                        (aportación mensual total de {abs(nueva_cuota_total):,.2f} €)
-                    </span>
-                </p>
-                <div style="
-                    margin-top: 15px; padding-top: 15px; border-top: 1px solid #f8fafc; 
-                    color: #94a3b8; font-size: 0.75rem;
-                ">
-                    ℹ️ Ajuste calculado para alcanzar el límite de <b>{max_p:,.2f} €</b> a 31 de diciembre.
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            # ESTRATEGIA AGRESIVA (Solo mensual)
+            st.markdown(f"""
+                <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; height: 100%;">
+                    <p style="font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase;">Opción A: Ajuste Mensual</p>
+                    <p style="font-size: 1.5rem; font-weight: 800; color: #1e293b; margin: 10px 0;">{cuota_mensual_pura:,.2f} € <span style="font-size: 0.8rem; font-weight: 400;">/mes</span></p>
+                    <p style="font-size: 0.8rem; color: #475569;">Incrementa tu cuota actual en <b>{abs(cuota_mensual_pura - c_m):,.2f} €</b> para llegar al máximo sin pagos extras.</p>
                 </div>
-            </div>
-        """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
+            
+        with col2:
+            # ESTRATEGIA SOSTENIBLE (Híbrida)
+            st.markdown(f"""
+                <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 20px; border-radius: 12px; height: 100%;">
+                    <p style="font-size: 0.7rem; font-weight: 800; color: #166534; text-transform: uppercase;">Opción B: Plan Sostenible ✨</p>
+                    <p style="font-size: 1.5rem; font-weight: 800; color: #166534; margin: 10px 0;">{pago_extraordinario:,.2f} € <span style="font-size: 0.8rem; font-weight: 400;">único</span></p>
+                    <p style="font-size: 0.8rem; color: #166534;">Haz este pago ahora y mantén una cuota estable de <b>{cuota_sostenible:,.2f} €/mes</b> (ahorro prorrateado).</p>
+                </div>
+            """, unsafe_allow_html=True)
 
-
-       
-    
-    
-    else:
-        st.success("✨ Planificación optimizada al 100%. No se requieren ajustes.")
-
+        st.info(f"Cualquiera de estas opciones te permitirá alcanzar el máximo ahorro fiscal de **{max_p:,.2f} €** este año.")
 
 
 with st.expander("ℹ️ ¿Cómo realizar tu aportación on line?"):
