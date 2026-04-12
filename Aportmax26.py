@@ -280,7 +280,7 @@ nueva_cuota_total = pendiente_para_limite / meses_restantes if meses_restantes >
 diferencia_mensual = nueva_cuota_total - c_m
 total_mensual_previsto = c_m * meses_restantes
 aportacion_extraordinaria_neta = max(0.0, pendiente_para_limite - total_mensual_previsto)
-cumplimiento_plan = (c_m *12 + e_y)/max_p if max_p > 0 else 0
+cumplimiento_plan = ((c_m *12 + e_y)*100)/max_p if max_p > 0 else 0
 
 # --- CÁLCULOS GLOBALES (Poner esto ANTES de los st.tabs) ---
 # Sumamos lo que pone la empresa y lo que pones tú (el máximo permitido)
@@ -393,11 +393,7 @@ with tab1:
     
     st.markdown("---")
     pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
-    st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf")
-
-
-
-
+    # st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf")
 
 
 with tab2:
@@ -510,7 +506,7 @@ with st.expander("🚀 ¿Cómo realizar tu aportación?"):
             """)
 
 pdf_v = generar_pdf_visual_v2(max_p, ahorro, (emp_t+max_p), aportacion_extraordinaria_neta, nueva_cuota_total, meses_restantes, ya_aportado)
-st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
+# st.download_button("🚀 DESCARGAR HOJA DE RUTA (PDF)", data=pdf_v, file_name="hoja_ruta_2026.pdf", mime="application/pdf")
 
 import plotly.graph_objects as go
 import numpy as np
