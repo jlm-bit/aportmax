@@ -496,10 +496,10 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
                     text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; 
                     color: #64748b; font-weight: 800; margin-bottom: 15px; line-height: 1.4;
                 ">
-                    Estrategia Sugerida &nbsp;&nbsp; 
+                    Alternativa Sugerida &nbsp;&nbsp; 
                     <span style="color: #0f172a; font-weight: 800;">
-                        {texto_estrategia} durante los {meses_restantes} meses restantes del año 
-                        (aportación mensual total de {abs(nueva_cuota_total):,.2f} €)
+                        {texto_estrategia} Combinar aportación extraordinaria con incremento de la aportación mensual 
+                        
                     </span>
                 </p>
                 <div style="
