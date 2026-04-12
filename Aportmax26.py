@@ -492,7 +492,7 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
             st.markdown(f"""
                 <div style="background-color: #ffffff; border: 1px solid #e2e8f0; padding: 25px; border-radius: 12px; margin: 15px 0;">
                     <p style="text-transform: uppercase; letter-spacing: 1px; font-size: 0.7rem; color: #64748b; font-weight: 700; margin-bottom: 15px;">
-                        Estrategia Sugerida    {"🔼 (<b> Combinar aportaciones extraordinaria con aportaciones periodicas.
+                        Estrategia Sugerida 🔼 Combinar aportaciones extraordinaria con aportaciones periodicas.
                     </p>
                     <p style="font-size: 0.95rem; color: #1e293b; line-height: 1.5; margin-bottom: 20px;">
                         Para ajustarte al límite de <b>{max_p:,.2f} €</b>, la nueva cuota mensual recomendada es:
