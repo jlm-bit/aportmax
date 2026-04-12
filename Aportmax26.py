@@ -513,31 +513,7 @@ if proyeccion_final != max_p:
                     </span>
                 </p>
                 
-                <p style="font-size: 0.95rem; color: #1e293b; line-height: 1.5; margin-bottom: 20px;">
-                    Para ajustarte exactamente al límite de <b>{max_p:,.2f} €</b>, tu nueva cuota mensual optimizada es:
-                </p>
-                
-                <div style="display: flex; align-items: baseline; gap: 8px;">
-                    <span style="
-                        font-size: 2.2rem; 
-                        font-weight: 800; 
-                        color: {color_acentuado}; 
-                        letter-spacing: -1px;
-                    ">
-                        {nueva_cuota_total:,.2f} €
-                    </span>
-                    <span style="font-size: 1rem; color: #94a3b8; font-weight: 400;">
-                        / mes <small>(hasta fin de año)</small>
-                    </span>
-                </div>
-                
-                <div style="
-                    margin-top: 15px; 
-                    padding-top: 15px; 
-                    border-top: 1px solid #f1f5f9; 
-                    color: #94a3b8; 
-                    font-size: 0.75rem;
-                ">
+              
                     ℹ️ Este ajuste permite cubrir los <b>{abs(max_p - ya_aportado):,.2f} €</b> restantes de forma equilibrada.
                 </div>
             </div>
