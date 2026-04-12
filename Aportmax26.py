@@ -736,7 +736,7 @@ def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_
 
 # --- 2. DESPUÉS COLOCAS EL BOTÓN (Dentro de tu Tab o sección de resultados) ---
 st.markdown("---")
-if st.button("🚀 GENERAR INFORME DE LA PROYECCIÓN (pdf)", use_container_width=True):
+if st.button("🚀 GENERAR INFORME (pdf)", use_container_width=True):
     with st.spinner("⏳ Procesando datos y dibujando gráficos..."):
         try:
             # Asegúrate de que las variables (edad_act, cap_a, etc.) estén definidas antes
