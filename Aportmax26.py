@@ -420,29 +420,30 @@ Aquí tienes el bloque corregido. He ajustado la lógica del pago_extraordinario
 
 
 with st.expander("ℹ️ Tu Plan de Acción", expanded=True):
-    # --- 1. CÁLCULOS BASE ---
+    # --- 1. CÁLCULOS DE PRECISIÓN ---
+    # Faltante total para llegar al límite legal
     faltante_total = max_p - ya_aportado
     
     # OPCIÓN A: Reparto lineal (Agresiva)
-    # Dividimos todo lo que falta entre los meses que quedan
+    # Dividimos el faltante entre los meses que quedan
     cuota_mensual_pura = faltante_total / meses_restantes if meses_restantes > 0 else 0
     
     # OPCIÓN B: Plan Sostenible (Híbrida)
-    # 1. Fijamos la cuota ideal (lo que debería pagar siempre para sumar max_p en 12 meses)
+    # 1. Fijamos la cuota ideal (ej: 2.700€ / 12 meses = 225€)
     cuota_sostenible = max_p / 12
     
     # 2. Calculamos cuánto sumarán esas cuotas de aquí a fin de año
     total_futuro_sostenible = cuota_sostenible * meses_restantes
     
-    # 3. El pago extra es la pieza del puzzle que falta para llegar al max_p exacto
-    # Extra = Límite - Ya aportado - Lo que aportará mensualmente hasta diciembre
+    # 3. Pago Extraordinario = El "parche" exacto para que la suma sea perfecta
+    # Límite - Ya aportado - Lo que pondrá mensualmente hasta diciembre
     pago_extraordinario = max_p - ya_aportado - total_futuro_sostenible
     
-    # Seguridad: si el usuario ya ha aportado de más, el extra es 0
+    # Seguridad: Si el usuario ya aportó mucho, el extra no puede ser negativo
     if pago_extraordinario < 0:
         pago_extraordinario = 0.0
 
-    # --- 2. DETERMINACIÓN DE ESTADOS PARA LA BARRA ---
+    # --- 2. INDICADOR VISUAL (Barra de progreso) ---
     proyeccion_actual = ya_aportado + (c_m * meses_restantes)
     porcentaje = min(proyeccion_actual / max_p, 1.0) if max_p > 0 else 0
     
@@ -456,7 +457,6 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=True):
         color_barra, icon_est = "#f59e0b", "💡"
         msg_est = f"Faltan {max_p - proyeccion_actual:,.2f} €"
 
-    # --- 3. RENDERIZADO BARRA DE PROGRESO ---
     st.markdown(f"""
         <div style="margin-bottom: 25px;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
@@ -469,28 +469,27 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=True):
         </div>
     """, unsafe_allow_html=True)
 
-    # --- 4. COMPARATIVA DE ESTRATEGIAS ---
+    # --- 3. COMPARATIVA DE ESTRATEGIAS ---
     col1, col2 = st.columns(2)
     
     with col1:
         st.markdown(f"""
-            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; height: 180px;">
+            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; height: 190px;">
                 <p style="font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase;">Opción A: Ajuste de Cuota</p>
                 <p style="font-size: 1.6rem; font-weight: 850; color: #1e293b; margin: 5px 0;">{cuota_mensual_pura:,.2f} € <span style="font-size: 0.8rem;">/mes</span></p>
-                <p style="font-size: 0.75rem; color: #475569; line-height: 1.4;">Sin pagos extra. Todo el esfuerzo se reparte en las cuotas mensuales de aquí a fin de año.</p>
+                <p style="font-size: 0.75rem; color: #475569; line-height: 1.4;">Sin pagos extra. El esfuerzo se reparte linealmente en las cuotas de aquí a diciembre.</p>
             </div>
         """, unsafe_allow_html=True)
 
     with col2:
         st.markdown(f"""
-            <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 20px; border-radius: 12px; height: 180px;">
+            <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 20px; border-radius: 12px; height: 190px;">
                 <p style="font-size: 0.7rem; font-weight: 800; color: #166534; text-transform: uppercase;">Opción B: Plan Sostenible ✨</p>
                 <p style="font-size: 1.6rem; font-weight: 850; color: #166534; margin: 5px 0;">{cuota_sostenible:,.2f} € <span style="font-size: 0.8rem;">/mes</span></p>
                 <p style="font-size: 0.9rem; font-weight: 700; color: #15803d; margin-bottom: 5px;">+ {pago_extraordinario:,.2f} € hoy</p>
-                <p style="font-size: 0.75rem; color: #166534; opacity: 0.8; line-height: 1.4;">Págate el "retraso" ahora con una aportación única y mantén la cuota ideal prorrateada.</p>
+                <p style="font-size: 0.75rem; color: #166534; opacity: 0.8; line-height: 1.4;">Compensa el retraso ahora con una aportación única y mantén la cuota ideal prorrateada de por vida.</p>
             </div>
         """, unsafe_allow_html=True)
-
 with st.expander("ℹ️ ¿Cómo realizar tu aportación on line?"):
     col_web, col_steps = st.columns([1, 1.5], gap="large")
     
