@@ -256,66 +256,92 @@ ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 # años_jub = 67 - edad  # 'edad' viene del sidebar
 
 # --- 6. RENDERIZADO PRINCIPAL ---
-
-
 st.markdown("""
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;700&display=swap');
         
         .header-wrapper {
-            padding: 60px 0 30px 0;
+            padding: 70px 0 40px 0;
             text-align: center;
-            background: radial-gradient(circle at top right, #f8fafc, #ffffff); /* Fondo con matiz sutil */
+            background: radial-gradient(circle at 50% 0%, #f1f5f9 0%, #ffffff 70%);
+            border-radius: 0 0 50px 50px;
         }
         
         .main-title {
             font-family: 'Inter', sans-serif;
             font-weight: 100;
             color: #0f172a;
-            letter-spacing: 16px;
+            letter-spacing: 14px;
             text-transform: uppercase;
             font-size: 3rem; 
             margin: 0;
-            line-height: 1;
+            line-height: 1.2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
         }
         
-        .year-highlight {
-            font-weight: 600;
-            /* Degradado elegante en el texto */
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 4px;
-            margin-left: 10px;
+        .year-badge {
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 5px 20px;
+            border-radius: 50px;
+            letter-spacing: 2px;
+            margin-left: 20px;
+            font-size: 2.2rem;
+            box-shadow: 0 10px 20px rgba(30, 64, 175, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Destello animado sobre el año */
+        .year-badge::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(30deg);
+            animation: shine 4s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-150%) rotate(30deg); }
+            20%, 100% { transform: translateX(150%) rotate(30deg); }
         }
         
         .subtitle-premium {
             font-family: 'Inter', sans-serif;
             font-weight: 400;
-            color: #64748b;
-            letter-spacing: 5px;
-            font-size: 0.75rem;
-            margin-top: 20px;
+            color: #475569;
+            letter-spacing: 4px;
+            font-size: 0.8rem;
+            margin-top: 30px;
             text-transform: uppercase;
         }
 
-        .color-accent-line {
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(90deg, #1e40af, #60a5fa);
-            margin: 25px auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        .accent-bar {
+            width: 60px;
+            height: 4px;
+            background: #3b82f6;
+            margin: 20px auto;
+            border-radius: 2px;
         }
     </style>
     
     <div class="header-wrapper">
-        <h1 class="main-title">FESELQUEPUGUIS<span class="year-highlight">2026</span></h1>
-        <div class="color-accent-line"></div>
+        <h1 class="main-title">
+            FESELQUEPUGUIS
+            <span class="year-badge">2026</span>
+        </h1>
+        <div class="accent-bar"></div>
         <p class="subtitle-premium">Tu aportación voluntaria al Plan de Pensiones de Empleo</p>
     </div>
 """, unsafe_allow_html=True)
-
 
 
 tab1, tab2, tab3 = st.tabs(["💰 Aportación Máxima ", "🚀 Proyección a la Jubilación ", "🎯 Acerca de Fes... "])
