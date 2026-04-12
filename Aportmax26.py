@@ -301,7 +301,7 @@ st.markdown("""
     
     <div class="header-wrapper">
         <h1 class="main-title">
-            FESELQUEPUGUIS <span class="year-highlight">2026</span>
+            AVOL <span class="year-highlight">2026</span>
         </h1>
         <p class="subtitle-slim">Aportación Voluntaria • Plan de Pensiones de Empleo</p>
     </div>
@@ -680,7 +680,7 @@ with tab2:
 
     # --- FILA 1: PATRIMONIO ---
     st.markdown("<div style='margin-bottom: 15px;'></div>", unsafe_allow_html=True)
-    c1, c2, c3 = st.columns(3)
+    c1, c2 = st.columns(2)
     
     with c1:
         st.markdown(f"""<div class="premium-card">
@@ -696,17 +696,11 @@ with tab2:
             <div style="margin-top: 10px;"><span style="color: #ef4444; font-size: 0.8rem;">✕ Pérdida de {dif_cap:,.0f} €</span></div>
         </div>""", unsafe_allow_html=True)
         
-    with c3:
-        st.markdown(f"""<div class="premium-card" style="background: linear-gradient(145deg, #1e3a8a, #1e40af);">
-            <div class="label-fina" style="color: #93c5fd;">Beneficio Neto Extra</div>
-            <div class="valor-fino" style="color: #ffffff; font-weight: 400;">+{dif_cap:,.0f}<span style="font-size: 1rem;"> €</span></div>
-            <div class="subtexto-fino" style="color: #93c5fd;">Patrimonio creado de tu estrategia</div>
-        </div>""", unsafe_allow_html=True)
-
+    
     st.markdown("<br>", unsafe_allow_html=True)
 
     # --- FILA 2: CALIDAD DE VIDA ---
-    r1, r2, r3 = st.columns(3)
+    r1, r2 = st.columns(2)
     
     with r1:
         st.markdown(f"""<div class="premium-card">
@@ -722,13 +716,7 @@ with tab2:
             <div style="margin-top: 10px;"><span style="color: #ef4444; font-size: 0.8rem;">✕ {dif_renta:,.0f} € menos al mes</span></div>
         </div>""", unsafe_allow_html=True)
 
-    with r3:
-        st.markdown(f"""<div class="premium-card" style="border: 1px solid #10b981; background: #f0fdf4;">
-            <div class="label-fina" style="color: #059669;">Mejora del Bienestar</div>
-            <div class="valor-fino" style="color: #047857; font-weight: 400;">+{dif_renta:,.2f}<span style="font-size: 1rem;"> €</span></div>
-            <div class="delta-positiva">✨ SOBRESUELDO MENSUAL</div>
-        </div>""", unsafe_allow_html=True)
-
+ 
     st.markdown("<br><br>", unsafe_allow_html=True)
     
     # --- FILA 4: Definición de Hipótesis ---
