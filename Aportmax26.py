@@ -479,10 +479,10 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
                         Estrategia Sugerida
                     </p>
                     <p style="font-size: 0.95rem; color: #1e293b; line-height: 1.5; margin-bottom: 20px;">
-                        En comodos plazos, para optimizar tu aportación y ajustarte al límite de <b>{max_p:,.2f} €</b>, la cuota mensual recomendada es:
+                        En comodos plazos, para ajustarte al límite de <b>{max_p:,.2f} €</b>, la nueva cuota mensual recomendada es:
                     </p>
-                    <div style="margin-bottom: 20px;">
-                        <span style="font-size: 2.2rem; font-weight: 300; color: {color_acentuado};">{nueva_cuota_total:,.2f} €</span>
+                    <div style="margin-bottom: 18px;">
+                        <span style="font-size: 2.0rem; font-weight: 300; color: {color_acentuado};">{nueva_cuota_total:,.2f} €</span>
                         <span style="font-size: 1rem; color: #94a3b8;"> / mes (durante los meses que quedan del año)</span>
                     </div>
                     <div style="padding-top: 15px; border-top: 1px solid #f1f5f9; font-size: 0.9rem; color: #475569;">
