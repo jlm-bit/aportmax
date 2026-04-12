@@ -293,7 +293,7 @@ ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 # --- 6. RENDERIZADO PRINCIPAL ---
 st.markdown('<div class="main-header"><h1 style="margin:0;">📈 APORTAMAX 2026</h1></div>', unsafe_allow_html=True)
 
-tab1, tab2, tab3, tab4 = st.tabs(["💰 Aportación Máxima ", "🎯 Plan de Ahorro del año ", "🚀 Proyección a la Jubilación ", "🎯 Acerca de "])
+tab1, tab2, tab3 = st.tabs(["💰 Aportación Máxima ", "🚀 Proyección a la Jubilación ", "🎯 Acerca de "])
 
 with tab1:
 
@@ -521,7 +521,7 @@ import io
 # max_p: Aportación personal máxima anual permitida (Tab 1)
 # e_riesgo: Coste anual del seguro de riesgo (Tab 1)
 # ------------------------------------------------------------------------
-with tab3:
+with tab2:
   #  st.markdown("### 🔮 SIMULADOR JUBILACIÓN: Impacto de aportaciones voluntarias")
     
     # 0. Recuperar variables de otros Tabs
@@ -760,7 +760,7 @@ if st.button("🚀 GENERAR INFORME DE LA PROYECCIÓN (pdf)", use_container_width
             st.error(f"❌ Error al crear el PDF: {e}")
 
 
-with tab4:
+with tab3:
     # --- RESUMEN EJECUTIVO DEL PROGRAMA ---
     # st.info("### 📋 Funcionalidades de la plataforma AportaMax")
     
