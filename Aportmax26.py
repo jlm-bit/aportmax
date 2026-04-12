@@ -257,40 +257,67 @@ ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 
 # --- 6. RENDERIZADO PRINCIPAL ---
 
+# --- 6. RENDERIZADO PRINCIPAL (ESTILO ALTA FIDELIDAD) ---
+
 st.markdown("""
     <style>
-        .header-container {
-            background: #ffffff;
-            padding: 40px 10px 20px 10px;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;500&display=swap');
+        
+        .header-wrapper {
+            padding: 70px 0 40px 0;
             text-align: center;
-            border-bottom: 1px solid #f1f5f9;
-            margin-bottom: 30px;
+            background: #ffffff; /* Fondo limpio para resaltar la tipografía */
         }
+        
         .main-title {
             font-family: 'Inter', sans-serif;
-            font-weight: 200;
+            font-weight: 100;
             color: #0f172a;
-            letter-spacing: 6px;
+            letter-spacing: 18px; /* Máxima expansión horizontal */
             text-transform: uppercase;
-            font-size: 2.2rem;
+            font-size: 3rem; 
             margin: 0;
-            line-height: 1.2;
+            line-height: 1;
+            /* Sutil sombra para dar profundidad sin grosor */
+            text-shadow: 0px 4px 10px rgba(0,0,0,0.05);
         }
-        .subtitle {
+        
+        .year-highlight {
+            font-weight: 500;
+            color: #1e40af;
+            letter-spacing: 4px;
+            padding-left: 10px;
+            border-left: 1px solid #e2e8f0;
+            margin-left: 15px;
+        }
+        
+        .subtitle-premium {
             font-family: 'Inter', sans-serif;
-            font-weight: 400;
+            font-weight: 300;
             color: #94a3b8;
-            letter-spacing: 2px;
-            font-size: 0.75rem;
-            margin-top: 10px;
+            letter-spacing: 6px;
+            font-size: 0.7rem;
+            margin-top: 30px;
             text-transform: uppercase;
+        }
+
+        .minimal-line {
+            width: 150px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #1e40af, transparent);
+            margin: 20px auto;
+            opacity: 0.5;
         }
     </style>
-    <div class="header-container">
-        <h1 class="main-title">FESELQUEPUGUIS 2026</h1>
-        <p class="subtitle">Estrategia de Planificación Previsional Personalizada</p>
+    
+    <div class="header-wrapper">
+        <h1 class="main-title">FESELQUEPUGUIS<span class="year-highlight">2026</span></h1>
+        <div class="minimal-line"></div>
+        <p class="subtitle-premium">Advanced Financial Planning & Wealth Strategy</p>
     </div>
 """, unsafe_allow_html=True)
+
+tab1, tab2, tab3 = st.tabs(["💰 Aportación Máxima", "🚀 Proyección Jubilación", "🎯 Acerca de"])
 
 tab1, tab2, tab3 = st.tabs(["💰 Aportación Máxima ", "🚀 Proyección a la Jubilación ", "🎯 Acerca de "])
 
