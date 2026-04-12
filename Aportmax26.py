@@ -221,8 +221,9 @@ with st.sidebar:
         emp_t_bruta = (e_ahorro * 12) + e_riesgo
         emp_t = min(emp_t_bruta, 10000.0)
    
-        if sb == 0.0:
+        if sb <= 0.0:
             st.warning(f"⚠️ Introduce tus datos personales. Salario, Aportaciones de la empresa al plan, tus aportacinoes") 
+            st.stop
         
         if emp_t_bruta > 10000.0:
             st.warning(f"⚠️ La aportación de la empresa se ha limitado a 10.000€ (Exceso: {emp_t_bruta - 10000.0:,.2f}€)")
