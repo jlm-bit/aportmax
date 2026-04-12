@@ -397,7 +397,7 @@ with tab1:
 
 
 # with tab2:
-with st.expander("🚀 ¿Te recomiendo conmo hacerlo?"):
+with st.expander("ℹ️ ¿Te recomiendo conmo hacerlo?"):
     # --- 0. PREPARACIÓN DE DATOS (Evita NameError) ---
     import datetime
     hoy = datetime.date.today()
@@ -453,6 +453,24 @@ with st.expander("🚀 ¿Te recomiendo conmo hacerlo?"):
         </div>
     """, unsafe_allow_html=True)
 
+
+    # --- 2. INDICADOR VISUAL DE PROGRESO (Estilo Minimal) ---
+    st.markdown(f"""
+        <div style="margin-bottom: 25px; padding: 10px 5px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 0.9rem; color: #475569; font-weight: 500;">
+                    {icon_estado} {msg_estado}
+                </span>
+                <span style="font-size: 0.85rem; color: #94a3b8;">
+                    {proyeccion_final:,.0f} € de {max_p:,.0f} €
+                </span>
+            </div>
+            <div style="background-color: #f1f5f9; border-radius: 20px; height: 8px; width: 100%;">
+                <div style="background-color: #64748b; width: {min(porcentaje_uso * 100, 100):.1f}%; height: 8px; border-radius: 20px;"></div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
 # --- 3. RECOMENDACIÓN DE AJUSTE ---
    
     if proyeccion_final != max_p:
@@ -485,7 +503,7 @@ with st.expander("🚀 ¿Te recomiendo conmo hacerlo?"):
     st.markdown("---")
 
 
-with st.expander("🚀 ¿Cómo realizar tu aportación?"):
+with st.expander("ℹ️ ¿Cómo realizar tu aportación?"):
     col_web, col_steps = st.columns([1, 1.5], gap="large")
     
     with col_web:
