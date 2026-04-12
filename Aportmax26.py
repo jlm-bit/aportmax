@@ -295,13 +295,12 @@ tab1, tab2, tab3, tab4 = st.tabs(["💰 Aportación Máxima ", "🎯 Plan de Aho
 
 with tab1:
 
-
     st.markdown(
     f"""
     <hr style="margin: 1em 0;">
     <div style="text-align: center;">
         <p style='margin:0; font-size:1.0rem;'>
-            <b>💰 ¿Cuanto puedes aportar más? (para máximo)</b>
+            <b>💰 Aportación adicional que puedes realizar este año (como máximo)</b>
         </p>
         <h4 style='margin:0; font-size:2.0rem; color:#1e40af; line-height:1.1;'>
             {aportacion_extraordinaria_neta:,.0f}€
@@ -379,7 +378,7 @@ with tab1:
         st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>✅ Ya aportado</b></p><h4 style='margin:0; font-size:1.1rem;'>{ya_aportado:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>Ene-{mes_fin_ya[:3]}</small>", unsafe_allow_html=True)
     
     with c2:
-        st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>⏳ Planificado resto de año</b></p><h4 style='margin:0; font-size:1.1rem;'>{c_m * meses_restantes:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
+        st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>⏳ Ya planificado resto de año</b></p><h4 style='margin:0; font-size:1.1rem;'>{c_m * meses_restantes:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
   
     with c3:
         # Aportación extraordinaria única
