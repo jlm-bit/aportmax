@@ -258,21 +258,23 @@ ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 # --- 6. RENDERIZADO PRINCIPAL ---
 st.markdown("""
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;400;700&display=swap');
         
         .header-wrapper {
-            padding: 40px 0 20px 0; /* Más estrecho */
+            padding: 30px 0 15px 0; /* Muy estrecho verticalmente */
             text-align: center;
-            background: #ffffff;
+            background: transparent;
         }
         
         .main-title {
             font-family: 'Inter', sans-serif;
             font-weight: 100;
-            color: #0f172a;
-            letter-spacing: 10px; /* Letra más compacta */
-            text-transform: uppercase;
-            font-size: 2rem; /* Letra más pequeña */
+            /* Degradado sutil en el texto principal */
+            background: linear-gradient(120deg, #0f172a 30%, #3b82f6 90%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 8px; 
+            font-size: 1.8rem; /* Tamaño contenido */
             margin: 0;
             display: flex;
             align-items: center;
@@ -280,32 +282,33 @@ st.markdown("""
         }
         
         .year-badge {
-            font-weight: 600;
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            font-weight: 700;
+            background: #2563eb; /* Azul más vivo */
             color: white;
-            padding: 2px 14px; /* Más pequeño */
-            border-radius: 6px; /* Menos redondeado, más técnico */
+            padding: 1px 10px;
+            border-radius: 4px;
             letter-spacing: 1px;
-            margin-left: 12px;
-            font-size: 1.2rem; /* Año más pequeño */
-            box-shadow: 0 4px 10px rgba(30, 64, 175, 0.1);
+            margin-left: 10px;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
         }
         
         .subtitle-premium {
             font-family: 'Inter', sans-serif;
             font-weight: 400;
-            color: #94a3b8;
-            letter-spacing: 3px;
-            font-size: 0.65rem; /* Subtítulo muy fino */
-            margin-top: 15px;
+            color: #64748b;
+            letter-spacing: 2px;
+            font-size: 0.6rem;
+            margin-top: 8px;
             text-transform: uppercase;
         }
 
-        .accent-line {
-            width: 30px; /* Línea mínima */
-            height: 1px;
-            background: #cbd5e1;
-            margin: 12px auto;
+        .accent-bar {
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, #2563eb, #60a5fa);
+            margin: 10px auto;
+            border-radius: 2px;
         }
     </style>
     
@@ -314,8 +317,8 @@ st.markdown("""
             FESELQUEPUGUIS
             <span class="year-badge">2026</span>
         </h1>
-        <div class="accent-line"></div>
-        <p class="subtitle-premium">Tu aportación voluntaria al plan de pensiones de empelo (PPE)</p>
+        <div class="accent-bar"></div>
+        <p class="subtitle-premium"> Tu Aportación Voluntaria • Plan de Pensiones de Empleo</p>
     </div>
 """, unsafe_allow_html=True)
 
