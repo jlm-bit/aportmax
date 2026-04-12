@@ -256,7 +256,6 @@ ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 # años_jub = 67 - edad  # 'edad' viene del sidebar
 
 # --- 6. RENDERIZADO PRINCIPAL ---
-st.markdown('<div class="main-header"><h1 style="margin:0;">📈 FESELQUEPUGUIS 2026</h1></div>', unsafe_allow_html=True)
 
 st.markdown("""
     <style>
