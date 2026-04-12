@@ -486,7 +486,7 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
             verbo = "Incrementar" if diferencia_mensual > 0 else "reducir"
             
             # Pre-calculamos el texto para inyectar en el HTML de forma segura
-            texto_estrategia = f"{flecha} <b>{verbo}</b> la cuota actual en <b>{abs(diferencia_mensual):,.2f} €</b>"
+            texto_estrategia = f"{flecha} <b>{verbo}</b> la cuota actual de {c_m} € en <b>{abs(diferencia_mensual):,.2f} €</b>"
     
             # 2. Renderizado de la tarjeta
             st.markdown(f"""
@@ -507,8 +507,8 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
                         margin-bottom: 15px;
                     ">
                         Estrategia Sugerida &nbsp;&nbsp; 
-                        <span style="color: #0f172a; font-weight: 700;">
-                            {texto_estrategia} durante {meses_restantes} meses
+                        <span style="color: #0f172a; font-weight: 650;">
+                            {texto_estrategia} durante {meses_restantes} meses (aportación mensual total de {c_m + diferencia mesual} €
                         </span>
                     </p>
                     
