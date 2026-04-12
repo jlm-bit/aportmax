@@ -316,28 +316,33 @@ tab1, tab2, tab3 = st.tabs(["💰 Aportación Máxima ", "🚀 Proyección a la 
 
 with tab1:
 
+
     st.markdown(
     f"""
     <hr style="margin: 1em 0;">
-    <div style="text-align: center;">
+    <div style="text-align: center; padding: 10px;">
         <p style='margin:0; font-size:1.0rem;'>
             <b>💰 Aportación adicional que puedes realizar este año (como máximo)</b>
         </p>
-        <h4 style='margin:0; font-size:2.0rem; color:#1e40af; line-height:1.1;'>
+        <h4 style='margin:10px 0; font-size:2.6rem; color:#334155; line-height:1.1; font-weight:900;'>
             {aportacion_extraordinaria_neta:,.0f}€
-       
-       
-            <p style='margin:0; color:#64748b; font-size:0.8rem;'>
+        </h4>
+        <div style="margin-top: 15px;">
+            <p style='margin:0; color:#64748b; font-size:0.85rem;'>
                 Aportación Anual Promotor (prevista): <b>{emp_t:,.2f}€</b>
             </p>
-            <p style='margin:8px 0 0 0; color:#64748b; font-size:0.8rem;'>
+            <p style='margin:8px 0 0 0; color:#64748b; font-size:0.85rem;'>
                 Aportación Máxima Total: <b>{max_p:,.2f}€</b>
             </p>
         </div>
     </div>
+    <hr style="margin: 1em 0;">
     """, 
     unsafe_allow_html=True
 )
+
+
+
 
 
 
