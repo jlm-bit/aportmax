@@ -138,8 +138,8 @@ def generar_informe_integral_2026(datos):
     pdf.ln(2)
     pdf.cell(0, 12, f"  > OPCION B: Aportacion unica extra: {datos['extra']:,.2f} EUR", fill=True, ln=True)
 
-    # --- PÁGINA 2: JUBILACIÓN ---
-    pdf.add_page()
+    # --- JUBILACIÓN ---
+    # pdf.add_page()
     pdf.set_text_color(30, 58, 138)
     pdf.set_font("helvetica", 'B', 14)
     pdf.cell(0, 10, "3. PROYECCION DE IMPACTO EN LA JUBILACION", ln=True)
@@ -326,8 +326,8 @@ with tab1:
         <h4 style='margin:0; font-size:2.0rem; color:#1e40af; line-height:1.1;'>
             {aportacion_extraordinaria_neta:,.0f}€
         </h4>
-        <p style='margin:0; color:#64748b; font-size:0.9rem;'>
-            
+        <p style='margin:0; color:#64748b; font-size:0.8rem;'>
+        hola  
        
     </div>
     <hr style="margin: 1em 0;">
