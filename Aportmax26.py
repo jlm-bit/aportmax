@@ -416,7 +416,7 @@ with tab1:
 
 with st.expander("ℹ️ Tu Plan de Acción", expanded=True):
     # --- 1. CÁLCULOS BASE ---
-    faltante_total = max_p - ya_aportado
+ #   faltante_total = max_p - ya_aportado
     # --- 1. CÁLCULOS DE PRECISIÓN ---
     # Cuota ideal anual prorrateada (ej. 225€ si el límite es 2700€)
     cuota_sostenible = max_p / 12
