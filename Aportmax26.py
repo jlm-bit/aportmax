@@ -414,7 +414,7 @@ with tab1:
         # pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
         # st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf")
 
-with st.expander("ℹ️ Estrategia de Ahorro Máximo Optimizado", expanded=True):
+with st.expander("ℹ️ Tu Plan de Acción", expanded=True):
     # --- 1. CÁLCULOS BASE ---
     faltante_total = max_p - ya_aportado
     
