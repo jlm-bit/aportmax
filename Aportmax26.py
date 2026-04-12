@@ -280,6 +280,7 @@ nueva_cuota_total = pendiente_para_limite / meses_restantes if meses_restantes >
 diferencia_mensual = nueva_cuota_total - c_m
 total_mensual_previsto = c_m * meses_restantes
 aportacion_extraordinaria_neta = max(0.0, pendiente_para_limite - total_mensual_previsto)
+cumplimiento_plan = (c_m *12 + e_y)/max_p if max_p > 0 else 0
 
 # --- CÁLCULOS GLOBALES (Poner esto ANTES de los st.tabs) ---
 # Sumamos lo que pone la empresa y lo que pones tú (el máximo permitido)
@@ -382,8 +383,7 @@ with tab1:
         st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>⏳ Ya planificado (resto de año)</b></p><h4 style='margin:0; font-size:1.1rem;'>{c_m * meses_restantes:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
   
     with c3:
-        cumplimiento = (Ya_aportado + c_m * meses_restantes) * 100 / max_p
-        st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>⏳ % cumplimmiento</b></p><h4 style='margin:0; font-size:1.1rem;'>{cumplimiento:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
+         st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>⏳ % cumplimiento</b></p><h4 style='margin:0; font-size:1.1rem;'>{cumplimiento_plan:,.0f}%)
     with c3:
         # Aportación extraordinaria única
         st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>💰 APORTACIÓN ÚNICA (para máximo)</b></p><h4 style='margin:0; font-size:1.8rem; color:#1e40af;'>{aportacion_extraordinaria_neta:,.0f}€</h4><small style='color:#64748b; font-size:0.65rem;'>Aport.para alcanzar el límite</small>", unsafe_allow_html=True)
