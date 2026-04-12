@@ -334,7 +334,7 @@ with tab1:
     """, 
     unsafe_allow_html=True
 )
-    with st.expander("ℹ️ Datos detallados"):
+with st.expander("ℹ️ Datos detallados"):
         col_left, col_right = st.columns([1.2, 1]) # Invertimos un poco el ratio para que los cuadros tengan aire
         
         with col_left:
@@ -418,60 +418,43 @@ with tab1:
 
 with st.expander("ℹ️ Tu Plan de Acción", expanded=True):
     # --- 1. CÁLCULOS DE PRECISIÓN ---
-    # Faltante total para llegar al límite legal
     faltante_total = max_p - ya_aportado
     
-    # OPCIÓN A: Reparto lineal (Agresiva)
-    # Dividimos el faltante entre los meses que quedan
+    # OPCIÓN A: Reparto lineal (Agresiva/Ajuste Directo)
     cuota_mensual_pura = faltante_total / meses_restantes if meses_restantes > 0 else 0
     
-    # OPCIÓN B: Plan Sostenible (Híbrida)
-    # 1. Fijamos la cuota ideal (ej: 2.700€ / 12 meses = 225€)
-    cuota_sostenible = max_p / 12
+    # OPCIÓN B: Plan Sostenible (Con lógica de reajuste si hay exceso)
+    cuota_ideal_estandar = max_p / 12
+    total_futuro_estandar = cuota_ideal_estandar * meses_restantes
     
-    # 2. Calculamos cuánto sumarán esas cuotas de aquí a fin de año
-    total_futuro_sostenible = cuota_sostenible * meses_restantes
+    # Calculamos el pago extra necesario para cuadrar el puzzle
+    pago_extraordinario = max_p - ya_aportado - total_futuro_estandar
     
-    # 3. Pago Extraordinario = El "parche" exacto para que la suma sea perfecta
-    # Límite - Ya aportado - Lo que pondrá mensualmente hasta diciembre
-    pago_extraordinario = max_p - ya_aportado - total_futuro_sostenible
-    
-    # Seguridad: Si el usuario ya aportó mucho, el extra no puede ser negativo
     if pago_extraordinario < 0:
+        # CASO ESPECIAL: El usuario ya ha aportado de más.
+        # La cuota sostenible se reduce para ser igual a la Opción A.
         pago_extraordinario = 0.0
+        cuota_sostenible_final = cuota_mensual_pura
+        subtitulo_b = "Cuota reducida por aportación previa alta"
+        detalle_b = "Como ya has aportado gran parte del límite, tu cuota sostenible se ajusta al mínimo necesario."
+    else:
+        # CASO NORMAL: Puede mantener la cuota ideal haciendo el pago extra.
+        cuota_sostenible_final = cuota_ideal_estandar
+        subtitulo_b = "Cuota ideal de ahorro prorrateado"
+        detalle_b = f"Compensa el retraso ahora con un pago único y mantén la cuota de {cuota_sostenible_final:,.2f} €."
 
     # --- 2. INDICADOR VISUAL (Barra de progreso) ---
     proyeccion_actual = ya_aportado + (c_m * meses_restantes)
     porcentaje = min(proyeccion_actual / max_p, 1.0) if max_p > 0 else 0
     
-    if proyeccion_actual > max_p + 1.0:
-        color_barra, icon_est = "#ef4444", "🚨"
-        msg_est = f"Exceso: +{proyeccion_actual - max_p:,.2f} €"
-    elif proyeccion_actual >= max_p * 0.99:
-        color_barra, icon_est = "#22c55e", "🎯"
-        msg_est = "Plan Óptimo"
-    else:
-        color_barra, icon_est = "#f59e0b", "💡"
-        msg_est = f"Faltan {max_p - proyeccion_actual:,.2f} €"
-
-    st.markdown(f"""
-        <div style="margin-bottom: 25px;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                <span style="font-size: 0.85rem; font-weight: 600; color: #475569;">{icon_est} {msg_est}</span>
-                <span style="font-size: 0.85rem; color: #94a3b8;">{proyeccion_actual:,.0f} € de {max_p:,.0f} €</span>
-            </div>
-            <div style="background-color: #f1f5f9; border-radius: 10px; height: 8px;">
-                <div style="background-color: {color_barra}; width: {porcentaje*100}%; height: 8px; border-radius: 10px; transition: width 0.5s;"></div>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
+    # (Bloque de la barra de progreso - omitido aquí para brevedad, mantén el que tienes)
 
     # --- 3. COMPARATIVA DE ESTRATEGIAS ---
     col1, col2 = st.columns(2)
     
     with col1:
         st.markdown(f"""
-            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; height: 190px;">
+            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; height: 210px;">
                 <p style="font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase;">Opción A: Ajuste de Cuota</p>
                 <p style="font-size: 1.6rem; font-weight: 850; color: #1e293b; margin: 5px 0;">{cuota_mensual_pura:,.2f} € <span style="font-size: 0.8rem;">/mes</span></p>
                 <p style="font-size: 0.75rem; color: #475569; line-height: 1.4;">Sin pagos extra. El esfuerzo se reparte linealmente en las cuotas de aquí a diciembre.</p>
@@ -479,16 +462,18 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=True):
         """, unsafe_allow_html=True)
 
     with col2:
+        # El color cambia a azul suave si es un reajuste por exceso, o verde si es el plan estándar
+        bg_color = "#f0f9ff" if pago_extraordinario == 0 else "#f0fdf4"
+        border_color = "#bae6fd" if pago_extraordinario == 0 else "#bbf7d0"
+        
         st.markdown(f"""
-            <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 20px; border-radius: 12px; height: 190px;">
-                <p style="font-size: 0.7rem; font-weight: 800; color: #166534; text-transform: uppercase;">Opción B: Plan Sostenible ✨</p>
-                <p style="font-size: 1.6rem; font-weight: 850; color: #166534; margin: 5px 0;">{cuota_sostenible:,.2f} € <span style="font-size: 0.8rem;">/mes</span></p>
-                <p style="font-size: 0.9rem; font-weight: 700; color: #15803d; margin-bottom: 5px;">+ {pago_extraordinario:,.2f} € hoy</p>
-                <p style="font-size: 0.75rem; color: #166534; opacity: 0.8; line-height: 1.4;">Compensa el retraso ahora con una aportación única y mantén la cuota ideal prorrateada de por vida.</p>
+            <div style="background-color: {bg_color}; border: 1px solid {border_color}; padding: 20px; border-radius: 12px; height: 210px;">
+                <p style="font-size: 0.7rem; font-weight: 800; color: #0369a1; text-transform: uppercase;">Opción B: {subtitulo_b} ✨</p>
+                <p style="font-size: 1.6rem; font-weight: 850; color: #0369a1; margin: 5px 0;">{cuota_sostenible_final:,.2f} € <span style="font-size: 0.8rem;">/mes</span></p>
+                <p style="font-size: 0.9rem; font-weight: 700; color: #0c4a6e; margin-bottom: 5px;">+ {pago_extraordinario:,.2f} € extra hoy</p>
+                <p style="font-size: 0.75rem; color: #0369a1; opacity: 0.8; line-height: 1.4;">{detalle_b}</p>
             </div>
         """, unsafe_allow_html=True)
-
-
 
 
 
