@@ -477,44 +477,44 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
         if abs(proyeccion_final - max_p) > 1.0:
             # Definimos una sutileza de color según la acción
             color_acentuado = "#334155" # Gris oscuro profesional
+                    
+            # 1. Pre-calculamos los valores para mantener el HTML limpio
+            flecha = "🔼" if diferencia_mensual > 0 else "🔽"
+            verbo = "Incrementar" if diferencia_mensual > 0 else "reducir"
+            texto_estrategia = f"{flecha} (<b>{verbo}</b> la cuota actual en <b>{abs(diferencia_mensual):,.2f} €</b> durante {meses_restantes} meses)"
             
-    # 1. Pre-calculamos los valores para mantener el HTML limpio
-    flecha = "🔼" if diferencia_mensual > 0 else "🔽"
-    verbo = "Incrementar" if diferencia_mensual > 0 else "reducir"
-    texto_estrategia = f"{flecha} (<b>{verbo}</b> la cuota actual en <b>{abs(diferencia_mensual):,.2f} €</b> durante {meses_restantes} meses)"
-    
-    # 2. Renderizamos en Streamlit
-    st.markdown(f"""
-        <div style="background-color: #ffffff; border: 1px solid #e2e8f0; padding: 25px; border-radius: 12px; margin: 15px 0; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
-            <p style="text-transform: uppercase; letter-spacing: 1px; font-size: 0.7rem; color: #64748b; font-weight: 700; margin-bottom: 15px;">
-                Estrategia Sugerida &nbsp;&nbsp; {texto_estrategia}
-            </p>
-            
-            <p style="font-size: 0.95rem; color: #1e293b; line-height: 1.5; margin-bottom: 20px;">
-                Para ajustarte al límite de <b>{max_p:,.2f} €</b>, la nueva cuota mensual recomendada es:
-            </p>
-            
-            <div style="margin-bottom: 10px;">
-                <span style="font-size: 1.8rem; font-weight: 700; color: {color_acentuado};">{nueva_cuota_total:,.2f} €</span>
-                <span style="font-size: 1rem; color: #94a3b8;"> / mes <small>(restante del año)</small></span>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-       
-                st.markdown(f"""
-                    <div style="background-color: #ffffff; border: 1px solid #e2e8f0; padding: 25px; border-radius: 12px; margin: 15px 0;">
-                        <p style="text-transform: uppercase; letter-spacing: 1px; font-size: 0.7rem; color: #64748b; font-weight: 700; margin-bottom: 15px;">
-                            Estrategia Sugerida    {"🔼 (<b> Incrementar</b>" if diferencia_mensual > 0 else "🔽 <b>reducir</b>"} la cuota actual en <b>{abs(diferencia_mensual):,.2f} €</b> durante {meses_restantes} meses).
-                        </p>
-                   
-                        <div style="margin-bottom: 10px;">
-                            <span style="font-size: 1.4rem; font-weight: 350; color: {color_acentuado};">{nueva_cuota_total:,.2f} €</span>
-                            <span style="font-size: 1rem; color: #94a3b8;"> / mes (durante los meses que quedan del año)</span>
-                        </div>
-                                                     
+            # 2. Renderizamos en Streamlit
+            st.markdown(f"""
+                <div style="background-color: #ffffff; border: 1px solid #e2e8f0; padding: 25px; border-radius: 12px; margin: 15px 0; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                    <p style="text-transform: uppercase; letter-spacing: 1px; font-size: 0.7rem; color: #64748b; font-weight: 700; margin-bottom: 15px;">
+                        Estrategia Sugerida &nbsp;&nbsp; {texto_estrategia}
+                    </p>
+                    
+                    <p style="font-size: 0.95rem; color: #1e293b; line-height: 1.5; margin-bottom: 20px;">
+                        Para ajustarte al límite de <b>{max_p:,.2f} €</b>, la nueva cuota mensual recomendada es:
+                    </p>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <span style="font-size: 1.8rem; font-weight: 700; color: {color_acentuado};">{nueva_cuota_total:,.2f} €</span>
+                        <span style="font-size: 1rem; color: #94a3b8;"> / mes <small>(restante del año)</small></span>
                     </div>
-                """, unsafe_allow_html=True)
-        
+                </div>
+            """, unsafe_allow_html=True)
+               
+                        st.markdown(f"""
+                            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; padding: 25px; border-radius: 12px; margin: 15px 0;">
+                                <p style="text-transform: uppercase; letter-spacing: 1px; font-size: 0.7rem; color: #64748b; font-weight: 700; margin-bottom: 15px;">
+                                    Estrategia Sugerida    {"🔼 (<b> Incrementar</b>" if diferencia_mensual > 0 else "🔽 <b>reducir</b>"} la cuota actual en <b>{abs(diferencia_mensual):,.2f} €</b> durante {meses_restantes} meses).
+                                </p>
+                           
+                                <div style="margin-bottom: 10px;">
+                                    <span style="font-size: 1.4rem; font-weight: 350; color: {color_acentuado};">{nueva_cuota_total:,.2f} €</span>
+                                    <span style="font-size: 1rem; color: #94a3b8;"> / mes (durante los meses que quedan del año)</span>
+                                </div>
+                                                             
+                            </div>
+                        """, unsafe_allow_html=True)
+                
     
     else:
         st.success("Planificación optimizada al 100%")
