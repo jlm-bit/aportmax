@@ -487,7 +487,7 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
         """, unsafe_allow_html=True)
 
 
-         st.markdown(f"""
+        st.markdown(f"""
             <div style="
                 background-color: #ffffff; border: 1px solid #e2e8f0; padding: 25px; 
                 border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
@@ -498,7 +498,7 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
                 ">
                     Estrategia Sugerida &nbsp;&nbsp; 
                     <span style="color: #0f172a; font-weight: 800;">
-                        Combinar una aportación extraordinaria con una mensual durante los {meses_restantes} meses restantes del año 
+                        {texto_estrategia} durante los {meses_restantes} meses restantes del año 
                         (aportación mensual total de {abs(nueva_cuota_total):,.2f} €)
                     </span>
                 </p>
@@ -510,7 +510,8 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
                 </div>
             </div>
         """, unsafe_allow_html=True)
-    
+
+
     
     
     else:
