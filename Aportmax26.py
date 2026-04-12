@@ -414,47 +414,31 @@ with tab1:
         # pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
         # st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf")
 
-with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y de forma facil"):
-    # --- 0. PREPARACIÓN DE DATOS (Evita NameError) ---
-    import datetime
-    hoy = datetime.date.today()
-    meses_nombres_es = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
-                        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y de forma facil", expanded=True):
+    # --- 1. CÁLCULOS UNIFICADOS ---
+    # Faltante real para llegar al máximo
+    faltante_total = max_p - ya_aportado 
+    # Cuota mensual ideal para cubrir el faltante en los meses que quedan
+    nueva_cuota_total = faltante_total / meses_restantes if meses_restantes > 0 else 0
+    # Diferencia necesaria respecto a la cuota actual (c_m)
+    diferencia_mensual = nueva_cuota_total - c_m 
     
-    # 1. Cálculos base
+    # Proyección con la cuota actual del usuario
     proyeccion_final = ya_aportado + (c_m * meses_restantes)
     porcentaje_uso = min(proyeccion_final / max_p, 1.0) if max_p > 0 else 0
 
-    # 2. Definición de Estados (Crítico para evitar NameError)
-    if proyeccion_final > max_p:
-        color_alerta, icon_estado = "#ef4444", "⚠️"
-        msg_estado = f"EXCESO: +{proyeccion_final - max_p:,.0f}€"
-    elif proyeccion_final >= max_p * 0.98:
-        color_alerta, icon_estado = "#22c55e", "🎯"
-        msg_estado = "PLAN ÓPTIMO"
-    else:
-        color_alerta, icon_estado = "#f59e0b", "💡"
-        msg_estado = f"OPORTUNIDAD: +{max_p - proyeccion_final:,.0f}€"
-
-    # --- 1. LÓGICA DE PROYECCIÓN MES A MES ---
-    proyeccion_final = ya_aportado + (c_m * meses_restantes)
-    porcentaje_uso = min(proyeccion_final / max_p, 1.1) if max_p > 0 else 0
-    
-    # Determinamos el color y el mensaje según el estado
-    if proyeccion_final > max_p:
-        color_alerta = "#ef4444"  # Rojo
-        msg_estado = f"⚠️ EXCESO DETECTADO: Superarás el límite en {proyeccion_final - max_p:,.2f} €"
-        icon_estado = "🚨"
+    # --- 2. DETERMINACIÓN DE ESTADO VISUAL ---
+    if proyeccion_final > max_p + 1.0:
+        color_barra, icon_estado = "#ef4444", "🚨"
+        msg_estado = f"EXCESO DETECTADO: Superarás el límite en {proyeccion_final - max_p:,.2f} €"
     elif proyeccion_final >= max_p * 0.99:
-        color_alerta = "#22c55e"  # Verde
-        msg_estado = "✅ PLAN ÓPTIMO: Estás maximizando tu ahorro fiscal según los datos informados"
-        icon_estado = "🎯"
+        color_barra, icon_estado = "#22c55e", "🎯"
+        msg_estado = "✅ PLAN ÓPTIMO: Estás maximizando tu ahorro fiscal"
     else:
-        color_alerta = "#f59e0b"  # Ámbar
-        msg_estado = f"💡 Puedes aportar hasta {max_p - proyeccion_final:,.2f} € adicionales (hasta 31 de diciembre)"
-        icon_estado = "ℹ️"
+        color_barra, icon_estado = "#f59e0b", "💡"
+        msg_estado = f"Puedes aportar hasta {max_p - proyeccion_final:,.2f} € adicionales"
 
-    # --- 2. INDICADOR VISUAL DE PROGRESO (Estilo Minimal) ---
+    # --- 3. RENDERIZADO: BARRA DE PROGRESO ---
     st.markdown(f"""
         <div style="margin-bottom: 25px; padding: 10px 5px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -466,46 +450,26 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
                 </span>
             </div>
             <div style="background-color: #f1f5f9; border-radius: 20px; height: 8px; width: 100%;">
-                <div style="background-color: #64748b; width: {min(porcentaje_uso * 100, 100):.1f}%; height: 8px; border-radius: 20px;"></div>
+                <div style="background-color: {color_barra}; width: {porcentaje_uso * 100}%; height: 8px; border-radius: 20px; transition: width 0.5s ease-in-out;"></div>
             </div>
         </div>
     """, unsafe_allow_html=True)
 
-
-   
-# --- 3. RECOMENDACIÓN DE AJUSTE (Estilo Elegante) ---
-
-if proyeccion_final != max_p:
-    # Umbral de 1€ para evitar avisos por decimales insignificantes
+    # --- 4. RENDERIZADO: TARJETA DE ESTRATEGIA ---
     if abs(proyeccion_final - max_p) > 1.0:
-        
-        # 1. Configuración de estilo y lógica
-        color_acentuado = "#334155"  # Gris Slate oscuro
         flecha = "🔼" if diferencia_mensual > 0 else "🔽"
         verbo = "Incrementar" if diferencia_mensual > 0 else "reducir"
         
-        # Pre-calculamos el texto para inyectar en el HTML de forma segura
-        # Hemos añadido el valor absoluto a c_m y diferencia_mensual por estética
-        texto_estrategia = f"{flecha} <b>{verbo}</b> la cuota actual de {abs(c_m):,.2f} € en <b>{abs(diferencia_mensual):,.2f} €</b>"
+        texto_estrategia = f"{flecha} <b>{verbo}</b> la cuota de {abs(c_m):,.2f} € en <b>{abs(diferencia_mensual):,.2f} €</b>"
 
-        # 2. Renderizado de la tarjeta
         st.markdown(f"""
             <div style="
-                background-color: #ffffff; 
-                border: 1px solid #e2e8f0; 
-                padding: 25px; 
-                border-radius: 12px; 
-                margin: 20px 0; 
-                box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+                background-color: #ffffff; border: 1px solid #e2e8f0; padding: 25px; 
+                border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
             ">
                 <p style="
-                    text-transform: uppercase; 
-                    letter-spacing: 1px; 
-                    font-size: 0.8rem; 
-                    color: #64748b; 
-                    font-weight: 800; 
-                    margin-bottom: 15px;
-                    line-height: 1.4;
+                    text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; 
+                    color: #64748b; font-weight: 800; margin-bottom: 15px; line-height: 1.4;
                 ">
                     Estrategia Sugerida &nbsp;&nbsp; 
                     <span style="color: #0f172a; font-weight: 800;">
@@ -513,26 +477,19 @@ if proyeccion_final != max_p:
                         (aportación mensual total de {abs(nueva_cuota_total):,.2f} €)
                     </span>
                 </p>
-        
                 <div style="
-                    margin-top: 15px; 
-                    padding-top: 15px; 
-                    border-top: 1px solid #f8fafc; 
-                    color: #94a3b8; 
-                    font-size: 0.75rem;
+                    margin-top: 15px; padding-top: 15px; border-top: 1px solid #f8fafc; 
+                    color: #94a3b8; font-size: 0.75rem;
                 ">
                     ℹ️ Ajuste calculado para alcanzar el límite de <b>{max_p:,.2f} €</b> antes del 31 de diciembre.
                 </div>
             </div>
         """, unsafe_allow_html=True)
-    
-    # Este else debe estar alineado con el 'if abs(proyeccion_final - max_p) > 1.0'
     else:
         st.success("✨ Planificación optimizada al 100%. No se requieren ajustes.")
 
-# En caso de que proyeccion_final == max_p exactamente
-else:
-    st.success("✨ Planificación optimizada al 100%. No se requieren ajustes.")
+
+
 with st.expander("ℹ️ ¿Cómo realizar tu aportación on line?"):
     col_web, col_steps = st.columns([1, 1.5], gap="large")
     
