@@ -397,7 +397,7 @@ with tab1:
 
 
 # with tab2:
-with st.expander("ℹ️ ¿Te recomiendo conmo hacerlo?"):
+with st.expander("ℹ️ ¿Te recomiendo como hacerlo?"):
     # --- 0. PREPARACIÓN DE DATOS (Evita NameError) ---
     import datetime
     hoy = datetime.date.today()
@@ -439,20 +439,6 @@ with st.expander("ℹ️ ¿Te recomiendo conmo hacerlo?"):
         color_alerta = "#f59e0b"  # Ámbar
         msg_estado = f"💡 Puedes aportar hasta {max_p - proyeccion_final:,.2f} € (hasta 31 de diciembre)"
         icon_estado = "ℹ️"
-
-    # --- 2. INDICADOR VISUAL DE PROGRESO ---
-    st.markdown(f"""
-        <div style="background: #f8fafc; padding: 20px; border-radius: 15px; border: 1px solid #e2e8f0; margin-bottom: 20px;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                <span style="font-weight: bold; color: #1e293b;">{icon_estado} {msg_estado}</span>
-                <span style="font-weight: bold; color: {color_alerta};">{proyeccion_final:,.2f} / {max_p:,.2f} €</span>
-            </div>
-            <div style="background-color: #e2e8f0; border-radius: 10px; height: 12px; width: 100%;">
-                <div style="background-color: {color_alerta}; width: {porcentaje_uso*100}%; height: 12px; border-radius: 10px; transition: width 0.5s;"></div>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-
 
     # --- 2. INDICADOR VISUAL DE PROGRESO (Estilo Minimal) ---
     st.markdown(f"""
@@ -499,6 +485,35 @@ with st.expander("ℹ️ ¿Te recomiendo conmo hacerlo?"):
         st.balloons()
         st.success("¡Tu planificación es exacta!")
 
+    
+    st.markdown("---")
+
+
+    # --- 3. RECOMENDACIÓN DE AJUSTE (Estilo Elegante) ---
+    if proyeccion_final != max_p:
+        if abs(proyeccion_final - max_p) > 1.0:
+            # Definimos una sutileza de color según la acción
+            color_acentuado = "#334155" # Gris oscuro profesional
+            
+            st.markdown(f"""
+                <div style="background-color: #ffffff; border: 1px solid #e2e8f0; padding: 25px; border-radius: 12px; margin: 15px 0;">
+                    <p style="text-transform: uppercase; letter-spacing: 1px; font-size: 0.7rem; color: #64748b; font-weight: 700; margin-bottom: 15px;">
+                        Estrategia Sugerida
+                    </p>
+                    <p style="font-size: 0.95rem; color: #1e293b; line-height: 1.5; margin-bottom: 20px;">
+                        Para optimizar tu aportación y ajustarte al límite de <b>{max_p:,.2f} €</b>, la cuota mensual recomendada es:
+                    </p>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 2.2rem; font-weight: 300; color: {color_acentuado};">{nueva_cuota_total:,.2f} €</span>
+                        <span style="font-size: 1rem; color: #94a3b8;"> / mes</span>
+                    </div>
+                    <div style="padding-top: 15px; border-top: 1px solid #f1f5f9; font-size: 0.9rem; color: #475569;">
+                        {"🔼 <b>Incrementar</b>" if diferencia_mensual > 0 else "🔽 <b>Reducir</b>"} la cuota actual en <b>{abs(diferencia_mensual):,.2f} €</b> durante {meses_restantes} meses.
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
+    else:
+        st.success("Planificación optimizada al 100%")
     
     st.markdown("---")
 
