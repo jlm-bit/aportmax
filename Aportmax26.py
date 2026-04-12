@@ -249,7 +249,7 @@ diferencia_mensual = nueva_cuota_total - c_m
 total_mensual_previsto = c_m * meses_restantes
 aportacion_extraordinaria_neta = max(0.0, pendiente_para_limite - total_mensual_previsto)
 cumplimiento_plan = ((c_m *12 + e_y)*100)/max_p if max_p > 0 else 0
-extra_now = 
+extra_now = 0
 
 
 # --- CÁLCULOS GLOBALES (Poner esto ANTES de los st.tabs) ---
