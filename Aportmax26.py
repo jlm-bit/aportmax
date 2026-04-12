@@ -397,7 +397,7 @@ with tab1:
 
 
 # with tab2:
-    with st.expander("🚀 ¿Te recomiendo conmo hacerlo?"):
+with st.expander("🚀 ¿Te recomiendo conmo hacerlo?"):
     # --- 0. PREPARACIÓN DE DATOS (Evita NameError) ---
     import datetime
     hoy = datetime.date.today()
