@@ -381,7 +381,7 @@ with tab1:
     with c2:
         st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>⏳ Ya planificado (resto de año)</b></p><h4 style='margin:0; font-size:1.1rem;'>{c_m * meses_restantes:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
   
-    with c2:
+    with c3:
         cumplimiento = (Ya aportado + c_m * meses_restantes)*100/max_p
         st.markdown(f"<p style='margin:0; font-size:0.6rem;'><b>⏳ % cumplimmiento</b></p><h4 style='margin:0; font-size:1.1rem;'>{c_m * meses_restantes:,.0f}€</h4><small style='color:#64748b; font-size:0.6rem;'>{meses_restantes} mes. x {c_m:,.0f}€</small>", unsafe_allow_html=True)
     with c3:
