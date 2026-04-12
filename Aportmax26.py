@@ -334,7 +334,7 @@ with tab1:
     """, 
     unsafe_allow_html=True
 )
-    
+    with st.expander("ℹ️ ¿Cómo realizar tu aportación on line?"):
     col_left, col_right = st.columns([1.2, 1]) # Invertimos un poco el ratio para que los cuadros tengan aire
     
     with col_left:
