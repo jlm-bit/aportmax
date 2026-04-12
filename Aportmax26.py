@@ -512,7 +512,7 @@ if proyeccion_final != max_p:
                     </span>
                 </p>
                 
-                </div>
+           
             </div>
         """, unsafe_allow_html=True)
 
