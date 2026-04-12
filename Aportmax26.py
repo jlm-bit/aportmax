@@ -475,7 +475,6 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
    
 # --- 3. RECOMENDACIÓN DE AJUSTE (Estilo Elegante) ---
 
-# --- 3. RECOMENDACIÓN DE AJUSTE (Versión Final Corregida) ---
 
 if proyeccion_final != max_p:
     # Umbral de 1€ para evitar avisos por decimales insignificantes
@@ -513,8 +512,6 @@ if proyeccion_final != max_p:
                     </span>
                 </p>
                 
-              
-                    ℹ️ Este ajuste permite cubrir los <b>{abs(max_p - ya_aportado):,.2f} €</b> restantes de forma equilibrada.
                 </div>
             </div>
         """, unsafe_allow_html=True)
