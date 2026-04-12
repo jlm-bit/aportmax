@@ -419,7 +419,7 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=True):
         # CASO NORMAL: Puede mantener la cuota ideal haciendo el pago extra.
         cuota_sostenible_final = cuota_ideal_estandar
         subtitulo_b = "Cuota ideal de ahorro prorrateado"
-        detalle_b = f"Compensa el retraso ahora con un pago único y fija una cuota mensula futura de {cuota_sostenible_final:,.2f} €. que corresponde a 1/12 del límite máximo."
+        detalle_b = f"Compensa el retraso ahora con un pago único y fija una cuota mensual futura de {cuota_sostenible_final:,.2f} €. que corresponde a 1/12 del límite máximo."
 
     # --- 2. INDICADOR VISUAL (Barra de progreso) ---
     proyeccion_actual = ya_aportado + (c_m * meses_restantes)
@@ -671,7 +671,7 @@ with tab2:
 
     with r2:
         st.markdown(f"""<div class="premium-card">
-            <div class="label-fina">Diferencial</div>
+            <div class="label-fina">SIN APORTACIÓN PERSONAL</div>
             <div class="valor-fino" style="color: #cbd5e1;">{renta_b:,.0f}<span style="font-size: 1rem;"> €</span></div>
             <div style="margin-top: 10px;"><span style="color: #ef4444; font-size: 0.8rem;">✕ {dif_renta:,.0f} € menos al mes</span></div>
         </div>""", unsafe_allow_html=True)
