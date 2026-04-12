@@ -418,18 +418,18 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=True):
     # --- 1. CÁLCULOS BASE ---
     faltante_total = max_p - ya_aportado
     # --- 1. CÁLCULOS DE PRECISIÓN ---
-# Cuota ideal anual prorrateada (ej. 225€ si el límite es 2700€)
-cuota_sostenible = max_p / 12
-
-# Calculamos cuánto sumarán las cuotas sostenibles de aquí a fin de año
-total_cuotas_futuras = cuota_sostenible * meses_restantes
-
-# El pago extra es lo que falta para llegar al máximo tras sumar lo ya aportado y lo futuro
-pago_extraordinario = max_p - ya_aportado - total_cuotas_futuras
-
-# Seguridad: Si el usuario ya ha aportado mucho y el extra sale negativo, 
-# lo ponemos a 0 (aunque en ese caso la cuota sostenible debería bajar)
-pago_extraordinario = max(pago_extraordinario, 0.0)
+    # Cuota ideal anual prorrateada (ej. 225€ si el límite es 2700€)
+    cuota_sostenible = max_p / 12
+    
+    # Calculamos cuánto sumarán las cuotas sostenibles de aquí a fin de año
+    total_cuotas_futuras = cuota_sostenible * meses_restantes
+    
+    # El pago extra es lo que falta para llegar al máximo tras sumar lo ya aportado y lo futuro
+    pago_extraordinario = max_p - ya_aportado - total_cuotas_futuras
+    
+    # Seguridad: Si el usuario ya ha aportado mucho y el extra sale negativo, 
+    # lo ponemos a 0 (aunque en ese caso la cuota sostenible debería bajar)
+    pago_extraordinario = max(pago_extraordinario, 0.0)
 
 # --- 2. VERIFICACIÓN (Opcional para debug) ---
 # total_final = ya_aportado + pago_extraordinario + total_cuotas_futuras
