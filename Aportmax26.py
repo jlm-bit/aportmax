@@ -360,7 +360,7 @@ with tab1:
     # pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
     # st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf")
 
-with st.expander("ℹ️ ¿Te recomiendo como hacerlo?"):
+with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y de forma facil"):
     # --- 0. PREPARACIÓN DE DATOS (Evita NameError) ---
     import datetime
     hoy = datetime.date.today()
@@ -382,9 +382,6 @@ with st.expander("ℹ️ ¿Te recomiendo como hacerlo?"):
         color_alerta, icon_estado = "#f59e0b", "💡"
         msg_estado = f"OPORTUNIDAD: +{max_p - proyeccion_final:,.0f}€"
 
-  #  st.markdown("### 🎯 Plan de Acción Personal")
-    
- 
     # --- 1. LÓGICA DE PROYECCIÓN MES A MES ---
     proyeccion_final = ya_aportado + (c_m * meses_restantes)
     porcentaje_uso = min(proyeccion_final / max_p, 1.1) if max_p > 0 else 0
@@ -433,14 +430,14 @@ with st.expander("ℹ️ ¿Te recomiendo como hacerlo?"):
                         Estrategia Sugerida
                     </p>
                     <p style="font-size: 0.95rem; color: #1e293b; line-height: 1.5; margin-bottom: 20px;">
-                        Para optimizar tu aportación y ajustarte al límite de <b>{max_p:,.2f} €</b>, la cuota mensual recomendada es:
+                        En comodos plazos, para optimizar tu aportación y ajustarte al límite de <b>{max_p:,.2f} €</b>, la cuota mensual recomendada es:
                     </p>
                     <div style="margin-bottom: 20px;">
                         <span style="font-size: 2.2rem; font-weight: 300; color: {color_acentuado};">{nueva_cuota_total:,.2f} €</span>
                         <span style="font-size: 1rem; color: #94a3b8;"> / mes (durante los meses que quedan del año)</span>
                     </div>
                     <div style="padding-top: 15px; border-top: 1px solid #f1f5f9; font-size: 0.9rem; color: #475569;">
-                        {"🔼 <b> Esto es, incrementar</b>" if diferencia_mensual > 0 else "🔽 <b>reducir</b>"} la cuota actual en <b>{abs(diferencia_mensual):,.2f} €</b> durante {meses_restantes} meses.
+                        {"🔼  Esto es,<b> incrementar</b>" if diferencia_mensual > 0 else "🔽 <b>reducir</b>"} la cuota actual en <b>{abs(diferencia_mensual):,.2f} €</b> durante {meses_restantes} meses.
                     </div>
                 </div>
             """, unsafe_allow_html=True)
@@ -450,7 +447,7 @@ with st.expander("ℹ️ ¿Te recomiendo como hacerlo?"):
     st.markdown("---")
 
 
-with st.expander("ℹ️ ¿Cómo realizar tu aportación?"):
+with st.expander("ℹ️ ¿Cómo realizar tu aportación on line?"):
     col_web, col_steps = st.columns([1, 1.5], gap="large")
     
     with col_web:
@@ -640,7 +637,7 @@ with tab2:
         st.markdown(f"""<div class="premium-card">
             <div class="label-fina">Capital Proyectado</div>
             <div class="valor-fino">{cap_a:,.0f}<span style="font-size: 1rem;"> €</span></div>
-            <div class="subtexto-fino">Escenario optimizado al {rent_pct}%</div>
+            <div class="subtexto-fino">Rentabilidad estimada del {rent_pct}%</div>
         </div>""", unsafe_allow_html=True)
     
     with c2:
@@ -654,7 +651,7 @@ with tab2:
         st.markdown(f"""<div class="premium-card" style="background: linear-gradient(145deg, #1e3a8a, #1e40af);">
             <div class="label-fina" style="color: #93c5fd;">Beneficio Neto Extra</div>
             <div class="valor-fino" style="color: #ffffff; font-weight: 400;">+{dif_cap:,.0f}<span style="font-size: 1rem;"> €</span></div>
-            <div class="subtexto-fino" style="color: #93c5fd;">Patrimonio creado de la nada</div>
+            <div class="subtexto-fino" style="color: #93c5fd;">Patrimonio creado de tu estrategia</div>
         </div>""", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
