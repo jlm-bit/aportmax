@@ -223,8 +223,8 @@ with st.sidebar:
    
         if sb <= 0.0:
             st.warning(f"⚠️ Introduce tus datos personales. Salario, Aportaciones de la empresa al plan, tus aportacinoes") 
-            st.stop
-        
+            st.stop()
+                    
         if emp_t_bruta > 10000.0:
             st.warning(f"⚠️ La aportación de la empresa se ha limitado a 10.000€ (Exceso: {emp_t_bruta - 10000.0:,.2f}€)")
 
