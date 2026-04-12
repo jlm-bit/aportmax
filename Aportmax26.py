@@ -690,7 +690,7 @@ with tab3:
         Este simulador ha sido desarrollado para ilustrar el impacto del interés compuesto y la constancia en el ahorro a largo plazo. 
         Para consultas vinculantes, se recomienda acudir a un asesor fiscal o financiero.
         """)
- st.markdown("---") # Separador visual
+    st.markdown("---") # Separador visual
 
 # Recopilación de todas las variables calculadas
 datos_pdf = {
