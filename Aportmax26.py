@@ -257,9 +257,6 @@ ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 
 # --- 6. RENDERIZADO PRINCIPAL ---
 
-# --- 6. RENDERIZADO PRINCIPAL (ESTILO ALTA FIDELIDAD) ---
-
-# --- 6. RENDERIZADO PRINCIPAL (DISEÑO BOUTIQUE CON COLOR) ---
 
 st.markdown("""
     <style>
@@ -315,7 +312,7 @@ st.markdown("""
     <div class="header-wrapper">
         <h1 class="main-title">FESELQUEPUGUIS<span class="year-highlight">2026</span></h1>
         <div class="color-accent-line"></div>
-        <p class="subtitle-premium">Advanced Wealth Planning & Strategy</p>
+        <p class="subtitle-premium">Tu aportación voluntaria al Plan de Pensiones de Empleo</p>
     </div>
 """, unsafe_allow_html=True)
 
