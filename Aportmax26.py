@@ -460,7 +460,7 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
         flecha = "🔼" if diferencia_mensual > 0 else "🔽"
         verbo = "Incrementar" if diferencia_mensual > 0 else "reducir"
         
-        texto_estrategia = f"{flecha} <b>{verbo}</b> la cuota de {abs(c_m):,.2f} € en <b>{abs(diferencia_mensual):,.2f} €</b>"
+        texto_estrategia = f"{flecha} <b>{verbo}</b> la cuota mensual actual de {abs(c_m):,.2f} € en <b>{abs(diferencia_mensual):,.2f} €</b>"
 
         st.markdown(f"""
             <div style="
@@ -473,7 +473,7 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
                 ">
                     Estrategia Sugerida &nbsp;&nbsp; 
                     <span style="color: #0f172a; font-weight: 800;">
-                        {texto_estrategia} durante {meses_restantes} meses 
+                        {texto_estrategia} durante {meses_restantes} meses restantes del año 
                         (aportación mensual total de {abs(nueva_cuota_total):,.2f} €)
                     </span>
                 </p>
