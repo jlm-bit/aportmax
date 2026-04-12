@@ -356,7 +356,7 @@ with st.expander("ℹ️ Datos detallados", expanded=False):
         with sub_col2:
             st.markdown(f"""
                 <div style="background-color: #ffffff; color: #0f172a; padding: 25px; border-radius: 12px; height: 180px; text-align: left; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-                    <p style="margin:0; font-size: 0.7rem; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">AHORRO FISCAL (IRPF)</p>
+                    <p style="margin:0; font-size: 0.7rem; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">AHORRO FISCAL (IRPF. Tramos Catalunya)</p>
                     <h2 style="font-size: 2rem; margin: 10px 0; color: #10b981; border: none;">{ahorro:,.2f} €</h2>
                     <p style="margin:0; font-weight: 700; font-size: 0.85rem; color: #0f172a;">Devolución estimada: {eficiencia:.1f}%</p>
                 </div>
@@ -414,12 +414,12 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=True):
         pago_extraordinario = 0.0
         cuota_sostenible_final = cuota_mensual_pura
         subtitulo_b = "Cuota reducida por aportación previa alta"
-        detalle_b = "Como ya has aportado gran parte del límite, tu cuota sostenible se ajusta al mínimo necesario."
+        detalle_b = "Como ya has aportado gran parte del límite, tu cuota se ajusta al mínimo necesario, sin perjuicio de su revisión a año siguiente"
     else:
         # CASO NORMAL: Puede mantener la cuota ideal haciendo el pago extra.
         cuota_sostenible_final = cuota_ideal_estandar
         subtitulo_b = "Cuota ideal de ahorro prorrateado"
-        detalle_b = f"Compensa el retraso ahora con un pago único y mantén la cuota de {cuota_sostenible_final:,.2f} €."
+        detalle_b = f"Compensa el retraso ahora con un pago único y fija una cuota mensula futura de {cuota_sostenible_final:,.2f} €. que corresponde a 1/12 del límite máximo."
 
     # --- 2. INDICADOR VISUAL (Barra de progreso) ---
     proyeccion_actual = ya_aportado + (c_m * meses_restantes)
@@ -448,7 +448,7 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=True):
             <div style="background-color: {bg_color}; border: 1px solid {border_color}; padding: 20px; border-radius: 12px; height: 210px;">
                 <p style="font-size: 0.7rem; font-weight: 800; color: #0369a1; text-transform: uppercase;">Opción B: {subtitulo_b} ✨</p>
                 <p style="font-size: 1.6rem; font-weight: 850; color: #0369a1; margin: 5px 0;">{cuota_sostenible_final:,.2f} € <span style="font-size: 0.8rem;">/mes</span></p>
-                <p style="font-size: 0.9rem; font-weight: 700; color: #0c4a6e; margin-bottom: 5px;">+ {pago_extraordinario:,.2f} € extra hoy</p>
+                <p style="font-size: 0.9rem; font-weight: 700; color: #0c4a6e; margin-bottom: 5px;">+ {pago_extraordinario:,.2f} € como aportación extraordinaria adicional este año </p>
                 <p style="font-size: 0.75rem; color: #0369a1; opacity: 0.8; line-height: 1.4;">{detalle_b}</p>
             </div>
         """, unsafe_allow_html=True)
