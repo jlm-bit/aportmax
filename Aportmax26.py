@@ -332,10 +332,10 @@ with tab1:
             <p style='margin:0; color:#64748b; font-size:0.85rem;'>
                 Promotor. Aportación Anual (prevista): <b>{emp_t:,.2f}€</b>
             </p>
-            <p style='margin:4px 0 0 0; color:#64748b; font-size:0.85rem;'>
+            <p style='margin:0px 0 0 0; color:#64748b; font-size:0.85rem;'>
                 Empleado. Aportación Personal Máxima: <b>{max_p:,.2f}€</b>
             </p>
-           <p style='margin:4px 0 0 0; color:#64748b; font-size:0.85rem;'>
+           <p style='margin:0px 0 0 0; color:#64748b; font-size:0.85rem;'>
                 Empleado. Aportación ya realizada + planificada): <b>{aport_previstas:,.2f}€</b>
             </p>
         </div>
