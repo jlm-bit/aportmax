@@ -256,70 +256,56 @@ ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 # años_jub = 67 - edad  # 'edad' viene del sidebar
 
 # --- 6. RENDERIZADO PRINCIPAL ---
-# --- 6. RENDERIZADO PRINCIPAL (DISEÑO BOUTIQUE CON AZUL CLARO) ---
-
 st.markdown("""
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;500;800&display=swap');
         
         .header-wrapper {
-            padding: 50px 0 20px 0; /* Un poco más estrecho y compacto */
+            padding: 10px 0 5px 0; /* Altura mínima absoluta */
             text-align: center;
-            background: radial-gradient(circle at top right, #f0f9ff, #ffffff); /* Fondo con matiz azul muy claro */
-            border-radius: 0 0 30px 30px; /* Bordes inferiores suavizados */
-            border-bottom: 1px solid #e0f2fe; /* Línea divisoria muy fina */
-            margin-bottom: 25px;
+            background: transparent;
         }
         
         .main-title {
             font-family: 'Inter', sans-serif;
             font-weight: 100;
             color: #0f172a;
-            letter-spacing: 12px; /* Un poco más compacto */
-            text-transform: uppercase;
-            font-size: 2.5rem; /* Un poco más pequeño */
+            letter-spacing: 5px; 
+            font-size: 1.5rem; /* Letra más pequeña y fina */
             margin: 0;
             line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .year-highlight {
-            font-weight: 600;
-            /* Degradado elegante en azul claro */
-            background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 50%, #7dd3fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 3px;
-            margin-left: 8px;
+            font-weight: 800;
+            color: #1d4ed8; /* Azul más fuerte (cobalto) */
+            margin-left: 10px;
+            letter-spacing: 1px;
+            font-size: 1.5rem;
         }
         
-        .subtitle-premium {
+        .subtitle-slim {
             font-family: 'Inter', sans-serif;
-            font-weight: 400;
+            font-weight: 500;
             color: #64748b;
-            letter-spacing: 4px;
-            font-size: 0.7rem; /* Un poco más pequeña */
-            margin-top: 15px;
+            letter-spacing: 1px;
+            font-size: 0.55rem;
+            margin-top: 2px; /* Espacio mínimo */
             text-transform: uppercase;
-        }
-
-        .color-accent-line {
-            width: 80px; /* Más estrecha */
-            height: 2px; /* Más fina */
-            background: linear-gradient(90deg, #38bdf8, #7dd3fc);
-            margin: 20px auto;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(56, 189, 248, 0.2); /* Brillo más sutil */
+            opacity: 0.8;
         }
     </style>
     
     <div class="header-wrapper">
-        <h1 class="main-title">FESELQUEPUGUIS<span class="year-highlight">2026</span></h1>
-        <div class="color-accent-line"></div>
-        <p class="subtitle-premium">Tu Aportación Voluntaria • Plan de Pensiones de Empleo</p>
+        <h1 class="main-title">
+            FESELQUEPUGUIS <span class="year-highlight">2026</span>
+        </h1>
+        <p class="subtitle-slim">Aportación Voluntaria • Plan de Pensiones de Empleo</p>
     </div>
 """, unsafe_allow_html=True)
-
-tab1, tab2, tab3 = st.tabs(["💰 Aportación Máxima ", "🚀 Proyección a la Jubilación ", "🎯 Acerca de "])
 
 tab1, tab2, tab3 = st.tabs(["💰 Aportación Máxima ", "🚀 Proyección a la Jubilación ", "🎯 Acerca de Fes... "])
 
