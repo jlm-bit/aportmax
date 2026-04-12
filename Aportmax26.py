@@ -248,6 +248,7 @@ nueva_cuota_total = pendiente_para_limite / meses_restantes if meses_restantes >
 diferencia_mensual = nueva_cuota_total - c_m
 total_mensual_previsto = c_m * meses_restantes
 aportacion_extraordinaria_neta = max(0.0, pendiente_para_limite - total_mensual_previsto)
+aport_previstas = c_m *12 + e_y
 cumplimiento_plan = ((c_m *12 + e_y)*100)/max_p if max_p > 0 else 0
 extra_now = 0
 
@@ -324,15 +325,18 @@ with tab1:
         <p style='margin:0; font-size:1.0rem;'>
             <b>💰 Aportación adicional que puedes realizar este año (como máximo)</b>
         </p>
-        <h4 style='margin:10px 0; font-size:2.6rem; color:#334155; line-height:1.1; font-weight:900;'>
+        <h4 style='margin:10px 0; font-size:2.6rem; color:#334155; line-height:1.1; font-weight:700;'>
             {aportacion_extraordinaria_neta:,.0f}€
         </h4>
         <div style="margin-top: 15px;">
             <p style='margin:0; color:#64748b; font-size:0.85rem;'>
-                Aportación Anual Promotor (prevista): <b>{emp_t:,.2f}€</b>
+                Promotor. Aportación Anual (prevista): <b>{emp_t:,.2f}€</b>
             </p>
             <p style='margin:8px 0 0 0; color:#64748b; font-size:0.85rem;'>
-                Aportación Máxima Total: <b>{max_p:,.2f}€</b>
+                Empleado. Aportación Personal Máxima: <b>{max_p:,.2f}€</b>
+            </p>
+           <p style='margin:8px 0 0 0; color:#64748b; font-size:0.85rem;'>
+                Empleado. Aportación prevista actual (realizada +planificada): <b>{aport_previstas:,.2f}€</b>
             </p>
         </div>
     </div>
