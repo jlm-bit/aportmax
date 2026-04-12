@@ -334,6 +334,97 @@ with tab1:
     """, 
     unsafe_allow_html=True
 )
+
+
+with st.expander("ℹ️ Datos detallados1", expanded=False):
+    col_left, col_right = st.columns([1.2, 1])
+    
+    with col_left:
+        # --- SUB-COLUMNAS PARA LOS CUADROS PRINCIPALES ---
+        sub_col1, sub_col2 = st.columns(2)
+        
+        with sub_col1:
+            st.markdown(f"""
+                <div style="background-color: #0f172a; color: white; padding: 25px; border-radius: 12px; height: 180px; text-align: left; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+                    <p style="margin:0; font-size: 0.7rem; opacity: 0.7; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Máxima Aportación Personal</p>
+                    <h2 style="font-size: 2rem; margin: 10px 0; color: white; border: none;">{max_p:,.2f} €</h2>
+                    <p style="margin:0; font-size: 0.75rem; opacity: 0.6;">Límite legal anual</p>
+                </div>
+            """, unsafe_allow_html=True)
+
+        with sub_col2:
+            st.markdown(f"""
+                <div style="background-color: #ffffff; color: #0f172a; padding: 25px; border-radius: 12px; height: 180px; text-align: left; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                    <p style="margin:0; font-size: 0.7rem; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Ahorro Fiscal (IRPF)</p>
+                    <h2 style="font-size: 2rem; margin: 10px 0; color: #10b981; border: none;">{ahorro:,.2f} €</h2>
+                    <p style="margin:0; font-weight: 700; font-size: 0.85rem; color: #0f172a;">Eficiencia: {eficiencia:.1f}%</p>
+                </div>
+            """, unsafe_allow_html=True)
+            
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.info(f"⚠️ **Nota:** Los resultados se basan en los datos del panel lateral. Revisa que tu Salario Bruto y aportaciones actuales sean correctos.")   
+
+    with col_right:
+        # --- GRÁFICO DONUT ---
+        total_inversion = esfuerzo_neto + ahorro + emp_t
+        fig = go.Figure(data=[go.Pie(
+            labels=['Esfuerzo Neto', 'Ahorro Fiscal', 'Empresa'], 
+            values=[esfuerzo_neto, ahorro, emp_t], 
+            hole=.7,
+            marker_colors=['#3b82f6', '#10b981', '#0f172a'],
+            textinfo='none', 
+            hoverinfo='label+value+percent',
+        )])
+        
+        fig.update_layout(
+            title={'text': "Distribución de la Inversión", 'y': 0.9, 'x': 0.5, 'xanchor': 'center', 'font': {'size': 14, 'color': '#64748b'}},
+            margin=dict(t=40, b=0, l=0, r=0), 
+            height=300, 
+            showlegend=True, 
+            legend=dict(orientation="h", y=-0.1, x=0.5, xanchor="center", font=dict(size=10)),
+            annotations=[dict(text=f'<span style="color:#64748b; font-size:10px">TOTAL</span><br><span style="font-size:18px; font-weight:800;">{total_inversion:,.0f}€</span>', x=0.5, y=0.5, showarrow=False)]
+        )
+        st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+
+    st.markdown("<hr style='margin: 20px 0; border: 0; border-top: 1px solid #f1f5f9;'>", unsafe_allow_html=True)
+
+    # --- 3. DESGLOSE COMPACTO EN TARJETAS MINIMALISTAS ---
+    import datetime
+    hoy = datetime.date.today()
+    meses_nombres_es = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+    mes_fin_ya = meses_nombres_es[hoy.month - 2] if hoy.month > 1 else "Ene"
+
+    c1, c2, c3, c4 = st.columns(4)
+    
+    def card_mini(titulo, valor, subtexto, color_valor="#0f172a"):
+        return f"""
+            <div style="background-color: #f8fafc; padding: 15px; border-radius: 10px; border: 1px solid #f1f5f9;">
+                <p style="margin:0; font-size:0.65rem; color:#64748b; font-weight:800; text-transform:uppercase;">{titulo}</p>
+                <h4 style="margin:5px 0; font-size:1.2rem; color:{color_valor}; font-weight:800;">{valor}</h4>
+                <p style="margin:0; color:#94a3b8; font-size:0.6rem;">{subtexto}</p>
+            </div>
+        """
+
+    with c1:
+        st.markdown(card_mini("Ya aportado", f"{ya_aportado:,.0f}€", f"Ene a {mes_fin_ya[:3]}"), unsafe_allow_html=True)
+    
+    with c2:
+        st.markdown(card_mini("Planificado", f"{c_m * meses_restantes:,.0f}€", f"{meses_restantes} meses x {c_m:,.0f}€"), unsafe_allow_html=True)
+    
+    with c3:
+        st.markdown(card_mini("% Cumplimiento", f"{cumplimiento_plan:,.1f}%", "Sobre el límite anual"), unsafe_allow_html=True)
+
+    with c4:
+        # Resaltamos esta tarjeta por ser la acción clave
+        st.markdown(f"""
+            <div style="background-color: #eff6ff; padding: 15px; border-radius: 10px; border: 1px solid #dbeafe;">
+                <p style="margin:0; font-size:0.65rem; color:#1e40af; font-weight:800; text-transform:uppercase;">Aport. Extra única</p>
+                <h4 style="margin:5px 0; font-size:1.4rem; color:#1e40af; font-weight:800;">{aportacion_extraordinaria_neta:,.0f}€</h4>
+                <p style="margin:0; color:#60a5fa; font-size:0.6rem; font-weight:600;">Para alcanzar el máximo</p>
+            </div>
+        """, unsafe_allow_html=True)
+
+
 with st.expander("ℹ️ Datos detallados"):
         col_left, col_right = st.columns([1.2, 1]) # Invertimos un poco el ratio para que los cuadros tengan aire
         
