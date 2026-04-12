@@ -327,7 +327,7 @@ with tab1:
             {aportacion_extraordinaria_neta:,.0f}€
         </h4>
         <p style='margin:0; color:#64748b; font-size:0.8rem;'>
-        hola  
+        Aportación Promotor {emp_t:,.2f}€  
        
     </div>
     <hr style="margin: 1em 0;">
