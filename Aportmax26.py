@@ -487,31 +487,7 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
         """, unsafe_allow_html=True)
 
 
-        st.markdown(f"""
-            <div style="
-                background-color: #ffffff; border: 1px solid #e2e8f0; padding: 25px; 
-                border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-            ">
-                <p style="
-                    text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; 
-                    color: #64748b; font-weight: 800; margin-bottom: 15px; line-height: 1.4;
-                ">
-                    Alternativa Sugerida &nbsp;&nbsp; 
-                    <span style="color: #0f172a; font-weight: 800;">
-                        {texto_estrategia} Combinar aportación extraordinaria con incremento de la aportación mensual 
-                        
-                    </span>
-                </p>
-                <div style="
-                    margin-top: 15px; padding-top: 15px; border-top: 1px solid #f8fafc; 
-                    color: #94a3b8; font-size: 0.75rem;
-                ">
-                    ℹ️ Ajuste calculado para alcanzar el límite de <b>{max_p:,.2f} €</b> a 31 de diciembre.
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-
+       
     
     
     else:
