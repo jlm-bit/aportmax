@@ -326,11 +326,15 @@ with tab1:
         <h4 style='margin:0; font-size:2.0rem; color:#1e40af; line-height:1.1;'>
             {aportacion_extraordinaria_neta:,.0f}€
         </h4>
-        <p style='margin:0; color:#64748b; font-size:0.8rem;'>
-        Aportación Anual Promotor (prevista): {emp_t:,.2f}€</b>
-        Aportación Máxima Total: {max_p:,.2f}€
+        <div style="border-top: 1px solid #e2e8f0; margin-top: 15px; padding-top: 12px;">
+            <p style='margin:0; color:#64748b; font-size:0.8rem;'>
+                Aportación Anual Promotor (prevista): <b>{emp_t:,.2f}€</b>
+            </p>
+            <p style='margin:8px 0 0 0; color:#64748b; font-size:0.8rem;'>
+                Aportación Máxima Total: <b>{max_p:,.2f}€</b>
+            </p>
+        </div>
     </div>
-    <hr style="margin: 1em 0;">
     """, 
     unsafe_allow_html=True
 )
