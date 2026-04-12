@@ -463,8 +463,8 @@ with st.expander("ℹ️ Estrategia de Ahorro Máximo Optimizado", expanded=True
                         <span style="font-size: 1.6rem; font-weight: 850; color: #166534;">{cuota_sostenible:,.2f} €</span>
                         <span style="font-size: 0.9rem; color: #166534;">/mes</span>
                     </div>
-                    <p style="font-size: 0.85rem; color: #166534; font-weight: 700; margin-bottom: 8px;">
-                        + {pago_extraordinario:,.2f} € extra hoy
+                    <p style="font-size: 0.9rem; color: #166534; font-weight: 700; margin-bottom: 8px;">
+                        + {pago_extraordinario:,.2f} € como aportación extraordinaria (hasta 31 de diciembre)
                     </p>
                     <p style="font-size: 0.8rem; color: #166534; line-height: 1.4; opacity: 0.9;">
                         Establece la cuota ideal de largo plazo y compensa el retraso con una aportación única.
