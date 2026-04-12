@@ -492,7 +492,28 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
                 </div>
             """, unsafe_allow_html=True)
    
-          
+
+        
+            st.markdown(f"""
+                    <div style="background-color: #ffffff; border: 1px solid #e2e8f0; padding: 25px; border-radius: 12px; margin: 15px 0;">
+                        <p style="text-transform: uppercase; letter-spacing: 1px; font-size: 0.7rem; color: #64748b; font-weight: 700; margin-bottom: 15px;">
+                            Estrategia Sugerida
+                        </p>
+                        <p style="font-size: 0.95rem; color: #1e293b; line-height: 1.5; margin-bottom: 20px;">
+                            En comodos plazos, para ajustarte al límite de <b>{max_p:,.2f} €</b>, la nueva cuota mensual recomendada es:
+                        </p>
+                        <div style="margin-bottom: 18px;">
+                            <span style="font-size: 2.0rem; font-weight: 300; color: {color_acentuado};">{nueva_cuota_total:,.2f} €</span>
+                            <span style="font-size: 1rem; color: #94a3b8;"> / mes (durante los meses que quedan del año)</span>
+                        </div>
+                        <div style="padding-top: 15px; border-top: 1px solid #f1f5f9; font-size: 0.9rem; color: #475569;">
+                            {"🔼  Esto es,<b> incrementar</b>" if diferencia_mensual > 0 else "🔽 <b>reducir</b>"} la cuota actual en <b>{abs(diferencia_mensual):,.2f} €</b> durante {meses_restantes} meses.
+                        </div>
+                                  
+                    </div>
+                """, unsafe_allow_html=True)
+
+    
     else:
         st.success("Planificación optimizada al 100%")
     
