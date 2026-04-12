@@ -437,10 +437,10 @@ with st.expander("ℹ️ ¿Te recomiendo como hacerlo?"):
                     </p>
                     <div style="margin-bottom: 20px;">
                         <span style="font-size: 2.2rem; font-weight: 300; color: {color_acentuado};">{nueva_cuota_total:,.2f} €</span>
-                        <span style="font-size: 1rem; color: #94a3b8;"> / mes</span>
+                        <span style="font-size: 1rem; color: #94a3b8;"> / mes (durante los meses que quedan del año</span>
                     </div>
                     <div style="padding-top: 15px; border-top: 1px solid #f1f5f9; font-size: 0.9rem; color: #475569;">
-                        {"🔼 <b>Incrementar</b>" if diferencia_mensual > 0 else "🔽 <b>Reducir</b>"} la cuota actual en <b>{abs(diferencia_mensual):,.2f} €</b> durante {meses_restantes} meses.
+                        {"🔼 <b> Esto es, incrementar</b>" if diferencia_mensual > 0 else "🔽 <b>reducir</b>"} la cuota actual en <b>{abs(diferencia_mensual):,.2f} €</b> durante {meses_restantes} meses.
                     </div>
                 </div>
             """, unsafe_allow_html=True)
