@@ -475,61 +475,64 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
    
 # --- 3. RECOMENDACIÓN DE AJUSTE (Estilo Elegante) ---
 
+if proyeccion_final != max_p:
+    # Umbral de 1€ para evitar avisos por decimales insignificantes
+    if abs(proyeccion_final - max_p) > 1.0:
+        
+        # 1. Configuración de estilo y lógica
+        color_acentuado = "#334155"  # Gris Slate oscuro
+        flecha = "🔼" if diferencia_mensual > 0 else "🔽"
+        verbo = "Incrementar" if diferencia_mensual > 0 else "reducir"
+        
+        # Pre-calculamos el texto para inyectar en el HTML de forma segura
+        # Hemos añadido el valor absoluto a c_m y diferencia_mensual por estética
+        texto_estrategia = f"{flecha} <b>{verbo}</b> la cuota actual de {abs(c_m):,.2f} € en <b>{abs(diferencia_mensual):,.2f} €</b>"
 
-    if proyeccion_final != max_p:
-        # Umbral de 1€ para evitar avisos por decimales insignificantes
-        if abs(proyeccion_final - max_p) > 1.0:
-            
-            # 1. Configuración de estilo y lógica
-            color_acentuado = "#334155"  # Gris Slate oscuro
-            flecha = "🔼" if diferencia_mensual > 0 else "🔽"
-            verbo = "Incrementar" if diferencia_mensual > 0 else "reducir"
-            
-            # Pre-calculamos el texto para inyectar en el HTML de forma segura
-            texto_estrategia = f"{flecha} <b>{verbo}</b> la cuota actual de {abs(c_m):,.2f} € en <b>{abs(diferencia_mensual):,.2f} €</b>"
-    
-             # 2. Renderizado de la tarjeta
-            st.markdown(f"""
-                <div style="
-                    background-color: #ffffff; 
-                    border: 1px solid #e2e8f0; 
-                    padding: 25px; 
-                    border-radius: 12px; 
-                    margin: 20px 0; 
-                    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        # 2. Renderizado de la tarjeta
+        st.markdown(f"""
+            <div style="
+                background-color: #ffffff; 
+                border: 1px solid #e2e8f0; 
+                padding: 25px; 
+                border-radius: 12px; 
+                margin: 20px 0; 
+                box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            ">
+                <p style="
+                    text-transform: uppercase; 
+                    letter-spacing: 1px; 
+                    font-size: 0.8rem; 
+                    color: #64748b; 
+                    font-weight: 800; 
+                    margin-bottom: 15px;
+                    line-height: 1.4;
                 ">
-                    <p style="
-                        text-transform: uppercase; 
-                        letter-spacing: 1px; 
-                        font-size: 0.8rem; 
-                        color: #64748b; 
-                        font-weight: 800; 
-                        margin-bottom: 15px;
-                        line-height: 1.4;
-                    ">
-                        Estrategia Sugerida &nbsp;&nbsp; 
-                        <span style="color: #0f172a; font-weight: 800;">
-                            {texto_estrategia} durante {meses_restantes} meses 
-                            (aportación mensual total de {abs(nueva_cuota_total):,.2f} €)
-                        </span>
-                    </p>
-            
-                    <div style="
-                        margin-top: 15px; 
-                        padding-top: 15px; 
-                        border-top: 1px solid #f8fafc; 
-                        color: #94a3b8; 
-                        font-size: 0.75rem;
-                    ">
-                        ℹ️ Ajuste calculado para alcanzar el límite de <b>{max_p:,.2f} €</b> antes del 31 de diciembre.
-                    </div>
+                    Estrategia Sugerida &nbsp;&nbsp; 
+                    <span style="color: #0f172a; font-weight: 800;">
+                        {texto_estrategia} durante {meses_restantes} meses 
+                        (aportación mensual total de {abs(nueva_cuota_total):,.2f} €)
+                    </span>
+                </p>
+        
+                <div style="
+                    margin-top: 15px; 
+                    padding-top: 15px; 
+                    border-top: 1px solid #f8fafc; 
+                    color: #94a3b8; 
+                    font-size: 0.75rem;
+                ">
+                    ℹ️ Ajuste calculado para alcanzar el límite de <b>{max_p:,.2f} €</b> antes del 31 de diciembre.
                 </div>
-            """, unsafe_allow_html=True)
-                # Caso en el que la proyección es perfecta
-                else:
-                    st.success("✨ Planificación optimizada al 100%. No se requieren ajustes.")
-            
+            </div>
+        """, unsafe_allow_html=True)
+    
+    # Este else debe estar alineado con el 'if abs(proyeccion_final - max_p) > 1.0'
+    else:
+        st.success("✨ Planificación optimizada al 100%. No se requieren ajustes.")
 
+# En caso de que proyeccion_final == max_p exactamente
+else:
+    st.success("✨ Planificación optimizada al 100%. No se requieren ajustes.")
 with st.expander("ℹ️ ¿Cómo realizar tu aportación on line?"):
     col_web, col_steps = st.columns([1, 1.5], gap="large")
     
