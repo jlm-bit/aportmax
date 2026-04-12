@@ -683,6 +683,110 @@ with tab2:
         </div>""", unsafe_allow_html=True)
 
     st.markdown("---")
+
+
+
+
+    # --- SECCIÓN: IMPACTO FINAL (DISEÑO ULTRA-FINO) ---
+    st.markdown("<br><h4 style='text-align: center; font-weight: 300; color: #1e293b; letter-spacing: 1px;'>EL VALOR DE TU ESTRATEGIA A LARGO PLAZO</h4>", unsafe_allow_html=True)
+
+    # Estilos CSS de alta fidelidad
+    st.markdown("""
+        <style>
+        .premium-card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.02), 0 4px 6px -2px rgba(0, 0, 0, 0.01);
+            transition: all 0.3s ease;
+        }
+        .premium-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+        }
+        .label-fina {
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            color: #94a3b8;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+        .valor-fino {
+            font-size: 2.2rem;
+            font-weight: 200;
+            color: #1e293b;
+            margin: 5px 0;
+        }
+        .subtexto-fino {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 10px;
+        }
+        .delta-positiva {
+            color: #10b981;
+            font-weight: 600;
+            font-size: 0.85rem;
+            background: #f0fdf4;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # --- FILA 1: PATRIMONIO ---
+    st.markdown("<div style='margin-bottom: 15px;'></div>", unsafe_allow_html=True)
+    c1, c2, c3 = st.columns(3)
+    
+    with c1:
+        st.markdown(f"""<div class="premium-card">
+            <div class="label-fina">Capital Proyectado</div>
+            <div class="valor-fino">{cap_a:,.0f}<span style="font-size: 1rem;"> €</span></div>
+            <div class="subtexto-fino">Escenario optimizado al {rent_pct}%</div>
+        </div>""", unsafe_allow_html=True)
+    
+    with c2:
+        st.markdown(f"""<div class="premium-card">
+            <div class="label-fina">Sin Aportación Personal</div>
+            <div class="valor-fino" style="color: #cbd5e1;">{cap_b:,.0f}<span style="font-size: 1rem;"> €</span></div>
+            <div style="margin-top: 10px;"><span style="color: #ef4444; font-size: 0.8rem;">✕ Pérdida de {dif_cap:,.0f} €</span></div>
+        </div>""", unsafe_allow_html=True)
+        
+    with c3:
+        st.markdown(f"""<div class="premium-card" style="background: linear-gradient(145deg, #1e3a8a, #1e40af);">
+            <div class="label-fina" style="color: #93c5fd;">Beneficio Neto Extra</div>
+            <div class="valor-fino" style="color: #ffffff; font-weight: 400;">+{dif_cap:,.0f}<span style="font-size: 1rem;"> €</span></div>
+            <div class="subtexto-fino" style="color: #93c5fd;">Patrimonio creado de la nada</div>
+        </div>""", unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # --- FILA 2: CALIDAD DE VIDA ---
+    r1, r2, r3 = st.columns(3)
+    
+    with r1:
+        st.markdown(f"""<div class="premium-card">
+            <div class="label-fina">Renta Mensual</div>
+            <div class="valor-fino" style="color: #10b981;">{renta_a:,.0f}<span style="font-size: 1rem;"> €/mes</span></div>
+            <div class="subtexto-fino">Complemento vitalicio estimado</div>
+        </div>""", unsafe_allow_html=True)
+
+    with r2:
+        st.markdown(f"""<div class="premium-card">
+            <div class="label-fina">Diferencial</div>
+            <div class="valor-fino" style="color: #cbd5e1;">{renta_b:,.0f}<span style="font-size: 1rem;"> €</span></div>
+            <div style="margin-top: 10px;"><span style="color: #ef4444; font-size: 0.8rem;">✕ {dif_renta:,.0f} € menos al mes</span></div>
+        </div>""", unsafe_allow_html=True)
+
+    with r3:
+        st.markdown(f"""<div class="premium-card" style="border: 1px solid #10b981; background: #f0fdf4;">
+            <div class="label-fina" style="color: #059669;">Mejora del Bienestar</div>
+            <div class="valor-fino" style="color: #047857; font-weight: 400;">+{dif_renta:,.2f}<span style="font-size: 1rem;"> €</span></div>
+            <div class="delta-positiva">✨ SOBRESUELDO MENSUAL</div>
+        </div>""", unsafe_allow_html=True)
+
+    st.markdown("<br><br>", unsafe_allow_html=True)
     
     # --- FILA 4: Definición de Hipótesis ---
     st.markdown("#### ⚙️ Hipótesis y Bases del Modelo")
