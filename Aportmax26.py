@@ -327,7 +327,7 @@ with tab1:
             {aportacion_extraordinaria_neta:,.0f}€
         </h4>
         <p style='margin:0; color:#64748b; font-size:0.9rem;'>
-            Aportación que debes realizar para alcanzar el límite
+            
         </p>
     </div>
     <hr style="margin: 1em 0;">
