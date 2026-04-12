@@ -485,10 +485,7 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
                         <span style="font-size: 1.8rem; font-weight: 300; color: {color_acentuado};">{nueva_cuota_total:,.2f} €</span>
                         <span style="font-size: 1rem; color: #94a3b8;"> / mes (durante los meses que quedan del año)</span>
                     </div>
-                   # <div style="padding-top: 15px; border-top: 1px solid #f1f5f9; font-size: 0.9rem; color: #475569;">
-                   #     {"🔼  Esto es,<b> incrementar</b>" if diferencia_mensual > 0 else "🔽 <b>reducir</b>"} la cuota actual en <b>{abs(diferencia_mensual):,.2f} €</b> durante {meses_restantes} meses.
-                   # </div>
-                              
+                                                 
                 </div>
             """, unsafe_allow_html=True)
    
