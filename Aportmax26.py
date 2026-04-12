@@ -328,7 +328,7 @@ with tab1:
         </h4>
         <p style='margin:0; color:#64748b; font-size:0.9rem;'>
             
-        </p>
+       
     </div>
     <hr style="margin: 1em 0;">
     """, 
