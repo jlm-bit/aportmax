@@ -501,13 +501,13 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
                     <p style="
                         text-transform: uppercase; 
                         letter-spacing: 1px; 
-                        font-size: 0.7rem; 
+                        font-size: 0.8rem; 
                         color: #64748b; 
-                        font-weight: 700; 
+                        font-weight: 800; 
                         margin-bottom: 15px;
                     ">
                         Estrategia Sugerida &nbsp;&nbsp; 
-                        <span style="color: #0f172a; font-weight: 600;">
+                        <span style="color: #0f172a; font-weight: 700;">
                             {texto_estrategia} durante {meses_restantes} meses
                         </span>
                     </p>
