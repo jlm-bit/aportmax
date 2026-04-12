@@ -82,129 +82,94 @@ st.markdown("""
 
 # --- 3. FUNCIONES PDF ---
 @st.cache_data
-def generar_pdf_tecnico(empresa_total, max_p, inversion_t, ahorro, esfuerzo, sb, ss, gastos, base_pre, eficiencia):
+def generar_informe_integral_2026(datos):
     pdf = FPDF()
-    pdf.add_page()
-    pdf.set_fill_color(30, 58, 138); pdf.rect(0, 0, 210, 30, 'F')
-    pdf.set_text_color(255, 255, 255); pdf.set_font("helvetica", 'B', 16); pdf.set_xy(10, 8)
-    pdf.cell(0, 10, "PLANIFICACION FISCAL APORTACION AL PPE", align='L')
-    pdf.set_font("helvetica", '', 9); pdf.set_xy(10, 16)
-    pdf.cell(0, 10, f"Ejercicio Fiscal 2026 | Catalunya", align='L')
-    pdf.set_text_color(40, 40, 40); pdf.ln(20)
+    pdf.set_auto_page_break(auto=True, margin=15)
     
-    pdf.set_font("helvetica", 'B', 10); pdf.set_fill_color(245, 247, 250)
-    pdf.cell(0, 8, " 1. RESUMEN EJECUTIVO DE LA OPERACION", fill=True, ln=True); pdf.ln(2)
-    pdf.set_font("helvetica", size=8.5)
-    items_inv = [
-        ("Aportacion Empresarial Anual (PPE)", f"{empresa_total:,.2f} EUR"),
-        ("MAXIMA APORTACION PERSONAL PERMITIDA", f"{max_p:,.2f} EUR"),
-        ("Inversion Total en Plan de Empleo", f"{inversion_t:,.2f} EUR"),
-        ("AHORRO FISCAL ESTIMADO EN IRPF", f"{ahorro:,.2f} EUR"),
-        ("Coste Real (Esfuerzo Neto Personal)", f"{esfuerzo:,.2f} EUR"),
-        ("EFICIENCIA FISCAL (RETORNO IRPF)", f"{eficiencia:.2f}%")
-    ]
-    for i, (label, val) in enumerate(items_inv):
-        pdf.set_font("helvetica", 'B' if "PERSONAL" in label or "EFICIENCIA" in label else '', 8.5)
-        pdf.cell(140, 6, label, border='B' if i < 5 else 0)
-        pdf.cell(0, 6, val, border='B' if i < 5 else 0, align='R', ln=True)
-    
-    pdf.ln(5)
-    pdf.set_font("helvetica", 'B', 9); pdf.set_fill_color(245, 247, 250)
-    pdf.cell(0, 8, " 2. TRAMOS IRPF APLICADOS (CATALUNYA 2026)", fill=True, ln=True); pdf.ln(2)
-    pdf.set_font("helvetica", 'B', 7); pdf.set_fill_color(230, 230, 230)
-    pdf.cell(60, 5, "Desde (EUR)", border=1, fill=True, align='C')
-    pdf.cell(60, 5, "Hasta (EUR)", border=1, fill=True, align='C')
-    pdf.cell(70, 5, "Tipo Aplicable (%)", border=1, fill=True, align='C', ln=True)
-    pdf.set_font("helvetica", '', 7)
-    tramos_lista = [
-        (0, 12450, "19,0%"), (12450, 17707, "24,0%"), (17707, 20200, "26,0%"),
-        (20200, 33007, "29,0%"), (33007, 35200, "33,5%"), (35200, 53407, "37,0%"),
-        (53407, 60000, "40,0%"), (60000, 90000, "44,0%"), (90000, 120000, "46,0%"),
-        (120000, 150000, "47,0%"), (150000, 175000, "48,0%"), (175000, "Inf.", "50,0%")
-    ]
-    for inf, sup, tipo in tramos_lista:
-        pdf.cell(60, 4, f"{inf:,.0f}", border=1, align='C')
-        pdf.cell(60, 4, f"{sup if isinstance(sup, str) else f'{sup:,.0f}'}", border=1, align='C')
-        pdf.cell(70, 4, tipo, border=1, align='C', ln=True)
-
-    pdf.ln(5)
-    pdf.set_font("helvetica", 'B', 9); pdf.set_fill_color(245, 247, 250)
-    pdf.cell(0, 8, " 3. DESGLOSE TECNICO Y AVISO LEGAL", fill=True, ln=True); pdf.ln(2)
-    pdf.set_font("helvetica", size=7.5)
-    pdf.cell(140, 5, "Sueldo Bruto Anual:"); pdf.cell(0, 5, f"{sb:,.2f} EUR", align='R', ln=True)
-    pdf.cell(140, 5, "Base Liquidable Final tras Reduccion:"); pdf.cell(0, 5, f"{(base_pre - max_p):,.2f} EUR", align='R', ln=True)
-    
-    pdf.ln(3); pdf.set_font("helvetica", 'B', 7); pdf.set_text_color(180, 0, 0)
-    pdf.multi_cell(0, 4, "AVISO LEGAL: Calculos estimados segun normativa 2026.")
-    
-    pdf.set_y(-15); pdf.set_font("helvetica", 'I', 7); pdf.set_text_color(120, 120, 120)
-    pdf.cell(0, 5, "Documento generado para fines de planificacion interna.", align='C', ln=True)
-    return pdf.output(dest='S').encode('latin-1', errors='replace')
-
-@st.cache_data
-def generar_pdf_visual_v2(max_p, ahorro, inversion, extra, cuota_r, meses, ya_aportado):
-    pdf = FPDF()
+    # --- PÁGINA 1: FISCALIDAD Y ACCIÓN ---
     pdf.add_page()
     
-    # --- Encabezado ---
-    pdf.set_fill_color(30, 58, 138); pdf.rect(0, 0, 210, 40, 'F')
-    pdf.set_xy(10, 12)
-    pdf.set_font("helvetica", 'B', 22); pdf.set_text_color(255, 255, 255)
-    pdf.cell(0, 10, "TU ESTRATEGIA DE AHORRO 2026", align='C', ln=True)
+    # Encabezado Ejecutivo
+    pdf.set_fill_color(30, 58, 138) # Azul Marino
+    pdf.rect(0, 0, 210, 40, 'F')
+    pdf.set_xy(10, 15)
+    pdf.set_font("helvetica", 'B', 20)
+    pdf.set_text_color(255, 255, 255)
+    pdf.cell(0, 10, "INFORME INTEGRAL DE PLANIFICACION 2026", align='C', ln=True)
     pdf.set_font("helvetica", '', 10)
-    pdf.cell(0, 8, "Plan Personalizado para la Maximizacion del Beneficio Fiscal", align='C', ln=True)
+    pdf.cell(0, 5, f"Simulacion Fiscal para Catalunya | Generado: {datetime.date.today().strftime('%d/%m/%Y')}", align='C', ln=True)
 
-    # --- Bloque 1: El Objetivo ---
-    pdf.ln(15)
-    pdf.set_fill_color(240, 248, 255); pdf.rect(10, 45, 190, 45, 'F')
-    pdf.set_xy(15, 50); pdf.set_font("helvetica", 'B', 12); pdf.set_text_color(30, 58, 138)
-    pdf.cell(0, 10, "OBJETIVO DE APORTACION PERSONAL TOTAL:", ln=True)
-    pdf.set_x(15); pdf.set_font("helvetica", 'B', 28); pdf.cell(0, 15, f"{max_p:,.2f} EUR", ln=True)
-    pdf.set_x(15); pdf.set_font("helvetica", 'B', 14); pdf.set_text_color(34, 197, 94)
-    pdf.cell(0, 10, f"AHORRO FISCAL ESTIMADO (IRPF): {ahorro:,.2f} EUR", ln=True)
-
-    # --- Bloque 2: Plan de Ejecucion ---
-    pdf.set_xy(10, 100); pdf.set_font("helvetica", 'B', 14); pdf.set_text_color(0, 0, 0)
-    pdf.cell(0, 10, "COMO ALCANZAR TU MAXIMO AHORRO:", ln=True)
-    pdf.ln(2)
+    # Bloque 1: Resumen Fiscal
+    pdf.ln(25)
+    pdf.set_text_color(30, 58, 138)
+    pdf.set_font("helvetica", 'B', 12)
+    pdf.cell(0, 10, "1. ANALISIS DE LIMITES Y AHORRO FISCAL", ln=True)
+    pdf.set_draw_color(30, 58, 138)
+    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+    pdf.ln(5)
     
-    # Opcion A
-    pdf.set_x(15); pdf.set_font("helvetica", 'B', 11); pdf.set_text_color(30, 58, 138)
-    pdf.cell(0, 8, f"OPCION A: Nueva Cuota Mensual de {cuota_r:,.2f} EUR", ln=True)
-    pdf.set_x(20); pdf.set_font("helvetica", '', 10); pdf.set_text_color(60, 60, 60)
-    pdf.multi_cell(0, 5, f"Ajusta tu aportacion periodica para los {meses} meses restantes del año. Es la forma mas comoda de diluir el esfuerzo de ahorro.")
-    pdf.ln(3)
-
-    # Opcion B
-    pdf.set_x(15); pdf.set_font("helvetica", 'B', 11); pdf.set_text_color(30, 58, 138)
-    pdf.cell(0, 8, f"OPCION B: Aportacion Extraordinaria de {extra:,.2f} EUR", ln=True)
-    pdf.set_x(20); pdf.set_font("helvetica", '', 10); pdf.set_text_color(60, 60, 60)
-    pdf.multi_cell(0, 5, "Realiza un ingreso unico antes del 31 de diciembre. Ideal si dispones de liquidez puntual o bonus.")
-    
-    # --- Bloque 3: Guia de Pasos ---
-    pdf.ln(10)
-    pdf.set_fill_color(248, 250, 252); pdf.rect(10, 165, 190, 85, 'F')
-    pdf.set_xy(15, 170); pdf.set_font("helvetica", 'B', 12); pdf.set_text_color(0, 0, 0)
-    pdf.cell(0, 8, "PASOS PARA REALIZAR LA APORTACION:", ln=True)
-    
-    pdf.set_font("helvetica", 'B', 10); pdf.set_x(15); pdf.cell(0, 8, "En CaixaBankNow / Aporta+:", ln=True)
-    pdf.set_font("helvetica", '', 10); pdf.set_text_color(80, 80, 80)
-    pasos = [
-        "1. Accede a tu banca online o al portal Aporta+ de VidaCaixa.",
-        "2. Dirigete a la seccion de 'Pensiones' o 'Mis Planes de Empleo'.",
-        "3. Selecciona tu Plan de Empleo (PPE) actual y pulsa en 'Gestionar' u 'Operar'.",
-        "4. Elige 'Aportacion Unica' o 'Modificar Cuota Mensual' segun tu preferencia.",
-        "5. Introduce el importe recomendado en este informe y firma la operacion.",
-        "6. ¡Listo! Tu ahorro fiscal se reflejara en la proxima Declaracion de la Renta."
+    pdf.set_font("helvetica", '', 10); pdf.set_text_color(0, 0, 0)
+    tab_datos = [
+        ("Sueldo Bruto Anual", f"{datos['sb']:,.2f} EUR"),
+        ("Aportacion Empresa (PPE)", f"{datos['emp_t']:,.2f} EUR"),
+        ("MAXIMA APORTACION PERSONAL LEGAL", f"{datos['max_p']:,.2f} EUR"),
+        ("Ahorro Fiscal Estimado (IRPF)", f"{datos['ahorro']:,.2f} EUR"),
+        ("Eficiencia (Retorno sobre inversion)", f"{datos['eficiencia']:.2f}%")
     ]
-    for paso in pasos:
-        pdf.set_x(20); pdf.multi_cell(0, 6, paso)
+    for label, val in tab_datos:
+        pdf.set_font("helvetica", 'B' if "MAXIMA" in label else '', 10)
+        pdf.cell(120, 8, label, border='B')
+        pdf.cell(70, 8, val, border='B', align='R', ln=True)
 
-    # --- Pie de pagina ---
-    pdf.set_y(-25); pdf.set_font("helvetica", 'I', 8); pdf.set_text_color(150, 150, 150)
-    pdf.cell(0, 5, "Nota: Este documento es una simulacion basada en la normativa fiscal de Catalunya 2026.", align='C', ln=True)
-    pdf.cell(0, 5, "Asegurate de realizar tus aportaciones antes del cierre del ejercicio (31/12).", align='C')
+    # Bloque 2: Hoja de Ruta
+    pdf.ln(15)
+    pdf.set_text_color(30, 58, 138)
+    pdf.set_font("helvetica", 'B', 12)
+    pdf.cell(0, 10, "2. HOJA DE RUTA: AJUSTES RECOMENDADOS", ln=True)
+    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+    pdf.ln(5)
     
+    pdf.set_font("helvetica", '', 10); pdf.set_text_color(0, 0, 0)
+    pdf.multi_cell(0, 6, f"Para alcanzar el limite legal y maximizar el ahorro, se sugiere una de estas dos vias:")
+    pdf.ln(2)
+    pdf.set_fill_color(245, 247, 250)
+    pdf.set_font("helvetica", 'B', 11)
+    pdf.cell(0, 12, f"  > OPCION A: Nueva cuota mensual: {datos['cuota_mes']:,.2f} EUR/mes", fill=True, ln=True)
+    pdf.ln(2)
+    pdf.cell(0, 12, f"  > OPCION B: Aportacion unica extra: {datos['extra']:,.2f} EUR", fill=True, ln=True)
+
+    # --- PÁGINA 2: JUBILACIÓN ---
+    pdf.add_page()
+    pdf.set_text_color(30, 58, 138)
+    pdf.set_font("helvetica", 'B', 14)
+    pdf.cell(0, 10, "3. PROYECCION DE IMPACTO EN LA JUBILACION", ln=True)
+    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+    pdf.ln(10)
+    
+    pdf.set_text_color(0, 0, 0); pdf.set_font("helvetica", '', 10)
+    pdf.multi_cell(0, 6, f"Estimacion basada en jubilacion a los {datos['edad_jub']} años con rentabilidad del {datos['rent_pct']}%.")
+    
+    # Cuadros de resultados
+    pdf.ln(5)
+    pdf.set_fill_color(240, 245, 255)
+    pdf.rect(10, 45, 190, 40, 'F')
+    pdf.set_xy(15, 50)
+    pdf.set_font("helvetica", 'B', 12)
+    pdf.cell(90, 10, "CAPITAL FINAL ESTIMADO:")
+    pdf.set_font("helvetica", 'B', 20)
+    pdf.cell(90, 10, f"{datos['cap_final']:,.0f} EUR", align='R', ln=True)
+    
+    pdf.set_x(15); pdf.set_font("helvetica", 'B', 12)
+    pdf.cell(90, 15, "RENTA MENSUAL ADICIONAL (20A):")
+    pdf.set_text_color(22, 163, 74) # Verde
+    pdf.set_font("helvetica", 'B', 20)
+    pdf.cell(90, 15, f"{datos['renta_mensual']:,.2f} EUR/mes", align='R', ln=True)
+
+    # Aviso Legal
+    pdf.set_y(-30)
+    pdf.set_font("helvetica", 'I', 8); pdf.set_text_color(150, 150, 150)
+    pdf.multi_cell(0, 4, "Aviso: Este documento es una simulacion tecnica. Las rentabilidades pasadas no garantizan beneficios futuros. Consulte con su asesor antes de realizar operaciones.", align='C')
+
     return pdf.output(dest='S').encode('latin-1', errors='replace')
 
 # --- 4. SIDEBAR (CON MIN_VALUE=0.0) ---
@@ -814,3 +779,31 @@ with tab3:
         Este simulador ha sido desarrollado para ilustrar el impacto del interés compuesto y la constancia en el ahorro a largo plazo. 
         Para consultas vinculantes, se recomienda acudir a un asesor fiscal o financiero.
         """)
+
+
+# Recopilación de todas las variables calculadas
+datos_pdf = {
+    'sb': sb,
+    'emp_t': emp_t,
+    'max_p': max_p,
+    'ahorro': ahorro,
+    'eficiencia': eficiencia,
+    'cuota_mes': nueva_cuota_total,
+    'extra': aportacion_extraordinaria_neta,
+    'edad_jub': edad_jub,
+    'rent_pct': rent_pct,
+    'cap_final': cap_a,
+    'renta_mensual': renta_a
+}
+
+st.sidebar.markdown("---")
+st.sidebar.subheader("📥 Exportar Resultados")
+if st.sidebar.button("📄 GENERAR INFORME UNIFICADO (PDF)", use_container_width=True, type="primary"):
+    informe_pdf = generar_informe_integral_2026(datos_pdf)
+    st.sidebar.download_button(
+        label="⬇️ Descargar PDF",
+        data=informe_pdf,
+        file_name=f"Informe_AportaMax_2026_{hoy.strftime('%Y%m%d')}.pdf",
+        mime="application/pdf",
+        use_container_width=True
+    )
