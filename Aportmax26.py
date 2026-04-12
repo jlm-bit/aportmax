@@ -414,9 +414,6 @@ with tab1:
         # pdf_t = generar_pdf_tecnico(emp_t, max_p, (emp_t+max_p), ahorro, esfuerzo_neto, sb, CUOTA_SS, 2000.0, base_pre, eficiencia)
         # st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf")
 
-Para que el cálculo de la Opción B sea matemáticamente infalible y siempre sume el max_p, debemos asegurar que el pago extraordinario cubra exactamente la brecha entre lo ya aportado, lo que se aportará mensualmente y el límite.
-
-Aquí tienes el bloque corregido. He ajustado la lógica del pago_extraordinario para que sea dinámica: si el usuario ya ha aportado mucho, el extra será 0; si va retrasado, el extra calculará el "parche" exacto.
 
 
 with st.expander("ℹ️ Tu Plan de Acción", expanded=True):
@@ -490,6 +487,12 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=True):
                 <p style="font-size: 0.75rem; color: #166534; opacity: 0.8; line-height: 1.4;">Compensa el retraso ahora con una aportación única y mantén la cuota ideal prorrateada de por vida.</p>
             </div>
         """, unsafe_allow_html=True)
+
+
+
+
+
+
 with st.expander("ℹ️ ¿Cómo realizar tu aportación on line?"):
     col_web, col_steps = st.columns([1, 1.5], gap="large")
     
