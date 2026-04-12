@@ -336,6 +336,62 @@ with tab1:
 )
 
 
+with st.expander("ℹ️ Datos detallados2", expanded=False):
+    col_left, col_right = st.columns([1.2, 1])
+    
+    with col_left:
+        # --- SUB-COLUMNAS PARA LOS CUADROS PRINCIPALES ---
+        sub_col1, sub_col2 = st.columns(2)
+        
+        with sub_col1:
+            # Color actualizado a Slate Oscuro (#334155) para homogeneizar con el Plan de Acción
+            st.markdown(f"""
+                <div style="background-color: #334155; color: white; padding: 25px; border-radius: 12px; height: 180px; text-align: left; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+                    <p style="margin:0; font-size: 0.7rem; opacity: 0.8; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">MÁXIMA APORTACIÓN PERSONAL</p>
+                    <h2 style="font-size: 2rem; margin: 10px 0; color: white; border: none;">{max_p:,.2f} €</h2>
+                    <p style="margin:0; font-size: 0.75rem; opacity: 0.7;">Límite legal anual (Art. 52 LIRPF)</p>
+                </div>
+            """, unsafe_allow_html=True)
+
+        with sub_col2:
+            st.markdown(f"""
+                <div style="background-color: #ffffff; color: #0f172a; padding: 25px; border-radius: 12px; height: 180px; text-align: left; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                    <p style="margin:0; font-size: 0.7rem; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">AHORRO FISCAL (IRPF)</p>
+                    <h2 style="font-size: 2rem; margin: 10px 0; color: #10b981; border: none;">{ahorro:,.2f} €</h2>
+                    <p style="margin:0; font-weight: 700; font-size: 0.85rem; color: #0f172a;">Devolución estimada: {eficiencia:.1f}%</p>
+                </div>
+            """, unsafe_allow_html=True)
+            
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.info(f"⚠️ **Nota:** Los cálculos se basan en un Salario Bruto Anual de **{sb:,.0f} €**. Asegúrate de que los datos del panel lateral reflejan tu situación real.")   
+
+    with col_right:
+        # --- GRÁFICO DONUT ---
+        total_inversion = esfuerzo_neto + ahorro + emp_t
+        fig = go.Figure(data=[go.Pie(
+            labels=['Esfuerzo Neto', 'Ahorro Fiscal', 'Aport. Empresa'], 
+            values=[esfuerzo_neto, ahorro, emp_t], 
+            hole=.7,
+            marker_colors=['#3b82f6', '#10b981', '#334155'], # El color de empresa coincide con el nuevo Slate
+            textinfo='none', 
+            hoverinfo='label+value+percent',
+        )])
+        
+        fig.update_layout(
+            title={'text': "Distribución de la Inversión", 'y': 0.9, 'x': 0.5, 'xanchor': 'center', 'font': {'size': 14, 'color': '#64748b'}},
+            margin=dict(t=40, b=0, l=0, r=0), 
+            height=300, 
+            showlegend=True, 
+            legend=dict(orientation="h", y=-0.1, x=0.5, xanchor="center", font=dict(size=10)),
+            annotations=[dict(text=f'<span style="color:#64748b; font-size:10px">TOTAL</span><br><span style="font-size:18px; font-weight:800; color:#334155;">{total_inversion:,.0f}€</span>', x=0.5, y=0.5, showarrow=False)]
+        )
+        st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+
+    st.markdown("<hr style='margin: 20px 0; border: 0; border-top: 1px solid #f1f5f9;'>", unsafe_allow_html=True)
+
+    # --- 3. DESGLOSE COMPACTO EN TARJETAS MINIMALISTAS ---
+    # (El resto del código de las 4 columnas inferiores se mantiene igual que en la versión anterior)
+
 with st.expander("ℹ️ Datos detallados1", expanded=False):
     col_left, col_right = st.columns([1.2, 1])
     
