@@ -488,7 +488,7 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
             # Pre-calculamos el texto para inyectar en el HTML de forma segura
             texto_estrategia = f"{flecha} <b>{verbo}</b> la cuota actual de {abs(c_m):,.2f} € en <b>{abs(diferencia_mensual):,.2f} €</b>"
     
-            # 2. Renderizado de la tarjeta
+             # 2. Renderizado de la tarjeta
             st.markdown(f"""
                 <div style="
                     background-color: #ffffff; 
@@ -505,21 +505,30 @@ with st.expander("ℹ️ Te recomiendo como lograr que tu ahorro sea máximo y d
                         color: #64748b; 
                         font-weight: 800; 
                         margin-bottom: 15px;
+                        line-height: 1.4;
                     ">
                         Estrategia Sugerida &nbsp;&nbsp; 
-                        <span style="color: #0f172a; font-weight: 650;">
-                            {texto_estrategia} durante {meses_restantes} meses (aportación mensual total de {abs(nueva_cuota_total):,.2f} €)
+                        <span style="color: #0f172a; font-weight: 800;">
+                            {texto_estrategia} durante {meses_restantes} meses 
+                            (aportación mensual total de {abs(nueva_cuota_total):,.2f} €)
                         </span>
                     </p>
-                    
-               
+            
+                    <div style="
+                        margin-top: 15px; 
+                        padding-top: 15px; 
+                        border-top: 1px solid #f8fafc; 
+                        color: #94a3b8; 
+                        font-size: 0.75rem;
+                    ">
+                        ℹ️ Ajuste calculado para alcanzar el límite de <b>{max_p:,.2f} €</b> antes del 31 de diciembre.
+                    </div>
                 </div>
             """, unsafe_allow_html=True)
-    
-    # Caso en el que la proyección es perfecta
-    else:
-        st.success("✨ Planificación optimizada al 100%. No se requieren ajustes.")
-
+                # Caso en el que la proyección es perfecta
+                else:
+                    st.success("✨ Planificación optimizada al 100%. No se requieren ajustes.")
+            
 
 with st.expander("ℹ️ ¿Cómo realizar tu aportación on line?"):
     col_web, col_steps = st.columns([1, 1.5], gap="large")
