@@ -396,7 +396,7 @@ with tab1:
     # st.download_button("📄 Informe Fiscal Detallado", data=pdf_t, file_name="informe_fiscal_2026.pdf", mime="application/pdf")
 
 
-with tab2:
+# with tab2:
     # --- 0. PREPARACIÓN DE DATOS (Evita NameError) ---
     import datetime
     hoy = datetime.date.today()
@@ -482,6 +482,8 @@ with tab2:
 
     
     st.markdown("---")
+
+
 with st.expander("🚀 ¿Cómo realizar tu aportación?"):
     col_web, col_steps = st.columns([1, 1.5], gap="large")
     
