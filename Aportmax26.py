@@ -258,10 +258,10 @@ ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 # --- 6. RENDERIZADO PRINCIPAL ---
 st.markdown("""
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;500;800&display=swap');
         
         .header-wrapper {
-            padding: 30px 0 15px 0; /* Muy estrecho verticalmente */
+            padding: 15px 0 5px 0; /* Altura mínima */
             text-align: center;
             background: transparent;
         }
@@ -269,56 +269,40 @@ st.markdown("""
         .main-title {
             font-family: 'Inter', sans-serif;
             font-weight: 100;
-            /* Degradado sutil en el texto principal */
-            background: linear-gradient(120deg, #0f172a 30%, #3b82f6 90%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 8px; 
-            font-size: 1.8rem; /* Tamaño contenido */
+            color: #0f172a;
+            letter-spacing: 6px; 
+            font-size: 1.6rem; /* Un poco más pequeño y fino */
             margin: 0;
+            line-height: 1;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         
-        .year-badge {
-            font-weight: 700;
-            background: #2563eb; /* Azul más vivo */
-            color: white;
-            padding: 1px 10px;
-            border-radius: 4px;
-            letter-spacing: 1px;
-            margin-left: 10px;
-            font-size: 1rem;
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+        .year-highlight {
+            font-weight: 800;
+            color: #2563eb; /* Azul eléctrico puro para que se vea mucho */
+            margin-left: 12px;
+            letter-spacing: 2px;
+            font-size: 1.6rem; /* Mismo tamaño que el texto para no ganar altura */
         }
         
-        .subtitle-premium {
+        .subtitle-slim {
             font-family: 'Inter', sans-serif;
-            font-weight: 400;
-            color: #64748b;
-            letter-spacing: 2px;
-            font-size: 0.6rem;
-            margin-top: 8px;
+            font-weight: 500;
+            color: #94a3b8;
+            letter-spacing: 1px;
+            font-size: 0.55rem;
+            margin-top: 4px; /* Pegado al título */
             text-transform: uppercase;
-        }
-
-        .accent-bar {
-            width: 40px;
-            height: 2px;
-            background: linear-gradient(90deg, #2563eb, #60a5fa);
-            margin: 10px auto;
-            border-radius: 2px;
         }
     </style>
     
     <div class="header-wrapper">
         <h1 class="main-title">
-            FESELQUEPUGUIS
-            <span class="year-badge">2026</span>
+            FESELQUEPUGUIS <span class="year-highlight">2026</span>
         </h1>
-        <div class="accent-bar"></div>
-        <p class="subtitle-premium"> Tu Aportación Voluntaria • Plan de Pensiones de Empleo</p>
+        <p class="subtitle-slim">Aportación Voluntaria • Plan de Pensiones de Empleo</p>
     </div>
 """, unsafe_allow_html=True)
 
