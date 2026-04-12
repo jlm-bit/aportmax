@@ -710,7 +710,7 @@ from fpdf import FPDF
 import streamlit as st
 
 
-with tab3:
+with tab2:
     # 0. Recuperar variables
     t_marginal_uso = st.session_state.get('tipo_marginal', 30.0) 
 
@@ -846,7 +846,7 @@ with tab3:
             st.write("**💶 Desinversión**")
             st.caption("Renta calculada para agotar el capital en 240 mensualidades.")
 
-with tab4:
+with tab3:
     # --- RESUMEN EJECUTIVO DEL PROGRAMA ---
     # st.info("### 📋 Funcionalidades de la plataforma AportaMax")
     
