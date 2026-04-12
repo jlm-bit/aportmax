@@ -327,15 +327,15 @@ with tab1:
             {aportacion_extraordinaria_neta:,.0f}€
         </h4>
         <p style='margin:0; color:#64748b; font-size:0.8rem;'>
-        Aportación Anual Promotor (prevista): {emp_t:,.2f}€
+        Aportación Anual Promotor (prevista): {emp_t:,.2f}€</b>
         Aportación Máxima Total: {max_p:,.2f}€
-    
-       
     </div>
     <hr style="margin: 1em 0;">
     """, 
     unsafe_allow_html=True
 )
+
+
 
 
 with st.expander("ℹ️ Datos detallados", expanded=False):
