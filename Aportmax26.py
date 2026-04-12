@@ -221,7 +221,7 @@ with st.sidebar:
         emp_t_bruta = (e_ahorro * 12) + e_riesgo
         emp_t = min(emp_t_bruta, 10000.0)
    
-        if sb = 0.0:
+        if sb < 0.0:
             st.warning(f"⚠️ Introduce tus datos personales") 
         
         if emp_t_bruta > 10000.0:
