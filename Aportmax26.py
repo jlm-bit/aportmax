@@ -258,6 +258,42 @@ ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 # --- 6. RENDERIZADO PRINCIPAL ---
 st.markdown('<div class="main-header"><h1 style="margin:0;">📈 FESELQUEPUGUIS 2026</h1></div>', unsafe_allow_html=True)
 
+st.markdown("""
+    <style>
+        .header-container {
+            background: #ffffff;
+            padding: 40px 10px 20px 10px;
+            text-align: center;
+            border-bottom: 1px solid #f1f5f9;
+            margin-bottom: 30px;
+        }
+        .main-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 200;
+            color: #0f172a;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            font-size: 2.2rem;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .subtitle {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            color: #94a3b8;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+    </style>
+    <div class="header-container">
+        <h1 class="main-title">FESELQUEPUGUIS 2026</h1>
+        <p class="subtitle">Estrategia de Planificación Previsional Personalizada</p>
+    </div>
+""", unsafe_allow_html=True)
+
+
 tab1, tab2, tab3 = st.tabs(["💰 Aportación Máxima ", "🚀 Proyección a la Jubilación ", "🎯 Acerca de "])
 
 with tab1:
