@@ -700,31 +700,31 @@ def generar_pdf_comparativo_v4(edad_act, edad_jub, cap_a, cap_b, renta_a, renta_
     return pdf.output(dest='S').encode('latin-1')
 
 # --- 2. DESPUÉS COLOCAS EL BOTÓN (Dentro de tu Tab o sección de resultados) ---
-        st.markdown("---")
-        if st.button("🚀 GENERAR INFORME (pdf)", use_container_width=True):
-        with st.spinner("⏳ Procesando datos y dibujando gráficos..."):
-            try:
-                # Asegúrate de que las variables (edad_act, cap_a, etc.) estén definidas antes
-                pdf_bytes = generar_pdf_comparativo_v4(
-                    edad_act, edad_jub, cap_a, cap_b, 
-                    renta_a, renta_b, dif_cap, dif_renta, 
-                    rent_pct, mi_aportacion_anual_neta
-                )
-                
-                st.success("✅ ¡Informe generado con éxito!")
-                st.download_button(
-                    label="📥 DESCARGAR MI INFORME (PDF)",
-                    data=pdf_bytes,
-                    file_name=f"Informe_Jubilacion_AportMax_{edad_act}anos.pdf",
-                    mime="application/pdf",
-                    use_container_width=True,
-                    key="download_pdf_final" # Clave única para evitar errores de duplicidad
-                )
-            except NameError as e:
-                st.error(f"Faltan datos para generar el informe. Asegúrate de completar los cálculos. ({e})")
-            except Exception as e:
-                st.error(f"❌ Error al crear el PDF: {e}")
-        
+    st.markdown("---")
+    if st.button("🚀 GENERAR INFORME (pdf)", use_container_width=True):
+    with st.spinner("⏳ Procesando datos y dibujando gráficos..."):
+        try:
+            # Asegúrate de que las variables (edad_act, cap_a, etc.) estén definidas antes
+            pdf_bytes = generar_pdf_comparativo_v4(
+                edad_act, edad_jub, cap_a, cap_b, 
+                renta_a, renta_b, dif_cap, dif_renta, 
+                rent_pct, mi_aportacion_anual_neta
+            )
+            
+            st.success("✅ ¡Informe generado con éxito!")
+            st.download_button(
+                label="📥 DESCARGAR MI INFORME (PDF)",
+                data=pdf_bytes,
+                file_name=f"Informe_Jubilacion_AportMax_{edad_act}anos.pdf",
+                mime="application/pdf",
+                use_container_width=True,
+                key="download_pdf_final" # Clave única para evitar errores de duplicidad
+            )
+        except NameError as e:
+            st.error(f"Faltan datos para generar el informe. Asegúrate de completar los cálculos. ({e})")
+        except Exception as e:
+            st.error(f"❌ Error al crear el PDF: {e}")
+    
 
 with tab3:
     # --- RESUMEN EJECUTIVO DEL PROGRAMA ---
