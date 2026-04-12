@@ -258,78 +258,54 @@ ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 # --- 6. RENDERIZADO PRINCIPAL ---
 st.markdown("""
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;600&display=swap');
         
         .header-wrapper {
-            padding: 70px 0 40px 0;
+            padding: 40px 0 20px 0; /* Más estrecho */
             text-align: center;
-            background: radial-gradient(circle at 50% 0%, #f1f5f9 0%, #ffffff 70%);
-            border-radius: 0 0 50px 50px;
+            background: #ffffff;
         }
         
         .main-title {
             font-family: 'Inter', sans-serif;
             font-weight: 100;
             color: #0f172a;
-            letter-spacing: 14px;
+            letter-spacing: 10px; /* Letra más compacta */
             text-transform: uppercase;
-            font-size: 3rem; 
+            font-size: 2rem; /* Letra más pequeña */
             margin: 0;
-            line-height: 1.2;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-wrap: wrap;
         }
         
         .year-badge {
-            font-weight: 700;
+            font-weight: 600;
             background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
             color: white;
-            padding: 5px 20px;
-            border-radius: 50px;
-            letter-spacing: 2px;
-            margin-left: 20px;
-            font-size: 2.2rem;
-            box-shadow: 0 10px 20px rgba(30, 64, 175, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Destello animado sobre el año */
-        .year-badge::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: rgba(255,255,255,0.1);
-            transform: rotate(30deg);
-            animation: shine 4s infinite;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-150%) rotate(30deg); }
-            20%, 100% { transform: translateX(150%) rotate(30deg); }
+            padding: 2px 14px; /* Más pequeño */
+            border-radius: 6px; /* Menos redondeado, más técnico */
+            letter-spacing: 1px;
+            margin-left: 12px;
+            font-size: 1.2rem; /* Año más pequeño */
+            box-shadow: 0 4px 10px rgba(30, 64, 175, 0.1);
         }
         
         .subtitle-premium {
             font-family: 'Inter', sans-serif;
             font-weight: 400;
-            color: #475569;
-            letter-spacing: 4px;
-            font-size: 0.8rem;
-            margin-top: 30px;
+            color: #94a3b8;
+            letter-spacing: 3px;
+            font-size: 0.65rem; /* Subtítulo muy fino */
+            margin-top: 15px;
             text-transform: uppercase;
         }
 
-        .accent-bar {
-            width: 60px;
-            height: 4px;
-            background: #3b82f6;
-            margin: 20px auto;
-            border-radius: 2px;
+        .accent-line {
+            width: 30px; /* Línea mínima */
+            height: 1px;
+            background: #cbd5e1;
+            margin: 12px auto;
         }
     </style>
     
@@ -338,11 +314,10 @@ st.markdown("""
             FESELQUEPUGUIS
             <span class="year-badge">2026</span>
         </h1>
-        <div class="accent-bar"></div>
-        <p class="subtitle-premium">Tu aportación voluntaria al Plan de Pensiones de Empleo</p>
+        <div class="accent-line"></div>
+        <p class="subtitle-premium">Tu aportación voluntaria al plan de pensiones de empelo (PPE)</p>
     </div>
 """, unsafe_allow_html=True)
-
 
 tab1, tab2, tab3 = st.tabs(["💰 Aportación Máxima ", "🚀 Proyección a la Jubilación ", "🎯 Acerca de Fes... "])
 
