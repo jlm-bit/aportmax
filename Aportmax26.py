@@ -312,7 +312,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-tab1, tab2, tab3 = st.tabs(["💰 Aportación Máxima ", "🚀 Proyección a la Jubilación ", "🎯 Acerca de Fes... "])
+tab1, tab2, tab3, tab4 = st.tabs(["💰 Aportación Máxima ", "🚀 Proyección a la Jubilación ",  "🚀 Proyección a la Jubilación2 ", "🎯 Acerca de Fes... "])
 
 with tab1:
 
@@ -711,6 +711,142 @@ import streamlit as st
 
 
 with tab3:
+    # 0. Recuperar variables
+    t_marginal_uso = st.session_state.get('tipo_marginal', 30.0) 
+
+    # 1. Entradas de Datos - Estética Refinada
+    st.markdown("### 🔮 Proyección de Futuro")
+    col_in1, col_in2 = st.columns(2)
+    
+    with col_in1:
+        # Contenedor para inputs
+        edad_act = st.number_input("Tu Edad Actual", value=40, min_value=18, max_value=64, key="edad_final")
+        saldo_existente = st.number_input("Saldo acumulado actual (€)", value=0.0, step=1000.0, min_value=0.0, key="saldo_final")
+        
+        modo_aportacion = st.radio(
+            "Estrategia de aportación personal:",
+            ["Aportación Máxima", "Cantidad Personalizada"],
+            horizontal=True, key="modo_aport_final"
+        )
+        
+        max_legal_anual_neta = float(MAX_P_LIMIT)
+        if modo_aportacion == "Aportación Máxima":
+            mi_aportacion_anual_neta = max_legal_anual_neta
+            st.success(f"🎯 Objetivo: **{mi_aportacion_anual_neta:,.2f} €/año**")
+        else:
+            mi_aportacion_anual_neta = st.slider("Aportación anual (€)", 0.0, max_legal_anual_neta, float(max_legal_anual_neta / 2), 100.0)
+
+    with col_in2:
+        edad_jub = st.select_slider("Edad de jubilación", options=[63, 64, 65, 66, 67], value=67, key="jub_final")
+        rent_pct = st.slider("Rentabilidad anual esperada (%)", 0.0, 10.0, 4.0, 0.5, key="rent_final")
+        st.caption("Nota: La rentabilidad histórica media de la renta variable global ronda el 6-7%.")
+
+    # 2. Lógica de Simulación
+    rent_dec = rent_pct / 100
+    edades = np.arange(edad_act, edad_jub + 1)
+    
+    cap_total_evol = []
+    cap_solo_empresa_evol = []
+    aport_acum_personal = []
+    
+    saldo_a = saldo_existente  # Con tu aportación
+    saldo_b = saldo_existente  # Solo empresa
+    acum_pers = 0
+    
+    cuota_empresa_fija = e_ahorro * 12
+    cuota_empleado_fija = mi_aportacion_anual_neta 
+    años_plan = edad_jub - edad_act
+
+    for edad in edades:
+        cap_total_evol.append(saldo_a)
+        cap_solo_empresa_evol.append(saldo_b)
+        
+        # Intereses del año
+        saldo_a += (saldo_a * rent_dec) + cuota_empresa_fija + cuota_empleado_fija
+        saldo_b += (saldo_b * rent_dec) + cuota_empresa_fija
+
+    # 3. Gráfico Evolutivo de Alta Fidelidad
+    fig_j = go.Figure()
+    
+    # Área: Escenario con tu aportación
+    fig_j.add_trace(go.Scatter(
+        x=edades, y=cap_total_evol,
+        mode='lines', name='TU ESTRATEGIA ACTUAL',
+        line=dict(color='#10b981', width=3),
+        fill='tozeroy', fillcolor='rgba(16, 185, 129, 0.1)'
+    ))
+    
+    # Línea: Escenario solo empresa
+    fig_j.add_trace(go.Scatter(
+        x=edades, y=cap_solo_empresa_evol,
+        mode='lines', name='SOLO APORTACIÓN EMPRESA',
+        line=dict(color='#334155', width=2, dash='dot')
+    ))
+
+    fig_j.update_layout(
+        title=f"<b>PROYECCIÓN DE FONDOS A LOS {edad_jub} AÑOS</b>",
+        xaxis_title="Edad", yaxis_title="Capital (€)",
+        hovermode='x unified', height=450,
+        plot_bgcolor='white', margin=dict(t=80, b=40),
+        legend=dict(orientation="h", y=1.1, x=0.5, xanchor="center")
+    )
+    st.plotly_chart(fig_j, use_container_width=True)
+
+    # 4. Impacto Final - Diseño Homogéneo
+    cap_final_a = cap_total_evol[-1]
+    cap_final_b = cap_solo_empresa_evol[-1]
+    gap = cap_final_a - cap_final_b
+    
+    renta_mensual = cap_final_a / 240 # Basado en 20 años
+    renta_mensual_sin = cap_final_b / 240
+
+    st.markdown("---")
+    
+    # CSS Premium (Ya lo tienes, aseguramos que se use)
+    c1, c2, c3 = st.columns(3)
+    
+    with c1:
+        st.markdown(f"""
+            <div style="background-color: #334155; color: white; padding: 25px; border-radius: 12px; min-height: 160px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+                <p style="margin:0; font-size: 0.7rem; opacity: 0.8; font-weight: 800; text-transform: uppercase;">Capital al Jubilarse</p>
+                <h2 style="font-size: 2.2rem; margin: 10px 0; color: white; border:none;">{cap_final_a:,.0f} €</h2>
+                <p style="margin:0; font-size: 0.75rem; opacity: 0.7;">Acumulado tras {años_plan} años</p>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with c2:
+        st.markdown(f"""
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; padding: 25px; border-radius: 12px; min-height: 160px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                <p style="margin:0; font-size: 0.7rem; color: #64748b; font-weight: 800; text-transform: uppercase;">Renta Mensual Extra</p>
+                <h2 style="font-size: 2.2rem; margin: 10px 0; color: #10b981; border:none;">{renta_mensual:,.0f} €</h2>
+                <p style="margin:0; font-size: 0.75rem; color: #475569;">Estimado (20 años de retiro)</p>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with c3:
+        st.markdown(f"""
+            <div style="background-color: #fef2f2; border: 1px solid #fee2e2; padding: 25px; border-radius: 12px; min-height: 160px;">
+                <p style="margin:0; font-size: 0.7rem; color: #991b1b; font-weight: 800; text-transform: uppercase;">Costo de no aportar</p>
+                <h2 style="font-size: 2.2rem; margin: 10px 0; color: #dc2626; border:none;">-{gap:,.0f} €</h2>
+                <p style="margin:0; font-size: 0.75rem; color: #991b1b;">Diferencia en patrimonio final</p>
+            </div>
+        """, unsafe_allow_html=True)
+
+    # 5. Notas y Hipótesis (Mantenemos tu bloque con mejor formato)
+    st.markdown("<br>", unsafe_allow_html=True)
+    with st.expander("⚙️ Ver Hipótesis del Modelo"):
+        h1, h2, h3 = st.columns(3)
+        with h1:
+            st.write("**⏳ Temporalidad**")
+            st.caption(f"Aportaciones constantes durante {años_plan} años.")  
+        with h2:
+            st.write("**📈 Capitalización**")
+            st.caption(f"Interés compuesto anual del {rent_pct}%.")
+        with h3:
+            st.write("**💶 Desinversión**")
+            st.caption("Renta calculada para agotar el capital en 240 mensualidades.")
+
+with tab4:
     # --- RESUMEN EJECUTIVO DEL PROGRAMA ---
     # st.info("### 📋 Funcionalidades de la plataforma AportaMax")
     
