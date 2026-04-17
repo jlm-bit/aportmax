@@ -178,7 +178,7 @@ def generar_informe_integral_2026(datos):
 # --- 4. SIDEBAR (CON MIN_VALUE=0.0) ---
 
 with st.sidebar:
-    st.header("⚙️ DATOS NECESARIOS")
+    st.header("⚙️ DATOS NECESARIOS",expanded=True)
     
     with st.expander("👤 DATOS EMPRESA", expanded=True):
         sb = st.number_input("Sueldo Bruto Anual (€)", value=0.0, step=1000.0, min_value=0.0)
