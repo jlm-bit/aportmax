@@ -501,7 +501,7 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
         """, unsafe_allow_html=True)
 
 
-with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
+
 
 with st.expander("ℹ️ ¿Cómo realizar tu aportación on line?",expanded=False):
     col_web, col_steps = st.columns([1, 1.5], gap="large")
