@@ -338,49 +338,61 @@ with tab1:
 
 
 with tab1:
-    # 1. Aseguramos que los valores sean numéricos para evitar errores
+    # 1. Bloque de Aportación Adicional (Número destacado)
+    st.markdown(
+        f"""
+        <hr style="margin: 1em 0; border: 0; border-top: 1px solid #f1f5f9;">
+        <div style="text-align: center; padding: 10px;">
+            <p style='margin:0; font-size:1.1rem; color: #64748b;'>
+                <b>💰 Aportación adicional que puedes realizar este año (máximo)</b>
+            </p>
+            <h4 style='margin:10px 0; font-size:3rem; color:#334155; line-height:1.0; font-weight:800;'>
+                {aportacion_extraordinaria_neta:,.0f}€
+            </h4>
+        </div>
+        """, 
+        unsafe_allow_html=True
+    )
+
+    # 2. Lógica y Tarjeta Ancha de Resumen
     cumplimiento_val = float(cumplimiento_plan) if cumplimiento_plan else 0.0
     
-    # 2. Preparamos el HTML con la tarjeta ancha
     html_card = f"""
-    <div style="display: block; text-align: left; margin-top: 15px; width: 100%; background: #f8fafc; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-        
+    <div style="display: block; text-align: left; margin-top: 10px; width: 100%; background: #f8fafc; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
         <h3 style="margin: 0 0 20px 0; color: #334155; font-size: 1.25rem; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">
             📊 Resumen de aportaciones
         </h3>
-
         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
             <span style="color:#64748b; font-size:1rem;">Promotor (Empresa):</span>
             <span style="font-weight:700; color:#0f172a; font-size:1rem;">{emp_t:,.2f}€</span>
         </div>
-        
         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
             <span style="color:#64748b; font-size:1rem;">Máximo Personal:</span>
             <span style="font-weight:700; color:#0f172a; font-size:1rem;">{max_p:,.2f}€</span>
         </div>
-        
         <div style="display: flex; justify-content: space-between; margin-bottom: 8px; border-top: 1px dotted #cbd5e1; padding-top: 10px; margin-top: 8px;">
             <span style="color:#64748b; font-size:1rem; font-weight:600;">Total Inversión Potencial:</span>
             <span style="font-weight:700; color:#0f172a; font-size:1rem;">{total_inv:,.2f}€</span>
         </div>
-        
         <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
             <span style="color:#64748b; font-size:1rem;">Ya realizada / planificada:</span>
             <span style="font-weight:700; color:#3b82f6; font-size:1rem;">{aport_previstas:,.2f}€</span>
         </div>
-        
         <div style="background-color: #e2e8f0; border-radius: 10px; height: 12px; width: 100%;">
             <div style="background-color: #3b82f6; width: {min(cumplimiento_val, 100.0):.0f}%; height: 12px; border-radius: 10px;"></div>
         </div>
-        
         <p style='margin: 10px 0 0 0; color:#64748b; font-size:0.9rem; text-align: center;'>
             Estás al <b>{cumplimiento_val:,.1f}%</b> de tu capacidad de ahorro
         </p>
     </div>
+    <br>
     """
-
-    # 3. Renderizado
     st.markdown(html_card, unsafe_allow_html=True)
+
+    # 3. Expander de Ahorro Fiscal (Lo que faltaba)
+    with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
+        st.write("Aquí puedes incluir el desglose de los tramos de IRPF o la explicación del ahorro en Catalunya.")
+        # Aquí iría el código de columnas y el gráfico donut que vimos al principio
 
 with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
     col_left, col_right = st.columns([1.1, 1])
