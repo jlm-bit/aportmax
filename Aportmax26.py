@@ -277,7 +277,7 @@ st.markdown("""
             font-weight: 100;
             color: #0f172a;
             letter-spacing: 5px; 
-            font-size: 1.5rem; /* Letra más pequeña y fina */
+            font-size: 1.3rem; /* Letra más pequeña y fina */
             margin: 0;
             line-height: 1;
             display: flex;
@@ -313,7 +313,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-tab1, tab2, tab3 = st.tabs(["💰 Aportación Máxima ", "🚀 Proyección a la Jubilación ",  "🎯 Acerca de Fes... "])
+tab1, tab2, tab3 = st.tabs([" Aportación Máxima ", " Proyección a la Jubilación ",  " Acerca de ... "])
 
 with tab1:
 
@@ -336,7 +336,13 @@ with tab1:
                 Empleado. Aportación Personal Máxima: <b>{max_p:,.2f}€</b>
             </p>
            <p style='margin:0px 0 0 0; color:#64748b; font-size:0.85rem;'>
+                Aportación Total:                     <b>{total_inv:,.2f}€</b>
+            </p>
+           <p style='margin:0px 0 0 0; color:#64748b; font-size:0.85rem;'>
                 Empleado. Aportación ya realizada + planificada): <b>{aport_previstas:,.2f}€</b>
+            </p>
+            <p style='margin:0px 0 0 0; color:#64748b; font-size:0.85rem;'>
+                % cumplimento de tu objetivo de aportación      : <b>{aport_previstas:,.2f}€</b>
             </p>
         </div>
     </div>
@@ -351,12 +357,12 @@ with tab1:
 
 
 
-with st.expander("ℹ️ Datos detallados", expanded=False):
+with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
     col_left, col_right = st.columns([1.2, 1])
     
     with col_left:
         # --- SUB-COLUMNAS PARA LOS CUADROS PRINCIPALES ---
-        sub_col1, sub_col2 = st.columns(2)
+        sub_col1, sub_col2 = st.columns(1)
         
         with sub_col1:
             # Color actualizado a Slate Oscuro (#334155) para homogeneizar con el Plan de Acción
@@ -367,8 +373,7 @@ with st.expander("ℹ️ Datos detallados", expanded=False):
                     <p style="margin:0; font-size: 0.75rem; opacity: 0.7;">Límite legal anual (Art. 52 LIRPF)</p>
                 </div>
             """, unsafe_allow_html=True)
-
-        with sub_col2:
+     
             st.markdown(f"""
                 <div style="background-color: #ffffff; color: #0f172a; padding: 25px; border-radius: 12px; height: 180px; text-align: left; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
                     <p style="margin:0; font-size: 0.7rem; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">AHORRO FISCAL (IRPF. Tramos Catalunya)</p>
