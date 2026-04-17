@@ -317,6 +317,11 @@ tab1, tab2, tab3 = st.tabs([" Aportación Máxima ", " Proyección a la Jubilaci
 
 with tab1:
 
+
+
+    # Definir color de la barra dinámicamente
+    color_barra = "#10b981" if cumplimiento_plan >= 100 else "#3b82f6"
+
     st.markdown(
     f"""
     <hr style="margin: 1.5em 0; border: 0; border-top: 1px solid #e2e8f0;">
@@ -324,33 +329,33 @@ with tab1:
         <p style='margin:0; font-size:1.1rem; color: #475569;'>
             <b>💰 Aportación adicional máxima este año</b>
         </p>
-        <h4 style='margin:15px 0; font-size:3rem; color:#334155; line-height:1; font-weight:800; letter-spacing:-1px;'>
+        <h4 style='margin:10px 0; font-size:3.2rem; color:#334155; line-height:1; font-weight:800; letter-spacing:-1px;'>
             {aportacion_extraordinaria_neta:,.0f}€
         </h4>
         
-        <div style="display: inline-block; text-align: left; margin-top: 20px; min-width: 320px; background: #f8fafc; padding: 15px; border-radius: 8px;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+        <div style="display: inline-block; text-align: left; margin-top: 15px; min-width: 340px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #f1f5f9;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
                 <span style="color:#64748b; font-size:0.9rem;">Promotor (Empresa):</span>
                 <span style="font-weight:700; color:#0f172a;">{emp_t:,.2f}€</span>
             </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
                 <span style="color:#64748b; font-size:0.9rem;">Máximo Personal:</span>
                 <span style="font-weight:700; color:#0f172a;">{max_p:,.2f}€</span>
             </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 5px; border-top: 1px solid #e2e8f0; padding-top: 5px;">
-                <span style="color:#64748b; font-size:0.9rem;">Total Inversión:</span>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px; border-top: 1px dotted #cbd5e1; padding-top: 6px; margin-top: 4px;">
+                <span style="color:#64748b; font-size:0.9rem; font-weight:600;">Total Inversión Potencial:</span>
                 <span style="font-weight:700; color:#0f172a;">{total_inv:,.2f}€</span>
             </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                <span style="color:#64748b; font-size:0.9rem;">Ya realizada/planificada:</span>
-                <span style="font-weight:700; color:#0f172a;">{aport_previstas:,.2f}€</span>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                <span style="color:#64748b; font-size:0.9rem;">Ya realizada / planificada:</span>
+                <span style="font-weight:700; color:#3b82f6;">{aport_previstas:,.2f}€</span>
             </div>
             
-            <div style="background-color: #e2e8f0; border-radius: 10px; height: 8px; width: 100%; margin-top: 10px;">
-                <div style="background-color: #3b82f6; width: {min(cumplimiento_plan, 100):.0f}%; height: 8px; border-radius: 10px;"></div>
+            <div style="background-color: #e2e8f0; border-radius: 10px; height: 10px; width: 100%;">
+                <div style="background-color: {color_barra}; width: {min(cumplimiento_plan, 100):.0f}%; height: 10px; border-radius: 10px; transition: width 0.5s ease-in-out;"></div>
             </div>
-            <p style='margin: 5px 0 0 0; color:#64748b; font-size:0.75rem; text-align: center;'>
-                Objetivo de aportación: <b>{cumplimiento_plan:,.1f}%</b>
+            <p style='margin: 8px 0 0 0; color:#64748b; font-size:0.8rem; text-align: center;'>
+                Estás al <b>{cumplimiento_plan:,.1f}%</b> de tu capacidad de ahorro
             </p>
         </div>
     </div>
@@ -358,7 +363,6 @@ with tab1:
     """, 
     unsafe_allow_html=True
 )
-
     st.markdown(
     f"""
     <hr style="margin: 1em 0;">
