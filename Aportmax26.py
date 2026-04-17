@@ -192,9 +192,9 @@ with st.sidebar:
         emp_t = min(emp_t_bruta, 10000.0)
    
         # Validación crítica
-        if sb <= 0.0:
-            st.info("💡 Introduce tu sueldo bruto para activar los cálculos.")
-            st.stop() 
+        #if sb <= 0.0:
+        #    st.info("💡 Introduce tu sueldo bruto para activar los cálculos.")
+        #    st.stop() 
                     
         if emp_t_bruta > 10000.0:
             exceso = emp_t_bruta - 10000.0
