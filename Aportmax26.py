@@ -315,7 +315,6 @@ st.markdown("""
 
 tab1, tab2, tab3 = st.tabs([" Aportación Máxima ", " Proyección a la Jubilación ",  " Acerca de ... "])
 
-with tab1:
 
 with tab1:
     # 1. Preparamos el HTML en una variable (o lo ponemos directo)
@@ -350,6 +349,7 @@ with tab1:
     st.markdown(html_card, unsafe_allow_html=True)
 
 # ... resto del código ...
+
     
     st.markdown(
     f"""
