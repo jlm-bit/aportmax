@@ -336,7 +336,13 @@ with tab1:
     unsafe_allow_html=True
 )
 
-   # 1. Preparamos el HTML en una variable (o lo ponemos directo)
+
+with tab1:
+    # 1. Asegúrate de que las variables tengan valores por defecto si pueden ser None
+    cumplimiento_val = cumplimiento_plan if cumplimiento_plan else 0
+    
+    # 2. Preparamos el HTML
+    # IMPORTANTE: Usamos comillas triples f""" para permitir variables y múltiples líneas
     html_card = f"""
     <div style="display: inline-block; text-align: left; margin-top: 15px; min-width: 340px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #f1f5f9; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
         <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
@@ -356,18 +362,16 @@ with tab1:
             <span style="font-weight:700; color:#3b82f6;">{aport_previstas:,.2f}€</span>
         </div>
         <div style="background-color: #e2e8f0; border-radius: 10px; height: 10px; width: 100%;">
-            <div style="background-color: #3b82f6; width: {min(cumplimiento_plan, 100):.0f}%; height: 10px; border-radius: 10px;"></div>
+            <div style="background-color: #3b82f6; width: {min(float(cumplimiento_val), 100.0):.0f}%; height: 10px; border-radius: 10px;"></div>
         </div>
         <p style='margin: 8px 0 0 0; color:#64748b; font-size:0.8rem; text-align: center;'>
-            Estás al <b>{cumplimiento_plan:,.1f}%</b> de tu capacidad
+            Estás al <b>{cumplimiento_val:,.1f}%</b> de tu capacidad
         </p>
     </div>
     """
 
-    # 2. RENDERIZADO CRÍTICO:
+    # 3. RENDERIZADO (Este es el paso que evita que salga como texto de error)
     st.markdown(html_card, unsafe_allow_html=True)
-
-# ... resto del código ...
 
 
 with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
