@@ -30,10 +30,13 @@ def calcular_max_personal_adicional(e, salario):
     else: return e
 
 # --- 2. CONFIGURACIÓN Y ESTILO ---
-st.set_page_config(page_title="AportaMax 2026", layout="wide", page_icon="📈")
+st.set_page_config(page_title="Avol 2026", layout="wide", page_icon="📈")
 
 st.markdown("""
     <style>
+    [data-testid="stAppViewBlockContainer"] {
+    padding-top: 2rem;
+}
         .main-header {
             background: linear-gradient(90deg, #1E3A8A 0%, #3B82F6 100%);
             padding: 20px; border-radius: 15px; color: white; text-align: center; margin-bottom: 25px;
