@@ -42,7 +42,7 @@ st.markdown("""
             padding: 20px; border-radius: 15px; color: white; text-align: center; margin-bottom: 25px;
         }
         .card {
-            padding: 20px; border-radius: 15px; text-align: center;
+            padding: 0px; border-radius: 15px; text-align: center;
             border: 1px solid #e2e8f0; margin-bottom: 10px; width: 100%;
         }
         .option-card {
