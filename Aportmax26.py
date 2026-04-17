@@ -190,7 +190,7 @@ with st.sidebar:
         emp_t = min(emp_t_bruta, 10000.0)
    
         if sb <= 0.0:
-            st.warning(f"⚠️ Introduce tus datos personales. Salario, Aportaciones de la empresa al plan, tus aportacinoes") 
+            st.warning(f"⚠️ Introduce tus datos personales: salario, aportaciones de la empresa al PPE y tus aportaciones") 
             st.stop ()
                     
         if emp_t_bruta > 10000.0:
@@ -312,7 +312,7 @@ st.markdown("""
         <h1 class="main-title">
             AVOL <span class="year-highlight">2026</span>
         </h1>
-        <p class="subtitle-slim">Aportación Voluntaria • Plan de Pensiones de Empleo</p>
+        <p class="subtitle-slim">Aportación Voluntaria • Plan de Pensiones de Empleo (PPE) </p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -326,7 +326,7 @@ with tab1:
         <hr style="margin: 1em 0; border: 0; border-top: 1px solid #f1f5f9;">
         <div style="text-align: center; padding: 10px;">
             <p style='margin:0; font-size:1.0rem; color: #64748b;'>
-                <b>💰 Aportación adicional que puedes realizar este año (máximo)</b>
+                <b>💰 Aportación adicional al PPE este año (máximo)</b>
             </p>
             <h4 style='margin:10px 0; font-size:2.5rem; color:#334155; line-height:1.0; font-weight:650;'>
                 {aportacion_extraordinaria_neta:,.0f}€
