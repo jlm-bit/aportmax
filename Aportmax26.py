@@ -5,6 +5,8 @@ import io
 import datetime
 import plotly.graph_objects as go
 
+st.set_page_config(initial_sidebar_state="expanded")
+
 # --- 1. MOTOR FISCAL CATALUÑA 2026 ---
 def calcular_irpf_cat(base):
     tramos = [
