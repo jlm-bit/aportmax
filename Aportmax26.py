@@ -198,7 +198,7 @@ def calcular_max_personal_adicional(e, salario):
 
 # 2. Configuración
 st.set_page_config(
-    page_title="Avol 2026", 
+    page_title="Ivol 2026", 
     layout="wide", 
     initial_sidebar_state="expanded"  # <-- Esto obliga a que aparezca
 )
