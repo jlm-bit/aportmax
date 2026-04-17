@@ -342,7 +342,7 @@ with tab1:
                 Empleado. Aportación ya realizada + planificada): <b>{aport_previstas:,.2f}€</b>
             </p>
             <p style='margin:0px 0 0 0; color:#64748b; font-size:0.85rem;'>
-                % cumplimento de tu objetivo de aportación      : <b>{aport_previstas:,.2f}€</b>
+                % cumplimento de tu objetivo de aportación      : <b>{cumplimiento_plan:,.2f}€</b>
             </p>
         </div>
     </div>
@@ -362,18 +362,11 @@ with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
     
     with col_left:
         # --- SUB-COLUMNAS PARA LOS CUADROS PRINCIPALES ---
-        sub_col1, sub_col2 = st.columns(1)
+        sub_col1 = st.columns(1)
         
         with sub_col1:
             # Color actualizado a Slate Oscuro (#334155) para homogeneizar con el Plan de Acción
-            st.markdown(f"""
-                <div style="background-color: #334155; color: white; padding: 25px; border-radius: 12px; height: 180px; text-align: left; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
-                    <p style="margin:0; font-size: 0.7rem; opacity: 0.8; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">MÁXIMA APORTACIÓN PERSONAL</p>
-                    <h2 style="font-size: 2rem; margin: 10px 0; color: white; border: none;">{max_p:,.2f} €</h2>
-                    <p style="margin:0; font-size: 0.75rem; opacity: 0.7;">Límite legal anual (Art. 52 LIRPF)</p>
-                </div>
-            """, unsafe_allow_html=True)
-     
+            
             st.markdown(f"""
                 <div style="background-color: #ffffff; color: #0f172a; padding: 25px; border-radius: 12px; height: 180px; text-align: left; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
                     <p style="margin:0; font-size: 0.7rem; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">AHORRO FISCAL (IRPF. Tramos Catalunya)</p>
