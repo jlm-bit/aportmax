@@ -5,7 +5,7 @@ import io
 import datetime
 import plotly.graph_objects as go
 
-st.set_page_config(initial_sidebar_state="expanded")
+
 
 # --- 1. MOTOR FISCAL CATALUÑA 2026 ---
 def calcular_irpf_cat(base):
@@ -178,6 +178,7 @@ def generar_informe_integral_2026(datos):
     return pdf.output(dest='S').encode('latin-1', errors='replace')
 
 # --- 4. SIDEBAR (CON MIN_VALUE=0.0) ---
+st.set_page_config(initial_sidebar_state="expanded")
 with st.sidebar:
     st.header("⚙️ DATOS NECESARIOS")
     
