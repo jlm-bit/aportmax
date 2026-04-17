@@ -176,29 +176,25 @@ def generar_informe_integral_2026(datos):
     return pdf.output(dest='S').encode('latin-1', errors='replace')
 
 # --- 4. SIDEBAR (CON MIN_VALUE=0.0) ---
+# --- 4. SIDEBAR (CON MIN_VALUE=0.0) ---
+
 with st.sidebar:
     st.header("⚙️ DATOS NECESARIOS")
     
-    # Usamos una clave (key) única para asegurar que Streamlit refresque el widget
-    sb = st.number_input("Sueldo Bruto Anual (€)", value=0.0, step=1000.0, min_value=0.0, key="sb_input")
-    
-    if sb <= 0.0:
-        st.info("⚠️ Introduce tu sueldo para activar los cálculos.")
-        st.stop()
-
     with st.expander("👤 DATOS EMPRESA", expanded=True):
+        sb = st.number_input("Sueldo Bruto Anual (€)", value=65000.0, step=1000.0, min_value=0.0)
         e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=0.0, step=25.0, min_value=0.0)
         e_riesgo = st.number_input("Prima Anual Riesgo PPE (€)", value=0.0, step=25.0, min_value=0.0)
         
+        # --- CONTROL DE LÍMITE EMPRESA (Ahorro + Riesgo <= 10.000€) ---
         emp_t_bruta = (e_ahorro * 12) + e_riesgo
         emp_t = min(emp_t_bruta, 10000.0)
-                    
+   
+        
         if emp_t_bruta > 10000.0:
-            st.warning(f"⚠️ Límite de 10.000€ alcanzado.")
+            st.warning(f"⚠️ La aportación de la empresa se ha limitado a 10.000€ (Exceso: {emp_t_bruta - 10000)
 
-    # Si llegamos aquí, la app sigue viva y puedes seguir añadiendo inputs
-    st.success("✅ Datos cargados correctamente")
-
+                                                                                          
     # --- LÓGICA DE LÍMITES FISCALES ---
     CUOTA_SS_PRE = min(sb, 5101.0 * 12) * 0.0635 
     BASE_PRE_LIMIT = max(0.0, sb - CUOTA_SS_PRE - 2000.0)
