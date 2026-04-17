@@ -197,7 +197,11 @@ def calcular_max_personal_adicional(e, salario):
         return e
 
 # 2. Configuración
-st.set_page_config(page_title="Avol 2026", layout="wide")
+st.set_page_config(
+    page_title="Avol 2026", 
+    layout="wide", 
+    initial_sidebar_state="expanded"  # <-- Esto obliga a que aparezca
+)
 
 # 3. SIDEBAR
 with st.sidebar:
