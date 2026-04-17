@@ -325,7 +325,7 @@ with tab1:
         <p style='margin:0; font-size:1.0rem;'>
             <b>💰 Aportación adicional que puedes realizar este año (como máximo)</b>
         </p>
-        <h4 style='margin:10px 0; font-size:2.6rem; color:#334155; line-height:1.1; font-weight:700;'>
+        <h4 style='margin:10px 0; font-size:2.5rem; color:#334155; line-height:1.0; font-weight:650;'>
             {aportacion_extraordinaria_neta:,.0f}€
         </h4>
         <div style="margin-top: 15px;">
