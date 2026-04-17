@@ -187,6 +187,7 @@ def generar_informe_integral_2026(datos):
 
 # --- 3. SIDEBAR ---
 
+# --- 3. SIDEBAR ---
 with st.sidebar:
     st.header("⚙️ DATOS NECESARIOS")
     
@@ -204,14 +205,14 @@ with st.sidebar:
             st.warning(f"⚠️ Aportación limitada a 10.000€ (Exceso: {exceso:,.2f}€)")
 
     # --- LÓGICA DE LÍMITES FISCALES ---
-    # Calculamos la Seguridad Social estimada
+    # Importante: Esto debe seguir indentado dentro del "with st.sidebar"
     CUOTA_SS_PRE = min(sb, 5101.0 * 12) * 0.0635 
     BASE_PRE_LIMIT = max(0.0, sb - CUOTA_SS_PRE - 2000.0)
     
-    # Cálculo del máximo personal usando la función definida arriba
+    # Cálculo del máximo personal usando la función (asegúrate de que esté definida arriba)
     max_personal_coef = calcular_max_personal_adicional(emp_t, sb)
     
-    # Límite final combinando coeficientes y el tope de 10k menos lo que pone la empresa
+    # Límite final combinando coeficientes y el tope de 10k menos la empresa
     MAX_P_LIMIT = max(0.0, min(max_personal_coef + 1500, 10000.0 - emp_t))
     
     # Ajuste por el límite del 30% de la base imponible
@@ -238,11 +239,9 @@ with st.sidebar:
                 min_value=0.0
             )
 
-# --- 4. VERIFICACIÓN (Para ver si los datos pasan al cuerpo principal) ---
-st.write(f"Sueldo capturado: {sb} €")
-st.write(f"Límite personal calculado: {MAX_P_LIMIT} €")
-            ) # <-- Aquí faltaba este paréntesis en tu código original
-            
+# --- 4. VERIFICACIÓN (Fuera del sidebar) ---
+st.write(f"Sueldo capturado: **{sb:,.2f} €**")
+st.write(f"Límite personal calculado: **{MAX_P_LIMIT:,.2f} €**")
 # --- 5. LÓGICA DE CÁLCULO ---
 any = 2026
 
