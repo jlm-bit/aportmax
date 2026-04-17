@@ -316,53 +316,56 @@ st.markdown("""
 tab1, tab2, tab3 = st.tabs([" Aportación Máxima ", " Proyección a la Jubilación ",  " Acerca de ... "])
 
 with tab1:
-
-
-
-    # Definir color de la barra dinámicamente
+    # Lógica de colores y mensajes
+    es_maximo_alcanzado = aportacion_extraordinaria_neta <= 0
     color_barra = "#10b981" if cumplimiento_plan >= 100 else "#3b82f6"
+    color_titulo = "#64748b" if es_maximo_alcanzado else "#334155"
+    
+    # Formateo manual a estilo europeo (punto para miles, coma para decimales)
+    def fmt(valor):
+        return f"{valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
     st.markdown(
-    f"""
-    <hr style="margin: 1.5em 0; border: 0; border-top: 1px solid #e2e8f0;">
-    <div style="text-align: center; padding: 10px; font-family: sans-serif;">
-        <p style='margin:0; font-size:1.1rem; color: #475569;'>
-            <b>💰 Aportación adicional máxima este año</b>
-        </p>
-        <h4 style='margin:10px 0; font-size:3.2rem; color:#334155; line-height:1; font-weight:800; letter-spacing:-1px;'>
-            {aportacion_extraordinaria_neta:,.0f}€
-        </h4>
-        
-        <div style="display: inline-block; text-align: left; margin-top: 15px; min-width: 340px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #f1f5f9;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                <span style="color:#64748b; font-size:0.9rem;">Promotor (Empresa):</span>
-                <span style="font-weight:700; color:#0f172a;">{emp_t:,.2f}€</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                <span style="color:#64748b; font-size:0.9rem;">Máximo Personal:</span>
-                <span style="font-weight:700; color:#0f172a;">{max_p:,.2f}€</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 6px; border-top: 1px dotted #cbd5e1; padding-top: 6px; margin-top: 4px;">
-                <span style="color:#64748b; font-size:0.9rem; font-weight:600;">Total Inversión Potencial:</span>
-                <span style="font-weight:700; color:#0f172a;">{total_inv:,.2f}€</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-                <span style="color:#64748b; font-size:0.9rem;">Ya realizada / planificada:</span>
-                <span style="font-weight:700; color:#3b82f6;">{aport_previstas:,.2f}€</span>
-            </div>
-            
-            <div style="background-color: #e2e8f0; border-radius: 10px; height: 10px; width: 100%;">
-                <div style="background-color: {color_barra}; width: {min(cumplimiento_plan, 100):.0f}%; height: 10px; border-radius: 10px; transition: width 0.5s ease-in-out;"></div>
-            </div>
-            <p style='margin: 8px 0 0 0; color:#64748b; font-size:0.8rem; text-align: center;'>
-                Estás al <b>{cumplimiento_plan:,.1f}%</b> de tu capacidad de ahorro
+        f"""
+        <hr style="margin: 1.5em 0; border: 0; border-top: 1px solid #e2e8f0;">
+        <div style="text-align: center; padding: 10px; font-family: sans-serif;">
+            <p style='margin:0; font-size:1.1rem; color: #475569;'>
+                <b>{ "✅ Capacidad de ahorro completada" if es_maximo_alcanzado else "💰 Aportación adicional máxima este año" }</b>
             </p>
+            <h4 style='margin:10px 0; font-size:3.2rem; color:{color_titulo}; line-height:1; font-weight:800; letter-spacing:-1px;'>
+                {fmt(max(0, aportacion_extraordinaria_neta))}€
+            </h4>
+            
+            <div style="display: inline-block; text-align: left; margin-top: 15px; min-width: 340px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #f1f5f9; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                    <span style="color:#64748b; font-size:0.9rem;">Promotor (Empresa):</span>
+                    <span style="font-weight:700; color:#0f172a;">{fmt(emp_t)}€</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                    <span style="color:#64748b; font-size:0.9rem;">Máximo Personal:</span>
+                    <span style="font-weight:700; color:#0f172a;">{fmt(max_p)}€</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; border-top: 1px dotted #cbd5e1; padding-top: 6px; margin-top: 4px;">
+                    <span style="color:#64748b; font-size:0.9rem; font-weight:600;">Total Inversión Potencial:</span>
+                    <span style="font-weight:700; color:#0f172a;">{fmt(total_inv)}€</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                    <span style="color:#64748b; font-size:0.9rem;">Ya realizada / planificada:</span>
+                    <span style="font-weight:700; color:#3b82f6;">{fmt(aport_previstas)}€</span>
+                </div>
+                
+                <div style="background-color: #e2e8f0; border-radius: 10px; height: 10px; width: 100%;">
+                    <div style="background-color: {color_barra}; width: {min(cumplimiento_plan, 100):.0f}%; height: 10px; border-radius: 10px;"></div>
+                </div>
+                <p style='margin: 8px 0 0 0; color:#64748b; font-size:0.8rem; text-align: center;'>
+                    { "Has alcanzado el 100% de tu límite legal" if es_maximo_alcanzado else f"Estás al <b>{cumplimiento_plan:,.1f}%</b> de tu capacidad" }
+                </p>
+            </div>
         </div>
-    </div>
-    <hr style="margin: 1.5em 0; border: 0; border-top: 1px solid #e2e8f0;">
-    """, 
-    unsafe_allow_html=True
-)
+        <hr style="margin: 1.5em 0; border: 0; border-top: 1px solid #e2e8f0;">
+        """, 
+        unsafe_allow_html=True
+    )
     st.markdown(
     f"""
     <hr style="margin: 1em 0;">
