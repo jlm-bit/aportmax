@@ -183,11 +183,15 @@ def generar_informe_integral_2026(datos):
 
     return pdf.output(dest='S').encode('latin-1', errors='replace')
 
-# --- 4. SIDEBAR (CON MIN_VALUE=0.0) ---
 
 # --- 3. SIDEBAR ---
 
-# --- 3. SIDEBAR ---
+
+with st.sidebar:
+    st.header("⚙️ DATOS NEC3")
+
+
+
 with st.sidebar:
     st.header("⚙️ DATOS NECESARIOS")
     
@@ -242,6 +246,7 @@ with st.sidebar:
 # --- 4. VERIFICACIÓN (Fuera del sidebar) ---
 st.write(f"Sueldo capturado: **{sb:,.2f} €**")
 st.write(f"Límite personal calculado: **{MAX_P_LIMIT:,.2f} €**")
+
 # --- 5. LÓGICA DE CÁLCULO ---
 any = 2026
 
