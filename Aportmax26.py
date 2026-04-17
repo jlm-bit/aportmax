@@ -178,7 +178,7 @@ def generar_informe_integral_2026(datos):
     return pdf.output(dest='S').encode('latin-1', errors='replace')
 
 # --- 4. SIDEBAR (CON MIN_VALUE=0.0) ---
-
+# --- 4. SIDEBAR (CORREGIDO) ---
 with st.sidebar:
     st.header("⚙️ DATOS NECESARIOS")
     
@@ -187,58 +187,53 @@ with st.sidebar:
         e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=0.0, step=25.0, min_value=0.0)
         e_riesgo = st.number_input("Prima Anual Riesgo PPE (€)", value=0.0, step=25.0, min_value=0.0)
         
-        # --- CÁLCULOS ---
+        # Cálculos de empresa
         emp_t_bruta = (e_ahorro * 12) + e_riesgo
         emp_t = min(emp_t_bruta, 10000.0)
    
-        # --- VALIDACIONES ---
-        # Solo detenemos si el sueldo es CERO. 
-        # Si es mayor que cero, permitimos que siga la ejecución.
+        # Validación crítica
         if sb <= 0.0:
             st.info("💡 Introduce tu sueldo bruto para activar los cálculos.")
             st.stop() 
                     
         if emp_t_bruta > 10000.0:
-            # Usamos :.2f para evitar errores de formato y cerramos bien el paréntesis
             exceso = emp_t_bruta - 10000.0
-            st.warning(f"⚠️ La aportación de la empresa se ha limitado a 10.000€ (Exceso: {exceso:,.2f}€)")
+            st.warning(f"⚠️ Aportación limitada a 10.000€ (Exceso: {exceso:,.2f}€)")
 
-# El resto de tu código (tarjetas, gráficos, etc.) debe ir AQUÍ FUERA del if sb <= 0
-                                                                                          
     # --- LÓGICA DE LÍMITES FISCALES ---
+    # Calculamos esto ANTES de mostrar el siguiente expander
     CUOTA_SS_PRE = min(sb, 5101.0 * 12) * 0.0635 
     BASE_PRE_LIMIT = max(0.0, sb - CUOTA_SS_PRE - 2000.0)
     
-    # Cálculo del máximo personal según coeficientes
+    # Esta función debe estar definida al principio de tu archivo
     max_personal_coef = calcular_max_personal_adicional(emp_t, sb)
     
-    # --- CONTROL TOTAL: EMPRESA + PERSONAL <= 10.000€ ---
-    # El límite personal es el menor de: (Coeficiente + 1500) o (Hueco hasta 10k)
+    # Límite final (Empresa + Personal <= 10.000€)
     MAX_P_LIMIT = max(0.0, min(max_personal_coef + 1500, 10000.0 - emp_t))
     
-    # Límite del 30% de la Base Imponible
+    # Ajuste por el 30% de la Base Imponible
     if (emp_t + MAX_P_LIMIT) > (BASE_PRE_LIMIT * 0.30):
         MAX_P_LIMIT = max(0.0, (BASE_PRE_LIMIT * 0.30) - emp_t)
 
     with st.expander("📅 APORTACIONES PERSONALES", expanded=True):
         if MAX_P_LIMIT <= 0:
-            st.info("🚫 Has alcanzado el límite legal máximo de aportación anual (10.000€) con la aportación de la empresa.")
+            st.info("🚫 Límite legal máximo alcanzado con la aportación de la empresa.")
             c_m = 0.0
             e_y = 0.0
         else:
-            # Aseguramos que el value no sea superior al nuevo límite calculado
-            c_m = st.number_input("Aport.periódica mensual (€)", value=0.0, step=50.0, min_value=0.0)
+            c_m = st.number_input("Aport. periódica mensual (€)", value=0.0, step=50.0, min_value=0.0)
             
-            # El max_value del input se ajusta dinámicamente al límite legal real
+            # El max_value debe ser un float válido
+            limite_extras = float(MAX_P_LIMIT)
+            
             e_y = st.number_input(
                 "Aport. Extras ya realizadas (€)", 
                 value=0.0, 
-                max_value=max(0.0, float(MAX_P_LIMIT)), 
+                max_value=max(0.0, limite_extras), 
                 step=100.0, 
                 min_value=0.0
-            )
-
-
+            ) # <-- Aquí faltaba este paréntesis en tu código original
+            
 # --- 5. LÓGICA DE CÁLCULO ---
 any = 2026
 
