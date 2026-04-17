@@ -352,13 +352,8 @@ with tab1:
 )
 
 
-
-
-
-
-
 with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
-    col_left, col_right = st.columns([1.2, 1])
+    col_left, col_right = st.columns([1.1, 1])
     
     with col_left:
         # --- SUB-COLUMNAS PARA LOS CUADROS PRINCIPALES ---
