@@ -184,8 +184,6 @@ def generar_informe_integral_2026(datos):
     return pdf.output(dest='S').encode('latin-1', errors='replace')
 
 
-import streamlit as st
-
 # 1. Función de apoyo (DEBE ESTAR AQUÍ ARRIBA)
 def calcular_max_personal_adicional(e, salario):
     if salario > 60000:
@@ -198,7 +196,7 @@ def calcular_max_personal_adicional(e, salario):
         return e
 
 # 2. Configuración (Opcional pero recomendado)
-st.set_page_config(page_title="Test Sidebar", layout="wide")
+st.set_page_config(page_title="Avol 2026", layout="wide")
 
 # 3. SIDEBAR
 with st.sidebar:
@@ -212,12 +210,7 @@ with st.sidebar:
         
         emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
 
-    # Lógica de límites (DENTRO DEL SIDEBAR)
-    ss_estimada = min(sb, 61212.0) * 0.0635
-    base_imponible = max(0.0, sb - ss_estimada - 2000.0)
     
-    max_p_coef = calcular_max_personal_adicional(emp_t, sb)
-    MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500, 10000.0 - emp_t))
 
     # Aportaciones Personales
     with st.expander("📅 PERSONALES", expanded=True):
