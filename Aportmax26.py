@@ -184,68 +184,53 @@ def generar_informe_integral_2026(datos):
     return pdf.output(dest='S').encode('latin-1', errors='replace')
 
 
-# --- 3. SIDEBAR ---
+import streamlit as st
 
+# 1. Función de apoyo (DEBE ESTAR AQUÍ ARRIBA)
+def calcular_max_personal_adicional(e, salario):
+    if salario > 60000:
+        return e
+    if e <= 500:
+        return e * 8.5
+    elif e <= 1500:
+        return 1250 + (0.25 * (e - 500))
+    else:
+        return e
 
+# 2. Configuración (Opcional pero recomendado)
+st.set_page_config(page_title="Test Sidebar", layout="wide")
+
+# 3. SIDEBAR
 with st.sidebar:
-    st.header("⚙️ DATOS NEC3")
-
-
-
-with st.sidebar:
-    st.header("⚙️ DATOS NECESARIOS")
+    st.header("⚙️ CONFIGURACIÓN")
     
+    # Datos Empresa
     with st.expander("👤 DATOS EMPRESA", expanded=True):
-        sb = st.number_input("Sueldo Bruto Anual (€)", value=65000.0, step=1000.0, min_value=0.0)
-        e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=0.0, step=25.0, min_value=0.0)
-        e_riesgo = st.number_input("Prima Anual Riesgo PPE (€)", value=0.0, step=25.0, min_value=0.0)
+        sb = st.number_input("Sueldo Bruto Anual (€)", value=65000.0)
+        e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=100.0)
+        e_riesgo = st.number_input("Prima Riesgo (€)", value=0.0)
         
-        # Cálculos de empresa
-        emp_t_bruta = (e_ahorro * 12) + e_riesgo
-        emp_t = min(emp_t_bruta, 10000.0)
-   
-        if emp_t_bruta > 10000.0:
-            exceso = emp_t_bruta - 10000.0
-            st.warning(f"⚠️ Aportación limitada a 10.000€ (Exceso: {exceso:,.2f}€)")
+        emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
 
-    # --- LÓGICA DE LÍMITES FISCALES ---
-    # Importante: Esto debe seguir indentado dentro del "with st.sidebar"
-    CUOTA_SS_PRE = min(sb, 5101.0 * 12) * 0.0635 
-    BASE_PRE_LIMIT = max(0.0, sb - CUOTA_SS_PRE - 2000.0)
+    # Lógica de límites (DENTRO DEL SIDEBAR)
+    ss_estimada = min(sb, 61212.0) * 0.0635
+    base_imponible = max(0.0, sb - ss_estimada - 2000.0)
     
-    # Cálculo del máximo personal usando la función (asegúrate de que esté definida arriba)
-    max_personal_coef = calcular_max_personal_adicional(emp_t, sb)
-    
-    # Límite final combinando coeficientes y el tope de 10k menos la empresa
-    MAX_P_LIMIT = max(0.0, min(max_personal_coef + 1500, 10000.0 - emp_t))
-    
-    # Ajuste por el límite del 30% de la base imponible
-    if (emp_t + MAX_P_LIMIT) > (BASE_PRE_LIMIT * 0.30):
-        MAX_P_LIMIT = max(0.0, (BASE_PRE_LIMIT * 0.30) - emp_t)
+    max_p_coef = calcular_max_personal_adicional(emp_t, sb)
+    MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500, 10000.0 - emp_t))
 
-    # Segundo Expander
-    with st.expander("📅 APORTACIONES PERSONALES", expanded=True):
-        if MAX_P_LIMIT <= 0:
-            st.info("🚫 Límite legal máximo alcanzado con la aportación de la empresa.")
-            c_m = 0.0
-            e_y = 0.0
-        else:
-            c_m = st.number_input("Aport. periódica mensual (€)", value=0.0, step=50.0, min_value=0.0)
-            
-            # Aseguramos que el valor máximo para el input sea coherente
-            limite_extras = float(MAX_P_LIMIT)
-            
-            e_y = st.number_input(
-                "Aport. Extras ya realizadas (€)", 
-                value=0.0, 
-                max_value=max(0.0, limite_extras), 
-                step=100.0, 
-                min_value=0.0
-            )
+    # Aportaciones Personales
+    with st.expander("📅 PERSONALES", expanded=True):
+        c_m = st.number_input("Mensualidad (€)", value=0.0)
+        e_y = st.number_input("Extra ya aportado (€)", value=0.0, max_value=float(MAX_P_LIMIT) if MAX_P_LIMIT > 0 else 0.01)
 
-# --- 4. VERIFICACIÓN (Fuera del sidebar) ---
-st.write(f"Sueldo capturado: **{sb:,.2f} €**")
-st.write(f"Límite personal calculado: **{MAX_P_LIMIT:,.2f} €**")
+# 4. CUERPO PRINCIPAL
+st.title("🚀 Si ves esto y no el sidebar, dale a la flecha '>' arriba a la izquierda")
+st.write(f"Sueldo: {sb} €")
+st.write(f"Límite calculado: {MAX_P_LIMIT} €")
+
+
+
 
 # --- 5. LÓGICA DE CÁLCULO ---
 any = 2026
