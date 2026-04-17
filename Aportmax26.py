@@ -329,23 +329,7 @@ with tab1:
         <h4 style='margin:10px 0; font-size:2.5rem; color:#334155; line-height:1.0; font-weight:650;'>
             {aportacion_extraordinaria_neta:,.0f}€
         </h4>
-        <div style="margin-top: 15px;">
-            <p style='margin:0; color:#64748b; font-size:0.85rem;'>
-                Promotor. Aportación Anual (prevista): <b>{emp_t:,.2f}€</b>
-            </p>
-            <p style='margin:0px 0 0 0; color:#64748b; font-size:0.85rem;'>
-                Empleado. Aportación Personal Máxima: <b>{max_p:,.2f}€</b>
-            </p>
-           <p style='margin:0px 0 0 0; color:#64748b; font-size:0.85rem;'>
-                Aportación Total:                     <b>{total_inv:,.2f}€</b>
-            </p>
-           <p style='margin:0px 0 0 0; color:#64748b; font-size:0.85rem;'>
-                Empleado. Aportación ya realizada + planificada): <b>{aport_previstas:,.2f}€</b>
-            </p>
-            <p style='margin:0px 0 0 0; color:#64748b; font-size:0.85rem;'>
-                % cumplimento de tu objetivo de aportación      : <b>{cumplimiento_plan:,.0f}%</b>
-            </p>
-        </div>
+       
     </div>
     <hr style="margin: 1em 0;">
     """, 
