@@ -179,7 +179,7 @@ def generar_informe_integral_2026(datos):
 
 # --- 4. SIDEBAR (CON MIN_VALUE=0.0) ---
 st.set_page_config(initial_sidebar_state="expanded")
-with st.sidebar:
+    with st.sidebar:
     st.header("⚙️ DATOS NECESARIOS")
     
     with st.expander("👤 DATOS EMPRESA", expanded=True):
