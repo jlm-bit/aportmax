@@ -186,6 +186,7 @@ def generar_informe_integral_2026(datos):
 # --- 4. SIDEBAR (CON MIN_VALUE=0.0) ---
 
 # --- 3. SIDEBAR ---
+
 with st.sidebar:
     st.header("⚙️ DATOS NECESARIOS")
     
