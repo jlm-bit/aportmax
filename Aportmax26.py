@@ -338,41 +338,49 @@ with tab1:
 
 
 with tab1:
-    # 1. Asegúrate de que las variables tengan valores por defecto si pueden ser None
-    cumplimiento_val = cumplimiento_plan if cumplimiento_plan else 0
+    # 1. Aseguramos que los valores sean numéricos para evitar errores
+    cumplimiento_val = float(cumplimiento_plan) if cumplimiento_plan else 0.0
     
-    # 2. Preparamos el HTML
-    # IMPORTANTE: Usamos comillas triples f""" para permitir variables y múltiples líneas
+    # 2. Preparamos el HTML con la tarjeta ancha
     html_card = f"""
-    <div style="display: inline-block; text-align: left; margin-top: 15px; min-width: 340px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #f1f5f9; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-            <span style="color:#64748b; font-size:0.9rem;">Promotor (Empresa):</span>
-            <span style="font-weight:700; color:#0f172a;">{emp_t:,.2f}€</span>
+    <div style="display: block; text-align: left; margin-top: 15px; width: 100%; background: #f8fafc; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        
+        <h3 style="margin: 0 0 20px 0; color: #334155; font-size: 1.25rem; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">
+            📊 Resumen de aportaciones
+        </h3>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <span style="color:#64748b; font-size:1rem;">Promotor (Empresa):</span>
+            <span style="font-weight:700; color:#0f172a; font-size:1rem;">{emp_t:,.2f}€</span>
         </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-            <span style="color:#64748b; font-size:0.9rem;">Máximo Personal:</span>
-            <span style="font-weight:700; color:#0f172a;">{max_p:,.2f}€</span>
+        
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <span style="color:#64748b; font-size:1rem;">Máximo Personal:</span>
+            <span style="font-weight:700; color:#0f172a; font-size:1rem;">{max_p:,.2f}€</span>
         </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 6px; border-top: 1px dotted #cbd5e1; padding-top: 6px; margin-top: 4px;">
-            <span style="color:#64748b; font-size:0.9rem; font-weight:600;">Total Inversión Potencial:</span>
-            <span style="font-weight:700; color:#0f172a;">{total_inv:,.2f}€</span>
+        
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; border-top: 1px dotted #cbd5e1; padding-top: 10px; margin-top: 8px;">
+            <span style="color:#64748b; font-size:1rem; font-weight:600;">Total Inversión Potencial:</span>
+            <span style="font-weight:700; color:#0f172a; font-size:1rem;">{total_inv:,.2f}€</span>
         </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-            <span style="color:#64748b; font-size:0.9rem;">Ya realizada / planificada:</span>
-            <span style="font-weight:700; color:#3b82f6;">{aport_previstas:,.2f}€</span>
+        
+        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+            <span style="color:#64748b; font-size:1rem;">Ya realizada / planificada:</span>
+            <span style="font-weight:700; color:#3b82f6; font-size:1rem;">{aport_previstas:,.2f}€</span>
         </div>
-        <div style="background-color: #e2e8f0; border-radius: 10px; height: 10px; width: 100%;">
-            <div style="background-color: #3b82f6; width: {min(float(cumplimiento_val), 100.0):.0f}%; height: 10px; border-radius: 10px;"></div>
+        
+        <div style="background-color: #e2e8f0; border-radius: 10px; height: 12px; width: 100%;">
+            <div style="background-color: #3b82f6; width: {min(cumplimiento_val, 100.0):.0f}%; height: 12px; border-radius: 10px;"></div>
         </div>
-        <p style='margin: 8px 0 0 0; color:#64748b; font-size:0.8rem; text-align: center;'>
-            Estás al <b>{cumplimiento_val:,.1f}%</b> de tu capacidad
+        
+        <p style='margin: 10px 0 0 0; color:#64748b; font-size:0.9rem; text-align: center;'>
+            Estás al <b>{cumplimiento_val:,.1f}%</b> de tu capacidad de ahorro
         </p>
     </div>
     """
 
-    # 3. RENDERIZADO (Este es el paso que evita que salga como texto de error)
+    # 3. Renderizado
     st.markdown(html_card, unsafe_allow_html=True)
-
 
 with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
     col_left, col_right = st.columns([1.1, 1])
