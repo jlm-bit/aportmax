@@ -317,6 +317,47 @@ tab1, tab2, tab3 = st.tabs([" Aportación Máxima ", " Proyección a la Jubilaci
 
 with tab1:
 
+st.markdown(
+    f"""
+    <hr style="margin: 1.5em 0; border: 0; border-top: 1px solid #e2e8f0;">
+    <div style="text-align: center; padding: 10px; font-family: sans-serif;">
+        <p style='margin:0; font-size:1.1rem; color: #475569;'>
+            <b>💰 Aportación adicional máxima este año</b>
+        </p>
+        <h4 style='margin:15px 0; font-size:3rem; color:#334155; line-height:1; font-weight:800; letter-spacing:-1px;'>
+            {aportacion_extraordinaria_neta:,.0f}€
+        </h4>
+        
+        <div style="display: inline-block; text-align: left; margin-top: 20px; min-width: 320px; background: #f8fafc; padding: 15px; border-radius: 8px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                <span style="color:#64748b; font-size:0.9rem;">Promotor (Empresa):</span>
+                <span style="font-weight:700; color:#0f172a;">{emp_t:,.2f}€</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                <span style="color:#64748b; font-size:0.9rem;">Máximo Personal:</span>
+                <span style="font-weight:700; color:#0f172a;">{max_p:,.2f}€</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 5px; border-top: 1px solid #e2e8f0; padding-top: 5px;">
+                <span style="color:#64748b; font-size:0.9rem;">Total Inversión:</span>
+                <span style="font-weight:700; color:#0f172a;">{total_inv:,.2f}€</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span style="color:#64748b; font-size:0.9rem;">Ya realizada/planificada:</span>
+                <span style="font-weight:700; color:#0f172a;">{aport_previstas:,.2f}€</span>
+            </div>
+            
+            <div style="background-color: #e2e8f0; border-radius: 10px; height: 8px; width: 100%; margin-top: 10px;">
+                <div style="background-color: #3b82f6; width: {min(cumplimiento_plan, 100):.0f}%; height: 8px; border-radius: 10px;"></div>
+            </div>
+            <p style='margin: 5px 0 0 0; color:#64748b; font-size:0.75rem; text-align: center;'>
+                Objetivo de aportación: <b>{cumplimiento_plan:,.1f}%</b>
+            </p>
+        </div>
+    </div>
+    <hr style="margin: 1.5em 0; border: 0; border-top: 1px solid #e2e8f0;">
+    """, 
+    unsafe_allow_html=True
+)
 
     st.markdown(
     f"""
@@ -364,7 +405,7 @@ with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
                         justify-content: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
                 <p style="margin:0; font-size: 0.7rem; color: #64748b; font-weight: 800; 
                           text-transform: uppercase; letter-spacing: 1px;">AHORRO FISCAL (IRPF. Tramos Catalunya)</p>
-                <h2 style="font-size: 2.2rem; margin: 10px 0; color: #10b981; border: none; font-weight: 700;">
+                <h2 style="font-size: 2.1rem; margin: 10px 0; color: #10b981; border: none; font-weight: 700;">
                     {ahorro:,.2f} €
                 </h2>
                 <p style="margin:0; font-weight: 700; font-size: 0.85rem; color: #0f172a;">
@@ -374,7 +415,7 @@ with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
         """, unsafe_allow_html=True)
         
         st.write("") # Espaciador más limpio que <br>
-        st.info(f"⚠️ **Nota:** Cálculos basados en un Salario Bruto de **{sb:,.0f} €**.")   
+        st.info(f"⚠️ **Nota:** Cálculos basados en un Salario Bruto de **{sb:,.0f} € (tramos IRPF en Catalunya)**.")   
 
     with col_right:
         total_inversion = esfuerzo_neto + ahorro + emp_t
