@@ -176,8 +176,6 @@ def generar_informe_integral_2026(datos):
     return pdf.output(dest='S').encode('latin-1', errors='replace')
 
 # --- 4. SIDEBAR (CON MIN_VALUE=0.0) ---
-# --- 4. SIDEBAR (CON MIN_VALUE=0.0) ---
-
 with st.sidebar:
     st.header("⚙️ DATOS NECESARIOS")
     
@@ -186,14 +184,23 @@ with st.sidebar:
         e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=0.0, step=25.0, min_value=0.0)
         e_riesgo = st.number_input("Prima Anual Riesgo PPE (€)", value=0.0, step=25.0, min_value=0.0)
         
-        # --- CONTROL DE LÍMITE EMPRESA (Ahorro + Riesgo <= 10.000€) ---
+        # --- CÁLCULOS ---
         emp_t_bruta = (e_ahorro * 12) + e_riesgo
         emp_t = min(emp_t_bruta, 10000.0)
    
-        
+        # --- VALIDACIONES ---
+        # Solo detenemos si el sueldo es CERO. 
+        # Si es mayor que cero, permitimos que siga la ejecución.
+        if sb <= 0.0:
+            st.info("💡 Introduce tu sueldo bruto para activar los cálculos.")
+            st.stop() 
+                    
         if emp_t_bruta > 10000.0:
-            st.warning(f"⚠️ La aportación de la empresa se ha limitado a 10.000€ (Exceso: {emp_t_bruta - 10000)
+            # Usamos :.2f para evitar errores de formato y cerramos bien el paréntesis
+            exceso = emp_t_bruta - 10000.0
+            st.warning(f"⚠️ La aportación de la empresa se ha limitado a 10.000€ (Exceso: {exceso:,.2f}€)")
 
+# El resto de tu código (tarjetas, gráficos, etc.) debe ir AQUÍ FUERA del if sb <= 0
                                                                                           
     # --- LÓGICA DE LÍMITES FISCALES ---
     CUOTA_SS_PRE = min(sb, 5101.0 * 12) * 0.0635 
