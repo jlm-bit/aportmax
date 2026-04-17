@@ -370,7 +370,7 @@ with tab1:
 
  
 
-    with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
+with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
     col_left, col_right = st.columns([1.1, 1])
     
     with col_left:
@@ -425,7 +425,7 @@ with tab1:
     st.markdown("<hr style='margin: 20px 0; border: 0; border-top: 1px solid #f1f5f9;'>", unsafe_allow_html=True)
 
 
-    with st.expander("ℹ️ Tu Plan de Acción", expanded=True):
+with st.expander("ℹ️ Tu Plan de Acción", expanded=True):
     # --- 1. CÁLCULOS DE PRECISIÓN ---
     faltante_total = max_p - ya_aportado
     
@@ -487,7 +487,7 @@ with tab1:
 
 
 
-    with st.expander("ℹ️ ¿Cómo realizar tu aportación on line?"):
+with st.expander("ℹ️ ¿Cómo realizar tu aportación on line?"):
     col_web, col_steps = st.columns([1, 1.5], gap="large")
     
     with col_web:
