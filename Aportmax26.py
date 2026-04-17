@@ -349,7 +349,7 @@ with tab1:
     # 2. Lógica y Tarjeta Ancha de Resumen
     cumplimiento_val = float(cumplimiento_plan) if cumplimiento_plan else 0.0
 
-    if cumplimiento_val > 1.0:
+    if cumplimiento_val > 100.0:
         st.warning("⚠️ **Revisa tus datos:** El nivel de aportación calculado supera el límite permitido (100%). Por favor, verifica los importes en el panel lateral.")
     
     html_card = f"""
@@ -441,7 +441,7 @@ with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
     st.markdown("<hr style='margin: 20px 0; border: 0; border-top: 1px solid #f1f5f9;'>", unsafe_allow_html=True)
 
 
-with st.expander("ℹ️ Tu Plan de Acción", expanded=True):
+with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
     # --- 1. CÁLCULOS DE PRECISIÓN ---
     faltante_total = max_p - ya_aportado
     
