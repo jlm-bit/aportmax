@@ -317,36 +317,15 @@ tab1, tab2, tab3 = st.tabs([" Aportación Máxima ", " Proyección a la Jubilaci
 
 
 with tab1:
- 
-    
-    st.markdown(
-    f"""
-    <hr style="margin: 1em 0;">
-    <div style="text-align: center; padding: 10px;">
-        <p style='margin:0; font-size:1.0rem;'>
-            <b>💰 Aportación adicional que puedes realizar este año (como máximo)</b>
-        </p>
-        <h4 style='margin:10px 0; font-size:2.5rem; color:#334155; line-height:1.0; font-weight:650;'>
-            {aportacion_extraordinaria_neta:,.0f}€
-        </h4>
-       
-    </div>
-    <hr style="margin: 1em 0;">
-    """, 
-    unsafe_allow_html=True
-)
-
-
-with tab1:
     # 1. Bloque de Aportación Adicional (Número destacado)
     st.markdown(
         f"""
         <hr style="margin: 1em 0; border: 0; border-top: 1px solid #f1f5f9;">
         <div style="text-align: center; padding: 10px;">
-            <p style='margin:0; font-size:1.1rem; color: #64748b;'>
+            <p style='margin:0; font-size:1.0rem; color: #64748b;'>
                 <b>💰 Aportación adicional que puedes realizar este año (máximo)</b>
             </p>
-            <h4 style='margin:10px 0; font-size:3rem; color:#334155; line-height:1.0; font-weight:800;'>
+            <h4 style='margin:10px 0; font-size:2.5rem; color:#334155; line-height:1.0; font-weight:650;'>
                 {aportacion_extraordinaria_neta:,.0f}€
             </h4>
         </div>
@@ -359,7 +338,7 @@ with tab1:
     
     html_card = f"""
     <div style="display: block; text-align: left; margin-top: 10px; width: 100%; background: #f8fafc; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-        <h3 style="margin: 0 0 20px 0; color: #334155; font-size: 1.25rem; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">
+        <h3 style="margin: 0 0 20px 0; color: #334155; font-size: 1.0rem; font-weight: 600; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">
             📊 Resumen de aportaciones
         </h3>
         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
