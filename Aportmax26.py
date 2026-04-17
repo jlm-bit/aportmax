@@ -350,7 +350,7 @@ with tab1:
     cumplimiento_val = float(cumplimiento_plan) if cumplimiento_plan else 0.0
 
     if cumplimiento_val > 1.0:
-    st.warning("⚠️ **Revisa tus datos:** El nivel de aportación calculado supera el límite permitido (100%). Por favor, verifica los importes en el panel lateral.")
+        st.warning("⚠️ **Revisa tus datos:** El nivel de aportación calculado supera el límite permitido (100%). Por favor, verifica los importes en el panel lateral.")
     
     html_card = f"""
     <div style="display: block; text-align: left; margin-top: 10px; width: 100%; background: #f8fafc; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
