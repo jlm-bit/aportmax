@@ -342,7 +342,7 @@ with tab1:
                 Empleado. Aportación ya realizada + planificada): <b>{aport_previstas:,.2f}€</b>
             </p>
             <p style='margin:0px 0 0 0; color:#64748b; font-size:0.85rem;'>
-                % cumplimento de tu objetivo de aportación      : <b>{cumplimiento_plan:,.2f}€</b>
+                % cumplimento de tu objetivo de aportación      : <b>{cumplimiento_plan:,.2f}%</b>
             </p>
         </div>
     </div>
@@ -356,50 +356,55 @@ with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
     col_left, col_right = st.columns([1.1, 1])
     
     with col_left:
-        # --- SUB-COLUMNAS PARA LOS CUADROS PRINCIPALES ---
-        sub_col1 = st.columns(1)
+        # Card de Ahorro Fiscal
+        st.markdown(f"""
+            <div style="background-color: #ffffff; color: #0f172a; padding: 25px; 
+                        border-radius: 12px; height: 180px; text-align: left; 
+                        border: 1px solid #e2e8f0; display: flex; flex-direction: column; 
+                        justify-content: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                <p style="margin:0; font-size: 0.7rem; color: #64748b; font-weight: 800; 
+                          text-transform: uppercase; letter-spacing: 1px;">AHORRO FISCAL (IRPF. Tramos Catalunya)</p>
+                <h2 style="font-size: 2.2rem; margin: 10px 0; color: #10b981; border: none; font-weight: 700;">
+                    {ahorro:,.2f} €
+                </h2>
+                <p style="margin:0; font-weight: 700; font-size: 0.85rem; color: #0f172a;">
+                    Devolución estimada: <span style="color: #10b981;">{eficiencia:.1f}%</span>
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
         
-        with sub_col1:
-            # Color actualizado a Slate Oscuro (#334155) para homogeneizar con el Plan de Acción
-            
-            st.markdown(f"""
-                <div style="background-color: #ffffff; color: #0f172a; padding: 25px; border-radius: 12px; height: 180px; text-align: left; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-                    <p style="margin:0; font-size: 0.7rem; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">AHORRO FISCAL (IRPF. Tramos Catalunya)</p>
-                    <h2 style="font-size: 2rem; margin: 10px 0; color: #10b981; border: none;">{ahorro:,.2f} €</h2>
-                    <p style="margin:0; font-weight: 700; font-size: 0.85rem; color: #0f172a;">Devolución estimada: {eficiencia:.1f}%</p>
-                </div>
-            """, unsafe_allow_html=True)
-            
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.info(f"⚠️ **Nota:** Los cálculos se basan en un Salario Bruto Anual de **{sb:,.0f} €**. Asegúrate de que los datos del panel lateral reflejan tu situación real.")   
+        st.write("") # Espaciador más limpio que <br>
+        st.info(f"⚠️ **Nota:** Cálculos basados en un Salario Bruto de **{sb:,.0f} €**.")   
 
     with col_right:
-        # --- GRÁFICO DONUT ---
         total_inversion = esfuerzo_neto + ahorro + emp_t
+        
         fig = go.Figure(data=[go.Pie(
             labels=['Esfuerzo Neto', 'Ahorro Fiscal', 'Aport. Empresa'], 
             values=[esfuerzo_neto, ahorro, emp_t], 
             hole=.7,
-            marker_colors=['#3b82f6', '#10b981', '#334155'], # El color de empresa coincide con el nuevo Slate
+            marker_colors=['#3b82f6', '#10b981', '#334155'],
             textinfo='none', 
             hoverinfo='label+value+percent',
+            sort=False # Mantiene el orden de los labels
         )])
         
         fig.update_layout(
-            title={'text': "Distribución de la Inversión", 'y': 0.9, 'x': 0.5, 'xanchor': 'center', 'font': {'size': 14, 'color': '#64748b'}},
-            margin=dict(t=40, b=0, l=0, r=0), 
-            height=300, 
+            title={'text': "Distribución de la Inversión", 'y': 0.95, 'x': 0.5, 'xanchor': 'center'},
+            margin=dict(t=50, b=0, l=0, r=0), 
+            height=280, 
             showlegend=True, 
-            legend=dict(orientation="h", y=-0.1, x=0.5, xanchor="center", font=dict(size=10)),
-            annotations=[dict(text=f'<span style="color:#64748b; font-size:10px">TOTAL</span><br><span style="font-size:18px; font-weight:800; color:#334155;">{total_inversion:,.0f}€</span>', x=0.5, y=0.5, showarrow=False)]
+            legend=dict(orientation="h", y=-0.1, x=0.5, xanchor="center"),
+            annotations=[dict(
+                text=f"TOTAL<br><b>{total_inversion:,.0f}€</b>", 
+                x=0.5, y=0.5, 
+                showarrow=False,
+                font=dict(size=14, color="#334155")
+            )]
         )
         st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
 
     st.markdown("<hr style='margin: 20px 0; border: 0; border-top: 1px solid #f1f5f9;'>", unsafe_allow_html=True)
-
-    # --- 3. DESGLOSE COMPACTO EN TARJETAS MINIMALISTAS ---
-    # (El resto del código de las 4 columnas inferiores se mantiene igual que en la versión anterior)
-
 
 
 with st.expander("ℹ️ Tu Plan de Acción", expanded=True):
