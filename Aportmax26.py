@@ -177,24 +177,37 @@ def generar_informe_integral_2026(datos):
 
 # --- 4. SIDEBAR (CON MIN_VALUE=0.0) ---
 
+# --- 4. SIDEBAR (CON LOGICA DE CONTROL) ---
+
 with st.sidebar:
     st.header("⚙️ DATOS NECESARIOS")
     
-    with st.expander("👤 DATOS EMPRESA",expanded=True):
-        sb = st.number_input("Sueldo Bruto Anual (€)", value=0.0, step=1000.0, min_value=0.0)
+    with st.expander("👤 DATOS EMPRESA", expanded=True):
+        # Ayudamos al usuario con un help text
+        sb = st.number_input(
+            "Sueldo Bruto Anual (€)", 
+            value=0.0, step=1000.0, min_value=0.0,
+            help="Introduce tu salario bruto anual antes de impuestos."
+        )
+        
         e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=0.0, step=25.0, min_value=0.0)
         e_riesgo = st.number_input("Prima Anual Riesgo PPE (€)", value=0.0, step=25.0, min_value=0.0)
         
-        # --- CONTROL DE LÍMITE EMPRESA (Ahorro + Riesgo <= 10.000€) ---
+        st.divider() # Línea sutil para separar inputs de cálculos
+        
+        # --- CÁLCULOS LOGÍSTICOS ---
         emp_t_bruta = (e_ahorro * 12) + e_riesgo
         emp_t = min(emp_t_bruta, 10000.0)
    
+        # Mensaje de bienvenida/instrucciones si está vacío
         if sb <= 0.0:
-            st.info(f"⚠️ Introduce tus datos personales: salario, aportaciones de la empresa al PPE y tus aportaciones") 
-            st.stop ()
+            st.info("💡 **Para comenzar:** Introduce tu sueldo bruto anual y los datos de tu Plan de Pensiones de Empleo (PPE).") 
+            st.stop()
                     
+        # Aviso de límite legal alcanzado (Empresa)
         if emp_t_bruta > 10000.0:
-            st.warning(f"⚠️ La aportación de la empresa se ha limitado a 10.000€ (Exceso: {emp_t_bruta - 10000.0:,.2f}€)")
+            st.warning(f"⚠️ **Límite legal:** La aportación máxima de la empresa es 10.000€. (Exceso ignorado: {emp_t_bruta - 10000.0:,.2f}€)")
+
 
     # --- LÓGICA DE LÍMITES FISCALES ---
     CUOTA_SS_PRE = min(sb, 5101.0 * 12) * 0.0635 
