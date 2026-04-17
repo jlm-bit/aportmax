@@ -191,7 +191,7 @@ with st.sidebar:
    
         if sb <= 0.0:
             st.warning(f"⚠️ Introduce tus datos personales: salario, aportaciones de la empresa al PPE y tus aportaciones") 
-            st.stop ()
+         #   st.stop ()
                     
         if emp_t_bruta > 10000.0:
             st.warning(f"⚠️ La aportación de la empresa se ha limitado a 10.000€ (Exceso: {emp_t_bruta - 10000.0:,.2f}€)")
@@ -501,9 +501,9 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
         """, unsafe_allow_html=True)
 
 
+with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
 
-
-with st.expander("ℹ️ ¿Cómo realizar tu aportación on line?"):
+with st.expander("ℹ️ ¿Cómo realizar tu aportación on line?",expanded=False):
     col_web, col_steps = st.columns([1, 1.5], gap="large")
     
     with col_web:
