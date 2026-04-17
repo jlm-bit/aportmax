@@ -185,7 +185,7 @@ def generar_informe_integral_2026(datos):
 
 import streamlit as st
 
-# 1. Función de apoyo (Arriba de todo)
+# 1. Función de apoyo
 def calcular_max_personal_adicional(e, salario):
     if salario > 60000:
         return e
@@ -196,57 +196,62 @@ def calcular_max_personal_adicional(e, salario):
     else:
         return e
 
-# 2. Configuración
+# 2. Configuración (OBLIGA A EXPANDIR)
 st.set_page_config(
     page_title="Ivol 2026", 
     layout="wide", 
-    initial_sidebar_state="expanded"  # <-- Esto obliga a que aparezca
+    initial_sidebar_state="expanded"
 )
 
 # 3. SIDEBAR
+# Todo lo que esté con 4 espacios de sangría debajo de esta línea IRÁ AL LATERAL
 with st.sidebar:
     st.header("⚙️ CONFIGURACIÓN")
     
     # --- DATOS EMPRESA ---
     with st.expander("👤 DATOS EMPRESA", expanded=True):
-        sb = st.number_input("Sueldo Bruto Anual (€)", value=65000.0)
+        sb = st.number_input("Sueldo Bruto Anual (€)", value=65000.0, key="sb_input")
         e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=100.0)
         e_riesgo = st.number_input("Prima Riesgo (€)", value=0.0)
         
         emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
 
-    # --- LÓGICA DE LÍMITES (ESTO FALTABA O ESTABA DESORDENADO) ---
+    # --- LÓGICA DE LÍMITES ---
     ss_estimada = min(sb, 61212.0) * 0.0635
     base_imponible = max(0.0, sb - ss_estimada - 2000.0)
     
     max_p_coef = calcular_max_personal_adicional(emp_t, sb)
-    # Aquí calculamos por fin MAX_P_LIMIT
     MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500, 10000.0 - emp_t))
     
-    # Ajuste por el 30% de la base imponible
     if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
         MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
 
     # --- APORTACIONES PERSONALES ---
     with st.expander("📅 PERSONALES", expanded=True):
         c_m = st.number_input("Mensualidad (€)", value=0.0)
-        # Ahora que MAX_P_LIMIT ya existe, no dará error
+        # Usamos float() y max() para blindar el valor máximo
+        limite_val = float(MAX_P_LIMIT)
         e_y = st.number_input(
             "Extra ya aportado (€)", 
             value=0.0, 
-            max_value=max(0.01, float(MAX_P_LIMIT)), 
+            max_value=max(0.1, limite_val), 
             step=100.0
         )
 
-# 4. CUERPO PRINCIPAL
+# 4. CUERPO PRINCIPAL (Alineado al borde izquierdo, fuera del Sidebar)
 st.title("🚀 Cálculo de Aportaciones")
+
 col1, col2 = st.columns(2)
 with col1:
     st.metric("Sueldo Bruto", f"{sb:,.2f} €")
 with col2:
     st.metric("Límite Personal Máximo", f"{MAX_P_LIMIT:,.2f} €")
 
-st.info("Si no ves la barra lateral a la izquierda, busca una pequeña flecha '>' arriba a la izquierda y púlsala.")
+st.success("Si el lateral sigue sin aparecer, pulsa la tecla 'R' para recargar la app.")
+
+
+
+
 # --- 5. LÓGICA DE CÁLCULO ---
 any = 2026
 
