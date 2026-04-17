@@ -265,14 +265,26 @@ ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 # años_jub = 67 - edad  # 'edad' viene del sidebar
 
 # --- 6. RENDERIZADO PRINCIPAL ---
+# --- 6. RENDERIZADO PRINCIPAL (Cabecera pegada arriba) ---
 st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;500;800&display=swap');
         
+        /* 1. ELIMINAR EL MARGEN SUPERIOR DE LA APP */
+        [data-testid="stAppViewBlockContainer"] {
+            padding-top: 1rem !important; /* El valor por defecto es 6rem */
+            padding-bottom: 1rem;
+        }
+
+        /* 2. OCULTAR LA BARRA SUPERIOR DE STREAMLIT */
+        [data-testid="stHeader"] {
+            display: none;
+        }
+
         .header-wrapper {
-            padding: 10px 0 5px 0; /* Altura mínima absoluta */
+            padding: 0;
+            margin-top: -15px; /* Sube el título incluso más allá del padding */
             text-align: center;
-            background: transparent;
         }
         
         .main-title {
@@ -280,9 +292,8 @@ st.markdown("""
             font-weight: 100;
             color: #0f172a;
             letter-spacing: 5px; 
-            font-size: 1.3rem; /* Letra más pequeña y fina */
+            font-size: 1.3rem;
             margin: 0;
-            line-height: 1;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -290,9 +301,8 @@ st.markdown("""
         
         .year-highlight {
             font-weight: 800;
-            color: #1d4ed8; /* Azul más fuerte (cobalto) */
+            color: #1d4ed8; 
             margin-left: 10px;
-            letter-spacing: 1px;
             font-size: 1.5rem;
         }
         
@@ -302,7 +312,7 @@ st.markdown("""
             color: #64748b;
             letter-spacing: 1px;
             font-size: 0.55rem;
-            margin-top: 2px; /* Espacio mínimo */
+            margin-top: -2px; 
             text-transform: uppercase;
             opacity: 0.8;
         }
@@ -312,7 +322,7 @@ st.markdown("""
         <h1 class="main-title">
             AVOL <span class="year-highlight">2026</span>
         </h1>
-        <p class="subtitle-slim">Aportación Voluntaria • Plan de Pensiones de Empleo (PPE) </p>
+        <p class="subtitle-slim">Aportación Voluntaria • Plan de Pensiones de Empleo</p>
     </div>
 """, unsafe_allow_html=True)
 
