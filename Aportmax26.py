@@ -317,6 +317,39 @@ tab1, tab2, tab3 = st.tabs([" Aportación Máxima ", " Proyección a la Jubilaci
 
 with tab1:
 
+with tab1:
+    # 1. Preparamos el HTML en una variable (o lo ponemos directo)
+    html_card = f"""
+    <div style="display: inline-block; text-align: left; margin-top: 15px; min-width: 340px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #f1f5f9; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span style="color:#64748b; font-size:0.9rem;">Promotor (Empresa):</span>
+            <span style="font-weight:700; color:#0f172a;">{emp_t:,.2f}€</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span style="color:#64748b; font-size:0.9rem;">Máximo Personal:</span>
+            <span style="font-weight:700; color:#0f172a;">{max_p:,.2f}€</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px; border-top: 1px dotted #cbd5e1; padding-top: 6px; margin-top: 4px;">
+            <span style="color:#64748b; font-size:0.9rem; font-weight:600;">Total Inversión Potencial:</span>
+            <span style="font-weight:700; color:#0f172a;">{total_inv:,.2f}€</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+            <span style="color:#64748b; font-size:0.9rem;">Ya realizada / planificada:</span>
+            <span style="font-weight:700; color:#3b82f6;">{aport_previstas:,.2f}€</span>
+        </div>
+        <div style="background-color: #e2e8f0; border-radius: 10px; height: 10px; width: 100%;">
+            <div style="background-color: #3b82f6; width: {min(cumplimiento_plan, 100):.0f}%; height: 10px; border-radius: 10px;"></div>
+        </div>
+        <p style='margin: 8px 0 0 0; color:#64748b; font-size:0.8rem; text-align: center;'>
+            Estás al <b>{cumplimiento_plan:,.1f}%</b> de tu capacidad
+        </p>
+    </div>
+    """
+
+    # 2. RENDERIZADO CRÍTICO:
+    st.markdown(html_card, unsafe_allow_html=True)
+
+# ... resto del código ...
     
     st.markdown(
     f"""
@@ -342,7 +375,7 @@ with tab1:
                 Empleado. Aportación ya realizada + planificada): <b>{aport_previstas:,.2f}€</b>
             </p>
             <p style='margin:0px 0 0 0; color:#64748b; font-size:0.85rem;'>
-                % cumplimento de tu objetivo de aportación      : <b>{cumplimiento_plan:,.2f}%</b>
+                % cumplimento de tu objetivo de aportación      : <b>{cumplimiento_plan:,.0f}%</b>
             </p>
         </div>
     </div>
