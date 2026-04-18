@@ -415,45 +415,6 @@ with tab1:
 
     
 
-    
-    # --- RESULTADO FINAL TEXTO PLANO (OPTIMIZADO MÓVIL) ---
-    st.markdown(f"""
-    <div style="padding-top: 10px;">
-        <p style='margin:0; font-size:1.0rem; color: #64748b; font-weight: 600;'>
-            💰 Aportación adicional máxima disponible:
-        </p>
-        <h2 style='margin:0; font-size:2.6rem; color:#1e293b; font-weight:700;'>
-            {aportacion_extraordinaria_neta:,.0f} €
-        </h2>
-        <p style='margin:5px 0 0 0; font-size:0.95rem; color: #1e3a8a; font-weight: 500;'>
-            Total aportaciones previstas: <b>{max_p:,.2f} €</b>
-        </p>
-    </div>
-""", unsafe_allow_html=True
-    
-    # En lugar de un icono con help, usamos un expander ultra-compacto
-        
-    with st.expander("🔍 ¿Cómo se ha calculado esta cifra?"):
-        st.markdown(f"""
-            <div style="font-size: 0.9rem; color: #475569; line-height: 1.6;">
-                El importe de <b>{aportacion_extraordinaria_neta:,.2f} €</b> representa el margen legal que aún puedes aprovechar este año. Se calcula restando tus compromisos actuales de tu límite máximo permitido:
-                <ul style="margin-top: 10px;">
-                    <li><b>Límite máximo personal:</b> Tienes un techo de {max_p:,.2f} € basado en tu salario y las contribuciones de tu empresa ({emp_t:,.2f} €).</li>
-                    <li><b>Aportaciones ya realizadas:</b> Descontamos los {ya_aportado:,.2f} € que ya has ingresado formalmente.</li>
-                    <li><b>Planificación mensual:</b> También restamos los {total_mensual_previsto:,.2f} € que tienes previsto aportar mediante nómina o aportaciones periódicas hasta diciembre.</li>
-                </ul>
-                <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 10px;">
-                    <i>Nota: Este cálculo se ajusta estrictamente al marco normativo vigente para planes de pensiones de empleo (PPE).</i>
-                </p>
-            </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown('<hr style="margin: 0.5em 0; border: 0; border-top: 1px solid #f1f5f9;">', unsafe_allow_html=True)
-        
-
-
-
-
 
     # 2. Lógica y Tarjeta Ancha de Resumen
     cumplimiento_val = float(cumplimiento_plan) if cumplimiento_plan else 0.0
