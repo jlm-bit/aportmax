@@ -250,27 +250,7 @@ with st.sidebar:
             step=100.0
         )
 
-# 4. CUERPO PRINCIPAL (FUERA DEL SIDEBAR)
-st.title("🚀 Panel de Control Ivol 2026")
 
-# Mostramos los resultados en columnas
-m1, m2, m3 = st.columns(3)
-with m1:
-    st.metric("Sueldo Bruto", f"{sb:,.2f} €")
-with m2:
-    st.metric("Aport. Empresa", f"{emp_t:,.2f} €")
-with m3:
-    st.metric("Tu Límite Máximo", f"{MAX_P_LIMIT:,.2f} €")
-
-st.divider()
-
-if MAX_P_LIMIT > 0:
-    st.success(f"Puedes aportar hasta **{MAX_P_LIMIT:,.2f} €** adicionales este año.")
-else:
-    st.error("Has alcanzado el límite legal permitido.")
-
-# Nota de ayuda final
-st.info("💡 Si el panel de la izquierda no se ve, pulsa la flecha blanca '>' en la esquina superior izquierda de la web.")
 
 # --- LÓGICA DE LÍMITES ---
 ss_estimada = min(sb, 61212.0) * 0.0635
