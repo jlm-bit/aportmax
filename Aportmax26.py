@@ -189,81 +189,57 @@ def generar_informe_integral_2026(datos):
 
 import streamlit as st
 
-# 1. FUNCIÓN DE APOYO (Siempre arriba)
+# 1. FUNCIÓN DE APOYO
 def calcular_max_personal_adicional(e, salario):
-    if salario > 60000:
-        return e
-    if e <= 500:
-        return e * 8.5
-    elif e <= 1500:
-        return 1250 + (0.25 * (e - 500))
-    else:
-        return e
+    if salario > 60000: return e
+    if e <= 500: return e * 8.5
+    elif e <= 1500: return 1250 + (0.25 * (e - 500))
+    else: return e
 
-# 2. CONFIGURACIÓN
+# 2. CONFIGURACIÓN (OBLIGA A MOSTRAR EL SIDEBAR)
 st.set_page_config(
     page_title="Ivol 2026", 
     layout="wide", 
     initial_sidebar_state="expanded"
 )
 
-# 3. SIDEBAR (La barra lateral)
+# 3. SIDEBAR
 with st.sidebar:
     st.title("⚙️ CONFIGURACIÓN")
-    st.write("Introduce tus datos aquí debajo:")
     
-    # --- BLOQUE 1: DATOS EMPRESA ---
+    # Expandible 1
     with st.expander("👤 DATOS EMPRESA", expanded=True):
-        sb = st.number_input("Sueldo Bruto Anual (€)", value=65000.0, step=1000.0)
-        e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=100.0, step=10.0)
-        e_riesgo = st.number_input("Prima Riesgo PPE (€)", value=0.0, step=10.0)
+        sb = st.number_input("Sueldo Bruto Anual (€)", value=65000.0, key="sb_unique")
+        e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=100.0, key="ahorro_unique")
+        e_riesgo = st.number_input("Prima Riesgo PPE (€)", value=0.0, key="riesgo_unique")
         
-        # Cálculo de empresa
         emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
 
-    # --- LÓGICA DE LÍMITES (Se calcula aquí para usarlo abajo) ---
+    # LÓGICA DE CÁLCULO
     ss_estimada = min(sb, 61212.0) * 0.0635
     base_imponible = max(0.0, sb - ss_estimada - 2000.0)
-    
     max_p_coef = calcular_max_personal_adicional(emp_t, sb)
     MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500.0, 10000.0 - emp_t))
     
-    # Ajuste por el 30% de la base
     if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
         MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
 
-    # --- BLOQUE 2: APORTACIONES PERSONALES ---
+    # Expandible 2
     with st.expander("📅 APORTACIONES PERSONALES", expanded=True):
-        c_m = st.number_input("Mensualidad propia (€)", value=0.0, step=50.0)
-        
-        # Valor máximo blindado
-        val_max_extra = float(MAX_P_LIMIT)
-        
+        c_m = st.number_input("Mensualidad propia (€)", value=0.0, key="mensual_unique")
         e_y = st.number_input(
-            "Extra ya aportado (€)",
-            value=0.0,
-            min_value=0.0,
-            max_value=max(0.1, val_max_extra),
-            step=100.0
+            "Extra ya aportado (€)", 
+            value=0.0, 
+            max_value=max(0.1, float(MAX_P_LIMIT)), 
+            key="extra_unique"
         )
 
-# 4. CUERPO PRINCIPAL (Lo que se ve en el centro)
-st.title("🚀 Panel de Control Ivol 2026")
+# 4. CUERPO PRINCIPAL
+st.title("🚀 Panel Control")
+st.metric("Límite Personal", f"{MAX_P_LIMIT:,.2f} €")
 
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.metric("Sueldo Bruto", f"{sb:,.2f} €")
-with col2:
-    st.metric("Aport. Empresa (Anual)", f"{emp_t:,.2f} €")
-with col3:
-    st.metric("Límite Personal Máximo", f"{MAX_P_LIMIT:,.2f} €")
 
-st.divider()
 
-if MAX_P_LIMIT > 0:
-    st.success(f"Puedes aportar hasta **{MAX_P_LIMIT:,.2f} €** adicionales este año.")
-else:
-    st.error("Límite legal alcanzado.")
 # --- 5. LÓGICA DE CÁLCULO ---
 any = 2026
 
