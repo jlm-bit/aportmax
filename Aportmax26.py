@@ -196,81 +196,8 @@ def calcular_max_personal_adicional(e, salario):
     elif e <= 1500: return 1250 + (0.25 * (e - 500))
     else: return e
 
-# --- 2. CONTENEDOR DE CONFIGURACIÓN ---
 
 
-# Usamos un expander principal para agrupar todo
-with st.expander("⚙️ CONFIGURACIÓN (Datos para realizar estimación de la aportacion que puedes realizar este año alm Plan de Pensiones de Empleo)", expanded=False):
-    
-    # Creamos dos columnas para que no ocupe tanto espacio vertical
-    col_emp, col_pers = st.columns(2)
-    
-    with col_emp:
-        st.markdown("#### 👤 Empresa")
-        sb = st.number_input("Sueldo Bruto Anual (€)", value=0.0, key="sb_unique")
-        e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=0.0, key="ahorro_unique")
-        e_riesgo = st.number_input("Prima Riesgo PPE (€)", value=0.0, key="riesgo_unique")
-        
-        # Cálculo inmediato
-        emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
-
-    # --- LÓGICA INTERMEDIA (Se ejecuta aquí para que col_pers tenga los límites) ---
-    ss_estimada = min(sb, 61212.0) * 0.0635
-    base_imponible = max(0.0, sb - ss_estimada - 2000.0)
-    max_p_coef = calcular_max_personal_adicional(emp_t, sb)
-    MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500.0, 10000.0 - emp_t))
-    
-    if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
-        MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
-
-    with col_pers:
-        st.markdown("#### 📅 Personal")
-        c_m = st.number_input("Aportación Mensual (€)", value=0.0, key="mensual_unique")
-        
-        # El límite dinámico es clave
-        e_y = st.number_input(
-            "Aportación Extra ya realizada (€)", 
-            value=0.0, 
-            max_value=max(0.1, float(MAX_P_LIMIT)), 
-            key="extra_unique"
-        )
-        
-
-
-# --- 5. LÓGICA DE CÁLCULO ---
-
-hoy = datetime.date.today()
-meses_restantes = 12 - hoy.month + 1
-meses_pasados = 12 - meses_restantes
-CUOTA_SS = min(sb, 5101*12) * 0.064 
-base_pre = max(0.0, sb - CUOTA_SS - 2000.0)
-max_p = MAX_P_LIMIT
-max_p12 = max_p/12
-max_now = max_p * meses_pasados
-
-ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
-eficiencia = (ahorro / max_p * 100) if max_p > 0 else 0
-esfuerzo_neto = max_p - ahorro
-ya_aportado = (c_m * meses_pasados) + e_y
-pendiente_para_limite = max(0.0, max_p - ya_aportado)
-nueva_cuota_total = pendiente_para_limite / meses_restantes if meses_restantes > 0 else 0
-diferencia_mensual = nueva_cuota_total - c_m
-total_mensual_previsto = c_m * meses_restantes
-aportacion_extraordinaria_neta = max(0.0, pendiente_para_limite - total_mensual_previsto)
-aport_previstas = c_m *12 + e_y
-cumplimiento_plan = ((c_m *12 + e_y)*100)/max_p if max_p > 0 else 0
-extra_now = 0
-
-
-# --- CÁLCULOS GLOBALES (Poner esto ANTES de los st.tabs) ---
-# Sumamos lo que pone la empresa y lo que pones tú (el máximo permitido)
-total_inv = emp_t + max_p 
-
-# Calculamos el ahorro y los meses (ya lo tienes en tu lógica anterior)
-ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
-# años_jub = 67 - edad  # 'edad' viene del sidebar
-
-# --- 6. RENDERIZADO PRINCIPAL ---
 # --- 6. RENDERIZADO PRINCIPAL (Cabecera pegada arriba) ---
 st.markdown("""
     <style>
@@ -331,6 +258,78 @@ st.markdown("""
         <p class="subtitle-slim">Aportación Voluntaria • Plan de Pensiones de Empleo (PPE) </p>
     </div>
 """, unsafe_allow_html=True)
+
+
+
+# --- 2. CONTENEDOR DE CONFIGURACIÓN ---
+
+# Usamos un expander principal para agrupar todo
+with st.expander("⚙️ CONFIGURACIÓN (Datos para realizar estimación de la aportacion que puedes realizar este año alm Plan de Pensiones de Empleo)", expanded=False):
+    
+    # Creamos dos columnas para que no ocupe tanto espacio vertical
+    col_emp, col_pers = st.columns(2)
+    
+    with col_emp:
+        st.markdown("#### 👤 Empresa")
+        sb = st.number_input("Sueldo Bruto Anual (€)", value=0.0, key="sb_unique")
+        e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=0.0, key="ahorro_unique")
+        e_riesgo = st.number_input("Prima Riesgo PPE (€)", value=0.0, key="riesgo_unique")
+        
+        # Cálculo inmediato
+        emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
+
+    # --- LÓGICA INTERMEDIA (Se ejecuta aquí para que col_pers tenga los límites) ---
+    ss_estimada = min(sb, 61212.0) * 0.0635
+    base_imponible = max(0.0, sb - ss_estimada - 2000.0)
+    max_p_coef = calcular_max_personal_adicional(emp_t, sb)
+    MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500.0, 10000.0 - emp_t))
+    
+    if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
+        MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
+
+    with col_pers:
+        st.markdown("#### 📅 Personal")
+        c_m = st.number_input("Aportación Mensual (€)", value=0.0, key="mensual_unique")
+        
+        # El límite dinámico es clave
+        e_y = st.number_input(
+            "Aportación Extra ya realizada (€)", 
+            value=0.0, 
+            max_value=max(0.1, float(MAX_P_LIMIT)), 
+            key="extra_unique"
+        )
+
+# --- 5. LÓGICA DE CÁLCULO ---
+
+hoy = datetime.date.today()
+meses_restantes = 12 - hoy.month + 1
+meses_pasados = 12 - meses_restantes
+CUOTA_SS = min(sb, 5101*12) * 0.064 
+base_pre = max(0.0, sb - CUOTA_SS - 2000.0)
+max_p = MAX_P_LIMIT
+max_p12 = max_p/12
+max_now = max_p * meses_pasados
+
+ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
+eficiencia = (ahorro / max_p * 100) if max_p > 0 else 0
+esfuerzo_neto = max_p - ahorro
+ya_aportado = (c_m * meses_pasados) + e_y
+pendiente_para_limite = max(0.0, max_p - ya_aportado)
+nueva_cuota_total = pendiente_para_limite / meses_restantes if meses_restantes > 0 else 0
+diferencia_mensual = nueva_cuota_total - c_m
+total_mensual_previsto = c_m * meses_restantes
+aportacion_extraordinaria_neta = max(0.0, pendiente_para_limite - total_mensual_previsto)
+aport_previstas = c_m *12 + e_y
+cumplimiento_plan = ((c_m *12 + e_y)*100)/max_p if max_p > 0 else 0
+extra_now = 0
+# --- CÁLCULOS GLOBALES (Poner esto ANTES de los st.tabs) ---
+# Sumamos lo que pone la empresa y lo que pones tú (el máximo permitido)
+total_inv = emp_t + max_p 
+# Calculamos el ahorro y los meses (ya lo tienes en tu lógica anterior)
+ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
+# años_jub = 67 - edad  # 'edad' viene del sidebar
+
+
 
 tab1, tab2, tab3 = st.tabs([ "   Aportación Máxima     ", "   Proyección a la Jubilación     ",  "   Acerca de ...   "])
 
