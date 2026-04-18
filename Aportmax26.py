@@ -389,8 +389,8 @@ with tab1:
             <div style="font-size: 0.85rem; color: #475569; line-height: 1.5;">
                 Este importe de <b>{aportacion_extraordinaria_neta:,.2f}€</b> es la máxima aportación que puedes realizar a tu Plan de Pensiones de Empresa durante este año, considerando lo siguiente:
                 <ul>
-                    <li> Las Aportaciones de tu empresa previstas para este año.</li>
-                    <li> Y la deducción de las aportaciones personales ya realizadas este año y las ya planificadas (deducción nomina, now o aporta+).</li>
+                    <li> Las Aportaciones de tu empresa previstas para este año. ({emp_t:,.2f}€)</li>
+                    <li> Y la deducción de las aportaciones personales ya realizadas este año ({ya_aportado:,.2f}€) y las ya planificadas ({total_mensual_previsto:,.2f}€), ya sea deducción nomina, now o aporta+.</li>
                     <li> Todo ellos dentro del marco normativo vigente.</li>
                 </ul>
             </div>
