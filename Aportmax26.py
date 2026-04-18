@@ -387,13 +387,11 @@ with tab1:
     with st.expander("🔍 Ayuda en comprender este número?"):
         st.markdown(f"""
             <div style="font-size: 0.85rem; color: #475569; line-height: 1.5;">
-                Este importe de <b>{aportacion_extraordinaria_neta:,.2f}€</b> es la máxima aportación que puedes realizara tu Plan de Pensiones de Empresa, considerando lo siguiente:
+                Este importe de <b>{aportacion_extraordinaria_neta:,.2f}€</b> es la máxima aportación que puedes realizar a tu Plan de Pensiones de Empresa durante este año, considerando lo siguiente:
                 <ul>
-                    <li>Aportaciones de tu empresa previstas para este año.</li>
-                    <li>Límite legal general de 1.500€ adicionales (Ley 12/2022).</li>
-                    <li>Límite legal de planes de pensiones de empresa de 8.500€ adicionales (Ley 12/2022).</li>
-                    <li>Límite fiscal del 30% de tus rendimientos netos.</li>
-                    <li>Y la deducción de las aportaciones personales ya realizadas este año y las ya planificadas (deducción nomina, nwo o aporta+).</li>
+                    <li> Las Aportaciones de tu empresa previstas para este año.</li>
+                    <li> Y la deducción de las aportaciones personales ya realizadas este año y las ya planificadas (deducción nomina, now o aporta+).</li>
+                    <li> Todo ellos dentro del marco normativo vigente.</li>
                 </ul>
             </div>
         """, unsafe_allow_html=True)
