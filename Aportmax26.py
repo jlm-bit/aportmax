@@ -332,14 +332,7 @@ with st.expander("📝 PANEL DE CONTROL FISCAL", expanded=(sb <= 0)):
             key="extra_unique"
         )
         
-        # Indicador visual Pro del límite
-        st.markdown(f"""
-            <div style="background-color: #f0f2f6; padding: 10px; border-radius: 10px; border: 1px solid #d1d5db; margin-top: 15px;">
-                <p style="margin:0; font-size: 0.8rem; color: #4b5563;">LÍMITE MÁXIMO PERSONAL 2026:</p>
-                <p style="margin:0; font-size: 1.2rem; font-weight: bold; color: #1e3a8a;">{MAX_P_LIMIT:,.2f} €</p>
-            </div>
-        """, unsafe_allow_html=True)
-        )
+   
 
 # --- 5. LÓGICA DE CÁLCULO ---
 
