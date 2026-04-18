@@ -199,9 +199,6 @@ def calcular_max_personal_adicional(e, salario):
 # --- 2. CONTENEDOR DE CONFIGURACIÓN ---
 
 
-titulo_color = "#ef4444" if sb <= 0 else "#1e293b"
-
-
 # Usamos un expander principal para agrupar todo
 with st.expander("⚙️ CONFIGURACIÓN (Datos para realizar estimación de la aportacion que puedes realizar este año alm Plan de Pensiones de Empleo)", expanded=False):
     
