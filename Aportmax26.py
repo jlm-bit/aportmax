@@ -355,7 +355,7 @@ ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 # años_jub = 67 - edad  # 'edad' viene del sidebar
 
 if sb <= 0:
-            st.warning("⚠️ Nota, introducir DATOS para acceder a las funcionalideades del programa.")
+            st.warning("⚠️ Nota, introducir DATOS para acceder a las funcionalidades del programa.")
             st.stop() # <--- Detiene la ejecución aquí mismo
 
 tab1, tab2, tab3 = st.tabs([ "   Aportación Máxima     ", "   Proyección a la Jubilación     ",  "   Acerca de ...   "])
@@ -440,7 +440,7 @@ with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
         """, unsafe_allow_html=True)
         
         st.write("") # Espaciador más limpio que <br>
-        st.info(f"⚠️ **Nota:** Cálculos basados en un Salario Bruto de **{sb:,.0f} € (tramos IRPF en Catalunya)**.")   
+        st.info(f"⚠️ **Nota:** Cálculos basados en un Salario Bruto de **{sb:,.0f} € (tramos IRPF en Catalunya) y la realización de la aportación máxima posible al Plan de Pensiones.**.")   
 
     with col_right:
         total_inversion = esfuerzo_neto + ahorro + emp_t
@@ -507,7 +507,7 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
     # (Bloque de la barra de progreso - omitido aquí para brevedad, mantén el que tienes)
 
     # --- 3. COMPARATIVA DE ESTRATEGIAS ---
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
     
     with col1:
         st.markdown(f"""
@@ -532,6 +532,13 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
             </div>
         """, unsafe_allow_html=True)
 
+     with col3:
+        st.markdown(f"""
+            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; height: 210px;">
+                <p style="font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase;">Opción C: Aportación Extraordianria por el restante</p>
+             
+            </div>
+        """, unsafe_allow_html=True)
 
 
 
