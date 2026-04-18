@@ -369,6 +369,35 @@ tab1, tab2, tab3 = st.tabs([ "   Aportación Máxima     ", "   Proyección a la
 
 
 with tab1:
+
+
+# --- RESULTADO FINAL TEXTO PLANO (OPTIMIZADO MÓVIL) ---
+st.markdown(f"""
+    <div style="padding-top: 10px;">
+        <p style='margin:0; font-size:1.0rem; color: #64748b; font-weight: 600;'>
+            💰 Aportación adicional máxima este año:
+        </p>
+        <h2 style='margin:0; font-size:2.8rem; color:#1e293b; font-weight:800;'>
+            {aportacion_extraordinaria_neta:,.0f} €
+        </h2>
+    </div>
+""", unsafe_allow_html=True)
+
+# En lugar de un icono con help, usamos un expander ultra-compacto
+with st.expander("🔍 Ver detalle del cálculo y límites"):
+    st.markdown(f"""
+        <div style="font-size: 0.85rem; color: #475569; line-height: 1.5;">
+            Este importe de <b>{aportacion_extraordinaria_neta:,.2f}€</b> es el máximo disponible respetando:
+            <ul>
+                <li>Límite legal de 8.500€ adicionales (Ley 12/2022).</li>
+                <li>Límite fiscal del 30% de tus rendimientos netos.</li>
+                <li>Deducción de aportaciones ya realizadas este año.</li>
+            </ul>
+        </div>
+    """, unsafe_allow_html=True)
+
+st.markdown('<hr style="margin: 0.5em 0; border: 0; border-top: 1px solid #f1f5f9;">', unsafe_allow_html=True)
+    
     # 1. Bloque de Aportación Adicional (Número destacado)
     
         
