@@ -256,69 +256,6 @@ st.markdown("""
 # --- 2. CONTENEDOR DE ENTRADA PRO ---
 sb =0
 
-# --- ESTILO PARA ELIMINAR ESPACIOS EXTRA ---
-st.markdown("""
-    <style>
-    .block-container { padding-top: 2rem; }
-    div[data-testid="stVerticalBlock"] > div { margin-top: -10px; }
-    </style>
-""", unsafe_allow_html=True)
-
-# --- INICIO DEL CONTENEDOR ---
-with st.expander("📝 CONFIGURACIÓN DE DATOS1111", expanded=(sb <= 0)):
-    
-    # Usamos una sola fila de 3 columnas para los datos de la empresa
-    st.markdown("##### 👤 Datos de la Empresa")
-    c1, c2, c3 = st.columns(3)
-    
-    with c1:
-        sb = st.number_input(
-            "Sueldo Bruto (€)", 
-            min_value=0.0, step=1000.0, key="sb_unique",
-            help="Salario bruto anual antes de impuestos"
-        )
-       
-
-    with c2:
-        # Simplificamos nombres para ganar espacio
-        e_ahorro = st.number_input(
-            "Aport. Mensual (€)", 
-            min_value=0.0, step=50.0, key="ahorro_unique"
-        )
-    with c3:
-        e_riesgo = st.number_input(
-            "Otras aportaciones anuales (€)", 
-            min_value=0.0, step=50.0, key="riesgo_unique"
-        )
-
-    # Cálculo silencioso
-    emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
-
-    st.markdown("---") # Separador fino
-
-    # Lógica de límites (se mantiene igual, pero agrupada)
-    ss_estimada = min(sb, 61212.0) * 0.0635
-    base_imponible = max(0.0, sb - ss_estimada - 2000.0)
-    max_p_coef = calcular_max_personal_adicional(emp_t, sb)
-    MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500.0, 10000.0 - emp_t))
-    if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
-        MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
-
-    # Segunda fila: Datos personales y métrica de límite
-    st.markdown("##### 📅 Tus Aportaciones")
-    c4, c5 = st.columns([1, 1])
-    
-    with c4:
-        cm = st.number_input("Cuota Mensual (€)", min_value=0.0, step=50.0, key="mensual_unique")
-    with c5:
-        e_y = st.number_input("Extra ya aportado (€)", min_value=0.0, max_value=max(0.0, float(MAX_P_LIMIT)), step=50.0, key="extra_unique")
-   
-     if sb <= 0:
-                st.warning("⚠️ Introduce salario")
-                st.stop()
-
-
-
 with st.expander("📝 CONFIGURACIÓN DE TUS DATOS", expanded=(sb <= 0)):
     
     col_emp, col_pers = st.columns(2, gap="large")
