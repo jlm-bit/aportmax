@@ -552,6 +552,35 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
             </div>
         """, unsafe_allow_html=True)
     
+with st.expander("ℹ️ ¿Cómo realizar tu aportación on line1?",expanded=False):
+    col_web, col_steps = st.columns([1, 1.5], gap="large")
+    with col_web:
+        # Título de sección con estilo profesional
+        st.markdown("""
+            <p style='font-size: 0.9rem; font-weight: 700; color: #1e293b; margin-bottom: 10px; border-bottom: 2px solid #3b82f6; width: fit-content;'>
+                🌐 VÍAS DE ACCESO ONLINE
+            </p>
+        """, unsafe_allow_html=True)
+    
+        # Botón Principal: Aporta+ (Enfoque en gestión de planes)
+        st.link_button(
+            "✨ Acceder a Aporta+", 
+            "https://www.vidacaixa.es/aporta-mas", # Ejemplo de URL real
+            use_container_width=True, 
+            type="primary",
+            help="Portal exclusivo para partícipes de planes de empleo."
+        )
+        
+        # Botón Secundario: CaixaBankNow (Enfoque bancario general)
+        st.link_button(
+            "🏦 Ir a CaixaBankNow", 
+            "https://www.caixabank.es", 
+            use_container_width=True,
+            help="Acceso general a tu banca online."
+        )
+    
+        # Espaciado sutil
+        st.write("")
 
 
 
