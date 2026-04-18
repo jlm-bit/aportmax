@@ -183,10 +183,6 @@ def generar_informe_integral_2026(datos):
 
     return pdf.output(dest='S').encode('latin-1', errors='replace')
 
-
-
-
-
 import streamlit as st
 
 # 1. FUNCIÓN DE APOYO
@@ -195,8 +191,6 @@ def calcular_max_personal_adicional(e, salario):
     if e <= 500: return e * 2.5
     elif e <= 1500: return 1250 + (0.25 * (e - 500))
     else: return e
-
-
 
 # --- 6. RENDERIZADO PRINCIPAL (Cabecera pegada arriba) ---
 st.markdown("""
@@ -264,7 +258,7 @@ st.markdown("""
 # --- 2. CONTENEDOR DE CONFIGURACIÓN ---
 
 # Usamos un expander principal para agrupar todo
-with st.expander("⚙️ CONFIGURACIÓN (Datos para realizar estimación de la aportacion que puedes realizar este año alm Plan de Pensiones de Empleo)", expanded=False):
+with st.expander("⚙️ CONFIGURACIÓN DE TUS DATOS", expanded=False):
     
     # Creamos dos columnas para que no ocupe tanto espacio vertical
     col_emp, col_pers = st.columns(2)
