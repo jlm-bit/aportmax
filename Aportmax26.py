@@ -204,7 +204,7 @@ st.set_page_config(
 )
 
 # 3. SIDEBAR
-with st.expANDER ("⚙️ CONFIGURACIÓN")
+with st.expander ("⚙️ CONFIGURACIÓN"):
     
     # Expandible 1
     with st.expander("👤 DATOS EMPRESA", expanded=True):
