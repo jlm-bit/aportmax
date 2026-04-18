@@ -265,7 +265,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- INICIO DEL CONTENEDOR ---
-with st.expander("📝 CONFIGURACIÓN DE DATOS", expanded=(sb <= 0)):
+with st.expander("📝 CONFIGURACIÓN DE DATOS 11", expanded=(sb <= 0)):
     
     # Usamos una sola fila de 3 columnas para los datos de la empresa
     st.markdown("##### 👤 Datos de la Empresa")
