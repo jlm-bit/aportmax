@@ -261,7 +261,7 @@ st.markdown("""
 
 # --- 2. CONTENEDOR DE ENTRADA PRO ---
 sb =0
-with st.expander("📝 PANEL DE CONTROL FISCAL", expanded=(sb <= 0)):
+with st.expander("📝 CONFIGURACIÓN DE TUS DATOS", expanded=(sb <= 0)):
     
     col_emp, col_pers = st.columns(2, gap="large")
     
@@ -354,7 +354,8 @@ total_inv = emp_t + max_p
 ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 # años_jub = 67 - edad  # 'edad' viene del sidebar
 
-
+iF SB<=0 
+    ST.STOP
 
 tab1, tab2, tab3 = st.tabs([ "   Aportación Máxima     ", "   Proyección a la Jubilación     ",  "   Acerca de ...   "])
 
