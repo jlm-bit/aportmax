@@ -485,7 +485,7 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
     
     # OPCIÓN B: Plan Sostenible (Con lógica de reajuste si hay exceso)
     cuota_ideal_estandar = max_p / 12
-    diferencia_mensual2 = cuota_ideal_estandar - cm
+    diferencia_mensual2 = cuota_ideal_estandar - c_m
     total_futuro_estandar = cuota_ideal_estandar * meses_restantes
     
     # Calculamos el pago extra necesario para cuadrar el puzzle
