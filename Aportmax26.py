@@ -207,7 +207,7 @@ st.set_page_config(
 )
 
 # 3. SIDEBAR (TODO IDENTADO CON 4 ESPACIOS)
-with st.sidebar:
+
     st.title("⚙️ CONFIGURACIÓN")
     st.write("Introduce tus datos aquí debajo:")
    
