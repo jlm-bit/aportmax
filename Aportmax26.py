@@ -393,15 +393,15 @@ with tab1:
     """, unsafe_allow_html=True)
     
     # Expander con textos pulidos incluyendo el total y %
-    with st.expander("🔍 ¿Cómo se ha calculado esta cifra?"):
+    with st.expander("🔍 "):
         st.markdown(f"""
             <div style="font-size: 0.9rem; color: #475569; line-height: 1.6;">
-                El importe de <b>{aportacion_extraordinaria_neta:,.2f} €</b> representa el margen legal que aún puedes aprovechar este año. Se calcula restando tus compromisos actuales de tu límite máximo permitido:
+                El importe de <b>{aportacion_extraordinaria_neta:,.2f} €</b> representa el margen de mayor aportación a tu PPE que aún puedes aprovechar este año. Se calcula restando tus compromisos actuales de tu límite máximo permitido:
                 <ul style="margin-top: 10px;">
-                    <li><b>Límite máximo personal:</b> Tienes un techo de <b>{max_p:,.2f} €</b> basado en tu salario y las contribuciones de tu empresa ({emp_t:,.2f} €).</li>
+                    <li><b>Límite máximo personal:</b> Tienes un techo de <b>{max_p:,.2f} €</b> basado en tu salario y las contribuciones estimadas de la empresa a tu PPE ({emp_t:,.2f} €).</li>
                     <li><b>Aportaciones ya realizadas:</b> Descontamos los {ya_aportado:,.2f} € que ya has ingresado formalmente.</li>
                     <li><b>Planificación mensual:</b> También restamos los {total_mensual_previsto:,.2f} € que tienes previsto aportar mediante deducción en nómina o aportaciones periódicas hasta diciembre.</li>
-                    <li><b>Objetivo de ahorro:</b> Con esta aportación extra, alcanzarás un total de <b>{total_aportado_anual:,.2f} €</b>, cubriendo el <b>{porcentaje_cumplimiento:.1f}%</b> de tu capacidad de aportación anual permitida.</li>
+                    <li><b>Objetivo de ahorro:</b> Con la cifra señadada de {aportacion_extraordinaria_neta:,.0f} €, alcanzarás un total de <b>{total_aportado_anual:,.2f} €</b>, cubriendo el <b>{porcentaje_cumplimiento:.1f}%</b> de tu capacidad de aportación anual permitida.</li>
                     <li><b>Fiscalidad:</b> Despliega la seccion de ℹ️ Ahorro Fiscal.</li>
                     <li><b>Acción:</b> Despliega la seccion de ℹ️ Tu Plan de Acción: te ayudaremos a conseguir tu objetivo.</li>
                 </ul>
