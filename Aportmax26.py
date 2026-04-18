@@ -260,6 +260,7 @@ st.markdown("""
 # --- 1. ESTILO CSS PARA EL TÍTULO DINÁMICO ---
 
 # --- 2. CONTENEDOR DE ENTRADA PRO ---
+sb =0
 with st.expander("📝 PANEL DE CONTROL FISCAL", expanded=(sb <= 0)):
     
     col_emp, col_pers = st.columns(2, gap="large")
