@@ -601,44 +601,8 @@ with tab2:
     # 1. Entradas de Datos
     col_in1, col_in2 = st.columns(2)
     with col_in1:
-        
-        
-        
-        # 1. Definimos todas las opciones posibles
-        opciones_jubilacion = [63, 64, 65, 66, 67]
-        
-        # 2. Filtramos las opciones: solo mostramos las que sean mayores a la edad actual
-        opciones_validas = [edad for edad in opciones_jubilacion if edad > edad_actual]
-        
-        # 3. Control de seguridad para el 'index'
-        # Si no hay opciones válidas (ej. usuario tiene 67), mostramos un aviso
-        if not opciones_validas:
-            st.error("La edad de jubilación debe ser mayor a tu edad actual.")
-        else:
-            # Ajustamos el index para que por defecto marque 67 (el último de la lista)
-            idx_defecto = len(opciones_validas) - 1 
-            
-            edad_jub = st.radio(
-                "Edad de jubilación", 
-                opciones_validas, 
-                index=idx_defecto, 
-                horizontal=True, 
-                key="jub_final"
-            )
-                
-                
-                
-                
-                
-                
+              
         edad_act = st.number_input("Tu Edad Actual", value=40, min_value=18, max_value=64, key="edad_final")
-        
-        
-        
-        
-        
-        
-        
         saldo_existente = st.number_input("Saldo acumulado actual en el Plan (€)", value=0.0, step=1000.0, min_value=0.0, key="saldo_final")
         
         modo_aportacion = st.radio(
@@ -665,6 +629,8 @@ with tab2:
 
     with col_in2:
         edad_jub = st.radio("Edad de jubilación", [63, 64, 65, 66, 67], index=4, horizontal=True, key="jub_final")
+        if edad:act == 64 
+            st.radio("Edad de jubilación", [64, 65, 66, 67], index=3, horizontal=True, key="jub_final")
         rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 4.0, key="rent_final")
     
     # 2. Lógica de Simulación
