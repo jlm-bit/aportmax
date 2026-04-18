@@ -383,11 +383,11 @@ with tab1:
             <p style='margin:0; font-size:1.0rem; color: #64748b; font-weight: 600;'>
                 💰 Aportación adicional máxima disponible:
             </p>
-            <h2 style='margin:0; font-size:2.8rem; color:#1e293b; font-weight:800;'>
+            <h2 style='margin:0; font-size:2.5rem; color:#1e293b; font-weight:700;'>
                 {aportacion_extraordinaria_neta:,.0f} €
             </h2>
             <p style='margin:5px 0 0 0; font-size:0.95rem; color: #1e3a8a; font-weight: 500;'>
-                Total aportaciones previstas: <b>{total_aportado_anual:,.2f} €</b> ({porcentaje_cumplimiento:.1f}% del límite máximo)
+               
             </p>
         </div>
     """, unsafe_allow_html=True)
@@ -400,7 +400,7 @@ with tab1:
                 <ul style="margin-top: 10px;">
                     <li><b>Límite máximo personal:</b> Tienes un techo de <b>{max_p:,.2f} €</b> basado en tu salario y las contribuciones de tu empresa ({emp_t:,.2f} €).</li>
                     <li><b>Aportaciones ya realizadas:</b> Descontamos los {ya_aportado:,.2f} € que ya has ingresado formalmente.</li>
-                    <li><b>Planificación mensual:</b> También restamos los {total_mensual_previsto:,.2f} € que tienes previsto aportar mediante nómina o aportaciones periódicas hasta diciembre.</li>
+                    <li><b>Planificación mensual:</b> También restamos los {total_mensual_previsto:,.2f} € que tienes previsto aportar mediante deducción en nómina o aportaciones periódicas hasta diciembre.</li>
                     <li><b>Objetivo de ahorro:</b> Con esta aportación extra, alcanzarás un total de <b>{total_aportado_anual:,.2f} €</b>, cubriendo el <b>{porcentaje_cumplimiento:.1f}%</b> de tu capacidad de aportación anual permitida.</li>
                 </ul>
                 <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 10px;">
