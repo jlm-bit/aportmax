@@ -373,15 +373,18 @@ with tab1:
     
     # --- RESULTADO FINAL TEXTO PLANO (OPTIMIZADO MÓVIL) ---
     st.markdown(f"""
-        <div style="padding-top: 10px;">
-            <p style='margin:0; font-size:1.0rem; color: #64748b; font-weight: 600;'>
-                💰 Aportación adicional máxima este año:
-            </p>
-            <h2 style='margin:0; font-size:2.6rem; color:#1e293b; font-weight:700;'>
-                {aportacion_extraordinaria_neta:,.0f} €
-            </h2>
-        </div>
-    """, unsafe_allow_html=True)
+    <div style="padding-top: 10px;">
+        <p style='margin:0; font-size:1.0rem; color: #64748b; font-weight: 600;'>
+            💰 Aportación adicional máxima disponible:
+        </p>
+        <h2 style='margin:0; font-size:2.6rem; color:#1e293b; font-weight:700;'>
+            {aportacion_extraordinaria_neta:,.0f} €
+        </h2>
+        <p style='margin:5px 0 0 0; font-size:0.95rem; color: #1e3a8a; font-weight: 500;'>
+            Total aportaciones previstas: <b>{max_p:,.2f} €</b>
+        </p>
+    </div>
+""", unsafe_allow_html=True
     
     # En lugar de un icono con help, usamos un expander ultra-compacto
         
