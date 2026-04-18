@@ -274,20 +274,6 @@ with st.expander("📅 PERSONALES", expanded=True):
         step=100.0
     )
 
-# 4. CUERPO PRINCIPAL (Alineado al borde izquierdo, fuera del Sidebar)
-st.title("🚀 Cálculo de Aportaciones")
-
-col1, col2 = st.columns(2)
-with col1:
-    st.metric("Sueldo Bruto", f"{sb:,.2f} €")
-with col2:
-    st.metric("Límite Personal Máximo", f"{MAX_P_LIMIT:,.2f} €")
-
-st.success("Si el lateral sigue sin aparecer, pulsa la tecla 'R' para recargar la app.")
-
-
-
-
 # --- 5. LÓGICA DE CÁLCULO ---
 any = 2026
 
