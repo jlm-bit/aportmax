@@ -377,67 +377,30 @@ with tab1:
             <p style='margin:0; font-size:1.0rem; color: #64748b; font-weight: 600;'>
                 💰 Aportación adicional máxima este año:
             </p>
-            <h2 style='margin:0; font-size:2.8rem; color:#1e293b; font-weight:800;'>
+            <h2 style='margin:0; font-size:2.6rem; color:#1e293b; font-weight:700;'>
                 {aportacion_extraordinaria_neta:,.0f} €
             </h2>
         </div>
     """, unsafe_allow_html=True)
     
     # En lugar de un icono con help, usamos un expander ultra-compacto
-    with st.expander("🔍 Ver detalle del cálculo y límites"):
+    with st.expander("🔍 Ayuda en comprender este número?"):
         st.markdown(f"""
             <div style="font-size: 0.85rem; color: #475569; line-height: 1.5;">
-                Este importe de <b>{aportacion_extraordinaria_neta:,.2f}€</b> es el máximo disponible respetando:
+                Este importe de <b>{aportacion_extraordinaria_neta:,.2f}€</b> es la máxima aportación que puedes realizara tu Plan de Pensiones de Empresa, considerando lo siguiente:
                 <ul>
-                    <li>Límite legal de 8.500€ adicionales (Ley 12/2022).</li>
+                    <li>Aportaciones de tu empresa previstas para este año.</li>
+                    <li>Límite legal general de 1.500€ adicionales (Ley 12/2022).</li>
+                    <li>Límite legal de planes de pensiones de empresa de 8.500€ adicionales (Ley 12/2022).</li>
                     <li>Límite fiscal del 30% de tus rendimientos netos.</li>
-                    <li>Deducción de aportaciones ya realizadas este año.</li>
+                    <li>Y la deducción de las aportaciones personales ya realizadas este año y las ya planificadas (deducción nomina, nwo o aporta+).</li>
                 </ul>
             </div>
         """, unsafe_allow_html=True)
     
     st.markdown('<hr style="margin: 0.5em 0; border: 0; border-top: 1px solid #f1f5f9;">', unsafe_allow_html=True)
         
-        # 1. Bloque de Aportación Adicional (Número destacado)
-        
-            
-        # --- RESULTADO FINAL EN TEXTO PLANO ---
-    st.write("") # Espaciador sutil
-    
-    # Creamos un contenedor visualmente limpio pero informativo
-    col_txt, col_info = st.columns([0.5, 0.5])
-    
-    with col_txt:
-        st.markdown(f"""
-            <p style='margin:0; font-size:1.1rem; color: #475569;'>
-                💰 <b>Aportación adicional máxima este año:</b>
-            </p>
-            <h2 style='margin:0; font-size:2.6rem; color:#1e293b; font-weight:650;'>
-                {aportacion_extraordinaria_neta:,.0f} €
-            </h2>
-        """, unsafe_allow_html=True)
-    
-    with col_info:
-        # Usamos un botón de ayuda vacío o un simple icono con help
-        st.markdown("<br>", unsafe_allow_html=True) # Alineación vertical
-        st.button("❓", help=f"""
-            Este importe de {aportacion_extraordinaria_neta:,.2f}€ es el máximo que puedes 
-            aportar de forma voluntaria antes de finalizar el año a tu plan de pensiones de empleo, respetando:
-            1. Las aportaciones anuales previstas que va a realizar la empresa.
-            2. Si tus rendimentos del trabajo son inferiores a 60.000 euros/año.
-            3. El límite financiero legal (1500€ + 8.500€ adicionales por empresa).
-            4. El límite fiscal del 30% de tus rendimientos netos.
-            5. Las aportaciones que ya has realizado este año o tienes ya programadoas en Now o Aporta+.
-        """, key="help_final")
-    
-    st.markdown('<hr style="margin: 0.5em 0; border: 0; border-top: 1px solid #f1f5f9;">', unsafe_allow_html=True)
-        
-        
-        
-        
-        
-        
-        
+
 
 
 
