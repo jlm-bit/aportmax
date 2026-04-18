@@ -235,32 +235,56 @@ with st.sidebar:
         if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
             MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
 
-    # --- BLOQUE PERSONALES ---
-    with st.expander("📅 APORTACIONES PERSONALES", expanded=True):
-        c_m = st.number_input("Mensualidad propia (€)", value=0.0, step=50.0)
+# --- BLOQUE PERSONALES ---
+
+ with st.expander("👤 DATOS EMPRESA", expanded=True):
+        sb = st.number_input("Sueldo Bruto Anual (€)", value=0.0, step=1000.0)
+        e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=100.0, step=10.0)
+        e_riesgo = st.number_input("Prima Riesgo PPE (€)", value=0.0, step=10.0)
         
-        # Blindaje del valor máximo para evitar errores de Streamlit
-        val_max_extra = max(0.0, float(MAX_P_LIMIT))
+        # Cálculo de lo que pone la empresa (Tope 10k)
+        emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
+
+        # --- LÓGICA INTERNA DE LÍMITES ---
+        # Seguridad Social (estimación estándar)
+        ss_estimada = min(sb, 61212.0) * 0.0635
+        base_imponible = max(0.0, sb - ss_estimada - 2000.0)
         
-        e_y = st.number_input(
-            "Aportación Extra ya realizada (€)",
-            value=0.0,
-            min_value=0.0,
-            max_value=val_max_extra if val_max_extra > 0 else 0.01,
-            step=100.0
+        # Cálculo del coeficiente personal
+        max_p_coef = calcular_max_personal_adicional(emp_t, sb)
+        
+        # Límite final (Coeficiente + 1500€, sin pasarse del hueco de 10k)
+        MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500.0, 10000.0 - emp_t))
+        
+        # Filtro del 30% de la base imponible
+        if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
+            MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
+
+with st.expander("📅 APORTACIONES PERSONALES", expanded=True):
+    c_m = st.number_input("Mensualidad propia (€)", value=0.0, step=50.0)
+    
+    # Blindaje del valor máximo para evitar errores de Streamlit
+    val_max_extra = max(0.0, float(MAX_P_LIMIT))
+    
+    e_y = st.number_input(
+        "Aportación Extra ya realizada (€)",
+        value=0.0,
+        min_value=0.0,
+        max_value=val_max_extra if val_max_extra > 0 else 0.01,
+        step=100.0
         )
 
 
-
-# --- LÓGICA DE LÍMITES ---
-ss_estimada = min(sb, 61212.0) * 0.0635
-base_imponible = max(0.0, sb - ss_estimada - 2000.0)
-
-max_p_coef = calcular_max_personal_adicional(emp_t, sb)
-MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500, 10000.0 - emp_t))
-
-if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
-    MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
+    
+    # --- LÓGICA DE LÍMITES ---
+    ss_estimada = min(sb, 61212.0) * 0.0635
+    base_imponible = max(0.0, sb - ss_estimada - 2000.0)
+    
+    max_p_coef = calcular_max_personal_adicional(emp_t, sb)
+    MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500, 10000.0 - emp_t))
+    
+    if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
+        MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
 
 # --- APORTACIONES PERSONALES ---
 with st.expander("📅 PERSONALES", expanded=True):
