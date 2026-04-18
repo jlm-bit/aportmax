@@ -386,9 +386,9 @@ with tab1:
             <h2 style='margin:0; font-size:2.5rem; color:#1e293b; font-weight:700;'>
                 {aportacion_extraordinaria_neta:,.0f} €
             </h2>
-            <p style='margin:5px 0 0 0; font-size:0.95rem; color: #1e3a8a; font-weight: 500;'>
+           
                
-            </p>
+            
         </div>
     """, unsafe_allow_html=True)
     
@@ -402,6 +402,8 @@ with tab1:
                     <li><b>Aportaciones ya realizadas:</b> Descontamos los {ya_aportado:,.2f} € que ya has ingresado formalmente.</li>
                     <li><b>Planificación mensual:</b> También restamos los {total_mensual_previsto:,.2f} € que tienes previsto aportar mediante deducción en nómina o aportaciones periódicas hasta diciembre.</li>
                     <li><b>Objetivo de ahorro:</b> Con esta aportación extra, alcanzarás un total de <b>{total_aportado_anual:,.2f} €</b>, cubriendo el <b>{porcentaje_cumplimiento:.1f}%</b> de tu capacidad de aportación anual permitida.</li>
+                    <li><b>Fiscalidad:</b> Despliega la seccion de ℹ️ Ahorro Fiscal.</li>
+                    <li><b>Acción:</b> Despliega la seccion de ℹ️ Tu Plan de Acción: te ayudaremos a conseguir tu objetivo.</li>
                 </ul>
                 <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 10px;">
                     <i>Nota: Este cálculo se ajusta estrictamente al marco normativo vigente para planes de pensiones de empleo (PPE).</i>
