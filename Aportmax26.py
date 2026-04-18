@@ -385,14 +385,19 @@ with tab1:
     
     # En lugar de un icono con help, usamos un expander ultra-compacto
     with st.expander("🔍 Ayuda en comprender este número?"):
+     
+    with st.expander("🔍 ¿Cómo se ha calculado esta cifra?"):
         st.markdown(f"""
-            <div style="font-size: 0.85rem; color: #475569; line-height: 1.5;">
-                Este importe de <b>{aportacion_extraordinaria_neta:,.2f}€</b> es la máxima aportación que puedes realizar a tu Plan de Pensiones de Empresa durante este año, considerando lo siguiente:
-                <ul>
-                    <li> Las Aportaciones de tu empresa previstas para este año. ({emp_t:,.2f}€)</li>
-                    <li> Y la deducción de las aportaciones personales ya realizadas este año ({ya_aportado:,.2f}€) y las ya planificadas ({total_mensual_previsto:,.2f}€), ya sea deducción nomina, now o aporta+.</li>
-                    <li> Todo ellos dentro del marco normativo vigente.</li>
+            <div style="font-size: 0.9rem; color: #475569; line-height: 1.6;">
+                El importe de <b>{aportacion_extraordinaria_neta:,.2f} €</b> representa el margen legal que aún puedes aprovechar este año. Se calcula restando tus compromisos actuales de tu límite máximo permitido:
+                <ul style="margin-top: 10px;">
+                    <li><b>Límite máximo personal:</b> Tienes un techo de {max_p:,.2f} € basado en tu salario y las contribuciones de tu empresa ({emp_t:,.2f} €).</li>
+                    <li><b>Aportaciones ya realizadas:</b> Descontamos los {ya_aportado:,.2f} € que ya has ingresado formalmente.</li>
+                    <li><b>Planificación mensual:</b> También restamos los {total_mensual_previsto:,.2f} € que tienes previsto aportar mediante nómina o aportaciones periódicas hasta diciembre.</li>
                 </ul>
+                <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 10px;">
+                    <i>Nota: Este cálculo se ajusta estrictamente al marco normativo vigente para planes de pensiones de empleo (PPE).</i>
+                </p>
             </div>
         """, unsafe_allow_html=True)
     
