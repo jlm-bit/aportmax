@@ -196,9 +196,6 @@ def calcular_max_personal_adicional(e, salario):
     elif e <= 1500: return 1250 + (0.25 * (e - 500))
     else: return e
 
-# --- 1. CABECERA PRINCIPAL ---
-st.markdown("### 📊 Simulador de Aportaciones 2026")
-
 # --- 2. CONTENEDOR DE CONFIGURACIÓN ---
 # Usamos un expander principal para agrupar todo
 with st.expander("⚙️ CONFIGURACIÓN (Datos para realizar estimación)", expanded=True):
@@ -208,8 +205,8 @@ with st.expander("⚙️ CONFIGURACIÓN (Datos para realizar estimación)", expa
     
     with col_emp:
         st.markdown("#### 👤 Empresa")
-        sb = st.number_input("Sueldo Bruto Anual (€)", value=65000.0, key="sb_unique")
-        e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=100.0, key="ahorro_unique")
+        sb = st.number_input("Sueldo Bruto Anual (€)", value=0.0, key="sb_unique")
+        e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=0.0, key="ahorro_unique")
         e_riesgo = st.number_input("Prima Riesgo PPE (€)", value=0.0, key="riesgo_unique")
         
         # Cálculo inmediato
@@ -235,10 +232,8 @@ with st.expander("⚙️ CONFIGURACIÓN (Datos para realizar estimación)", expa
             max_value=max(0.1, float(MAX_P_LIMIT)), 
             key="extra_unique"
         )
-        st.write(f"**Límite personal disponible: {MAX_P_LIMIT:,.2f} €**")
+        
 
-# --- 3. CONTINUACIÓN DE CÁLCULOS GLOBALES ---
-# (Aquí sigue el resto de tu código de ahorro e IRPF)
 
 # --- 5. LÓGICA DE CÁLCULO ---
 
