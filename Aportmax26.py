@@ -192,18 +192,10 @@ import streamlit as st
 # 1. FUNCIÓN DE APOYO
 def calcular_max_personal_adicional(e, salario):
     if salario > 60000: return e
-    if e <= 500: return e * 8.5
+    if e <= 500: return e * 2.5
     elif e <= 1500: return 1250 + (0.25 * (e - 500))
     else: return e
 
-# 2. CONFIGURACIÓN (OBLIGA A MOSTRAR EL SIDEBAR)
-st.set_page_config(
-    page_title="Ivol 2026", 
-    layout="wide", 
-    initial_sidebar_state="expanded"
-)
-
-# 3. SIDEBAR
 with st.expander ("⚙️ CONFIGURACIÓN"):
     
     # Expandible 1
@@ -233,14 +225,7 @@ with st.expander ("⚙️ CONFIGURACIÓN"):
             key="extra_unique"
         )
 
-# 4. CUERPO PRINCIPAL
-st.title("🚀 Panel Control")
-st.metric("Límite Personal", f"{MAX_P_LIMIT:,.2f} €")
-
-
-
 # --- 5. LÓGICA DE CÁLCULO ---
-any = 2026
 
 hoy = datetime.date.today()
 meses_restantes = 12 - hoy.month + 1
@@ -335,10 +320,10 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-tab1, tab2, tab3 = st.tabs([" Aportación Máxima ", " Proyección a la Jubilación ",  " Acerca de ... "])
+tab1, tab2, tab3, tab4 = st.tabs(["Datos Necesarios "" Aportación Máxima ", " Proyección a la Jubilación ",  " Acerca de ... "])
 
 
-with tab1:
+with tab2:
     # 1. Bloque de Aportación Adicional (Número destacado)
     st.markdown(
         f"""
@@ -549,7 +534,7 @@ import io
 # max_p: Aportación personal máxima anual permitida (Tab 1)
 # e_riesgo: Coste anual del seguro de riesgo (Tab 1)
 # ------------------------------------------------------------------------
-with tab2:
+with tab3:
   #  st.markdown("### 🔮 SIMULADOR JUBILACIÓN: Impacto de aportaciones voluntarias")
     
     # 0. Recuperar variables de otros Tabs
@@ -767,7 +752,7 @@ import streamlit as st
 
 
 
-with tab3:
+with tab4:
     # --- RESUMEN EJECUTIVO DEL PROGRAMA ---
     # st.info("### 📋 Funcionalidades de la plataforma AportaMax")
     
