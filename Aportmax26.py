@@ -259,14 +259,6 @@ st.markdown("""
 
 # --- 1. ESTILO CSS PARA EL TÍTULO DINÁMICO ---
 
-st.markdown(f"""
-    <div style="border-left: 5px solid {color_header}; padding-left: 15px; margin-bottom: 20px;">
-        <h2 style="color: {color_header}; margin-bottom: 0; font-family: 'Inter', sans-serif;">
-            ⚙️ CONFIGURACIÓN DE DATOS {alerta_texto}
-        </h2>
-    </div>
-""", unsafe_allow_html=True)
-
 # --- 2. CONTENEDOR DE ENTRADA PRO ---
 with st.expander("📝 PANEL DE CONTROL FISCAL", expanded=(sb <= 0)):
     
