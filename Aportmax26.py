@@ -257,22 +257,54 @@ st.markdown("""
 
 # --- 2. CONTENEDOR DE CONFIGURACIÓN ---
 
-# Usamos un expander principal para agrupar todo
-with st.expander("⚙️ CONFIGURACIÓN DE TUS DATOS", expanded=False):
+# --- 1. ESTILO CSS PARA EL TÍTULO DINÁMICO ---
+# Determinamos el color: rojo si es 0, azul profesional si tiene valor
+color_header = "#FF4B4B" if sb <= 0 else "#1E3A8A"
+alerta_texto = " <span style='font-size:14px;'>(Introduzca salario para activar cálculos)</span>" if sb <= 0 else ""
+
+st.markdown(f"""
+    <div style="border-left: 5px solid {color_header}; padding-left: 15px; margin-bottom: 20px;">
+        <h2 style="color: {color_header}; margin-bottom: 0; font-family: 'Inter', sans-serif;">
+            ⚙️ CONFIGURACIÓN DE DATOS {alerta_texto}
+        </h2>
+    </div>
+""", unsafe_allow_html=True)
+
+# --- 2. CONTENEDOR DE ENTRADA PRO ---
+with st.expander("📝 PANEL DE CONTROL FISCAL", expanded=(sb <= 0)):
     
-    # Creamos dos columnas para que no ocupe tanto espacio vertical
-    col_emp, col_pers = st.columns(2)
+    col_emp, col_pers = st.columns(2, gap="large")
     
     with col_emp:
-        st.markdown("#### 👤 Empresa")
-        sb = st.number_input("Sueldo Bruto Anual (€)", value=0.0, key="sb_unique")
-        e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=0.0, key="ahorro_unique")
-        e_riesgo = st.number_input("Prima Riesgo PPE (€)", value=0.0, key="riesgo_unique")
+        st.subheader("👤 Datos Empresa")
+        # min_value=0.0 impide negativos | step=1000.0 define el salto
+        sb = st.number_input(
+            "Sueldo Bruto Anual (€)", 
+            min_value=0.0, 
+            value=sb if sb > 0 else 0.0, 
+            step=1000.0, 
+            key="sb_unique",
+            help="Introduzca su salario bruto antes de impuestos"
+        )
         
-        # Cálculo inmediato
+        e_ahorro = st.number_input(
+            "Aportación Mensual Empresa (€)", 
+            min_value=0.0, 
+            value=e_ahorro if 'e_ahorro' in locals() else 0.0, 
+            step=50.0, 
+            key="ahorro_unique"
+        )
+        
+        e_riesgo = st.number_input(
+            "Prima Riesgo PPE Anual (€)", 
+            min_value=0.0, 
+            step=50.0, 
+            key="riesgo_unique"
+        )
+        
         emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
 
-    # --- LÓGICA INTERMEDIA (Se ejecuta aquí para que col_pers tenga los límites) ---
+    # --- LÓGICA DE LÍMITES (Igual a la anterior pero necesaria aquí) ---
     ss_estimada = min(sb, 61212.0) * 0.0635
     base_imponible = max(0.0, sb - ss_estimada - 2000.0)
     max_p_coef = calcular_max_personal_adicional(emp_t, sb)
@@ -282,15 +314,31 @@ with st.expander("⚙️ CONFIGURACIÓN DE TUS DATOS", expanded=False):
         MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
 
     with col_pers:
-        st.markdown("#### 📅 Personal")
-        c_m = st.number_input("Aportación Mensual (€)", value=0.0, key="mensual_unique")
+        st.subheader("📅 Datos Partícipe")
+        c_m = st.number_input(
+            "Tu Aportación Mensual (€)", 
+            min_value=0.0, 
+            step=50.0, 
+            key="mensual_unique"
+        )
         
-        # El límite dinámico es clave
+        # max_value dinámico para que no pueda pasarse del límite legal
+        limite_input = max(0.0, float(MAX_P_LIMIT))
         e_y = st.number_input(
             "Aportación Extra ya realizada (€)", 
-            value=0.0, 
-            max_value=max(0.1, float(MAX_P_LIMIT)), 
+            min_value=0.0, 
+            max_value=limite_input if limite_input > 0 else 0.01, 
+            step=50.0, 
             key="extra_unique"
+        )
+        
+        # Indicador visual Pro del límite
+        st.markdown(f"""
+            <div style="background-color: #f0f2f6; padding: 10px; border-radius: 10px; border: 1px solid #d1d5db; margin-top: 15px;">
+                <p style="margin:0; font-size: 0.8rem; color: #4b5563;">LÍMITE MÁXIMO PERSONAL 2026:</p>
+                <p style="margin:0; font-size: 1.2rem; font-weight: bold; color: #1e3a8a;">{MAX_P_LIMIT:,.2f} €</p>
+            </div>
+        """, unsafe_allow_html=True)
         )
 
 # --- 5. LÓGICA DE CÁLCULO ---
