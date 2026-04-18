@@ -443,7 +443,7 @@ with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
         """, unsafe_allow_html=True)
         
         st.write("") # Espaciador más limpio que <br>
-        st.info(f"⚠️ **Nota:** Cálculos basados en un Salario Bruto de **{sb:,.0f} € (tramos IRPF en Catalunya) y la realización de la aportación máxima posible al Plan de Pensiones.**.")   
+        st.info(f"⚠️ **Nota:** Cálculos basados en un Salario Bruto de **{sb:,.0f} € (tramos IRPF en Catalunya) y la realización de la aportación máxima posible al Plan de Pensiones.**")   
 
     with col_right:
         total_inversion = esfuerzo_neto + ahorro + emp_t
@@ -541,7 +541,7 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
             <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; height: 250px;">
                 <p style="font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase;">Opción C: Combinación a la carta</p>
                 <p style="font-size: 0.8rem; font-weight: 850; color: #1e293b; margin: 5px 0;""</p>
-                <p style="font-size: 0.75rem; color: #475569; line-height: 1.4;"> Se trata de incrementar la aportación mensual y, por ejemplo, en el percibo de pagas extras destinar realizar una aportación extraordinaria hasta alcanzar el límite. 
+                <p style="font-size: 0.75rem; color: #475569; line-height: 1.4;"> Se trata de incrementar la aportación mensual actual de {c_m:,.2f} €/mes y, por ejemplo, en el percibo de pagas extras destinar realizar una aportación extraordinaria hasta alcanzar el límite de aportacion. 
             </div>
         """, unsafe_allow_html=True)
     
