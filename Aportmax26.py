@@ -183,6 +183,11 @@ def generar_informe_integral_2026(datos):
 
     return pdf.output(dest='S').encode('latin-1', errors='replace')
 
+
+
+
+
+
 # 1. FUNCIÓN DE APOYO
 def calcular_max_personal_adicional(e, salario):
     if salario > 60000:
@@ -196,7 +201,7 @@ def calcular_max_personal_adicional(e, salario):
 
 # 2. CONFIGURACIÓN DE PÁGINA (DEBE IR ANTES QUE EL SIDEBAR)
 st.set_page_config(
-    page_title="Avol 2026",
+    page_title="Avol_test 2026",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -205,7 +210,7 @@ st.set_page_config(
 with st.sidebar:
     st.title("⚙️ CONFIGURACIÓN")
     st.write("Introduce tus datos aquí debajo:")
-    st.stop  
+   
     # --- BLOQUE EMPRESA ---
     with st.expander("👤 DATOS EMPRESA", expanded=True):
         sb = st.number_input("Sueldo Bruto Anual (€)", value=65000.0, step=1000.0)
