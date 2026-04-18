@@ -376,14 +376,14 @@ with tab1:
     st.write("") # Espaciador sutil
     
     # Creamos un contenedor visualmente limpio pero informativo
-    col_txt, col_info = st.columns([0.85, 0.15])
+    col_txt, col_info = st.columns([0.75, 0.25])
     
     with col_txt:
         st.markdown(f"""
             <p style='margin:0; font-size:1.1rem; color: #475569;'>
                 💰 <b>Aportación adicional máxima este año:</b>
             </p>
-            <h2 style='margin:0; font-size:2.8rem; color:#1e293b; font-weight:700;'>
+            <h2 style='margin:0; font-size:2.6rem; color:#1e293b; font-weight:650;'>
                 {aportacion_extraordinaria_neta:,.0f} €
             </h2>
         """, unsafe_allow_html=True)
@@ -394,9 +394,11 @@ with tab1:
         st.button("❓", help=f"""
             Este importe de {aportacion_extraordinaria_neta:,.2f}€ es el máximo que puedes 
             aportar de forma voluntaria antes de finalizar el año, respetando:
-            1. El límite financiero legal (8.500€ adicionales por empresa).
-            2. El límite fiscal del 30% de tus rendimientos netos.
-            3. Las aportaciones que ya has realizado este año.
+            1. Las aportaciones anuales previstas que va a realizar la empresa.
+            2. Si tus rendimentos del trabajo son inferiores a 60.000 euros/año
+            3. El límite financiero legal (1500€ + 8.500€ adicionales por empresa).
+            4. El límite fiscal del 30% de tus rendimientos netos.
+            5. Las aportaciones que ya has realizado este año o tienes ya programadoas en Now o Aporta+.
         """, key="help_final")
     
     st.markdown('<hr style="margin: 0.5em 0; border: 0; border-top: 1px solid #f1f5f9;">', unsafe_allow_html=True)
@@ -407,25 +409,6 @@ with tab1:
         
         
         
-    
-    st.markdown(
-        f"""
-        <hr style="margin: 1em 0; border: 0; border-top: 1px solid #f1f5f9;">
-        <div style="text-align: center; padding: 10px;">
-            <p style='margin:0; font-size:1.0rem; color: #64748b;'>
-                <b>💰 Aportación adicional al PPE este año (máximo)</b>
-            </p>
-            <h4 style='margin:10px 0; font-size:2.5rem; color:#334155; line-height:1.0; font-weight:650;'>
-                {aportacion_extraordinaria_neta:,.0f}€
-            </h4>
-        </div>
-        """, 
-        unsafe_allow_html=True
-    )
-
-
-
-
 
 
 
