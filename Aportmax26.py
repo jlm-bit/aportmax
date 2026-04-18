@@ -354,8 +354,9 @@ total_inv = emp_t + max_p
 ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 # años_jub = 67 - edad  # 'edad' viene del sidebar
 
-iF SB<=0 
-    ST.STOP
+if sb <= 0:
+            st.warning("⚠️ Por favor, introducir DATOS.")
+            st.stop() # <--- Detiene la ejecución aquí mismo
 
 tab1, tab2, tab3 = st.tabs([ "   Aportación Máxima     ", "   Proyección a la Jubilación     ",  "   Acerca de ...   "])
 
