@@ -258,9 +258,6 @@ st.markdown("""
 # --- 2. CONTENEDOR DE CONFIGURACIÓN ---
 
 # --- 1. ESTILO CSS PARA EL TÍTULO DINÁMICO ---
-# Determinamos el color: rojo si es 0, azul profesional si tiene valor
-color_header = "#FF4B4B" if sb <= 0 else "#1E3A8A"
-alerta_texto = " <span style='font-size:14px;'>(Introduzca salario para activar cálculos)</span>" if sb <= 0 else ""
 
 st.markdown(f"""
     <div style="border-left: 5px solid {color_header}; padding-left: 15px; margin-bottom: 20px;">
