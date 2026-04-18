@@ -384,8 +384,7 @@ with tab1:
     """, unsafe_allow_html=True)
     
     # En lugar de un icono con help, usamos un expander ultra-compacto
-    with st.expander("🔍 Ayuda en comprender este número?"):
-     
+        
     with st.expander("🔍 ¿Cómo se ha calculado esta cifra?"):
         st.markdown(f"""
             <div style="font-size: 0.9rem; color: #475569; line-height: 1.6;">
