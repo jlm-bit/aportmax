@@ -196,11 +196,11 @@ def calcular_max_personal_adicional(e, salario):
     elif e <= 1500: return 1250 + (0.25 * (e - 500))
     else: return e
 
-with st.expander ("⚙️ CONFIGURACIÓN"):
+with st.expander ("⚙️ CONFIGURACIÓN (Datos a cumplimentar para realizar estimación)"):
     
     # Expandible 1
     with st.expander("👤 DATOS EMPRESA", expanded=True):
-        sb = st.number_input("Sueldo Bruto Anual (€)", value=65000.0, key="sb_unique")
+        sb = st.number_input("Sueldo Bruto Anual (€)", value=0.0, key="sb_unique")
         e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=100.0, key="ahorro_unique")
         e_riesgo = st.number_input("Prima Riesgo PPE (€)", value=0.0, key="riesgo_unique")
         
@@ -217,9 +217,9 @@ with st.expander ("⚙️ CONFIGURACIÓN"):
 
     # Expandible 2
     with st.expander("📅 APORTACIONES PERSONALES", expanded=True):
-        c_m = st.number_input("Mensualidad propia (€)", value=0.0, key="mensual_unique")
+        c_m = st.number_input("Aportacón Mensual (€)", value=0.0, key="mensual_unique")
         e_y = st.number_input(
-            "Extra ya aportado (€)", 
+            "Aportación Extra ya aportada (€)", 
             value=0.0, 
             max_value=max(0.1, float(MAX_P_LIMIT)), 
             key="extra_unique"
