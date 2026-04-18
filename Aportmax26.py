@@ -196,17 +196,26 @@ def calcular_max_personal_adicional(e, salario):
     elif e <= 1500: return 1250 + (0.25 * (e - 500))
     else: return e
 
-with st.expander ("⚙️ CONFIGURACIÓN (Datos a cumplimentar para realizar estimación)"):
+# --- 1. CABECERA PRINCIPAL ---
+st.markdown("### 📊 Simulador de Aportaciones 2026")
+
+# --- 2. CONTENEDOR DE CONFIGURACIÓN ---
+# Usamos un expander principal para agrupar todo
+with st.expander("⚙️ CONFIGURACIÓN (Datos para realizar estimación)", expanded=True):
     
-    # Expandible 1
-    with st.expander("👤 DATOS EMPRESA", expanded=True):
-        sb = st.number_input("Sueldo Bruto Anual (€)", value=0.0, key="sb_unique")
+    # Creamos dos columnas para que no ocupe tanto espacio vertical
+    col_emp, col_pers = st.columns(2)
+    
+    with col_emp:
+        st.markdown("#### 👤 Empresa")
+        sb = st.number_input("Sueldo Bruto Anual (€)", value=65000.0, key="sb_unique")
         e_ahorro = st.number_input("Aportación Mensual Empresa (€)", value=100.0, key="ahorro_unique")
         e_riesgo = st.number_input("Prima Riesgo PPE (€)", value=0.0, key="riesgo_unique")
         
+        # Cálculo inmediato
         emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
 
-    # LÓGICA DE CÁLCULO
+    # --- LÓGICA INTERMEDIA (Se ejecuta aquí para que col_pers tenga los límites) ---
     ss_estimada = min(sb, 61212.0) * 0.0635
     base_imponible = max(0.0, sb - ss_estimada - 2000.0)
     max_p_coef = calcular_max_personal_adicional(emp_t, sb)
@@ -215,15 +224,21 @@ with st.expander ("⚙️ CONFIGURACIÓN (Datos a cumplimentar para realizar est
     if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
         MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
 
-    # Expandible 2
-    with st.expander("📅 APORTACIONES PERSONALES", expanded=True):
-        c_m = st.number_input("Aportacón Mensual (€)", value=0.0, key="mensual_unique")
+    with col_pers:
+        st.markdown("#### 📅 Personal")
+        c_m = st.number_input("Aportación Mensual (€)", value=0.0, key="mensual_unique")
+        
+        # El límite dinámico es clave
         e_y = st.number_input(
-            "Aportación Extra ya aportada (€)", 
+            "Aportación Extra ya realizada (€)", 
             value=0.0, 
             max_value=max(0.1, float(MAX_P_LIMIT)), 
             key="extra_unique"
         )
+        st.write(f"**Límite personal disponible: {MAX_P_LIMIT:,.2f} €**")
+
+# --- 3. CONTINUACIÓN DE CÁLCULOS GLOBALES ---
+# (Aquí sigue el resto de tu código de ahorro e IRPF)
 
 # --- 5. LÓGICA DE CÁLCULO ---
 
