@@ -443,7 +443,7 @@ with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
         """, unsafe_allow_html=True)
         
         st.write("") # Espaciador más limpio que <br>
-        st.info(f"⚠️ **Nota:** Cálculos basados en un Salario Bruto de {sb:,.0f} € y según los tramos IRPF aplicados en Catalunya,y la realización de la aportación máxima posible al Plan de Pensiones de Empleo de {max_p:,.0f} €  .")   
+        st.info(f"⚠️ **Nota:** Cálculos basados en el Salario Bruto informado de {sb:,.0f} € , y según los tramos IRPF aplicados en Catalunya, y la realización de la aportación máxima posible al Plan de Pensiones de Empleo de {max_p:,.0f} €  .")   
 
     with col_right:
         total_inversion = esfuerzo_neto + ahorro + emp_t
@@ -501,7 +501,7 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
     else:
         # CASO NORMAL: Puede mantener la cuota ideal haciendo el pago extra.
         cuota_sostenible_final = cuota_ideal_estandar
-        subtitulo_b = "Cuota de ahorro prorrateada (RECOMENDADO)"
+        subtitulo_b = "Cuota de ahorro prorrateada (RECOMENDADA)"
         detalle_b = f"Compensa el retraso con un pago único y fija una cuota mensual futura de {cuota_sostenible_final:,.2f} €. que corresponde a 1/12 del límite máximo. Respecto a la aportacion mensual actual, este ajuste representa una aportación adicional de {diferencia_mensual2:,.2f} €/mes"
 
     # --- 2. INDICADOR VISUAL (Barra de progreso) ---
@@ -515,7 +515,7 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
     
     with col1:
         st.markdown(f"""
-            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; height: 250px;">
+            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; height: 210px;">
                 <p style="font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase;">Opción A: Ajuste de Cuota</p>
                 <p style="font-size: 1.6rem; font-weight: 850; color: #1e293b; margin: 5px 0;">{cuota_mensual_pura:,.2f} € <span style="font-size: 0.8rem;">/mes</span></p>
                 <p style="font-size: 0.75rem; color: #475569; line-height: 1.4;">Sin pagos extra. El esfuerzo se reparte linealmente en las cuotas de aquí a diciembre. Respecto a la aportacion mensual actual, este ajuste representa una aportación adicional de {diferencia_mensual:,.2f} €/mes en este año. 
@@ -528,7 +528,7 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
         border_color = "#bae6fd" if pago_extraordinario == 0 else "#bbf7d0"
         
         st.markdown(f"""
-            <div style="background-color: {bg_color}; border: 1px solid {border_color}; padding: 20px; border-radius: 12px; height: 250px;">
+            <div style="background-color: {bg_color}; border: 1px solid {border_color}; padding: 20px; border-radius: 12px; height: 210px;">
                 <p style="font-size: 0.7rem; font-weight: 800; color: #0369a1; text-transform: uppercase;">Opción B: {subtitulo_b} ✨</p>
                 <p style="font-size: 1.6rem; font-weight: 850; color: #0369a1; margin: 5px 0;">{cuota_sostenible_final:,.2f} € <span style="font-size: 0.8rem;">/mes</span></p>
                 <p style="font-size: 0.9rem; font-weight: 700; color: #0c4a6e; margin-bottom: 5px;">+ {pago_extraordinario:,.2f} € como aportación extraordinaria adicional este año </p>
@@ -538,7 +538,7 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
 
     with col3:
         st.markdown(f"""
-            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; height: 250px;">
+            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; height: 220px;">
                 <p style="font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase;">Opción C: Combinación a la carta</p>
                 <p style="font-size: 0.8rem; font-weight: 850; color: #1e293b; margin: 5px 0;""</p>
                 <p style="font-size: 0.75rem; color: #475569; line-height: 1.4;"> Se trata de incrementar la aportación mensual actual de {c_m:,.2f} €/mes y, por ejemplo, en el percibo de pagas extras destinar realizar una aportación extraordinaria hasta alcanzar el límite de aportación de {max_p:,.2f} € a 31 de diciembre. 
