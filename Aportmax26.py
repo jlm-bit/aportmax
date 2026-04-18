@@ -515,7 +515,7 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
     
     with col1:
         st.markdown(f"""
-            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; height: 210px;">
+            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; height: 230px;">
                 <p style="font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase;">Opción A: Ajuste de Cuota</p>
                 <p style="font-size: 1.6rem; font-weight: 850; color: #1e293b; margin: 5px 0;">{cuota_mensual_pura:,.2f} € <span style="font-size: 0.8rem;">/mes</span></p>
                 <p style="font-size: 0.75rem; color: #475569; line-height: 1.4;">Sin pagos extra. El esfuerzo se reparte linealmente en las cuotas de aquí a diciembre. Respecto a la aportacion mensual actual, este ajuste representa una aportación adicional de {diferencia_mensual:,.2f} €/mes en este año. 
@@ -539,9 +539,9 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
     with col3:
         st.markdown(f"""
             <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; height: 210px;">
-                <p style="font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase;">Opción A: Ajuste de Cuota</p>
+                <p style="font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase;">Opción C: Combinación a la carta</p>
                 <p style="font-size: 1.6rem; font-weight: 850; color: #1e293b; margin: 5px 0;">{cuota_mensual_pura:,.2f} € <span style="font-size: 0.8rem;">/mes</span></p>
-                <p style="font-size: 0.75rem; color: #475569; line-height: 1.4;">Sin pagos extra. El esfuerzo se reparte linealmente en las cuotas de aquí a diciembre. Respecto a la aportacion mensual actual, este ajuste representa una aportación adicional de {diferencia_mensual:,.2f} €/mes en este año. 
+                <p style="font-size: 0.75rem; color: #475569; line-height: 1.4;"> Se trata de incrementar la aportación mensual y por ejemplo en el percibo de pagas extras destinar un % a relizar una aportación extraordinaria . 
             </div>
         """, unsafe_allow_html=True)
     
