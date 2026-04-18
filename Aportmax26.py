@@ -443,7 +443,7 @@ with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
         """, unsafe_allow_html=True)
         
         st.write("") # Espaciador más limpio que <br>
-        st.info(f"⚠️ **Nota:** Cálculos basados en un Salario Bruto de **{sb:,.0f} € (tramos IRPF en Catalunya) y la realización de la aportación máxima posible al Plan de Pensiones.**")   
+        st.info(f"⚠️ **Nota:** Cálculos basados en un Salario Bruto de {sb:,.0f} € y según los tramos IRPF aplicados en Catalunya,y la realización de la aportación máxima posible al Plan de Pensiones de Empleo de {max_p:,.0f} €  .")   
 
     with col_right:
         total_inversion = esfuerzo_neto + ahorro + emp_t
