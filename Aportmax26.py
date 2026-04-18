@@ -320,10 +320,10 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-tab1, tab2, tab3, tab4 = st.tabs(["Datos Necesarios   ", " Aportación Máxima   ", " Proyección a la Jubilación   ",  " Acerca de ... "])
+tab1, tab2, tab3 = st.tabs([ "   Aportación Máxima     ", "   Proyección a la Jubilación     ",  "   Acerca de ...   "])
 
 
-with tab2:
+with tab1:
     # 1. Bloque de Aportación Adicional (Número destacado)
     st.markdown(
         f"""
@@ -534,7 +534,7 @@ import io
 # max_p: Aportación personal máxima anual permitida (Tab 1)
 # e_riesgo: Coste anual del seguro de riesgo (Tab 1)
 # ------------------------------------------------------------------------
-with tab3:
+with tab2:
   #  st.markdown("### 🔮 SIMULADOR JUBILACIÓN: Impacto de aportaciones voluntarias")
     
     # 0. Recuperar variables de otros Tabs
@@ -752,7 +752,7 @@ import streamlit as st
 
 
 
-with tab4:
+with tab3:
     # --- RESUMEN EJECUTIVO DEL PROGRAMA ---
     # st.info("### 📋 Funcionalidades de la plataforma AportaMax")
     
