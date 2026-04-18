@@ -371,42 +371,42 @@ tab1, tab2, tab3 = st.tabs([ "   Aportación Máxima     ", "   Proyección a la
 with tab1:
     # 1. Bloque de Aportación Adicional (Número destacado)
     
+        
+        # --- RESULTADO FINAL EN TEXTO PLANO ---
+    st.write("") # Espaciador sutil
     
-    # --- RESULTADO FINAL EN TEXTO PLANO ---
-st.write("") # Espaciador sutil
-
-# Creamos un contenedor visualmente limpio pero informativo
-col_txt, col_info = st.columns([0.85, 0.15])
-
-with col_txt:
-    st.markdown(f"""
-        <p style='margin:0; font-size:1.1rem; color: #475569;'>
-            💰 <b>Aportación adicional máxima este año:</b>
-        </p>
-        <h2 style='margin:0; font-size:2.8rem; color:#1e293b; font-weight:700;'>
-            {aportacion_extraordinaria_neta:,.0f} €
-        </h2>
-    """, unsafe_allow_html=True)
-
-with col_info:
-    # Usamos un botón de ayuda vacío o un simple icono con help
-    st.markdown("<br>", unsafe_allow_html=True) # Alineación vertical
-    st.button("❓", help=f"""
-        Este importe de {aportacion_extraordinaria_neta:,.2f}€ es el máximo que puedes 
-        aportar de forma voluntaria antes de finalizar el año, respetando:
-        1. El límite financiero legal (8.500€ adicionales por empresa).
-        2. El límite fiscal del 30% de tus rendimientos netos.
-        3. Las aportaciones que ya has realizado este año.
-    """, key="help_final")
-
-st.markdown('<hr style="margin: 0.5em 0; border: 0; border-top: 1px solid #f1f5f9;">', unsafe_allow_html=True)
+    # Creamos un contenedor visualmente limpio pero informativo
+    col_txt, col_info = st.columns([0.85, 0.15])
     
+    with col_txt:
+        st.markdown(f"""
+            <p style='margin:0; font-size:1.1rem; color: #475569;'>
+                💰 <b>Aportación adicional máxima este año:</b>
+            </p>
+            <h2 style='margin:0; font-size:2.8rem; color:#1e293b; font-weight:700;'>
+                {aportacion_extraordinaria_neta:,.0f} €
+            </h2>
+        """, unsafe_allow_html=True)
     
+    with col_info:
+        # Usamos un botón de ayuda vacío o un simple icono con help
+        st.markdown("<br>", unsafe_allow_html=True) # Alineación vertical
+        st.button("❓", help=f"""
+            Este importe de {aportacion_extraordinaria_neta:,.2f}€ es el máximo que puedes 
+            aportar de forma voluntaria antes de finalizar el año, respetando:
+            1. El límite financiero legal (8.500€ adicionales por empresa).
+            2. El límite fiscal del 30% de tus rendimientos netos.
+            3. Las aportaciones que ya has realizado este año.
+        """, key="help_final")
     
-    
-    
-    
-    
+    st.markdown('<hr style="margin: 0.5em 0; border: 0; border-top: 1px solid #f1f5f9;">', unsafe_allow_html=True)
+        
+        
+        
+        
+        
+        
+        
     
     st.markdown(
         f"""
@@ -422,6 +422,13 @@ st.markdown('<hr style="margin: 0.5em 0; border: 0; border-top: 1px solid #f1f5f
         """, 
         unsafe_allow_html=True
     )
+
+
+
+
+
+
+
 
     # 2. Lógica y Tarjeta Ancha de Resumen
     cumplimiento_val = float(cumplimiento_plan) if cumplimiento_plan else 0.0
