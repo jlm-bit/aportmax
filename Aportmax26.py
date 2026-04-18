@@ -501,8 +501,8 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
     else:
         # CASO NORMAL: Puede mantener la cuota ideal haciendo el pago extra.
         cuota_sostenible_final = cuota_ideal_estandar
-        subtitulo_b = "Cuota ideal de ahorro prorrateado (RECOMENDADO)"
-        detalle_b = f"Compensa el retraso ahora con un pago único y fija una cuota mensual futura de {cuota_sostenible_final:,.2f} €. que corresponde a 1/12 del límite máximo. Respecto a la aportacion mensual actual, este ajuste representa una aportación adicional de {diferencia_mensual2:,.2f} €/mes"
+        subtitulo_b = "Cuota de ahorro prorrateada (RECOMENDADO)"
+        detalle_b = f"Compensa el retraso con un pago único y fija una cuota mensual futura de {cuota_sostenible_final:,.2f} €. de 1/12 del límite máximo. Respecto a la aportacion mensual actual, este ajuste representa una aportación adicional de {diferencia_mensual2:,.2f} €/mes"
 
     # --- 2. INDICADOR VISUAL (Barra de progreso) ---
     proyeccion_actual = ya_aportado + (c_m * meses_restantes)
