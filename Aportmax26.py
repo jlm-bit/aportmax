@@ -376,7 +376,7 @@ with tab1:
     st.write("") # Espaciador sutil
     
     # Creamos un contenedor visualmente limpio pero informativo
-    col_txt, col_info = st.columns([0.75, 0.25])
+    col_txt, col_info = st.columns([0.5, 0.5])
     
     with col_txt:
         st.markdown(f"""
@@ -393,9 +393,9 @@ with tab1:
         st.markdown("<br>", unsafe_allow_html=True) # Alineación vertical
         st.button("❓", help=f"""
             Este importe de {aportacion_extraordinaria_neta:,.2f}€ es el máximo que puedes 
-            aportar de forma voluntaria antes de finalizar el año, respetando:
+            aportar de forma voluntaria antes de finalizar el año a tu plan de pensiones de empleo, respetando:
             1. Las aportaciones anuales previstas que va a realizar la empresa.
-            2. Si tus rendimentos del trabajo son inferiores a 60.000 euros/año
+            2. Si tus rendimentos del trabajo son inferiores a 60.000 euros/año.
             3. El límite financiero legal (1500€ + 8.500€ adicionales por empresa).
             4. El límite fiscal del 30% de tus rendimientos netos.
             5. Las aportaciones que ya has realizado este año o tienes ya programadoas en Now o Aporta+.
