@@ -265,7 +265,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- INICIO DEL CONTENEDOR ---
-with st.expander("📝 CONFIGURACIÓN DE DATOS 11", expanded=(sb <= 0)):
+with st.expander("📝 CONFIGURACIÓN DE DATOS1111", expanded=(sb <= 0)):
     
     # Usamos una sola fila de 3 columnas para los datos de la empresa
     st.markdown("##### 👤 Datos de la Empresa")
@@ -297,6 +297,28 @@ with st.expander("📝 CONFIGURACIÓN DE DATOS 11", expanded=(sb <= 0)):
     emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
 
     st.markdown("---") # Separador fino
+
+    # Lógica de límites (se mantiene igual, pero agrupada)
+    ss_estimada = min(sb, 61212.0) * 0.0635
+    base_imponible = max(0.0, sb - ss_estimada - 2000.0)
+    max_p_coef = calcular_max_personal_adicional(emp_t, sb)
+    MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500.0, 10000.0 - emp_t))
+    if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
+        MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
+
+    # Segunda fila: Datos personales y métrica de límite
+    st.markdown("##### 📅 Tus Aportaciones")
+    c4, c5, c6 = st.columns([1, 1, 1])
+    
+    with c4:
+        cm = st.number_input("Cuota Mensual (€)", min_value=0.0, step=50.0, key="mensual_unique")
+    with c5:
+        e_y = st.number_input("Extra ya aportado (€)", min_value=0.0, max_value=max(0.0, float(MAX_P_LIMIT)), step=50.0, key="extra_unique")
+    with c6:
+        # st.metric es el componente más compacto para mostrar resultados
+        st.metric("Límite Disponible", f"{MAX_P_LIMIT:,.2f} €")
+
+
 
 
 with st.expander("📝 CONFIGURACIÓN DE TUS DATOS", expanded=(sb <= 0)):
