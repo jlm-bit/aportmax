@@ -411,6 +411,11 @@ with tab1:
         <p style='margin: 10px 0 0 0; color:#64748b; font-size:0.9rem; text-align: center;'>
             Estás al <b>{cumplimiento_val:,.1f}%</b> de tu capacidad de ahorro
         </p>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; border-top: 1px dotted #cbd5e1; padding-top: 10px; margin-top: 8px;">
+            <span style="color:#64748b; font-size:1rem; font-weight:600;">Total Inversión Potencial:</span>
+            <span style="font-weight:700; color:#0f172a; font-size:1rem;">{total_inv:,.2f}€</span>
+        </div>
+    
     </div>
     <br>
     """
