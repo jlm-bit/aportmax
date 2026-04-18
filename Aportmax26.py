@@ -811,14 +811,13 @@ import streamlit as st
 
 with tab3:
     # --- RESUMEN EJECUTIVO DEL PROGRAMA ---
-    # st.info("### 📋 Funcionalidades de la plataforma AportaMax")
-    
+
     col_res1, col_res2 = st.columns(2)
     
     with col_res1:
         st.markdown("""
-        **¿Qué hace este programa?**
-        * **Calcular la Aportación Máxima Personal a tu Plan de Pensiones de Empleo:** Calcula la devolución del ÏRPF que supone.
+        **  Funcionalidades del programa **
+        * **Calcular la Aportación Máxima Personal a tu Plan de Pensiones de Empleo:** y la devolución en el IRPF que supone.
         * **Ayudarte a planificar tu ahorro:** Define un plan para que puedas ahorrar hasta lo máximo permitido.
         * **Proyectar los fondos a tu jubilación:** Calcula cuánto dinero tendrás al jubilarte basándose en tu ahorro actual y aportaciones futuras.
      
