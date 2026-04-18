@@ -629,8 +629,7 @@ with tab2:
 
     with col_in2:
         edad_jub = st.radio("Edad de jubilación", [63, 64, 65, 66, 67], index=4, horizontal=True, key="jub_final")
-        if edad:act == 64 
-            st.radio("Edad de jubilación", [64, 65, 66, 67], index=3, horizontal=True, key="jub_final")
+       
         rent_pct = st.slider("Rentabilidad anual estimada (%)", 0.0, 10.0, 4.0, key="rent_final")
     
     # 2. Lógica de Simulación
