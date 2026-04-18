@@ -278,13 +278,15 @@ with st.expander("📝 CONFIGURACIÓN DE TUS DATOS", expanded=(sb <= 0)):
             value=e_ahorro if 'e_ahorro' in locals() else 0.0, 
             step=50.0, 
             key="ahorro_unique"
+            help="Incluir aquí las aportaciones que relaiza la empresa a tu PPE de forma mensual."
         )
         
         e_riesgo = st.number_input(
-            "Prima Riesgo PPE Anual (€)", 
+            "Otras aportaciones anuales (€)", 
             min_value=0.0, 
             step=50.0, 
             key="riesgo_unique"
+            help="Incluir aquí primas de riesgo, excesos de empresa o contribuciones extraordinarias del empleador."
         )
         
         emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
@@ -305,6 +307,7 @@ with st.expander("📝 CONFIGURACIÓN DE TUS DATOS", expanded=(sb <= 0)):
             min_value=0.0, 
             step=50.0, 
             key="mensual_unique"
+            help="Incluir aquí las aportaciones que realices de forma mensual, ya sean las vinculadas a la aportaciones del promotor, las de programas como Ahorra más Mañana o aportaciones voluntarias periodicas que tengas establecidas."
         )
         
         # max_value dinámico para que no pueda pasarse del límite legal
@@ -315,6 +318,7 @@ with st.expander("📝 CONFIGURACIÓN DE TUS DATOS", expanded=(sb <= 0)):
             max_value=limite_input if limite_input > 0 else 0.01, 
             step=50.0, 
             key="extra_unique"
+            help="Incluir las aportaciones puntuales al PPE que hayas realizado durante este año"
         )
         
    
