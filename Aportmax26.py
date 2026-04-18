@@ -507,7 +507,7 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
     # (Bloque de la barra de progreso - omitido aquí para brevedad, mantén el que tienes)
 
     # --- 3. COMPARATIVA DE ESTRATEGIAS ---
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
     
     with col1:
         st.markdown(f"""
@@ -532,13 +532,7 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
             </div>
         """, unsafe_allow_html=True)
 
-     with col3:
-        st.markdown(f"""
-            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; height: 210px;">
-                <p style="font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase;">Opción C: Aportación Extraordianria por el restante</p>
-             
-            </div>
-        """, unsafe_allow_html=True)
+    
 
 
 
