@@ -220,20 +220,20 @@ with st.sidebar:
         # Cálculo de lo que pone la empresa (Tope 10k)
         emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
 
-    # --- LÓGICA INTERNA DE LÍMITES ---
-    # Seguridad Social (estimación estándar)
-    ss_estimada = min(sb, 61212.0) * 0.0635
-    base_imponible = max(0.0, sb - ss_estimada - 2000.0)
-    
-    # Cálculo del coeficiente personal
-    max_p_coef = calcular_max_personal_adicional(emp_t, sb)
-    
-    # Límite final (Coeficiente + 1500€, sin pasarse del hueco de 10k)
-    MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500.0, 10000.0 - emp_t))
-    
-    # Filtro del 30% de la base imponible
-    if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
-        MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
+        # --- LÓGICA INTERNA DE LÍMITES ---
+        # Seguridad Social (estimación estándar)
+        ss_estimada = min(sb, 61212.0) * 0.0635
+        base_imponible = max(0.0, sb - ss_estimada - 2000.0)
+        
+        # Cálculo del coeficiente personal
+        max_p_coef = calcular_max_personal_adicional(emp_t, sb)
+        
+        # Límite final (Coeficiente + 1500€, sin pasarse del hueco de 10k)
+        MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500.0, 10000.0 - emp_t))
+        
+        # Filtro del 30% de la base imponible
+        if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
+            MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
 
     # --- BLOQUE PERSONALES ---
     with st.expander("📅 APORTACIONES PERSONALES", expanded=True):
