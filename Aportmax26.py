@@ -253,14 +253,52 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-
-
-# --- 2. CONTENEDOR DE CONFIGURACIÓN ---
-
-# --- 1. ESTILO CSS PARA EL TÍTULO DINÁMICO ---
-
 # --- 2. CONTENEDOR DE ENTRADA PRO ---
 sb =0
+
+# --- ESTILO PARA ELIMINAR ESPACIOS EXTRA ---
+st.markdown("""
+    <style>
+    .block-container { padding-top: 2rem; }
+    div[data-testid="stVerticalBlock"] > div { margin-top: -10px; }
+    </style>
+""", unsafe_allow_html=True)
+
+# --- INICIO DEL CONTENEDOR ---
+with st.expander("📝 CONFIGURACIÓN DE DATOS", expanded=(sb <= 0)):
+    
+    # Usamos una sola fila de 3 columnas para los datos de la empresa
+    st.markdown("##### 👤 Datos de la Empresa")
+    c1, c2, c3 = st.columns(3)
+    
+    with c1:
+        sb = st.number_input(
+            "Sueldo Bruto (€)", 
+            min_value=0.0, step=1000.0, key="sb_unique",
+            help="Salario bruto anual antes de impuestos"
+        )
+        if sb <= 0:
+            st.warning("⚠️ Introduce salario")
+            st.stop()
+
+    with c2:
+        # Simplificamos nombres para ganar espacio
+        e_ahorro = st.number_input(
+            "Aport. Mensual (€)", 
+            min_value=0.0, step=50.0, key="ahorro_unique"
+        )
+    with c3:
+        e_riesgo = st.number_input(
+            "Riesgo Anual (€)", 
+            min_value=0.0, step=50.0, key="riesgo_unique"
+        )
+
+    # Cálculo silencioso
+    emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
+
+    st.markdown("---") # Separador fino
+
+
 with st.expander("📝 CONFIGURACIÓN DE TUS DATOS", expanded=(sb <= 0)):
     
     col_emp, col_pers = st.columns(2, gap="large")
@@ -357,6 +395,14 @@ ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 if sb <= 0:
             st.warning("⚠️ Nota, introducir DATOS para acceder a las funcionalidades del programa.")
             st.stop() # <--- Detiene la ejecución aquí mismo
+
+
+
+
+
+
+
+
 
 tab1, tab2, tab3 = st.tabs([ "   Aportación Máxima     ", "   Proyección a la Jubilación     ",  "   Acerca de ...   "])
 
@@ -528,7 +574,7 @@ with st.expander("ℹ️ Tu Plan de Acción", expanded=False):
         border_color = "#bae6fd" if pago_extraordinario == 0 else "#bbf7d0"
         
         st.markdown(f"""
-            <div style="background-color: {bg_color}; border: 1px solid {border_color}; padding: 20px; border-radius: 12px; height: 250px;">
+            <div style="background-color: {bg_color}; border: 1px solid {border_color}; padding: 20px; border-radius: 12px; height: 280px;">
                 <p style="font-size: 0.7rem; font-weight: 800; color: #0369a1; text-transform: uppercase;">Opción B: {subtitulo_b} ✨</p>
                 <p style="font-size: 1.6rem; font-weight: 850; color: #0369a1; margin: 5px 0;">{cuota_sostenible_final:,.2f} € <span style="font-size: 0.8rem;">/mes</span></p>
                 <p style="font-size: 0.9rem; font-weight: 700; color: #0c4a6e; margin-bottom: 5px;">+ {pago_extraordinario:,.2f} € como aportación extraordinaria adicional este año </p>
