@@ -198,15 +198,10 @@ def calcular_max_personal_adicional(e, salario):
 
 # --- 2. CONTENEDOR DE CONFIGURACIÓN ---
 
-# Si sb es 0 o menor, el color será rojo; si no, será el azul oscuro habitual
+
 titulo_color = "#ef4444" if sb <= 0 else "#1e293b"
 
-# 2. Renderizar el título dinámico
-st.markdown(f"""
-    <h3 style="color: {titulo_color}; transition: color 0.3s ease;">
-        ⚙️ CONFIGURACIÓN (Datos para realizar estimación de la aportación...)
-    </h3>
-""", unsafe_allow_html=True)
+
 # Usamos un expander principal para agrupar todo
 with st.expander("⚙️ CONFIGURACIÓN (Datos para realizar estimación de la aportacion que puedes realizar este año alm Plan de Pensiones de Empleo)", expanded=False):
     
