@@ -320,7 +320,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-tab1, tab2, tab3, tab4 = st.tabs(["Datos Necesarios "" Aportación Máxima ", " Proyección a la Jubilación ",  " Acerca de ... "])
+tab1, tab2, tab3, tab4 = st.tabs(["Datos Necesarios   ", " Aportación Máxima   ", " Proyección a la Jubilación   ",  " Acerca de ... "])
 
 
 with tab2:
