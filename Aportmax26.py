@@ -313,9 +313,9 @@ with st.expander("📝 CONFIGURACIÓN DE DATOS1111", expanded=(sb <= 0)):
     with c5:
         e_y = st.number_input("Extra ya aportado (€)", min_value=0.0, max_value=max(0.0, float(MAX_P_LIMIT)), step=50.0, key="extra_unique")
    
- if sb <= 0:
-            st.warning("⚠️ Introduce salario")
-            st.stop()
+     if sb <= 0:
+                st.warning("⚠️ Introduce salario")
+                st.stop()
 
 
 
