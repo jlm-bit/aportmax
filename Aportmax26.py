@@ -267,27 +267,27 @@ else:
 # Nota de ayuda final
 st.info("💡 Si el panel de la izquierda no se ve, pulsa la flecha blanca '>' en la esquina superior izquierda de la web.")
 
-    # --- LÓGICA DE LÍMITES ---
-    ss_estimada = min(sb, 61212.0) * 0.0635
-    base_imponible = max(0.0, sb - ss_estimada - 2000.0)
-    
-    max_p_coef = calcular_max_personal_adicional(emp_t, sb)
-    MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500, 10000.0 - emp_t))
-    
-    if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
-        MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
+# --- LÓGICA DE LÍMITES ---
+ss_estimada = min(sb, 61212.0) * 0.0635
+base_imponible = max(0.0, sb - ss_estimada - 2000.0)
 
-    # --- APORTACIONES PERSONALES ---
-    with st.expander("📅 PERSONALES", expanded=True):
-        c_m = st.number_input("Mensualidad (€)", value=0.0)
-        # Usamos float() y max() para blindar el valor máximo
-        limite_val = float(MAX_P_LIMIT)
-        e_y = st.number_input(
-            "Extra ya aportado (€)", 
-            value=0.0, 
-            max_value=max(0.1, limite_val), 
-            step=100.0
-        )
+max_p_coef = calcular_max_personal_adicional(emp_t, sb)
+MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500, 10000.0 - emp_t))
+
+if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
+    MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
+
+# --- APORTACIONES PERSONALES ---
+with st.expander("📅 PERSONALES", expanded=True):
+    c_m = st.number_input("Mensualidad (€)", value=0.0)
+    # Usamos float() y max() para blindar el valor máximo
+    limite_val = float(MAX_P_LIMIT)
+    e_y = st.number_input(
+        "Extra ya aportado (€)", 
+        value=0.0, 
+        max_value=max(0.1, limite_val), 
+        step=100.0
+    )
 
 # 4. CUERPO PRINCIPAL (Alineado al borde izquierdo, fuera del Sidebar)
 st.title("🚀 Cálculo de Aportaciones")
