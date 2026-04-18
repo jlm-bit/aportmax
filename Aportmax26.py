@@ -289,7 +289,7 @@ with st.expander("📝 CONFIGURACIÓN DE DATOS1111", expanded=(sb <= 0)):
         )
     with c3:
         e_riesgo = st.number_input(
-            "Riesgo Anual (€)", 
+            "Otras aportaciones anuales (€)", 
             min_value=0.0, step=50.0, key="riesgo_unique"
         )
 
@@ -308,15 +308,13 @@ with st.expander("📝 CONFIGURACIÓN DE DATOS1111", expanded=(sb <= 0)):
 
     # Segunda fila: Datos personales y métrica de límite
     st.markdown("##### 📅 Tus Aportaciones")
-    c4, c5, c6 = st.columns([1, 1, 1])
+    c4, c5 = st.columns([1, 1])
     
     with c4:
         cm = st.number_input("Cuota Mensual (€)", min_value=0.0, step=50.0, key="mensual_unique")
     with c5:
         e_y = st.number_input("Extra ya aportado (€)", min_value=0.0, max_value=max(0.0, float(MAX_P_LIMIT)), step=50.0, key="extra_unique")
-    with c6:
-        # st.metric es el componente más compacto para mostrar resultados
-        st.metric("Límite Disponible", f"{MAX_P_LIMIT:,.2f} €")
+   
 
 
 
