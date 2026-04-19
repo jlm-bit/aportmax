@@ -375,7 +375,7 @@ with tab1:
     # años_jub = 67 - edad  # 'edad' viene del sidebar
     
     if ya_aportado > max_p: 
-        st.warning("⚠️ Nota, lo ya aportado supera el limite máximo. Revisa datos o contacta con Entidad Gestora")
+        st.error("⚠️ Nota, lo ya aportado supera el limite máximo. Revisa datos o contacta con Entidad Gestora")
         
     if sb <= 0:
                 st.warning("⚠️ Nota, introducir DATOS para acceder a las funcionalidades del programa.")
