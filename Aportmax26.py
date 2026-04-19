@@ -276,7 +276,7 @@ with tab1:
 
    
     
-    with st.expander("📝 CONFIGURACIÓN DE TUS DATOS1"):
+    with st.expander("📝 TUS DATOS para el cálculo de la aportaciñón máxima adicional posible a tu PPE"):
         
         col_emp, col_pers = st.columns(2, gap="large")
         
@@ -402,7 +402,7 @@ with tab1:
     st.markdown(f"""
         <div style="padding-top: 10px;">
             <p style='margin:0; font-size:1.0rem; color: #64748b; font-weight: 600;'>
-                💰 Aportación adicional máxima disponible:
+                💰 Aportación adicional máxima posible:
             </p>
             <h2 style='margin:0; font-size:2.5rem; color:#1e293b; font-weight:700;'>
                 {aportacion_extraordinaria_neta:,.0f} €
