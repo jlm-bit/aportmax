@@ -295,6 +295,7 @@ with tab1:
             e_ahorro = st.number_input(
                 "Aportación Mensual Empresa (€)", 
                 min_value=0.0, 
+                max_value = 10000/12,
                 value=e_ahorro if 'e_ahorro' in locals() else 0.0, 
                 step=50.0, 
                 key="ahorro_unique",
@@ -373,19 +374,16 @@ with tab1:
     ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
     # años_jub = 67 - edad  # 'edad' viene del sidebar
     
+     if ya_aportado > max_p: 
+                st.warning("⚠️ Nota, lo ya aportado supera el limite máximo. Revisa datos o contacta con Entidad Gestora")
+                else if cumplimiento_plan > 100: 
+                            st.warning("⚠️ Nota, de acuerdo a tu planificacion te vas a pasar de aportació, Revisa datos y/o reduce aportación futura. Ver Plan de Acción .")
+    
     if sb <= 0:
                 st.warning("⚠️ Nota, introducir DATOS para acceder a las funcionalidades del programa.")
                 st.stop() # <--- Detiene la ejecución aquí mismo
     
     
-
-
-
-
-
-    
-
-
 
 
 
@@ -446,9 +444,7 @@ with tab1:
       
         st.warning("""⚠️ **Revisa tus datos:** El nivel de aportación calculado supera el límite permitido (100%). Por favor, verifica los importes en Configuración y/o revisa Tu Plan de Accion ajustando cuotas futuras o suspendiendolas.""")
     
-   
-
- 
+    
 
 with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
     col_left, col_right = st.columns([1.1, 1])
