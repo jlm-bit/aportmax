@@ -373,7 +373,7 @@ with tab1:
 
    
     
-    with st.expander("📝 CONFIGURACIÓN DE TUS DATOS", expanded=(sb <= 0)):
+    with st.expander("📝 CONFIGURACIÓN DE TUS DATOS1"):
         
         col_emp, col_pers = st.columns(2, gap="large")
         
