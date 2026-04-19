@@ -276,7 +276,7 @@ with tab1:
 
    
     
-    with st.expander("📝 TUS DATOS para el cálculo de la aportaciñón máxima adicional posible a tu PPE"):
+    with st.expander("📝 TUS DATOS para el cálculo de la aportación máxima adicional posible a tu PPE"):
         
         col_emp, col_pers = st.columns(2, gap="large")
         
