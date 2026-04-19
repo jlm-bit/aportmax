@@ -374,9 +374,10 @@ with tab1:
     ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
     # años_jub = 67 - edad  # 'edad' viene del sidebar
     
+    
     if ya_aportado > max_p: 
-        st.error("⚠️ Nota, lo ya aportado, ({ya_aportado:,.2f}) €, supera el limite máximo, ({max_p:,.2f}) €. Revisa datos o contacta con Entidad Gestora")
-        
+        st.error(f"⚠️ Nota: lo ya aportado ({ya_aportado:,.2f} €) supera el límite máximo ({max_p:,.2f} €). Revisa datos o contacta con Entidad Gestora")
+    
     if sb <= 0:
                 st.warning("⚠️ Nota, introducir DATOS para acceder a las funcionalidades del programa.")
                 st.stop() # <--- Detiene la ejecución aquí mismo
