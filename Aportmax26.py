@@ -256,7 +256,12 @@ st.markdown("""
 # --- 2. CONTENEDOR DE ENTRADA PRO ---
 
 
+# --- INICIALIZACIÓN (Cerca del principio del archivo) ---
+if 'sb' not in st.session_state:
+    st.session_state.sb = 0.0
 
+# Asignamos el valor actual de la sesión a una variable local
+sb = st.session_state.sb
 
 
 
