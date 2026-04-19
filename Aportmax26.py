@@ -376,9 +376,7 @@ with tab1:
     
     if ya_aportado > max_p: 
         st.warning("⚠️ Nota, lo ya aportado supera el limite máximo. Revisa datos o contacta con Entidad Gestora")
-    elif cumplimiento_plan > 100: 
-        st.warning("⚠️ Nota, de acuerdo a tu planificacion te vas a pasar de aportación. Revisa datos y/o reduce aportación futura. Ver Plan de Acción.")
-    
+        
     if sb <= 0:
                 st.warning("⚠️ Nota, introducir DATOS para acceder a las funcionalidades del programa.")
                 st.stop() # <--- Detiene la ejecución aquí mismo
