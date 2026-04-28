@@ -279,6 +279,7 @@ with tab1:
     cumplimiento_plan = 0.0
     ahorro = 0.0 
     aportacion_extraordinaria_neta = 0.0
+    eficiencia = 0.0
     
     # 2. DEFINICIÓN DEL ESTADO (Si validado es True, expanded será False)
     estado_logico = not st.session_state.validado
