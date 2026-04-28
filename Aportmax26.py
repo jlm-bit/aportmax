@@ -408,19 +408,10 @@ with tab1:
 
 
 # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS ---
-    st.success("✅ Cálculos actualizados correctamente2")
-
-    # El parámetro expanded=False hace que aparezca cerrado por defecto
-    with st.expander("📝 TUS DATOS para el cálculo (Click para revisar)", expanded=False):
+    st.success("✅")
+    with st.expander, expanded=False):
                    
-        st.write("---")
-        st.caption("Si necesitas modificar estos valores, utiliza la barra lateral (Sidebar).")
-
-    # A continuación, el contenido principal (Gráficos, Resultados, etc.)
-    # st.subheader("📊 Resultados del Análisis")
-    # ...
-
-    
+           
 
 
     
