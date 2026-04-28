@@ -399,10 +399,7 @@ with tab1:
         st.info("💡 Haz clic en el botón de arriba para procesar tus datos y ver el análisis detallado.")
         st.stop()
     
-    # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS (Pestañas, Gráficos, etc.) ---
-    st.success("✅ Cálculos actualizados correctamente")
-    st.expander("📝 TUS DATOS para el cálculo de la aportación máxima adicional posible a tu PPE"):
-
+  
     # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS ---
     st.success("✅ Cálculos actualizados correctamente")
 
