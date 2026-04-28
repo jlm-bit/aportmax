@@ -400,16 +400,9 @@ with tab1:
         st.stop()
     
   
-    # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS ---
-    # st.success("✅ Cálculos actualizados correctamente")
-    # with st.expander("📝 TUS DATOS para el cálculo (Click para desplegar)", expanded=False):
-       
-
-
-
 # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS ---
     st.success("✅")
-    with st.expander, expanded=False):
+ 
                    
            
 
