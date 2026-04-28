@@ -273,137 +273,122 @@ tab1, tab2, tab3 = st.tabs([ "   Aportación Máxima     ", "   Proyección a la
 
 
 with tab1:
-
-    
-     # 1. INICIALIZACIÓN (Siempre arriba del todo)
+    # 1. INICIALIZACIÓN
     if 'validado' not in st.session_state:
         st.session_state.validado = False
     
-    # 2. DEFINICIÓN DEL ESTADO DEL DESPLEGABLE
-    # Si ya hemos validado, el expander debe estar cerrado (False)
+    # 2. DEFINICIÓN DEL ESTADO (Si validado es True, expanded será False)
     estado_logico = not st.session_state.validado
 
-    
-    with st.expander("📝 TUS DATOS para el cálculo de la aportación máxima adicional posible a tu PPE"):
+    # 3. EL EXPANDER (AQUÍ ESTABA EL CAMBIO: expanded=estado_logico)
+    with st.expander("📝 TUS DATOS para el cálculo de la aportación máxima adicional posible a tu PPE", expanded=estado_logico):
         
         col_emp, col_pers = st.columns(2, gap="large")
         
         with col_emp:
             st.subheader("👤 Datos Empresa")
-            # min_value=0.0 impide negativos | step=1000.0 define el salto
             sb = st.number_input(
                 "Sueldo Bruto Anual (€)", 
                 min_value=0.0, 
-                value=sb if sb > 0 else 0.0, 
+                value=sb if 'sb' in locals() and sb > 0 else 0.0, 
                 step=1000.0, 
-                key="sb_unique",
-                help="Introduzca su salario bruto antes de impuestos"
+                key="sb_unique"
             )
             
             e_ahorro = st.number_input(
                 "Aportación Mensual Empresa (€)", 
                 min_value=0.0, 
-                max_value = 10000/12,
+                max_value=10000.0/12,
                 value=e_ahorro if 'e_ahorro' in locals() else 0.0, 
                 step=50.0, 
-                key="ahorro_unique",
-                help="Incluir aquí las aportaciones que realiza la empresa a tu PPE de forma mensual."
+                key="ahorro_unique"
             )
             
             e_riesgo = st.number_input(
                 "Otras aportaciones anuales (€)", 
                 min_value=0.0, 
                 step=50.0, 
-                key="riesgo_unique",
-                help="Incluir aquí primas de riesgo, excesos de empresa o contribuciones extraordinarias del empleador."
+                key="riesgo_unique"
             )
             
             emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
-    
-        # --- LÓGICA DE LÍMITES (Igual a la anterior pero necesaria aquí) ---
+
+        # --- LÓGICA DE LÍMITES INTERNA ---
         ss_estimada = min(sb, 61212.0) * 0.0635
         base_imponible = max(0.0, sb - ss_estimada - 2000.0)
-        max_p_coef = calcular_max_personal_adicional(emp_t, sb)
+        # Asegúrate de que esta función esté definida antes
+        max_p_coef = calcular_max_personal_adicional(emp_t, sb) 
         MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500.0, 10000.0 - emp_t))
         
         if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
             MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
-    
+
         with col_pers:
             st.subheader("📅 Datos Partícipe")
             c_m = st.number_input(
                 "Tu Aportación Mensual (€)", 
                 min_value=0.0, 
                 step=50.0, 
-                key="mensual_unique",
-                help="Incluir aquí las aportaciones que realices de forma mensual, ya sean las vinculadas a la aportaciones del promotor, las de programas como Ahorra más Mañana o aportaciones voluntarias periodicas que tengas establecidas."
+                key="mensual_unique"
             )
             
-            # max_value dinámico para que no pueda pasarse del límite legal
             limite_input = max(0.0, float(MAX_P_LIMIT))
             e_y = st.number_input(
                 "Aportación Extra ya realizada (€)", 
                 min_value=0.0, 
                 max_value=limite_input if limite_input > 0 else 0.01, 
                 step=50.0, 
-                key="extra_unique",
-                help="Incluir las aportaciones puntuales al PPE que hayas realizado durante este año."
+                key="extra_unique"
             )
-            
-       
-    
-    # --- 5. LÓGICA DE CÁLCULO ---
-    
+
+        st.write("---")
+        
+        # EL BOTÓN QUE "CIERRA" EL MÓDULO (Dentro del expander)
+        if st.button("🚀 Validar Datos y Calcular", use_container_width=True, type="primary"):
+            if sb <= 0:
+                st.error("⚠️ El Sueldo Bruto es obligatorio para calcular.")
+            else:
+                st.session_state.validado = True
+                st.rerun() # Esto hace que el código vuelva arriba y estado_logico sea False
+
+    # 4. CONTROL DE FLUJO
+    if not st.session_state.validado:
+        st.info("💡 Introduce tus datos arriba y pulsa 'Validar' para ver el análisis detallado.")
+        st.stop() 
+
+    # 5. CÁLCULOS FINALES (Solo se ejecutan tras validar)
     hoy = datetime.date.today()
     meses_restantes = 12 - hoy.month + 1
     meses_pasados = 12 - meses_restantes
-    CUOTA_SS = min(sb, 5101*12) * 0.064 
-    base_pre = max(0.0, sb - CUOTA_SS - 2000.0)
-    max_p = MAX_P_LIMIT
-    max_p12 = max_p/12
-    max_now = max_p * meses_pasados
     
-    ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
-    eficiencia = (ahorro / max_p * 100) if max_p > 0 else 0
-    esfuerzo_neto = max_p - ahorro
     ya_aportado = (c_m * meses_pasados) + e_y
+    max_p = MAX_P_LIMIT
     pendiente_para_limite = max(0.0, max_p - ya_aportado)
-    nueva_cuota_total = pendiente_para_limite / meses_restantes if meses_restantes > 0 else 0
-    diferencia_mensual = nueva_cuota_total - c_m
     total_mensual_previsto = c_m * meses_restantes
     aportacion_extraordinaria_neta = max(0.0, pendiente_para_limite - total_mensual_previsto)
-    aport_previstas = c_m *12 + e_y
-    cumplimiento_plan = ((c_m *12 + e_y)*100)/max_p if max_p > 0 else 0
-    extra_now = 0
-    # --- CÁLCULOS GLOBALES (Poner esto ANTES de los st.tabs) ---
-    # Sumamos lo que pone la empresa y lo que pones tú (el máximo permitido)
-    total_inv = emp_t + max_p 
-    # Calculamos el ahorro y los meses (ya lo tienes en tu lógica anterior)
-    ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
-    # años_jub = 67 - edad  # 'edad' viene del sidebar
-    
-    
-    if ya_aportado > max_p: 
-        st.error(f"⚠️ Nota: lo ya aportado ({ya_aportado:,.2f} €) supera el límite máximo ({max_p:,.2f} €). Revisa datos o contacta con Entidad Gestora")
-    
-  
-    
-        # EL BOTÓN QUE "CIERRA" EL MÓDULO
-        if st.button("🚀 Validar Datos y Calcular", use_container_width=True, type="primary"):
-            if sb <= 0:
-                st.error("⚠️ El Sueldo Bruto es obligatorio.")
-            else:
-                st.session_state.validado = True
-                st.rerun()  # Al recargar, 'estado_logico' será False y el expander se cerrará
-    
-    # 4. CONTROL DE FLUJO (Evita que se calculen errores si no hay datos)
-    if not st.session_state.validado:
-        st.info("💡 Introduce tus datos arriba y pulsa 'Validar' para ver el análisis.")
-        st.stop() 
-    
-    # 5. RESULTADOS (Solo se ejecutan cuando el expander ya se ha cerrado)
+
+    # 6. RESULTADOS VISIBLES
     st.success("✅ Cálculos actualizados correctamente")
+
+    st.markdown(f"""
+        <div style="background-color: #f8fafc; padding: 20px; border-radius: 10px; border-left: 5px solid #10b981;">
+            <p style='margin:0; font-size:1rem; color: #64748b; font-weight: 600;'>💰 Aportación máxima adicional posible:</p>
+            <h2 style='margin:0; font-size:2.5rem; color:#1e293b;'>{aportacion_extraordinaria_neta:,.2f} €</h2>
+        </div>
+    """, unsafe_allow_html=True)
     
+    # Botón para volver a editar
+    if st.button("✏️ Modificar datos"):
+        st.session_state.validado = False
+        st.rerun()
+
+
+
+
+
+
+
+
     
 
 
@@ -413,6 +398,11 @@ with tab1:
 
 
 
+
+
+
+
+    
     
     
     # --- CÁLCULO DE TOTALES (Asegúrate de tener estas variables) ---
