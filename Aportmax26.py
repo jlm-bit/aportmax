@@ -276,7 +276,7 @@ with tab1:
     # 1. INICIALIZACIÓN
     if 'validado' not in st.session_state:
         st.session_state.validado = False
-    
+    cumplimiento_plan = 0.0
     # 2. DEFINICIÓN DEL ESTADO (Si validado es True, expanded será False)
     estado_logico = not st.session_state.validado
 
