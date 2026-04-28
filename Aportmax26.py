@@ -379,10 +379,7 @@ with tab1:
     if ya_aportado > max_p: 
         st.error(f"⚠️ Nota: lo ya aportado ({ya_aportado:,.2f} €) supera el límite máximo ({max_p:,.2f} €). Revisa datos o contacta con Entidad Gestora")
     
-    if sb <= 0:
-        st.warning("⚠️ Por favor, introduce tu Sueldo Bruto Anual en el desplegable de arriba para comenzar.")
-        st.stop()
-    
+       
   
 # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS ---
   #  st.success("✅")
@@ -401,7 +398,7 @@ with tab1:
         st.stop() # Detiene la ejecución aquí hasta que se valide
     
     # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS (Solo si está validado) ---
-    st.success("✅ Cálculos actualizados correctamente")
+    st.success("✅")
 
     
     
