@@ -257,16 +257,16 @@ st.markdown("""
 sb =0
 
 
-    # --- LÓGICA DE LÍMITES (Igual a la anterior pero necesaria aquí) ---
-    ss_estimada = min(sb, 61212.0) * 0.0635
-    base_imponible = max(0.0, sb - ss_estimada - 2000.0)
-    max_p_coef = calcular_max_personal_adicional(emp_t, sb)
-    MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500.0, 10000.0 - emp_t))
-    
-    if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
-        MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
+# --- LÓGICA DE LÍMITES (Igual a la anterior pero necesaria aquí) ---
+ss_estimada = min(sb, 61212.0) * 0.0635
+base_imponible = max(0.0, sb - ss_estimada - 2000.0)
+max_p_coef = calcular_max_personal_adicional(emp_t, sb)
+MAX_P_LIMIT = max(0.0, min(max_p_coef + 1500.0, 10000.0 - emp_t))
 
-  
+if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
+    MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
+
+
 
 # --- 5. LÓGICA DE CÁLCULO ---
 
