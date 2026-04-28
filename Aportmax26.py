@@ -359,10 +359,10 @@ with tab1:
                 st.session_state.validado = True
                 st.rerun() # Esto hace que el código vuelva arriba y estado_logico sea False
 
-    # 4. CONTROL DE FLUJO
-    if not st.session_state.validado:
-        st.info("💡 Introduce tus datos arriba y pulsa 'Validar' para ver el análisis detallado.")
-        st.stop() 
+# 4. CONTROL DE FLUJO
+if not st.session_state.validado:
+    st.info("💡 Introduce tus datos arriba y pulsa 'Validar' para ver el análisis detallado.")
+    st.stop() 
 
     # 5. CÁLCULOS FINALES (Solo se ejecutan tras validar)
     hoy = datetime.date.today()
