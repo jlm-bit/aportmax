@@ -406,9 +406,9 @@ st.success("✅ Cálculos actualizados correctamente")
     
     
     # --- CÁLCULO DE TOTALES (Asegúrate de tener estas variables) ---
-    total_aportado_anual = ya_aportado + total_mensual_previsto + aportacion_extraordinaria_neta
+total_aportado_anual = ya_aportado + total_mensual_previsto + aportacion_extraordinaria_neta
     # Evitamos división por cero si max_p es 0
-    porcentaje_cumplimiento = (total_aportado_anual / max_p * 100) if max_p > 0 else 0
+porcentaje_cumplimiento = (total_aportado_anual / max_p * 100) if max_p > 0 else 0
     
     # --- RESULTADO FINAL TEXTO PLANO ---
     st.markdown(f"""
