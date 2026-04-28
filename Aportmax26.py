@@ -306,10 +306,6 @@ if sb <= 0:
 
 
 
-
-
-
-
 tab1, tab2, tab3 = st.tabs([ "   Aportación Máxima     ", "   Proyección a la Jubilación     ",  "   Acerca de ...   "])
 
 
