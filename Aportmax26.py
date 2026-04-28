@@ -402,17 +402,8 @@ with tab1:
   
     # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS ---
     st.success("✅ Cálculos actualizados correctamente")
-
-    # Al poner expanded=False, el bloque aparece contraído
     with st.expander("📝 TUS DATOS para el cálculo (Click para desplegar)", expanded=False):
-        st.write("Aquí puedes revisar los datos que introdujiste anteriormente:")
-        
-        # Ejemplo de visualización de datos resumidos
-        col1, col2 = st.columns(2)
-        col1.text(f"Salario Bruto: {salario_bruto} €")
-        col2.text(f"Aportación Empresa: {aportacion_empresa} €")
-
-
+       
 
 
 
