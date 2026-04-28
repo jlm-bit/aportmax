@@ -323,7 +323,7 @@ with st.expander("📝 CONFIGURACIÓN DE TUS DATOS", expanded=not st.session_sta
     
     # BOTÓN DE VALIDACIÓN: Al pulsarlo, el expander se cierra y el programa sigue
     st.write("---")
-    if st.button("🚀 VALIDAR Y CALCULAR", use_container_width=True, type="primary"):
+    if st.button("🚀 CALCULAR TU APORTACION QUE PUEDES REALIZAR A TU PPE", use_container_width=True, type="primary"):
         if sb <= 0:
             st.warning("⚠️ Introduce tu Sueldo Bruto para comenzar.")
         else:
@@ -376,7 +376,7 @@ with tab1:
     """, unsafe_allow_html=True)
 
     # Botón para volver a editar si quieren cambiar algo
-     if st.button("✏️ Modificar datos"):
+    if st.button("✏️ Modificar datos"):
         st.session_state.validado = False
         st.rerun()
     with st.expander("🔍 "):
