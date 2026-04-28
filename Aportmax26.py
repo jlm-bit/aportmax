@@ -376,9 +376,9 @@ with tab1:
     """, unsafe_allow_html=True)
 
     # Botón para volver a editar si quieren cambiar algo
-    if st.button("✏️ Modificar datos"):
-        st.session_state.validado = False
-        st.rerun()
+    # if st.button("✏️ Modificar datos"):
+    #    st.session_state.validado = False
+    #    st.rerun()
     with st.expander("🔍 "):
         st.markdown(f"""
             <div style="font-size: 0.9rem; color: #475569; line-height: 1.6;">
