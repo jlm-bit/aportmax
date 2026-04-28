@@ -378,10 +378,7 @@ with tab1:
     if ya_aportado > max_p: 
         st.error(f"⚠️ Nota: lo ya aportado ({ya_aportado:,.2f} €) supera el límite máximo ({max_p:,.2f} €). Revisa datos o contacta con Entidad Gestora")
     
-    if sb <= 0:
-                st.warning("⚠️ Nota, introducir DATOS para acceder a las funcionalidades del programa.")
-                st.stop() # <--- Detiene la ejecución aquí mismo
-    
+
 # --- COLOCAR ESTO JUSTO DESPUÉS DEL EXPANDER DE DATOS ---
 
 # Creamos un botón centrado y llamativo
