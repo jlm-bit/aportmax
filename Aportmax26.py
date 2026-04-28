@@ -276,11 +276,13 @@ with tab1:
     # 1. INICIALIZACIÓN
     if 'validado' not in st.session_state:
         st.session_state.validado = False
-    cumplimiento_plan = 0.0
-    ahorro = 0.0 
-    aportacion_extraordinaria_neta = 0.0
-    eficiencia = 0.0
+   # Ponemos a 0 todas las variables que causan error
+    esfuerzo_neto = 0.0
+    ahorro = 0.0
+    emp_t = 0.0
     total_inversion = 0.0
+    eficiencia = 0.0
+    aportacion_extraordinaria_neta = 0.0
     
     # 2. DEFINICIÓN DEL ESTADO (Si validado es True, expanded será False)
     estado_logico = not st.session_state.validado
