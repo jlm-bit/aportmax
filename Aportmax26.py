@@ -277,6 +277,7 @@ with tab1:
     if 'validado' not in st.session_state:
         st.session_state.validado = False
  # Define aquí TODAS las que te han dado error y las que faltan
+    nueva_cuota_total = 0.0
     diferencia_mensual = 0.0
     ahorro = 0.0
     eficiencia = 0.0
