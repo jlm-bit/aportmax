@@ -401,7 +401,7 @@ with tab1:
     
   
     # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS ---
-    st.success("✅ Cálculos actualizados correctamente")
+    # st.success("✅ Cálculos actualizados correctamente")
     # with st.expander("📝 TUS DATOS para el cálculo (Click para desplegar)", expanded=False):
        
 
