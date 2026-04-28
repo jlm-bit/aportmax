@@ -389,7 +389,7 @@ with tab1:
         # 1. Definimos el botón y guardamos su estado en la variable
     # (Asegúrate de que esto esté ANTES de la línea 388)
     boton_calcular = st.button(
-        "🚀 Calcular Aportación Máxima y Beneficios", 
+        "🚀 Calcular Aportación Máxima y Beneficios Fiscales", 
         use_container_width=True, 
         type="primary"
     )
@@ -402,13 +402,7 @@ with tab1:
   
 # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS ---
     st.success("✅")
-    boton_calcular = st.button(
-    " ", 
-    use_container_width=False, 
-    type="primary"
-    )
-                   
-           
+              
 
 
     
