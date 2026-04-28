@@ -385,23 +385,23 @@ with tab1:
     
   
 # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS ---
-    st.success("✅")
+  #  st.success("✅")
               
     # BOTÓN DE VALIDACIÓN: Al pulsarlo, el expander se cerrará
-        if st.button("🚀 Validar Datos y Calcular", use_container_width=True, type="primary"):
-            if sb <= 0:
-                st.error("⚠️ El Sueldo Bruto es obligatorio.")
-            else:
-                st.session_state.validado = True
-                st.rerun()
-    
-    # --- CONTROL DE FLUJO ---
-    if not st.session_state.validado:
-        st.info("💡 Introduce tus datos arriba y pulsa 'Validar' para ver el análisis.")
-        st.stop() # Detiene la ejecución aquí hasta que se valide
-    
-    # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS (Solo si está validado) ---
-    st.success("✅ Cálculos actualizados correctamente")
+    if st.button("🚀 Validar Datos y Calcular", use_container_width=True, type="primary"):
+        if sb <= 0:
+            st.error("⚠️ El Sueldo Bruto es obligatorio.")
+        else:
+            st.session_state.validado = True
+            st.rerun()
+
+# --- CONTROL DE FLUJO ---
+if not st.session_state.validado:
+    st.info("💡 Introduce tus datos arriba y pulsa 'Validar' para ver el análisis.")
+    st.stop() # Detiene la ejecución aquí hasta que se valide
+
+# --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS (Solo si está validado) ---
+st.success("✅ Cálculos actualizados correctamente")
 
     
     
