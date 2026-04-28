@@ -387,28 +387,28 @@ with tab1:
 # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS ---
   #  st.success("✅")
               
-    # BOTÓN DE VALIDACIÓN: Al pulsarlo, el expander se cerrará
-    if st.button("🚀 Validar Datos y Calcular", use_container_width=True, type="primary"):
-        if sb <= 0:
-            st.error("⚠️ El Sueldo Bruto es obligatorio.")
-        else:
-            st.session_state.validado = True
-            st.rerun()
-
-# --- CONTROL DE FLUJO ---
-if not st.session_state.validado:
-    st.info("💡 Introduce tus datos arriba y pulsa 'Validar' para ver el análisis.")
-    st.stop() # Detiene la ejecución aquí hasta que se valide
-
-# --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS (Solo si está validado) ---
-st.success("✅ Cálculos actualizados correctamente")
+        # BOTÓN DE VALIDACIÓN: Al pulsarlo, el expander se cerrará
+        if st.button("🚀 Validar Datos y Calcular", use_container_width=True, type="primary"):
+            if sb <= 0:
+                st.error("⚠️ El Sueldo Bruto es obligatorio.")
+            else:
+                st.session_state.validado = True
+                st.rerun()
+    
+    # --- CONTROL DE FLUJO ---
+    if not st.session_state.validado:
+        st.info("💡 Introduce tus datos arriba y pulsa 'Validar' para ver el análisis.")
+        st.stop() # Detiene la ejecución aquí hasta que se valide
+    
+    # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS (Solo si está validado) ---
+    st.success("✅ Cálculos actualizados correctamente")
 
     
     
     # --- CÁLCULO DE TOTALES (Asegúrate de tener estas variables) ---
-total_aportado_anual = ya_aportado + total_mensual_previsto + aportacion_extraordinaria_neta
+    total_aportado_anual = ya_aportado + total_mensual_previsto + aportacion_extraordinaria_neta
     # Evitamos división por cero si max_p es 0
-porcentaje_cumplimiento = (total_aportado_anual / max_p * 100) if max_p > 0 else 0
+    porcentaje_cumplimiento = (total_aportado_anual / max_p * 100) if max_p > 0 else 0
     
     # --- RESULTADO FINAL TEXTO PLANO ---
     st.markdown(f"""
