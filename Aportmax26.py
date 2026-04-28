@@ -265,18 +265,17 @@ sb = st.session_state.sb
 
 
 
-
+if 'validado' not in st.session_state:
+    st.session_state.validado = False
 
 
 tab1, tab2, tab3 = st.tabs([ "   Aportación Máxima     ", "   Proyección a la Jubilación     ",  "   Acerca de ...   "])
 
-if 'procesado' not in st.session_state:
-    st.session_state.procesado = False
 
 with tab1:
 
 
-   
+ 
     
     with st.expander("📝 TUS DATOS para el cálculo de la aportación máxima adicional posible a tu PPE"):
         
@@ -380,22 +379,29 @@ with tab1:
     if ya_aportado > max_p: 
         st.error(f"⚠️ Nota: lo ya aportado ({ya_aportado:,.2f} €) supera el límite máximo ({max_p:,.2f} €). Revisa datos o contacta con Entidad Gestora")
     
-
-
     if sb <= 0:
         st.warning("⚠️ Por favor, introduce tu Sueldo Bruto Anual en el desplegable de arriba para comenzar.")
         st.stop()
     
-    
-  
-    if st.button("🚀 Calcular Aportación Máxima", use_container_width=True, type="primary"):
-        st.session_state.procesado = True
-        st.rerun()  # <--- ESTO ES LO QUE HACE QUE SE REPLIEGUE AL INSTANTE
   
 # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS ---
     st.success("✅")
               
-
+    # BOTÓN DE VALIDACIÓN: Al pulsarlo, el expander se cerrará
+        if st.button("🚀 Validar Datos y Calcular", use_container_width=True, type="primary"):
+            if sb <= 0:
+                st.error("⚠️ El Sueldo Bruto es obligatorio.")
+            else:
+                st.session_state.validado = True
+                st.rerun()
+    
+    # --- CONTROL DE FLUJO ---
+    if not st.session_state.validado:
+        st.info("💡 Introduce tus datos arriba y pulsa 'Validar' para ver el análisis.")
+        st.stop() # Detiene la ejecución aquí hasta que se valide
+    
+    # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS (Solo si está validado) ---
+    st.success("✅ Cálculos actualizados correctamente")
 
     
     
