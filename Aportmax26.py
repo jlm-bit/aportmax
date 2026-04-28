@@ -323,7 +323,7 @@ with st.expander("📝 CONFIGURACIÓN DE TUS DATOS", expanded=not st.session_sta
     
     # BOTÓN DE VALIDACIÓN: Al pulsarlo, el expander se cierra y el programa sigue
     st.write("---")
-    if st.button("🚀 CALCULAR TU APORTACION QUE PUEDES REALIZAR A TU PPE", use_container_width=True, type="primary"):
+    if st.button(" Quiero saber la aportacion adicional máxima posible que puedo aportar a mi PPE", use_container_width=True, type="primary"):
         if sb <= 0:
             st.warning("⚠️ Introduce tu Sueldo Bruto para comenzar.")
         else:
