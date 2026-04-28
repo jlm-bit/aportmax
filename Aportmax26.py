@@ -369,66 +369,121 @@ tab1, tab2, tab3 = st.tabs([ "   Aportación Máxima     ", "   Proyección a la
 
 
 with tab1:
+    # --- 1. INICIALIZACIÓN DEL ESTADO ---
+    if 'validado' not in st.session_state:
+        st.session_state.validado = False
 
-    
-    
-    # --- CÁLCULO DE TOTALES (Asegúrate de tener estas variables) ---
-    total_aportado_anual = ya_aportado + total_mensual_previsto + aportacion_extraordinaria_neta
-    # Evitamos división por cero si max_p es 0
-    porcentaje_cumplimiento = (total_aportado_anual / max_p * 100) if max_p > 0 else 0
-    
-    # --- RESULTADO FINAL TEXTO PLANO ---
-    st.markdown(f"""
-        <div style="padding-top: 10px;">
-            <p style='margin:0; font-size:1.0rem; color: #64748b; font-weight: 600;'>
-                💰 Aportación adicional máxima disponible:
-            </p>
-            <h2 style='margin:0; font-size:2.5rem; color:#1e293b; font-weight:700;'>
-                {aportacion_extraordinaria_neta:,.0f} €
-            </h2>
-           
-               
+    # --- 2. EL MÓDULO DE ENTRADA (Expander) ---
+    # Se cierra automáticamente cuando st.session_state.validado es True
+    with st.expander("📝 TUS DATOS para el cálculo de la aportación máxima", expanded=not st.session_state.validado):
+        
+        col_emp, col_pers = st.columns(2, gap="large")
+        
+        with col_emp:
+            st.subheader("👤 Datos Empresa")
+            sb = st.number_input(
+                "Sueldo Bruto Anual (€)", 
+                min_value=0.0, step=1000.0, key="sb_input",
+                help="Introduzca su salario bruto antes de impuestos"
+            )
+            e_ahorro = st.number_input(
+                "Aportación Mensual Empresa (€)", 
+                min_value=0.0, max_value=10000.0/12, step=50.0, key="e_ahorro_input"
+            )
+            e_riesgo = st.number_input(
+                "Otras aportaciones anuales (€)", 
+                min_value=0.0, step=50.0, key="e_riesgo_input"
+            )
             
+        with col_pers:
+            st.subheader("📅 Datos Partícipe")
+            c_m = st.number_input(
+                "Tu Aportación Mensual (€)", 
+                min_value=0.0, step=50.0, key="c_m_input"
+            )
+            e_y = st.number_input(
+                "Aportación Extra ya realizada (€)", 
+                min_value=0.0, step=50.0, key="e_y_input"
+            )
+
+        st.write("---")
+        # BOTÓN DE VALIDACIÓN
+        if st.button("🚀 Calcular / Actualizar Resultados", use_container_width=True, type="primary"):
+            if sb <= 0:
+                st.error("⚠️ El Sueldo Bruto es obligatorio.")
+            else:
+                st.session_state.validado = True
+                st.rerun()
+
+    # --- 3. MURO DE SEGURIDAD ---
+    if not st.session_state.validado:
+        st.info("💡 Introduce tus datos arriba y pulsa 'Calcular' para ver el análisis.")
+        st.stop() # Detiene la ejecución aquí hasta que se pulse el botón
+
+    # --- 4. LÓGICA DE CÁLCULO (Se ejecuta solo tras validar) ---
+    # Recuperamos valores de los widgets para asegurar el recalculo
+    sb = st.session_state.sb_input
+    e_ahorro = st.session_state.e_ahorro_input
+    e_riesgo = st.session_state.e_riesgo_input
+    c_m = st.session_state.c_m_input
+    e_y = st.session_state.e_y_input
+
+    # Cálculos intermedios
+    emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
+    ss_estimada = min(sb, 61212.0) * 0.0635
+    base_imponible = max(0.0, sb - ss_estimada - 2000.0)
+    
+    # Llamada a tu función (asegúrate de que esté definida en tu script)
+    max_p_coef = calcular_max_personal_adicional(emp_t, sb) 
+    max_p = max(0.0, min(max_p_coef + 1500.0, 10000.0 - emp_t))
+    
+    # Límite del 30%
+    if (emp_t + max_p) > (base_imponible * 0.30):
+        max_p = max(0.0, (base_imponible * 0.30) - emp_t)
+
+    hoy = datetime.date.today()
+    meses_restantes = 12 - hoy.month + 1
+    meses_pasados = 12 - meses_restantes
+    
+    ya_aportado = (c_m * meses_pasados) + e_y
+    total_mensual_previsto = c_m * meses_restantes
+    pendiente_para_limite = max(0.0, max_p - ya_aportado)
+    aportacion_extraordinaria_neta = max(0.0, pendiente_para_limite - total_mensual_previsto)
+    
+    total_aportado_anual = ya_aportado + total_mensual_previsto + aportacion_extraordinaria_neta
+    porcentaje_cumplimiento = (total_aportado_anual / max_p * 100) if max_p > 0 else 0
+    diferencia_mensual = (pendiente_para_limite / meses_restantes) - c_m if meses_restantes > 0 else 0
+
+    # --- 5. RENDERIZADO DE RESULTADOS ---
+    st.success("✅ Cálculos actualizados correctamente")
+    
+    st.markdown(f"""
+        <div style="background-color: #f8fafc; padding: 20px; border-radius: 10px; border-left: 5px solid #10b981; margin-bottom: 20px;">
+            <p style='margin:0; font-size:1rem; color: #64748b; font-weight: 600;'>💰 Aportación adicional máxima disponible:</p>
+            <h2 style='margin:0; font-size:2.5rem; color:#1e293b;'>{aportacion_extraordinaria_neta:,.0f} €</h2>
         </div>
     """, unsafe_allow_html=True)
-    
-    # Expander con textos pulidos incluyendo el total y %
-    with st.expander("🔍 "):
+
+    with st.expander("🔍 Detalles del cálculo", expanded=True):
         st.markdown(f"""
             <div style="font-size: 0.9rem; color: #475569; line-height: 1.6;">
-                El importe de <b>{aportacion_extraordinaria_neta:,.2f} €</b> representa el margen de mayor aportación a tu PPE que aún puedes aprovechar este año. Se calcula restando tus compromisos actuales de tu límite máximo permitido:
+                El importe de <b>{aportacion_extraordinaria_neta:,.2f} €</b> es tu margen disponible:
                 <ul style="margin-top: 10px;">
-                    <li><b>Límite máximo personal:</b> Tienes un techo de <b>{max_p:,.2f} €</b> basado en tu salario y las contribuciones estimadas de la empresa a tu PPE ({emp_t:,.2f} €).</li>
-                    <li><b>Aportaciones ya realizadas:</b> Descontamos los {ya_aportado:,.2f} € que ya has ingresado formalmente.</li>
-                    <li><b>Planificación mensual:</b> También restamos los {total_mensual_previsto:,.2f} € que tienes previsto aportar mediante deducción en nómina o aportaciones periódicas hasta diciembre.</li>
-                    <li><b>Objetivo de ahorro:</b> Con la cifra señadada de {aportacion_extraordinaria_neta:,.0f} €, alcanzarás un total de <b>{total_aportado_anual:,.2f} €</b>, cubriendo el <b>{porcentaje_cumplimiento:.1f}%</b> de tu capacidad de aportación anual permitida.</li>
-                    <li><b>Fiscalidad:</b> Despliega la seccion de ℹ️ Ahorro Fiscal.</li>
-                    <li><b>Acción:</b> Despliega la seccion de ℹ️ Tu Plan de Acción: te ayudaremos a conseguir tu objetivo.</li>
+                    <li><b>Límite máximo personal:</b> {max_p:,.2f} € (Salario y contribución empresa de {emp_t:,.2f} €).</li>
+                    <li><b>Ya aportado:</b> {ya_aportado:,.2f} € hasta hoy.</li>
+                    <li><b>Previsto mensual:</b> {total_mensual_previsto:,.2f} € (lo que aportarás de aquí a fin de año).</li>
+                    <li><b>Objetivo:</b> Alcanzarás <b>{total_aportado_anual:,.2f} €</b> ({porcentaje_cumplimiento:.1f}% de tu capacidad).</li>
                 </ul>
-                <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 10px;">
-                    <i>Nota: Este cálculo se ajusta estrictamente al marco normativo vigente para planes de pensiones de empleo (PPE).</i>
+                <p style="font-size: 0.75rem; color: #64748b;">
+                    Equivale a un ajuste de <b>{diferencia_mensual:,.2f} €/mes</b> adicionales en tus cuotas restantes.
                 </p>
             </div>
         """, unsafe_allow_html=True)
-    
-    st.markdown('<hr style="margin: 0.5em 0; border: 0; border-top: 1px solid #f1f5f9;">', unsafe_allow_html=True)
-    
-    
 
-    
-
-
-    # 2. Lógica y Tarjeta Ancha de Resumen
-    cumplimiento_val = float(cumplimiento_plan) if cumplimiento_plan else 0.0
-
-    if cumplimiento_val > 100.0:
-      
-        st.warning("""⚠️ **Revisa tus datos:** El nivel de aportación calculado supera el límite permitido (100%). Por favor, verifica los importes en Configuración y/o revisa Tu Plan de Accion ajustando cuotas futuras o suspendiendolas.""")
-    
-   
-
- 
-
+    # --- 6. BOTÓN PARA VOLVER A EDITAR ---
+    if st.button("✏️ Modificar datos introducidos"):
+        st.session_state.validado = False
+        st.rerun()
 with st.expander("ℹ️ Ahorro Fiscal", expanded=False):
     col_left, col_right = st.columns([1.1, 1])
     
