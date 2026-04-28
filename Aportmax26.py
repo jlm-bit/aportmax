@@ -374,19 +374,8 @@ with tab1:
             </h2>
         </div>
     """, unsafe_allow_html=True)
-    
-    with st.expander("🔍 Análisis detallado"):
-        st.markdown(f"""
-            <div style="font-size: 0.9rem; color: #475569; line-height: 1.6;">
-                El importe de <b>{aportacion_extraordinaria_neta:,.2f} €</b> es tu margen disponible este año.
-                <ul>
-                    <li><b>Límite máximo personal:</b> {max_p:,.2f} €</li>
-                    <li><b>Ya aportado + previsto:</b> {ya_aportado + total_mensual_previsto:,.2f} €</li>
-                    <li><b>Nivel de cumplimiento:</b> {porcentaje_cumplimiento:.1f}%</li>
-                </ul>
-            </div>
-        """, unsafe_allow_html=True)
-
+   
+   
     # Botón para volver a editar
     if st.button("✏️ Modificar datos"):
         st.session_state.validado = False
