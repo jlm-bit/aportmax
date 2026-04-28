@@ -274,8 +274,15 @@ tab1, tab2, tab3 = st.tabs([ "   Aportación Máxima     ", "   Proyección a la
 
 with tab1:
 
+    
+     # 1. INICIALIZACIÓN (Siempre arriba del todo)
+    if 'validado' not in st.session_state:
+        st.session_state.validado = False
+    
+    # 2. DEFINICIÓN DEL ESTADO DEL DESPLEGABLE
+    # Si ya hemos validado, el expander debe estar cerrado (False)
+    estado_logico = not st.session_state.validado
 
- 
     
     with st.expander("📝 TUS DATOS para el cálculo de la aportación máxima adicional posible a tu PPE"):
         
@@ -379,22 +386,32 @@ with tab1:
     if ya_aportado > max_p: 
         st.error(f"⚠️ Nota: lo ya aportado ({ya_aportado:,.2f} €) supera el límite máximo ({max_p:,.2f} €). Revisa datos o contacta con Entidad Gestora")
     
-   
-        # BOTÓN DE VALIDACIÓN: Al pulsarlo, el expander se cerrará
-    if st.button("🚀 Validar Datos y Calcular", use_container_width=True, type="primary"):
-        if sb <= 0:
-            st.error("⚠️ El Sueldo Bruto es obligatorio.")
-        else:
-            st.session_state.validado = True
-            st.rerun()
+  
     
-    # --- CONTROL DE FLUJO ---
+        # EL BOTÓN QUE "CIERRA" EL MÓDULO
+        if st.button("🚀 Validar Datos y Calcular", use_container_width=True, type="primary"):
+            if sb <= 0:
+                st.error("⚠️ El Sueldo Bruto es obligatorio.")
+            else:
+                st.session_state.validado = True
+                st.rerun()  # Al recargar, 'estado_logico' será False y el expander se cerrará
+    
+    # 4. CONTROL DE FLUJO (Evita que se calculen errores si no hay datos)
     if not st.session_state.validado:
         st.info("💡 Introduce tus datos arriba y pulsa 'Validar' para ver el análisis.")
-        st.stop() # Detiene la ejecución aquí hasta que se valide
+        st.stop() 
     
-    # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS (Solo si está validado) ---
-    st.success("✅")
+    # 5. RESULTADOS (Solo se ejecutan cuando el expander ya se ha cerrado)
+    st.success("✅ Cálculos actualizados correctamente")
+    
+    
+
+
+
+
+
+
+
 
     
     
