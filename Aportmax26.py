@@ -412,14 +412,7 @@ with tab1:
 
     # El parámetro expanded=False hace que aparezca cerrado por defecto
     with st.expander("📝 TUS DATOS para el cálculo (Click para revisar)", expanded=False):
-        st.info("Revisa aquí la información que has introducido en el formulario lateral:")
-        
-        # Organizamos los datos en columnas para que ocupen poco espacio al abrirse
-        c1, c2, c3 = st.columns(3)
-        c1.metric("Salario Bruto", f"{salario_bruto:,.2f} €")
-        c2.metric("Aportación Empresa", f"{aportacion_empresa:,.2f} €")
-        c3.metric("Tu Aportación", f"{aportacion_individual:,.2f} €")
-        
+                   
         st.write("---")
         st.caption("Si necesitas modificar estos valores, utiliza la barra lateral (Sidebar).")
 
