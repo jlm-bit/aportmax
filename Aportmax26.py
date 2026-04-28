@@ -370,40 +370,6 @@ with tab1:
     # 6. RESULTADOS VISIBLES
     st.success("✅ Cálculos actualizados correctamente")
 
-    st.markdown(f"""
-        <div style="background-color: #f8fafc; padding: 20px; border-radius: 10px; border-left: 5px solid #10b981;">
-            <p style='margin:0; font-size:1rem; color: #64748b; font-weight: 600;'>💰 Aportación máxima adicional posible:</p>
-            <h2 style='margin:0; font-size:2.5rem; color:#1e293b;'>{aportacion_extraordinaria_neta:,.2f} €</h2>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    # Botón para volver a editar
-    if st.button("✏️ Modificar datos"):
-        st.session_state.validado = False
-        st.rerun()
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
     
     # --- CÁLCULO DE TOTALES (Asegúrate de tener estas variables) ---
     total_aportado_anual = ya_aportado + total_mensual_previsto + aportacion_extraordinaria_neta
