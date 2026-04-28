@@ -270,6 +270,8 @@ sb = st.session_state.sb
 
 tab1, tab2, tab3 = st.tabs([ "   Aportación Máxima     ", "   Proyección a la Jubilación     ",  "   Acerca de ...   "])
 
+if 'procesado' not in st.session_state:
+    st.session_state.procesado = False
 
 with tab1:
 
@@ -385,20 +387,10 @@ with tab1:
         st.stop()
     
     
-    
-        # 1. Definimos el botón y guardamos su estado en la variable
-    # (Asegúrate de que esto esté ANTES de la línea 388)
-    boton_calcular = st.button(
-        "🚀 Calcular Aportación Máxima y Beneficios Fiscales", 
-        use_container_width=True, 
-        type="primary"
-    )
-
-    # 2. Si no se ha pulsado el botón, detenemos la ejecución (mostramos mensaje de invitación)
-    if not boton_calcular:
-        # st.info("💡 Haz clic en el botón de arriba para procesar tus datos y ver el análisis detallado.")
-        st.stop()
-    
+  
+    if st.button("🚀 Calcular Aportación Máxima", use_container_width=True, type="primary"):
+        st.session_state.procesado = True
+        st.rerun()  # <--- ESTO ES LO QUE HACE QUE SE REPLIEGUE AL INSTANTE
   
 # --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS ---
     st.success("✅")
