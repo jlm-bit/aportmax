@@ -388,7 +388,7 @@ with tab1:
   #  st.success("✅")
               
         # BOTÓN DE VALIDACIÓN: Al pulsarlo, el expander se cerrará
-        if st.button("🚀 Validar Datos y Calcular", use_container_width=True, type="primary"):
+    if st.button("🚀 Validar Datos y Calcular", use_container_width=True, type="primary"):
             if sb <= 0:
                 st.error("⚠️ El Sueldo Bruto es obligatorio.")
             else:
