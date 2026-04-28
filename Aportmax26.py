@@ -382,7 +382,30 @@ with tab1:
                 st.warning("⚠️ Nota, introducir DATOS para acceder a las funcionalidades del programa.")
                 st.stop() # <--- Detiene la ejecución aquí mismo
     
-    
+# --- COLOCAR ESTO JUSTO DESPUÉS DEL EXPANDER DE DATOS ---
+
+# Creamos un botón centrado y llamativo
+st.write("") # Espacio
+col_btn, _ = st.columns([1, 2]) # Para que no ocupe todo el ancho si no quieres
+with col_btn:
+    boton_calcular = st.button("🚀 Calcular Aportación Máxima y Beneficios", use_container_width=True, type="primary")
+
+# --- LÓGICA DE BLOQUEO ---
+
+# 1. Si el sueldo es 0, detenemos siempre
+if sb <= 0:
+    st.warning("⚠️ Por favor, introduce tu Sueldo Bruto Anual en el desplegable de arriba para comenzar.")
+    st.stop()
+
+# 2. Si no se ha pulsado el botón, detenemos la ejecución (mostramos mensaje de invitación)
+if not boton_calcular:
+    st.info("💡 Haz clic en el botón de arriba para procesar tus datos y ver el análisis detallado.")
+    st.stop()
+
+# --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS (Pestañas, Gráficos, etc.) ---
+st.success("✅ Cálculos actualizados correctamente")
+
+
 
 
 
