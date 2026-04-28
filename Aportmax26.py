@@ -256,40 +256,6 @@ st.markdown("""
 # --- 2. CONTENEDOR DE ENTRADA PRO ---
 sb =0
 
-with st.expander("📝 CONFIGURACIÓN DE TUS DATOS", expanded=(sb <= 0)):
-    
-    col_emp, col_pers = st.columns(2, gap="large")
-    
-    with col_emp:
-        st.subheader("👤 Datos Empresa")
-        # min_value=0.0 impide negativos | step=1000.0 define el salto
-        sb = st.number_input(
-            "Sueldo Bruto Anual (€)", 
-            min_value=0.0, 
-            value=sb if sb > 0 else 0.0, 
-            step=1000.0, 
-            key="sb_unique",
-            help="Introduzca su salario bruto antes de impuestos"
-        )
-        
-        e_ahorro = st.number_input(
-            "Aportación Mensual Empresa (€)", 
-            min_value=0.0, 
-            value=e_ahorro if 'e_ahorro' in locals() else 0.0, 
-            step=50.0, 
-            key="ahorro_unique",
-            help="Incluir aquí las aportaciones que realiza la empresa a tu PPE de forma mensual."
-        )
-        
-        e_riesgo = st.number_input(
-            "Otras aportaciones anuales (€)", 
-            min_value=0.0, 
-            step=50.0, 
-            key="riesgo_unique",
-            help="Incluir aquí primas de riesgo, excesos de empresa o contribuciones extraordinarias del empleador."
-        )
-        
-        emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
 
     # --- LÓGICA DE LÍMITES (Igual a la anterior pero necesaria aquí) ---
     ss_estimada = min(sb, 61212.0) * 0.0635
@@ -300,28 +266,7 @@ with st.expander("📝 CONFIGURACIÓN DE TUS DATOS", expanded=(sb <= 0)):
     if (emp_t + MAX_P_LIMIT) > (base_imponible * 0.30):
         MAX_P_LIMIT = max(0.0, (base_imponible * 0.30) - emp_t)
 
-    with col_pers:
-        st.subheader("📅 Datos Partícipe")
-        c_m = st.number_input(
-            "Tu Aportación Mensual (€)", 
-            min_value=0.0, 
-            step=50.0, 
-            key="mensual_unique",
-            help="Incluir aquí las aportaciones que realices de forma mensual, ya sean las vinculadas a la aportaciones del promotor, las de programas como Ahorra más Mañana o aportaciones voluntarias periodicas que tengas establecidas."
-        )
-        
-        # max_value dinámico para que no pueda pasarse del límite legal
-        limite_input = max(0.0, float(MAX_P_LIMIT))
-        e_y = st.number_input(
-            "Aportación Extra ya realizada (€)", 
-            min_value=0.0, 
-            max_value=limite_input if limite_input > 0 else 0.01, 
-            step=50.0, 
-            key="extra_unique",
-            help="Incluir las aportaciones puntuales al PPE que hayas realizado durante este año."
-        )
-        
-   
+  
 
 # --- 5. LÓGICA DE CÁLCULO ---
 
