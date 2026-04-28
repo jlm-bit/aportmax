@@ -379,18 +379,14 @@ with tab1:
     if ya_aportado > max_p: 
         st.error(f"⚠️ Nota: lo ya aportado ({ya_aportado:,.2f} €) supera el límite máximo ({max_p:,.2f} €). Revisa datos o contacta con Entidad Gestora")
     
-       
-  
-# --- A PARTIR DE AQUÍ SE EJECUTA TODO LO DEMÁS ---
-  #  st.success("✅")
-              
+   
         # BOTÓN DE VALIDACIÓN: Al pulsarlo, el expander se cerrará
     if st.button("🚀 Validar Datos y Calcular", use_container_width=True, type="primary"):
-            if sb <= 0:
-                st.error("⚠️ El Sueldo Bruto es obligatorio.")
-            else:
-                st.session_state.validado = True
-                st.rerun()
+        if sb <= 0:
+            st.error("⚠️ El Sueldo Bruto es obligatorio.")
+        else:
+            st.session_state.validado = True
+            st.rerun()
     
     # --- CONTROL DE FLUJO ---
     if not st.session_state.validado:
