@@ -384,6 +384,16 @@ with tab1:
         st.warning("⚠️ Por favor, introduce tu Sueldo Bruto Anual en el desplegable de arriba para comenzar.")
         st.stop()
     
+    
+    
+        # 1. Definimos el botón y guardamos su estado en la variable
+    # (Asegúrate de que esto esté ANTES de la línea 388)
+    boton_calcular = st.button(
+        "🚀 Calcular Aportación Máxima y Beneficios", 
+        use_container_width=True, 
+        type="primary"
+    )
+
     # 2. Si no se ha pulsado el botón, detenemos la ejecución (mostramos mensaje de invitación)
     if not boton_calcular:
         st.info("💡 Haz clic en el botón de arriba para procesar tus datos y ver el análisis detallado.")
