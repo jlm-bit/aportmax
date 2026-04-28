@@ -379,17 +379,7 @@ with tab1:
         st.error(f"⚠️ Nota: lo ya aportado ({ya_aportado:,.2f} €) supera el límite máximo ({max_p:,.2f} €). Revisa datos o contacta con Entidad Gestora")
     
 
-# --- COLOCAR ESTO JUSTO DESPUÉS DEL EXPANDER DE DATOS ---
 
-# Creamos un botón centrado y llamativo
-st.write("") # Espacio
-col_btn, _ = st.columns([1, 2]) # Para que no ocupe todo el ancho si no quieres
-with col_btn:
-    boton_calcular = st.button("🚀 Calcular Aportación Máxima y Beneficios", use_container_width=True, type="primary")
-
-# --- LÓGICA DE BLOQUEO ---
-
-# 1. Si el sueldo es 0, detenemos siempre
 if sb <= 0:
     st.warning("⚠️ Por favor, introduce tu Sueldo Bruto Anual en el desplegable de arriba para comenzar.")
     st.stop()
