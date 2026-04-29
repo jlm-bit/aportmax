@@ -279,12 +279,11 @@ with st.expander("📝 TUS DATOS", expanded=not st.session_state.validado):
         e_ahorro = st.number_input(
             "Aportación Mensual Empresa (€)", 
             min_value=0.0, 
-            if e_ahorro >= 10000/12:
-                st.warning("⚠️ Aportación prevista del Promotor superior a 10.000 euros/año. Revisar")
-            max_value=10001/12
             step=50.0, 
             key="ahorro_unique"
         )
+        if e_ahorro >= (10000 / 12):
+                st.warning("⚠️ La aportación mensual de la empresa supera los 10.000 euros en términos anuales. revisar")
         
         e_riesgo = st.number_input(
             "Otras aportaciones anuales (€)", 
