@@ -400,7 +400,7 @@ with tab1:
                     <li><b>Límite máximo personal:</b> {max_p:,.2f} €</b>. 
                     <li><b>Aportaciones ya realizadas:</b>  {ya_aportado:,.2f} € hasta ahora.</li>
                     <li><b>Aportaciones pendientes:</b>  {total_mensual_previsto:,.2f} € que tienes previsto aportar mediante deducción en nómina o aportaciones periódicas hasta diciembre.</li>
-                    <li><b>Objetivo de ahorro:</b> Aportando {aportacion_extraordinaria_neta:,.0f} €, alcanzarás un total de <b>{total_aportado_anual:,.2f} €</b>, cubriendo el <b>{porcentaje_cumplimiento:.1f}%</b> de tu capacidad de aportación anual permitida.</li>
+                    <li><b>Objetivo de ahorro:</b> Aportando {aportacion_extraordinaria_neta:,.0f} € adicionales alcanzarás un total de <b>{total_aportado_anual:,.2f} €</b>, cubriendo el <b>{porcentaje_cumplimiento:.1f}%</b> de tu capacidad de aportación anual permitida.</li>
                     <li><b>Fiscalidad:</b> Despliega la seccion de ℹ️ Ahorro Fiscal.</li>
                     <li><b>Acción:</b> Despliega la seccion de ℹ️ Tu Plan de Acción: te ayudaremos a conseguir tu objetivo.</li>
                 </ul>
