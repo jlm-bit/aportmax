@@ -281,7 +281,7 @@ with st.expander("📝 TUS DATOS", expanded=not st.session_state.validado):
             min_value=0.0, 
             if e_ahorro >= 10000/12:
                 st.warning("⚠️ Aportación prevista del Promotor superior a 10.000 euros/año. Revisar")
-            max_value=10000/12
+            max_value=10000,001/12
             step=50.0, 
             key="ahorro_unique"
         )
@@ -353,6 +353,8 @@ eficiencia = (ahorro / max_p * 100) if max_p > 0 else 0
 esfuerzo_neto = max_p - ahorro
 ya_aportado = (c_m * meses_pasados) + e_y
 pendiente_para_limit = max_p - ya_aportado
+if e_ahorro >= 10000/12:
+                st.warning("⚠️ Aportación prevista del Promotor superior a 10.000 euros/año. Revisar")
 if pendiente_para_limit < 0:
     st.warning("⚠️ Con lo ya aportado superas el limite. Revisa datos o suspende aportaciones.")
 pendiente_para_limite = max(0.0, max_p - ya_aportado)
