@@ -345,13 +345,13 @@ meses_pasados = 12 - meses_restantes
 CUOTA_SS = min(sb, 5101*12) * 0.064 
 base_pre = max(0.0, sb - CUOTA_SS - 2000.0)
 max_p = MAX_P_LIMIT
-pendiente_para_limit = max_p - ya_aportado
-if pendiente_para_limit < 0:
-    st.warning("⚠️ Con lo ya aportado superas el limite. Revisa datos o suspende aportaciones.")
 ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 eficiencia = (ahorro / max_p * 100) if max_p > 0 else 0
 esfuerzo_neto = max_p - ahorro
 ya_aportado = (c_m * meses_pasados) + e_y
+pendiente_para_limit = max_p - ya_aportado
+if pendiente_para_limit < 0:
+    st.warning("⚠️ Con lo ya aportado superas el limite. Revisa datos o suspende aportaciones.")
 pendiente_para_limite = max(0.0, max_p - ya_aportado)
 nueva_cuota_total = pendiente_para_limite / meses_restantes if meses_restantes > 0 else 0
 diferencia_mensual = nueva_cuota_total - c_m
