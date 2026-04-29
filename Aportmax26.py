@@ -281,7 +281,7 @@ with st.expander("📝 TUS DATOS", expanded=not st.session_state.validado):
             min_value=0.0, 
             if e_ahorro >= 10000/12:
                 st.warning("⚠️ Aportación prevista del Promotor superior a 10.000 euros/año. Revisar")
-            max_value=10000,001/12
+            max_value=10001/12
             step=50.0, 
             key="ahorro_unique"
         )
