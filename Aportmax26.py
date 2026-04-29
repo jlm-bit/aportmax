@@ -296,7 +296,7 @@ with st.expander("📝 TUS DATOS", expanded=not st.session_state.validado):
         # Cálculo básico para que las funciones de abajo no den NameError
         e_t = e_ahorro* 12 + e_riesgo
         emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
-        if e_t >= (10000 / 12):
+        if e_t >= 10000:
                 st.warning("⚠️ La aportación total de la empresa supera los 10.000 euros en términos anuales. Revisar")
 
     # --- LÓGICA DE LÍMITES (Debe estar aquí para que col_pers tenga MAX_P_LIMIT) ---
