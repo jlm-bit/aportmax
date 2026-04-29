@@ -287,7 +287,7 @@ with st.expander("📝 TUS DATOS", expanded=not st.session_state.validado):
             "Otras aportaciones anuales (€)", 
             min_value=0.0, 
             step=50.0, 
-            key="riesgo_unique"
+            key="riesgo_unique",
             help="Por ejemplo, primas de coberturas de riesgo o regularizaciones puntuales"
         )
         
