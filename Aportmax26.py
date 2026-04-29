@@ -283,7 +283,7 @@ with st.expander("📝 TUS DATOS", expanded=not st.session_state.validado):
             key="ahorro_unique"
         )
         if e_ahorro >= (10000 / 12):
-                st.warning("⚠️ La aportación mensual de la empresa supera los 10.000 euros en términos anuales. revisar")
+                st.warning("⚠️ La aportación mensual de la empresa supera los 10.000 euros en términos anuales. Revisar")
         
         e_riesgo = st.number_input(
             "Otras aportaciones anuales (€)", 
@@ -292,9 +292,12 @@ with st.expander("📝 TUS DATOS", expanded=not st.session_state.validado):
             key="riesgo_unique",
             help="Por ejemplo, primas de coberturas de riesgo o regularizaciones puntuales"
         )
-        
+       
         # Cálculo básico para que las funciones de abajo no den NameError
+        e_t = e_ahorro* 12 + e_riesgo
         emp_t = min((e_ahorro * 12) + e_riesgo, 10000.0)
+        if e_t >= (10000 / 12):
+                st.warning("⚠️ La aportación total de la empresa supera los 10.000 euros en términos anuales. Revisar")
 
     # --- LÓGICA DE LÍMITES (Debe estar aquí para que col_pers tenga MAX_P_LIMIT) ---
     # Asegúrate de que estas funciones existan en tu código (calcular_max_personal_adicional, etc.)
