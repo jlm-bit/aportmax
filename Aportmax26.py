@@ -288,6 +288,7 @@ with st.expander("📝 TUS DATOS", expanded=not st.session_state.validado):
             min_value=0.0, 
             step=50.0, 
             key="riesgo_unique"
+            help="Por ejemplo, primas de coberturas de riesgo o regularizaciones puntuales"
         )
         
         # Cálculo básico para que las funciones de abajo no den NameError
@@ -344,7 +345,9 @@ meses_pasados = 12 - meses_restantes
 CUOTA_SS = min(sb, 5101*12) * 0.064 
 base_pre = max(0.0, sb - CUOTA_SS - 2000.0)
 max_p = MAX_P_LIMIT
-
+pendiente_para_limit = max_p - ya_aportado
+If pendiente_para_limit < 0
+    st.warning("⚠️ Con lo ya aportado superas el limite. Revisa datos o suspende aportaciones.")
 ahorro = calcular_irpf_cat(base_pre) - calcular_irpf_cat(base_pre - max_p)
 eficiencia = (ahorro / max_p * 100) if max_p > 0 else 0
 esfuerzo_neto = max_p - ahorro
