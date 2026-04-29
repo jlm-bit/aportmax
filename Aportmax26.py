@@ -317,7 +317,6 @@ with st.expander("📝 TUS DATOS", expanded=not st.session_state.validado):
         e_y = st.number_input(
             "Aportación Extra ya realizada (€)", 
             min_value=0.0, 
-            max_value=5250, 
             max_value=limite_input if limite_input > 0 else 0.01, 
             step=50.0, 
             key="extra_unique"
