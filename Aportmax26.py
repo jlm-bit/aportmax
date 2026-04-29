@@ -386,7 +386,8 @@ with tab1:
             <div style="font-size: 0.9rem; color: #475569; line-height: 1.6;">
                 El importe de <b>{aportacion_extraordinaria_neta:,.2f} €</b> representa la aportación adicional a tu PPE que aún puedes aprovechar este año. Se calcula restando tus aportaciones realizadas y planificadas a tu límite máximo permitido:
                 <ul style="margin-top: 10px;">
-                    <li><b>Límite máximo personal:</b> {max_p:,.2f} €</b>. Considerando las contribuciones estimadas de la empresa a tu PPE ({emp_t:,.2f} €).</li>
+                    <li><b>Aportación Total (incluyendo la aportacion del Promotor:</b> {total_inversion:,.2f} €</b>. Considerando las contribuciones estimadas de la empresa a tu PPE ({emp_t:,.2f} €).</li>
+                    <li><b>Límite máximo personal:</b> {max_p:,.2f} €</b>. 
                     <li><b>Aportaciones ya realizadas:</b>  {ya_aportado:,.2f} € ya aportados hasta ahora.</li>
                     <li><b>Aportaciones planificación futuras:</b>  {total_mensual_previsto:,.2f} € que tienes previsto aportar mediante deducción en nómina o aportaciones periódicas hasta diciembre.</li>
                     <li><b>Objetivo de ahorro:</b> Con la cifra señadada de {aportacion_extraordinaria_neta:,.0f} €, alcanzarás un total de <b>{total_aportado_anual:,.2f} €</b>, cubriendo el <b>{porcentaje_cumplimiento:.1f}%</b> de tu capacidad de aportación anual permitida.</li>
